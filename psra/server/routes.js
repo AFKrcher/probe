@@ -29,3 +29,28 @@ WebApp.connectHandlers.use('/api/satellite', (req, res, next) => {
     res.writeHead(200);
     res.end(`Hello world from: ${Meteor.release}`);
   });
+
+
+  // End points:
+
+  // CRUD 
+
+  // Back end for add / edit items in Satellites 
+  // Schema collections 
+
+  // Sat (Top Level)
+  // Create /api/satellite/create?NoradID=25544
+  // Read   /api/satellite/25544
+  // Update /api/satellite/25544?TopLevelField=Whatever
+  // Delete ? 
+  
+  
+  // PSRA (Under Satellite)
+  // Create /api/psra/SatID?Schema=Prop&Field2=123&Field3=123
+  // Read  /api/psra/25544 
+  // Update /api/psra/25544?Schema=Prop&Field2=123&Field3=123
+  // Delete ? 
+
+
+  
+  

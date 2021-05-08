@@ -2,9 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import { LinksCollection } from '/imports/api/links';
 import { SatelliteCollection } from '/imports/api/satellite';
 import './routes'
+import { SchemaCollection } from '../imports/api/satellite';
 
-function insertLink({ title, url }) {
-  LinksCollection.insert({title, url, createdAt: new Date()});
+function insertSchema({ schema }) {
+  LinksCollection.insert({schema, createdAt: new Date()});
 }
 
 function insertSat({ name, noradID }) {
@@ -19,29 +20,6 @@ function insertSatEx({ name, noradID, observation }) {
 
 
 Meteor.startup(() => {
-  // If the Links collection is empty, add some data.
-  if (LinksCollection.find().count() === 0) {
-    insertLink({
-      title: 'Do the Tutorial',
-      url: 'https://www.meteor.com/tutorials/react/creating-an-app'
-    });
-
-    insertLink({
-      title: 'Follow the Guide',
-      url: 'http://guide.meteor.com'
-    });
-
-    insertLink({
-      title: 'Read the Docs',
-      url: 'https://docs.meteor.com'
-    });
-
-    insertLink({
-      title: 'Discussions',
-      url: 'https://forums.meteor.com'
-    });
-  }
-
   if (SatelliteCollection.find().count() === 0 ){
     // Add some data 
 
@@ -50,14 +28,76 @@ Meteor.startup(() => {
       noradID: '25544'
     });
 
+    // insertSatEx({
+    //   name: ['ISS - Zarya','ISS','Floaty Space Ship'],
+    //   noradID: '25544',
+    //   observation: "{name:'whack json string'}"
+    // });
+
   }
+
+  if (SchemaCollection.find().count() === 0 ){
+
+    // TODO: Create way of reading these from .json files
+    schema = {
+      "Name": "Transponder",
+      "Fields": [
+          {
+              "Name": "Ref",
+              "Type": "string"
+          },
+          {
+              "Name": "Band",
+              "Type": "string"
+          },
+          {
+              "Name": "Scale",
+              "Type": "string",
+              "AllowedValues": [
+                  "Mhz",
+                  "Khz",
+                  "Hz"
+              ]
+          },
+          {
+              "Name": "Direction",
+              "Type": "string",
+              "AllowedValues": [
+                  "up",
+                  "down",
+                  "both"
+              ]
+          }
+      ]
+    }
+    
+    // Name = "Transponder";
+    // Fields = [
+    //   {
+    //     "Name": "Ref",
+    //     "Type": "String"
+    //   },
+    //   {
+    //     "Name": "Band",
+    //     "Type": "String"
+    //   },
+    //   {
+    //     "Name": "Scale",
+    //     "Type": "String"
+    //   },
+    // ]
+
+
+    // insertSchema({ Name, Fields })
+    insertSchema(schema)
+
+
+  }
+
+
 });
 
-// insertSatEx({
-//   name: ['ISS - Zarya','ISS','Floaty Space Ship'],
-//   noradID: '25544',
-//   observation: {json:'whack json string'}
-// });
+
 
 function updateEntry(){
   // SatelliteCollection.update({_id: '2r8rrAwXct5xP9amg'},  { $set: {"new_field": 1} },)
