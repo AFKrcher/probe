@@ -20,20 +20,7 @@ function insertSatEx({ name, noradID, observation }) {
 
 
 Meteor.startup(() => {
-  if (SatelliteCollection.find().count() === 0 ){
-    // Add some data 
 
-    insertSat({
-      name: 'ISS - Zarya',
-      noradID: '25544'
-    });
-
-    // insertSatEx({
-    //   name: ['ISS - Zarya','ISS','Floaty Space Ship'],
-    //   noradID: '25544',
-    //   observation: "{name:'whack json string'}"
-    // });
-  }
 
   if (SchemaCollection.find().count() === 0 ){
     var jsonObj = new Array();
@@ -52,6 +39,138 @@ Meteor.startup(() => {
     })
     
   }
+
+  // write example sat
+
+  if (SatelliteCollection.find().count() === 0 ){
+    // Add some data 
+    console.log("whack");
+    data = {
+
+      "NoradID":25544,
+      "Bus": [
+        {
+          "Ref": "Placeholder",
+          "Bus": "Placeholder"
+        }
+      ],
+      //TODO verify: Contractor diff to name?
+      "Contractor" : [
+        {
+          "Ref" : "Placeholder",
+          "Contractor" : "Placeholder"
+        }
+      ],
+      
+      "CosparID" : [
+        {
+          "Ref" : "Placeholder",
+          "CosparID" : "Placeholder"
+        }
+      ],
+      "DescriptionLong" : [
+        {
+          "Ref" : "Placeholder",
+          "DescriptionLong" : "Placeholder"
+        }
+      ],
+      "DescriptionShort" : [
+        {
+          "Ref" : "Placeholder",
+          "Description" : "Placeholder"
+        }
+      ],
+
+      "DimensionDescription" : [
+        {
+          "Ref" : "Placeholder",
+          "DimensionDescription" : "Placeholder"
+        }
+      ],
+
+      "DimensionVolumeM3" : [
+        {
+          "Ref" : "Placeholder",
+          "CubicMeters" : 1234
+        }
+      ],
+
+      "LaunchMassKg" : [
+        {
+          "Ref" : "Placeholder",
+          "LaunchMassKg" : 1234
+        }
+      ],
+
+      "LaunchSites" : [
+        {
+          "Ref" : "Placeholder",
+          "Name" : "Placeholder",
+          // TODO: Lat long as E 37.123 OR -37.123
+          "Latitude" : "Placeholder",
+          "Longitude" : "Placeholder",
+        }
+      ],
+
+      "Manufacturer" : [
+        {
+          "Ref" : "Placeholder",
+          "Manufacturers" : 
+            [
+              {
+                "Name" : "Placeholder",
+                "Name" : "Placeholder",
+                "Name" : "Placeholder",
+              }
+            ]
+        }
+      ],
+
+
+
+
+      "" : [
+        {
+          "Ref" : "Placeholder",
+          "" : "Placeholder"
+        }
+      ],
+
+
+
+      "Transponder": [
+        {
+          "Ref": "Placeholder",
+          "Band": "Placeholder",
+          "Scale": "Placeholder",
+          "Direction": "Placeholder"
+         },
+      ],
+      "Name": [      
+        {
+          "Ref": "Placeholder",
+          "Name": "Placeholder"
+        },
+        {
+          "Ref": "Placeholder",
+          "Name": "Placeholder"
+        }
+      ]
+    };
+
+    SatelliteCollection.insert(
+
+      data
+    );
+
+    // insertSatEx({
+    //   name: ['ISS - Zarya','ISS','Floaty Space Ship'],
+    //   noradID: '25544',
+    //   observation: "{name:'whack json string'}"
+    // });
+  }
+
+
 
 });
 

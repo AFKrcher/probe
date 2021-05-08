@@ -4,15 +4,13 @@ import { SchemaCollection } from '/imports/api/schema';
 WebApp.connectHandlers.use('/api/satellite', (req, res, next) => {
   
     async function getSats() {
-    
+        // Check for HTTP type, get POST etc 
+        // req.method
         res.setHeader('Content-Type', 'application/json');
-
+    
         try {
-
             // TODO: Parse params middelware ? 
-
             satName = req.query.name;
-
             if (satName !== null && satName !== '') {
                 const sats = await SatelliteCollection.find({"name":satName}).fetch();
                 // TODO: Find way of refactoring this, doesn't like the res and const outside of same block 
@@ -24,9 +22,6 @@ WebApp.connectHandlers.use('/api/satellite', (req, res, next) => {
                 res.writeHead(200);
                 res.end( JSON.stringify( sats ));
             }
-    
-            
-
         }
         catch(err) {
             error = {error:"Could not fetch sats"}
@@ -34,25 +29,17 @@ WebApp.connectHandlers.use('/api/satellite', (req, res, next) => {
             res.end( JSON.stringify( error ));
         }
     };
-  
-  
     getSats();
-    
 });
 
 WebApp.connectHandlers.use('/api/schema', (req, res, next) => {
   
     async function getSchema() {
-    
         res.setHeader('Content-Type', 'application/json');
         // Try and fetch from the database, else return an error
-  
+        // TODO: Parser params middelware ? 
         try {
-
             schemaName = req.query.name;
-
-            // TODO: Parse params middelware ? 
-
             if (schemaName !== null && schemaName !== '') {
                 const sats = await SchemaCollection.find({"Name":schemaName}).fetch();
                 res.writeHead(200);
@@ -63,9 +50,6 @@ WebApp.connectHandlers.use('/api/schema', (req, res, next) => {
                 res.writeHead(200);
                 res.end( JSON.stringify( sats));
             }
-
-            
-    
         }
         catch(err) {
             error = {error:"Could not fetch schema"}
@@ -73,10 +57,9 @@ WebApp.connectHandlers.use('/api/schema', (req, res, next) => {
             res.end( JSON.stringify( error ));
         }
     };
-  
     getSchema();
-    
   });
+
   
   // End points:
 
@@ -99,5 +82,6 @@ WebApp.connectHandlers.use('/api/schema', (req, res, next) => {
   // Delete ? 
 
 
+  // 10 sats, data populated
   
-  
+  // 

@@ -6,7 +6,7 @@
             "Type": "string"
         },
 		{
-            "Name": "Id",
+            "Name": "CosparID",
             "Type": "int"
 		}
     ]
