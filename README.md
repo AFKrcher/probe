@@ -13,10 +13,10 @@ This open source project seeks to design a system that allows a community to upd
 6. Go to `http://localhost:3000` and you should see the test app running.
 
 ## Versions of npm and node
-`C:\Windows\system32>npm --version
+`npm --version
 7.7.6
 
-C:\Windows\system32>node -v
+node -v
 v12.18.3`
 
 
