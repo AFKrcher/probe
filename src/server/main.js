@@ -1,11 +1,10 @@
 import { Meteor } from 'meteor/meteor';
-import { LinksCollection } from '/imports/api/links';
+import { SchemaCollection } from '/imports/api/schema';
 import { SatelliteCollection } from '/imports/api/satellite';
 import './routes'
-import { SchemaCollection } from '../imports/api/satellite';
 
 function insertSchema({ schema }) {
-  LinksCollection.insert({schema, createdAt: new Date()});
+  SchemaCollection.insert({schema, createdAt: new Date()});
 }
 
 function insertSat({ name, noradID }) {
@@ -70,6 +69,8 @@ Meteor.startup(() => {
           }
       ]
     }
+
+    insertSchema({schema})
     
     // Name = "Transponder";
     // Fields = [
@@ -89,7 +90,7 @@ Meteor.startup(() => {
 
 
     // insertSchema({ Name, Fields })
-    insertSchema(schema)
+  
 
 
   }
