@@ -1,15 +1,16 @@
 import React from 'react';
-import { Table } from './Table.jsx';
-import { Info } from './Info.jsx';
 import { Nav } from "./Nav.jsx";
-
+import { Table } from './Table.jsx';
+import Container from "react-bootstrap/container";
+//import './bootstrap_theme/bootstrap.min.css';
 //import { SchemaModal } from './SchemaModal/SchemaModal.jsx';
 
 export const App = () => (
   <div>
     <Nav/>
-    <Table/>
-    <Info/>
-    {/* <SchemaModal show={true} onClick={() => { return; }} /> */}
+    <Container varient="dark">
+      <Table/>
+      {/* <SchemaModal show={true} onClick={() => { return; }} /> */}
+    </Container>
   </div>
 );
