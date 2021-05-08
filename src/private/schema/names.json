@@ -1,0 +1,13 @@
+{
+    "Name": "Names",
+    "Fields": [
+        {
+            "Name": "Ref",
+            "Type": "string"
+        },
+		{
+			"Name": "Name",
+			"Type": "string"
+		}
+    ]
+}

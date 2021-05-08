@@ -1,0 +1,13 @@
+{
+    "Name": "Contractor",
+    "Fields": [
+        {
+            "Name": "Ref",
+            "Type": "string"
+        },
+        {
+            "Name": "Contractor",
+            "Type": "string"
+        }
+    ]
+}

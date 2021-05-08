@@ -1,0 +1,13 @@
+{
+    "Name": "NoradID",
+    "Fields": [
+        {
+            "Name": "Ref",
+            "Type": "string"
+        },
+		{
+            "Name": "Id",
+            "Type": "int"
+		}
+    ]
+}

@@ -1,0 +1,13 @@
+{
+    "Name": "RadarCrossSection",
+    "Fields": [
+        {
+            "Name": "Ref",
+            "Type": "string"
+        },
+        {
+            "Name": "CrossSection",
+            "Type": "Double"
+        }
+    ]
+}

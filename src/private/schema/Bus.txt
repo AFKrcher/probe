@@ -1,0 +1,13 @@
+{
+    "Name": "Bus",
+    "Fields": [
+        {
+            "Name": "Ref",
+            "Type": "string"
+        },
+        {
+            "Name": "Bus",
+            "Type": "string"
+        }
+    ]
+}

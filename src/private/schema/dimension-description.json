@@ -1,0 +1,13 @@
+{
+    "Name": "Dimension Description",
+    "Fields": [
+        {
+            "Name": "Ref",
+            "Type": "string"
+        },
+		{
+			"Name": "DimensionDescription",
+			"Type": "string"
+		}
+    ]
+}

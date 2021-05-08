@@ -1,0 +1,13 @@
+{
+    "Name": "Launch Mass Kg"
+    "Fields": [
+        {
+            "Name": "Ref",
+            "Type": "string"
+        },
+		{
+			"Name": "LaunchMassKg",
+			"Type": "double"
+		}
+    ]
+}

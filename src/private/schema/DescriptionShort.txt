@@ -1,0 +1,13 @@
+{
+    "Name": "DescriptionShort",
+    "Fields": [
+        {
+            "Name": "Ref",
+            "Type": "string"
+        },
+        {
+            "Name": "Description",
+            "Type": "string"
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+{
+    "Name": "DimensionVolumeM3",
+    "Fields": [
+        {
+            "Name": "Ref",
+            "Type": "string"
+        },
+        {
+            "Name": "CubicMeters",
+            "Type": "Double"
+        }
+    ]
+}

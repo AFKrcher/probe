@@ -1,0 +1,17 @@
+{
+    "Name": "Ownership",
+    "Fields": [
+        {
+            "Name": "Ref",
+            "Type": "string"
+        },
+        {
+            "Name": "Country",
+            "Type": "string"
+        },
+        {
+            "Name": "Company",
+            "Type": "string"
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "Name": "Manufacturer"
+    "Fields": [
+        {
+            "Name": "Ref",
+            "Type": "string"
+        },
+		{
+			"Name": "Manufacturers",
+			"Type": [
+				{
+					"Name": "Name",
+					"Type": "string"
+				}
+			]
+		}
+    ]
+}

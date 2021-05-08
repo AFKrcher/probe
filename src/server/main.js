@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { SchemaCollection } from '/imports/api/schema';
 import { SatelliteCollection } from '/imports/api/satellite';
 import './routes'
+var fs = Npm.require('fs');
 
 function insertSchema({ schema }) {
   SchemaCollection.insert({schema, createdAt: new Date()});
@@ -35,42 +36,61 @@ Meteor.startup(() => {
 
   }
 
-  if (SchemaCollection.find().count() === 0 ){
-
-    // TODO: Create way of reading these from .json files
-    schema = {
-      "Name": "Transponder",
-      "Fields": [
-          {
-              "Name": "Ref",
-              "Type": "string"
-          },
-          {
-              "Name": "Band",
-              "Type": "string"
-          },
-          {
-              "Name": "Scale",
-              "Type": "string",
-              "AllowedValues": [
-                  "Mhz",
-                  "Khz",
-                  "Hz"
-              ]
-          },
-          {
-              "Name": "Direction",
-              "Type": "string",
-              "AllowedValues": [
-                  "up",
-                  "down",
-                  "both"
-              ]
-          }
-      ]
+  fs.readdir('./assets/app/schema', function(err, files) {
+    if (err) {
+      return console.log("Unable to read from schema dir " + err);
     }
 
-    insertSchema({schema})
+    files.forEach(function (file) {
+      console.log(file.c)
+      // insertSchema({schema})
+      
+
+    })
+  });
+
+  // if (SchemaCollection.find().count() === 0 ){
+
+  //   // TODO: Create way of reading these from .json files
+  //   // Read all the local .jsons
+
+  // 
+    
+
+  //   // for x in schemas/
+  //   // insert(fileContents)
+  //   schema = {
+  //     "Name": "Transponder",
+  //     "Fields": [
+  //         {
+  //             "Name": "Ref",
+  //             "Type": "string"
+  //         },
+  //         {
+  //             "Name": "Band",
+  //             "Type": "string"
+  //         },
+  //         {
+  //             "Name": "Scale",
+  //             "Type": "string",
+  //             "AllowedValues": [
+  //                 "Mhz",
+  //                 "Khz",
+  //                 "Hz"
+  //             ]
+  //         },
+  //         {
+  //             "Name": "Direction",
+  //             "Type": "string",
+  //             "AllowedValues": [
+  //                 "up",
+  //                 "down",
+  //                 "both"
+  //             ]
+  //         }
+  //     ]
+  //   }
+
     
     // Name = "Transponder";
     // Fields = [

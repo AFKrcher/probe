@@ -1,0 +1,13 @@
+{
+    "Name": "CosparID",
+    "Fields": [
+        {
+            "Name": "Ref",
+            "Type": "string"
+        },
+		{
+            "Name": "Id",
+            "Type": "int"
+		}
+    ]
+}

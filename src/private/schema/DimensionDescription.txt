@@ -1,0 +1,25 @@
+{
+    "Name": "DimensionDescription",
+    "Fields": [
+        {
+            "Name": "Ref",
+            "Type": "string"
+        },
+        {
+            "Name": "Description",
+            "Type": "any"
+        },
+        {
+            "Name": "Length",
+            "Type": "any"
+        },
+        {
+            "Name": "Width",
+            "Type": "any"
+        },
+        {
+            "Name": "Height",
+            "Type": "any"
+        }
+    ]
+}
