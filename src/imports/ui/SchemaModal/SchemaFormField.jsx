@@ -14,7 +14,7 @@ const createOption = (label) => ({
   value: label,
 });
 
-export const SchemaFormField = ( { name, type, allowed } ) => {
+export const SchemaFormField = (  ) => {
   const [name, setName] = useState("");
   const [type, setType] = useState("")
   const [inputText, setInputText] = useState("");
