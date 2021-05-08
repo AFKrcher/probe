@@ -1,38 +1,28 @@
 import React from 'react';
-import { useTable } from 'react-table'
- 
+import { useTable } from 'react-table';
+import { useTracker } from 'meteor/react-meteor-data';
+import { SatelliteCollection } from '../api/satellite';
+
  export const Table = () => {
-   const data = React.useMemo(
-     () => [
-       {
-         col1: 'Hello',
-         col2: 'World',
-       },
-       {
-         col1: 'react-table',
-         col2: 'rocks',
-       },
-       {
-         col1: 'whatever',
-         col2: 'you want',
-       },
-     ],
-     []
-   )
+  const sat = useTracker(() => {
+    return SatelliteCollection.find().fetch();
+  });
+
+   const data = React.useMemo(() => sat, []);
  
    const columns = React.useMemo(
      () => [
        {
-         Header: 'Column 1',
-         accessor: 'col1', // accessor is the "key" in the data
+         Header: 'Name',
+         accessor: 'name',
        },
        {
-         Header: 'Column 2',
-         accessor: 'col2',
-       },
+        Header: 'Norad Id',
+        accessor: 'noradID',
+      },
      ],
      []
-   )
+   );
  
    const {
      getTableProps,
