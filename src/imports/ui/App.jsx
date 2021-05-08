@@ -1,11 +1,11 @@
 import React from 'react';
-import { Hello } from './Hello.jsx';
-import { Info } from './Info.jsx';
+import { SchemaModal } from './SchemaModal/SchemaModal.jsx';
+import { Button } from 'react-bootstrap/Button';
+import { Sats } from './Satellite';
 
 export const App = () => (
   <div>
-    <h1>Welcome to Meteor!</h1>
-    <Hello/>
-    <Info/>
+    <Button></Button>
+    <SchemaModal />
   </div>
 );
