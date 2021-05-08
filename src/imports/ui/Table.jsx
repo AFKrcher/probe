@@ -2,6 +2,8 @@ import React from 'react';
 import { useTable } from 'react-table';
 import { useTracker } from 'meteor/react-meteor-data';
 import { SatelliteCollection } from '../api/satellite';
+import Container from "react-bootstrap/container";
+import BTable from "react-bootstrap/table";
 
  export const Table = () => {
   const sat = useTracker(() => {
@@ -33,21 +35,13 @@ import { SatelliteCollection } from '../api/satellite';
    } = useTable({ columns, data })
  
    return (
-     <>
-     <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+    <Container className="pt-5">
+      <BTable {...getTableProps()} striped bordered hover variant="dark" responsive>
        <thead>
          {headerGroups.map(headerGroup => (
            <tr {...headerGroup.getHeaderGroupProps()}>
              {headerGroup.headers.map(column => (
-               <th
-                 {...column.getHeaderProps()}
-                 style={{
-                   borderBottom: 'solid 3px red',
-                   background: 'aliceblue',
-                   color: 'black',
-                   fontWeight: 'bold',
-                 }}
-               >
+               <th {...column.getHeaderProps()} >
                  {column.render('Header')}
                </th>
              ))}
@@ -61,14 +55,7 @@ import { SatelliteCollection } from '../api/satellite';
              <tr {...row.getRowProps()}>
                {row.cells.map(cell => {
                  return (
-                   <td
-                     {...cell.getCellProps()}
-                     style={{
-                       padding: '10px',
-                       border: 'solid 1px gray',
-                       background: 'papayawhip',
-                     }}
-                   >
+                   <td {...cell.getCellProps()} >
                      {cell.render('Cell')}
                    </td>
                  )
@@ -77,8 +64,7 @@ import { SatelliteCollection } from '../api/satellite';
            )
          })}
        </tbody>
-     </table>
-     
-     </>
+     </BTable>
+    </Container>
    )
  }
