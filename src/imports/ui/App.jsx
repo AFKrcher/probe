@@ -1,6 +1,7 @@
 import React from 'react';
 import { Nav } from "./Nav.jsx";
 import { SatsTable } from './SatsTable.jsx';
+import { SchemasTable } from './SchemasTable.jsx';
 import { About } from "./About.jsx";
 import { Footer } from "./Footer.jsx";
 import { SchemaModal } from './SchemaModal/SchemaModal.jsx';
@@ -11,6 +12,7 @@ export const App = () => (
     <Nav/>
     <About/>
     <SatsTable/>
+    <SchemasTable/>
     <SchemaModal show={false} onClick={() => { return; }} />
     <Footer/>
   </div>
