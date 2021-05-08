@@ -1,18 +1,17 @@
 import React from 'react';
-import Container from "react-bootstrap/container";
-import Row from "react-bootstrap/row";
-import Col from "react-bootstrap/col";
+import Navbar from "react-bootstrap/navbar";
 
 export const Nav = () => (
-    <Container>
-    <Row>
-      <Col>1 of 2</Col>
-      <Col>2 of 2</Col>
-    </Row>
-    <Row>
-      <Col>1 of 3</Col>
-      <Col>2 of 3</Col>
-      <Col>3 of 3</Col>
-    </Row>
-  </Container>
+    <Navbar bg="dark" variant="dark">
+        <Navbar.Brand href="#home">
+        <img
+            alt=""
+            src="/logo.svg"
+            width="30"
+            height="30"
+            className="d-inline-block align-top"
+        />{' '}
+        Publically Sourced Research and Analytics.
+        </Navbar.Brand>
+    </Navbar>
   );
