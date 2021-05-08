@@ -36,84 +36,34 @@ Meteor.startup(() => {
 
   }
 
-  fs.readdir('./assets/app/schema', function(err, files) {
-    if (err) {
-      return console.log("Unable to read from schema dir " + err);
-    }
-
-    files.forEach(function (file) {
-      console.log(file.c)
-      // insertSchema({schema})
-      
-
-    })
-  });
-
-  // if (SchemaCollection.find().count() === 0 ){
-
-  //   // TODO: Create way of reading these from .json files
-  //   // Read all the local .jsons
-
-  // 
-    
-
-  //   // for x in schemas/
-  //   // insert(fileContents)
-  //   schema = {
-  //     "Name": "Transponder",
-  //     "Fields": [
-  //         {
-  //             "Name": "Ref",
-  //             "Type": "string"
-  //         },
-  //         {
-  //             "Name": "Band",
-  //             "Type": "string"
-  //         },
-  //         {
-  //             "Name": "Scale",
-  //             "Type": "string",
-  //             "AllowedValues": [
-  //                 "Mhz",
-  //                 "Khz",
-  //                 "Hz"
-  //             ]
-  //         },
-  //         {
-  //             "Name": "Direction",
-  //             "Type": "string",
-  //             "AllowedValues": [
-  //                 "up",
-  //                 "down",
-  //                 "both"
-  //             ]
-  //         }
-  //     ]
-  //   }
-
-    
-    // Name = "Transponder";
-    // Fields = [
-    //   {
-    //     "Name": "Ref",
-    //     "Type": "String"
-    //   },
-    //   {
-    //     "Name": "Band",
-    //     "Type": "String"
-    //   },
-    //   {
-    //     "Name": "Scale",
-    //     "Type": "String"
-    //   },
-    // ]
 
 
-    // insertSchema({ Name, Fields })
+  if (SchemaCollection.find().count() === 0 ){
+
+    Meteor.bindEnvironment( () => {
+
+      // Read from private folder, parse schemas into the database
+
+    //   fs.readdir('./assets/app/schema', function(err, files) {
+    //     if (err) {
+    //       return console.log("Unable to read from schema dir " + err);
+    //     }
   
+    //     files.forEach(function (file) {
+    //       fs.readFile('./assets/app/schema/' + file,'ascii', (err,data) => {
+  
+    //         schema = JSON.parse(data);
 
-
+    //         insertSchema({data})
+    //       })
+          
+    //     })
+    //   });
+    });
   }
+
+
+
 
 
 });
