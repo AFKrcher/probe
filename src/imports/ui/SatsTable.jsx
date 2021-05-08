@@ -5,7 +5,7 @@ import { SatelliteCollection } from '../api/satellite';
 import Container from "react-bootstrap/container";
 import BTable from "react-bootstrap/table";
 
- export const Table = () => {
+ export const SatsTable = () => {
   const sat = useTracker(() => {
     return SatelliteCollection.find().fetch();
   });
@@ -36,6 +36,7 @@ import BTable from "react-bootstrap/table";
  
    return (
     <Container className="pt-5">
+      <h2>Satellites</h2>
       <BTable {...getTableProps()} striped bordered hover variant="dark" responsive>
        <thead>
          {headerGroups.map(headerGroup => (
