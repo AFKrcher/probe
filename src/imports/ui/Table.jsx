@@ -8,7 +8,7 @@ import { SatelliteCollection } from '../api/satellite';
     return SatelliteCollection.find().fetch();
   });
 
-   const data = React.useMemo(() => sat, []);
+   const data = React.useMemo(() => sat, [sat]);
  
    const columns = React.useMemo(
      () => [
@@ -33,6 +33,7 @@ import { SatelliteCollection } from '../api/satellite';
    } = useTable({ columns, data })
  
    return (
+     <>
      <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
        <thead>
          {headerGroups.map(headerGroup => (
@@ -77,5 +78,7 @@ import { SatelliteCollection } from '../api/satellite';
          })}
        </tbody>
      </table>
+     
+     </>
    )
  }
