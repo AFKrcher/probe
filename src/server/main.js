@@ -5,7 +5,7 @@ import './routes'
 var fs = Npm.require('fs');
 
 function insertSchema({ schema }) {
-  SchemaCollection.insert({schema, createdAt: new Date()});
+  SchemaCollection.insert({"schema": schema, createdAt: new Date()});
 }
 
 function insertSat({ name, noradID }) {
@@ -37,37 +37,25 @@ Meteor.startup(() => {
   }
 
 
-
   if (SchemaCollection.find().count() === 0 ){
-
-    Meteor.bindEnvironment( () => {
-
-      // Read from private folder, parse schemas into the database
-
-    //   fs.readdir('./assets/app/schema', function(err, files) {
-    //     if (err) {
-    //       return console.log("Unable to read from schema dir " + err);
-    //     }
+    var jsonObj = new Array();
   
-    //     files.forEach(function (file) {
-    //       fs.readFile('./assets/app/schema/' + file,'ascii', (err,data) => {
+    files = fs.readdirSync('./assets/app/schema' );
   
-    //         schema = JSON.parse(data);
-
-    //         insertSchema({data})
-    //       })
-          
-    //     })
-    //   });
-    });
+    // create the large JSON array 
+    files.forEach(function (file) {
+      data = fs.readFileSync('./assets/app/schema/' + file,'ascii');
+      jsonObj.push(JSON.parse(data));
+    })
+  
+    // Write to Mongo
+    jsonObj.forEach(function (data) {
+      SchemaCollection.insert({ "schema": data, createdAt: new Date()});
+    })
+    
   }
 
-
-
-
-
 });
-
 
 
 function updateEntry(){

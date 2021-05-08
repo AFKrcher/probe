@@ -1,4 +1,5 @@
 import { SatelliteCollection } from '/imports/api/satellite';
+import { SchemaCollection } from '/imports/api/schema';
 
 WebApp.connectHandlers.use('/api/satellite', (req, res, next) => {
   
@@ -21,6 +22,30 @@ WebApp.connectHandlers.use('/api/satellite', (req, res, next) => {
     };
   
     getSats();
+    
+});
+
+WebApp.connectHandlers.use('/api/schema', (req, res, next) => {
+  
+    async function getSchema() {
+    
+        res.setHeader('Content-Type', 'application/json');
+        // Try and fetch from the database, else return an error
+  
+        try {
+            const sats = await SchemaCollection.find().fetch();
+            res.writeHead(200);
+            res.end( JSON.stringify( sats));
+    
+        }
+        catch(err) {
+            error = {error:"Could not fetch schema"}
+            res.writeHead(500);
+            res.end( JSON.stringify( error ));
+        }
+    };
+  
+    getSchema();
     
   });
   
