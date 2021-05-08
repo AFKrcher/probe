@@ -1,16 +1,13 @@
 import React from 'react';
 import { Table } from './Table.jsx';
 import { Info } from './Info.jsx';
-import Container from "react-bootstrap/container";
-import Row from "react-bootstrap/row";
-import Col from "react-bootstrap/col";
+import { Nav } from "./Nav.jsx";
 
 //import { SchemaModal } from './SchemaModal/SchemaModal.jsx';
 
 export const App = () => (
   <div>
-
-    <h1>Welcome to Meteor!</h1>
+    <Nav/>
     <Table/>
     <Info/>
     {/* <SchemaModal show={true} onClick={() => { return; }} /> */}
