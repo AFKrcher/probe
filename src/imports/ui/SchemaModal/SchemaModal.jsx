@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import { SchemaFormField } from './SchemaFormField';
+import { SchemaForm } from './SchemaForm';
 
 export const SchemaModal = ({ show, handleClose }) => (
   <Modal show={show} onHide={handleClose} >
@@ -9,7 +9,7 @@ export const SchemaModal = ({ show, handleClose }) => (
         <Modal.Title>Create a new schema</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <SchemaFormField />
+        <SchemaForm />
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>Close</Button>

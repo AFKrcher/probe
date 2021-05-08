@@ -14,44 +14,54 @@ const createOption = (label) => ({
   value: label,
 });
 
-export const SchemaFormField = (  ) => {
-  const [name, setName] = useState("");
-  const [type, setType] = useState("")
-  const [inputText, setInputText] = useState("");
-  const [value, setValue] = useState([]);
-
+export const SchemaFormField = ( { className, index, field, handleFieldChange} ) => {
+  const [allowedInputText, setAllowedInputText] = useState("");
+  
   const handleNameChange = (event) => {
-    setName(event.currentTarget.value);
+    newField = field;
+    newField.name = event.currentTarget.value;
+    handleFieldChange(newField, index);
   }
 
-  const handleChange = (value, actionMeta) => {
-    setValue(value);
+  const handleTypeChange = (value, actionMeta) => {
+    newField = field;
+    newField.type = value;
+    handleFieldChange(newField, index);
   }
 
-  const handleInputChange = (inputText) => {
-    setInputText(inputText);
+  const handleAllowedChange = (value, actionMeta) => {
+    newField = field;
+    newField.allowed = value;
+    handleFieldChange(newField, index);
+  }
+
+  const handleInputChange = (allowedInputText) => {
+    setAllowedInputText(allowedInputText);
   }
 
   const handleKeyDown = (event) => {
-    if (!inputText) return;
+    if (!allowedInputText) return;
     switch (event.key) {
       case "Enter":
       case "Tab":
-        setValue([...value, createOption(inputText)]);
-        setInputText("");
+        newField = field;
+        newField.allowed = [...field.allowed, createOption(allowedInputText)];
+        setallowedInputText("");
         event.preventDefault();
     }
   }
   
   return (
-    <>
+    <div className={className}>
       <Form.Row>
         <Col>
-          <Form.Control onChange={handleNameChange} placeholder="Field" />
+          <Form.Control onChange={handleNameChange} value={field.name} placeholder="Field" />
         </Col>
         <Col>
           <Select 
             options={typeOptions}
+            value={field.type}
+            handleChange={handleTypeChange}
             placeholder="Data type"
           />
         </Col>
@@ -59,14 +69,14 @@ export const SchemaFormField = (  ) => {
       <Form.Row className="pt-2">
         <Col>
           <MultiSelectTextInput 
-            inputText={inputText} 
-            value={value}
-            handleChange={handleChange}
+            inputText={allowedInputText} 
+            value={field.allowed}
+            handleChange={handleAllowedChange}
             handleInputChange={handleInputChange}
             handleKeyDown={handleKeyDown}
           />
         </Col>
       </Form.Row>
-    </>
+    </div>
   )
 };
