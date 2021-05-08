@@ -5,15 +5,15 @@ import './routes'
 var fs = Npm.require('fs');
 
 function insertSchema({ schema }) {
-  SchemaCollection.insert({"schema": schema, createdAt: new Date()});
+  SchemaCollection.insert({"schema": schema});
 }
 
 function insertSat({ name, noradID }) {
-  SatelliteCollection.insert({name, noradID, createdAt: new Date()});
+  SatelliteCollection.insert({name, noradID});
 }
 
 function insertSatEx({ name, noradID, observation }) {
-  SatelliteCollection.insert({name, noradID, observation, createdAt: new Date()});
+  SatelliteCollection.insert({name, noradID, observation});
 }
 
 
@@ -33,9 +33,7 @@ Meteor.startup(() => {
     //   noradID: '25544',
     //   observation: "{name:'whack json string'}"
     // });
-
   }
-
 
   if (SchemaCollection.find().count() === 0 ){
     var jsonObj = new Array();
@@ -50,7 +48,7 @@ Meteor.startup(() => {
   
     // Write to Mongo
     jsonObj.forEach(function (data) {
-      SchemaCollection.insert({ "schema": data, createdAt: new Date()});
+      SchemaCollection.insert(data);
     })
     
   }

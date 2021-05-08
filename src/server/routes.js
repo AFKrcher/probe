@@ -33,9 +33,23 @@ WebApp.connectHandlers.use('/api/schema', (req, res, next) => {
         // Try and fetch from the database, else return an error
   
         try {
-            const sats = await SchemaCollection.find().fetch();
-            res.writeHead(200);
-            res.end( JSON.stringify( sats));
+
+            schemaName = req.query.name;
+
+            // TODO: Parse params middelware ? 
+
+            if (schemaName !== null && schemaName !== '') {
+                const sats = await SchemaCollection.find({"Name":schemaName}).fetch();
+                res.writeHead(200);
+                res.end( JSON.stringify( sats));
+            }
+            else {
+                const sats = await SchemaCollection.find().fetch();
+                res.writeHead(200);
+                res.end( JSON.stringify( sats));
+            }
+
+            
     
         }
         catch(err) {
@@ -49,13 +63,6 @@ WebApp.connectHandlers.use('/api/schema', (req, res, next) => {
     
   });
   
-  
-  WebApp.connectHandlers.use('/hello', (req, res, next) => {
-    res.writeHead(200);
-    res.end(`Hello world from: ${Meteor.release}`);
-  });
-
-
   // End points:
 
   // CRUD 
