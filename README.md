@@ -18,3 +18,11 @@ This open source project seeks to design a system that allows a community to upd
 `meteor mongo`
 `show collections`
 `db.satellites.find()`
+
+
+## Deployment
+Deployment is done using Meteor Cloud. All you have to do is call:
+
+`meteor deploy psra.meteorapp.com --free --mongo`
+
+It will deploy it to the free cluster.
