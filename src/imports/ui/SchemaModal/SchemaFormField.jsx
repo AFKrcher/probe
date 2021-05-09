@@ -46,7 +46,7 @@ export const SchemaFormField = ( { className, index, field, handleFieldChange} )
       case "Tab":
         newField = field;
         newField.allowed = [...field.allowed, createOption(allowedInputText)];
-        setallowedInputText("");
+        setAllowedInputText("");
         event.preventDefault();
     }
   }
@@ -55,13 +55,13 @@ export const SchemaFormField = ( { className, index, field, handleFieldChange} )
     <div className={className}>
       <Form.Row>
         <Col>
-          <Form.Control onChange={handleNameChange} value={field.name} placeholder="Field" />
+          <Form.Control onChange={handleNameChange} value={field.name} placeholder="Field name" />
         </Col>
         <Col>
           <Select 
             options={typeOptions}
             value={field.type}
-            handleChange={handleTypeChange}
+            onChange={handleTypeChange}
             placeholder="Data type"
           />
         </Col>
