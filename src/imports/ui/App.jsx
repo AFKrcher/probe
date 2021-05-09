@@ -3,7 +3,9 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Nav } from "./Nav.jsx";
 import { SatsTable } from './SatsTable.jsx';
 import { SchemasTable } from './SchemasTable.jsx';
+import { Home } from "./Home.jsx";
 import { About } from "./About.jsx";
+import { Sources } from "./Sources.jsx";
 import { Footer } from "./Footer.jsx";
 import '../../bootstrap_theme/bootstrap.min.css';
 
@@ -19,8 +21,14 @@ export const App = () => {
           <Route path="/schemas">
             <SchemasTable />
           </Route>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/sources">
+            <Sources />
+          </Route>
           <Route path="/">
-            <About/>
+            <Home/>
           </Route>
         </Switch>
         <Footer/>

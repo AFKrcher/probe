@@ -11,6 +11,8 @@ export const Nav = () => (
                 <NavB className="mr-auto">
                     <NavB.Link href="satellites">Satellites</NavB.Link>
                     <NavB.Link href="schemas">Schemas</NavB.Link>
+                    <NavB.Link href="sources">Data Sources</NavB.Link>
+                    <NavB.Link href="about">About</NavB.Link>
                 </NavB>
             </Navbar.Collapse>
     </Navbar>

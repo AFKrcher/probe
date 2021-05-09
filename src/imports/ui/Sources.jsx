@@ -3,8 +3,8 @@ import Container from "react-bootstrap/container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-export const About = () => (
+export const Sources = () => (
     <Container fluid className="pt-4"> 
-        This is the about page
+        This table describes where you can find what data
     </Container>
   );
