@@ -4,7 +4,6 @@ import { Nav } from "./Nav.jsx";
 import { SatellitesTable } from './SatellitesTable.jsx';
 import { SchemasTable } from './SchemasTable.jsx';
 import { Home } from "./Home.jsx";
-import { SatCard } from "./SatCard.jsx";
 import { About } from "./About.jsx";
 import { DataSourcesTable } from "./DataSourcesTable";
 import { Footer } from "./Footer.jsx";
