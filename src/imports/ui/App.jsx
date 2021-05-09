@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Nav } from "./Nav.jsx";
-import { SatsTable } from './SatsTable.jsx';
+import { SatellitesTable } from './SatellitesTable.jsx';
 import { SchemasTable } from './SchemasTable.jsx';
 import { Home } from "./Home.jsx";
 import { About } from "./About.jsx";
@@ -16,7 +16,7 @@ export const App = () => {
         <Nav/>
         <Switch>
           <Route path="/satellites">
-            <SatsTable />
+            <SatellitesTable />
           </Route>
           <Route path="/schemas">
             <SchemasTable />

@@ -56,8 +56,10 @@ import { SchemaEditModal } from './SchemaEditModal/SchemaEditModal';
       {console.log(schemas)}
       <div className="d-flex justify-content-between">
         <h2>Schemas</h2>
-        <Button variant="dark mb-2" onClick={() => setShowModal(true)}>Add Schema</Button>
+        <Button variant="dark mb-2" onClick={() => setShowModal(true)}>+ Add New Schema</Button>
       </div>
+      <p>Each peice of data you want to store has its own Schema.</p>
+      <p>Each Schema has a <span className="font-weight-bold">reference</span> (where the data was found), a <span className="font-weight-bold">description</span> (describing what the data type is) and a number of <span className="font-weight-bold">data fields</span> (that contain the actual information).</p>
       <BTable {...getTableProps()} striped bordered hover variant="dark" responsive>
        <thead>
          {headerGroups.map(headerGroup => (
