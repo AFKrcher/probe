@@ -47,14 +47,13 @@ Meteor.startup(() => {
     console.log("whack");
     data = {
 
-      "NoradID":25544,
+      "NoradID" : "12345",
       "Bus": [
         {
           "Ref": "Placeholder",
           "Bus": "Placeholder"
         }
       ],
-      //TODO verify: Contractor diff to name?
       "Contractor" : [
         {
           "Ref" : "Placeholder",
@@ -80,14 +79,18 @@ Meteor.startup(() => {
           "Description" : "Placeholder"
         }
       ],
-
+      // Duplicated in json files
       "DimensionDescription" : [
         {
           "Ref" : "Placeholder",
-          "DimensionDescription" : "Placeholder"
+          "Description" : "Placeholder",
+          "Length" : "Placeholder",
+          "Width" : "Placeholder",
+          "Height" : "Placeholder"
         }
       ],
 
+      // Names ? 
       "DimensionVolumeM3" : [
         {
           "Ref" : "Placeholder",
@@ -106,9 +109,10 @@ Meteor.startup(() => {
         {
           "Ref" : "Placeholder",
           "Name" : "Placeholder",
-          // TODO: Lat long as E 37.123 OR -37.123
-          "Latitude" : "Placeholder",
-          "Longitude" : "Placeholder",
+          // latitude	double	10	8
+          // longitude	double	11	8
+          "Latitude" : -123,
+          "Longitude" : 123,
         }
       ],
 
@@ -126,26 +130,17 @@ Meteor.startup(() => {
         }
       ],
 
-
-
-
-      "" : [
+      "MissionDurationYears" : [
         {
           "Ref" : "Placeholder",
-          "" : "Placeholder"
+          "Start" : "Placeholder",
+          // possible:
+          // PlannedMissionDuration
+          // ActualMissionDuration
+          "End" : "Placeholder"
         }
       ],
 
-
-
-      "Transponder": [
-        {
-          "Ref": "Placeholder",
-          "Band": "Placeholder",
-          "Scale": "Placeholder",
-          "Direction": "Placeholder"
-         },
-      ],
       "Name": [      
         {
           "Ref": "Placeholder",
@@ -155,7 +150,33 @@ Meteor.startup(() => {
           "Ref": "Placeholder",
           "Name": "Placeholder"
         }
-      ]
+      ],
+
+      "Ownership" : [
+        {
+          "Ref" : "Placeholder",
+          "Country" : "Placeholder",
+          "Company" : "Placeholder",
+          "EndDate" : "12/34/56"
+        }
+      ],
+
+      "RadarCrossSection" : [
+        {
+          "Ref" : "Placeholder",
+          "RadarCrossSection" : 1234
+        }
+      ],
+
+      "Transponder": [
+        {
+          "Ref": "Placeholder",
+          "Band": "Placeholder",
+          "Scale": "Placeholder",
+          "Direction": "Placeholder"
+         },
+      ],
+     
     };
 
     SatelliteCollection.insert(
