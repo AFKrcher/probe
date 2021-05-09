@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTable } from 'react-table';
 import { useTracker } from 'meteor/react-meteor-data';
 import { SchemaCollection } from '../api/schema';
+import { SchemaModal } from './SchemaModal/SchemaModal.jsx';
 import Container from "react-bootstrap/container";
 import BTable from "react-bootstrap/table";
+import Button from 'react-bootstrap/Button';
 
  export const SchemasTable = () => {
+  const [showModal, setShowModal] = useState(false);
+
   const sat = useTracker(() => {
     return SchemaCollection.find().fetch();
   });
@@ -36,7 +40,10 @@ import BTable from "react-bootstrap/table";
  
    return (
     <Container className="pt-5">
-      <h2>Schemas</h2>
+      <div className="d-flex justify-content-between">
+        <h2>Schemas</h2>
+        <Button variant="dark mb-2" onClick={() => setShowModal(true)}>Add Schema</Button>
+      </div>
       <BTable {...getTableProps()} striped bordered hover variant="dark" responsive>
        <thead>
          {headerGroups.map(headerGroup => (
@@ -66,6 +73,7 @@ import BTable from "react-bootstrap/table";
          })}
        </tbody>
      </BTable>
+     <SchemaModal show={showModal} handleClose={() => { setShowModal(false) }} />
     </Container>
    )
  }

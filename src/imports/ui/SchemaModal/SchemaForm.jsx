@@ -4,12 +4,17 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import { SchemaFormField } from './SchemaFormField';
 
-export const SchemaForm = ({name, fields, createNewField, handleNameChange, handleFieldChange}) => {
+export const SchemaForm = ({name, desc, fields, createNewField, handleNameChange, handleDescChange, handleFieldChange}) => {
   return (
     <Form>
       <Form.Row >
         <Col>
           <Form.Control onChange={handleNameChange} value={name} placeholder="Schema name" />
+        </Col>
+      </Form.Row>
+      <Form.Row className="mt-3">
+        <Col>
+          <Form.Control as="textarea" onChange={handleDescChange} value={desc} placeholder="Schema description" />
         </Col>
       </Form.Row>
       {fields.map((field, index) => {
