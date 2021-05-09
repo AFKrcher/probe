@@ -27,7 +27,7 @@ Meteor.startup(() => {
   // write example sat
   if (SatelliteCollection.find().count() === 0 ){
 
-    var jsonObj = new Array();
+    // var jsonObj = new Array();
   
     // files = fs.readdirSync('./assets/app/satellite' );
   
@@ -42,8 +42,43 @@ Meteor.startup(() => {
     //   SatelliteCollection.insert(data);
     // })
 
+
+    // mission type 
+    // launch vehicle 
+    // organisation 
+    // news
+    // status
+    // power
+    // payload
+    // prop
+    // images
     
+
     data = fs.readFileSync('./assets/app/exampleSatellite.json','ascii');
+    SatelliteCollection.insert(JSON.parse(data));
+
+    data = fs.readFileSync('./assets/app/satellite/28479.json','ascii');
+    SatelliteCollection.insert(JSON.parse(data));
+
+    data = fs.readFileSync('./assets/app/satellite/33591.json','ascii');
+    SatelliteCollection.insert(JSON.parse(data));
+
+    data = fs.readFileSync('./assets/app/satellite/39762.json','ascii');
+    SatelliteCollection.insert(JSON.parse(data));
+
+    data = fs.readFileSync('./assets/app/satellite/39765.json','ascii');
+    SatelliteCollection.insert(JSON.parse(data));
+
+    data = fs.readFileSync('./assets/app/satellite/44485.json','ascii');
+    SatelliteCollection.insert(JSON.parse(data));
+
+    data = fs.readFileSync('./assets/app/satellite/45856.json','ascii');
+    SatelliteCollection.insert(JSON.parse(data));
+    
+    data = fs.readFileSync('./assets/app/satellite/46458.json','ascii');
+    SatelliteCollection.insert(JSON.parse(data));
+
+    data = fs.readFileSync('./assets/app/satellite/46479.json','ascii');
     SatelliteCollection.insert(JSON.parse(data));
   }
 
