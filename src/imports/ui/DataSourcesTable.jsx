@@ -42,19 +42,9 @@ export const DataSourcesTable = () => {
   const columns = React.useMemo( 
 
     () => 
-    // data.forEach( function (data) {
-    
-    // }
-    cols
-    ,
-    [data]
-    // (schema) => schema.map( schema=>{
-    //   return {
-    //       Header : schema.name,
-    //       accessor : schema.name
-    //   }
-    // }), [schema]
-
+        cols
+    // [schema]
+    []
   );
 
 
