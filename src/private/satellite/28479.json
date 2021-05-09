@@ -1,0 +1,125 @@
+{
+      "noradID" : "28479",
+      "bus": [
+        {
+          "reference": "Placeholder",
+          "bus": "Placeholder"
+        }
+      ],
+      "contractor" : [
+        {
+          "reference" : "Placeholder",
+          "contractor" : "Placeholder"
+        }
+      ],
+      
+      "cosparID" : [
+        {
+          "reference" : "https://in-the-sky.org/spacecraft.php?id=28479",
+          "cosparID" : "2004-046A"
+        }
+      ],
+      "descriptionLong" : [
+        {
+          "reference" : "Placeholder",
+          "descriptionLong" : "Placeholder"
+        }
+      ],
+      "descriptionShort" : [
+        {
+          "reference" : "Placeholder",
+          "descriptionShort" : "Communication"
+        }
+      ],
+      "dimensionDescription" : [
+        {
+          "reference" : "Placeholder",
+          "dimensionDescription" : "Placeholder",
+          "length" : "Placeholder",
+          "width" : "Placeholder",
+          "height" : "Placeholder"
+        }
+      ],
+
+      "dimensionVolumeM3" : [
+        {
+          "reference" : "Placeholder",
+          "cubicMeters" : 1234
+        }
+      ],
+
+      "launchMassKg" : [
+        {
+          "reference" : "https://space.skyrocket.de/doc_sdat/sy-1.htm",
+          "launchMassKg" : 204
+        }
+      ],
+
+      "launchSites" : [
+        {
+          "reference" : "https://in-the-sky.org/spacecraft.php?id=28479",
+          "name" : "Xichang Launch Facility, PRC",
+          "latitude" : -123,
+          "longitude" : 123
+        }
+      ],
+
+      "manufacturer" : [
+        {
+          "reference" : "Placeholder",
+          "manufacturer" : 
+            [
+              {
+                "name" : "Placeholder",
+                "name" : "Placeholder",
+                "name" : "Placeholder"
+              }
+            ]
+        }
+      ],
+
+      "missionDuration" : [
+        {
+          "reference" : "Placeholder",
+          "start" : "23 May 2014",
+          "plannedMissionDuration" : "Placeholder",
+          "actualMissionDuration" : "Placeholder"
+        }
+      ],
+
+      "names": [      
+        {
+          "reference": "Placeholder",
+          "names": "COSMOS 2497"
+        },
+        {
+          "reference": "Placeholder",
+          "names": "Placeholder"
+        }
+      ],
+
+      "ownership" : [
+        {
+          "reference" : "https://in-the-sky.org/spacecraft.php?id=28479",
+          "country" : "People's Republic of China",
+          "company" : "Placeholder",
+          "endDate" : "12/34/56"
+        }
+      ],
+
+      "radarCrossSection" : [
+        {
+          "reference" : "Placeholder",
+          "radarCrossSection" : 1234
+        }
+      ],
+
+      "transponder": [
+        {
+          "reference": "Placeholder",
+          "band": "Placeholder",
+          "scale": "Placeholder",
+          "direction": "Placeholder"
+         }
+      ]
+}

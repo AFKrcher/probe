@@ -1,0 +1,16 @@
+{
+    "name": "bus",
+    "description" : "",
+    "fields": [
+        {
+            "name": "reference",
+            "type": "string",
+            "allowedValues": []
+        },
+        {
+            "name": "bus",
+            "type": "string",
+            "allowedValues": []
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+{
+    "name": "ownership",
+    "description" : "",
+    "fields": [
+        {
+            "name": "reference",
+            "type": "string",
+            "allowedValues": []
+        },
+        {
+            "name": "country",
+            "type": "string",
+            "allowedValues": []
+        },
+        {
+            "name": "company",
+            "type": "string",
+            "allowedValues": []
+        }
+    ]
+}

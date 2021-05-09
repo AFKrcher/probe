@@ -1,0 +1,16 @@
+{
+    "name": "cosparID",
+    "description" : "",
+    "fields": [
+        {
+            "name": "reference",
+            "type": "string",
+            "allowedValues": []
+        },
+		{
+            "name": "cosparID",
+            "type": "string",
+            "allowedValues": []
+		}
+    ]
+}

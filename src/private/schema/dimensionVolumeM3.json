@@ -1,0 +1,16 @@
+{
+    "name": "dimensionVolumeM3",
+    "description" : "",
+    "fields": [
+        {
+            "name": "reference",
+            "type": "string",
+            "allowedValues": []
+        },
+        {
+            "name": "cubicMeters",
+            "type": "number",
+            "allowedValues": []
+        }
+    ]
+}

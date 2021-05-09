@@ -1,0 +1,16 @@
+{
+    "name": "contractor",
+    "description" : "",
+    "fields": [
+        {
+            "name": "reference",
+            "type": "string",
+            "allowedValues": []
+        },
+        {
+            "name": "contractor",
+            "type": "string",
+            "allowedValues": []
+        }
+    ]
+}

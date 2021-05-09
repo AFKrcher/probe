@@ -1,0 +1,16 @@
+{
+    "name": "launchMassKg",
+    "description" : "",
+    "fields": [
+        {
+            "name": "reference",
+            "type": "string",
+            "allowedValues": []
+        },
+		{
+			"name": "launchMassKg",
+			"type": "number",
+            "allowedValues": []
+		}
+    ]
+}

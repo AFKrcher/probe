@@ -1,0 +1,16 @@
+{
+    "name": "descriptionShort",
+    "description" : "",
+    "fields": [
+        {
+            "name": "reference",
+            "type": "string",
+            "allowedValues": []
+        },
+        {
+            "name": "descriptionShort",
+            "type": "string",
+            "allowedValues": []
+        }
+    ]
+}

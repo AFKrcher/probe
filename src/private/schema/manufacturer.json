@@ -1,0 +1,16 @@
+{
+    "name": "manufacturer",
+    "description" : "",
+    "fields": [
+        {
+            "name": "reference",
+            "type": "string",
+            "allowedValues": []
+        },
+        {
+                "name": "manufacturers",
+                "type": "string",
+                "allowedValues": []
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "name": "radarCrossSection",
+    "description" : "",
+    "fields": [
+        {
+            "name": "reference",
+            "type": "string",
+            "allowedValues": []
+        },
+        {
+            "name": "radarCrossSection",
+            "type": "number",
+            "allowedValues": []
+        }
+    ]
+}
