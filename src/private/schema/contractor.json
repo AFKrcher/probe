@@ -1,14 +1,14 @@
 {
-    "name": "names",
+    "name": "contractor",
     "description" : "",
     "fields": [
         {
             "name": "reference",
             "type": "string"
         },
-		{
-			"name": "name",
-			"type": "string"
-		}
+        {
+            "name": "contractor",
+            "type": "string"
+        }
     ]
 }

@@ -1,5 +1,5 @@
 {
-    "name": "manufacturer",
+    "name": "launchMassKg",
     "description" : "",
     "fields": [
         {
@@ -7,13 +7,8 @@
             "type": "string"
         },
 		{
-			"name": "manufacturers",
-			"type": [
-				{
-					"name": "name",
-					"type": "string"
-				}
-			]
+			"name": "launchMassKg",
+			"type": "double"
 		}
     ]
 }

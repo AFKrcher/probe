@@ -1,0 +1,22 @@
+{
+    "name": "missionDuration",
+    "description" : "",
+    "fields": [
+        {
+            "name": "reference",
+            "type": "string"
+        },
+        {
+            "name": "start",
+            "type": "string"
+        },
+        {
+            "name": "plannedMissionDuration",
+            "type": "string"
+        },
+        {
+            "name": "actualMissionDuration",
+            "type": "string"
+        }
+    ]
+}
