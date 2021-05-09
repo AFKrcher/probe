@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { Nav } from "./Nav.jsx";
-import { Table } from './Table.jsx';
+import { SatsTable } from './SatsTable.jsx';
+import { SchemasTable } from './SchemasTable.jsx';
+import { About } from "./About.jsx";
+import { Footer } from "./Footer.jsx";
 import { SchemaModal } from './SchemaModal/SchemaModal.jsx';
-import Container from "react-bootstrap/container";
 import '../../bootstrap_theme/bootstrap.min.css';
 
 export const App = () => {
   const [showSchemaModal, setShowSchemaModal] = useState(true);
-
   return (
     <div>
       <Nav/>
-      <Container variant="dark">
-        <Table/>
-        <SchemaModal show={showSchemaModal} handleClose={() => { setShowSchemaModal(false) }} />
-      </Container>
+      <About/>
+      <SatsTable/>
+      <SchemasTable/>
+      <SchemaModal show={showSchemaModal} handleClose={() => { setShowSchemaModal(false) }} />
+      <Footer/>
     </div>
   )
 };

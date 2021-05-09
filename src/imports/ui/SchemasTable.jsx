@@ -1,13 +1,13 @@
 import React from 'react';
 import { useTable } from 'react-table';
 import { useTracker } from 'meteor/react-meteor-data';
-import { SatelliteCollection } from '../api/satellite';
+import { SchemaCollection } from '../api/schema';
 import Container from "react-bootstrap/container";
 import BTable from "react-bootstrap/table";
 
- export const Table = () => {
+ export const SchemasTable = () => {
   const sat = useTracker(() => {
-    return SatelliteCollection.find().fetch();
+    return SchemaCollection.find().fetch();
   });
 
    const data = React.useMemo(() => sat, [sat]);
@@ -36,6 +36,7 @@ import BTable from "react-bootstrap/table";
  
    return (
     <Container className="pt-5">
+      <h2>Schemas</h2>
       <BTable {...getTableProps()} striped bordered hover variant="dark" responsive>
        <thead>
          {headerGroups.map(headerGroup => (
