@@ -1,5 +1,7 @@
 # List of Action Items
 
+======================= MVP =======================
+
 ## 1 Bugs 
 - Add Schema Button, modal has all fields disabled.
 - Deployed version not loading from DB
@@ -18,7 +20,6 @@ images
 
 ## 3 Add/Edit Satellites
 
-
 ## 4 Validation
 Add client side validation for Add Satellite and Add/Edit Schema (ensure no empty fields, correct types, cant delete schemaName, description, reference)
 
@@ -28,6 +29,11 @@ Add client side validation for Add Satellite and Add/Edit Schema (ensure no empt
 The Bootstrap dark theme is being overidden by the normal theme, we have added css (see !important's) to override this temporarily.
 
 ## 7 Design satellite baseball card
+
+
+====================================================
+
+
 
 ## 8 Deploy onto github so we can have propper issue tracking
 
