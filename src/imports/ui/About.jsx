@@ -78,7 +78,7 @@ export const About = () => (
                 {
                     TeamMembers.map( (member) => {
                         return (
-                            <a href={member.Link} taget="_blank">
+                            <a href={member.Link} target="_blank">
                                 <Figure className="p-1">
                                     <Figure.Image
                                         width={171}
