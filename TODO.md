@@ -6,6 +6,7 @@
 - Add Schema Button, modal has all fields disabled.
 - Deployed version not loading from DB
 - Change table row cursor to hand/clicky
+- Home page, split example data across two rows of four
 
 ## 2 Restore schemas:     
 mission type 
