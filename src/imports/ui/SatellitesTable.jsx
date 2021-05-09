@@ -5,7 +5,7 @@ import { SatelliteCollection } from '../api/satellite';
 import Container from "react-bootstrap/container";
 import BTable from "react-bootstrap/table";
 
- export const SatsTable = () => {
+ export const SatellitesTable = () => {
   const sat = useTracker(() => {
     return SatelliteCollection.find().fetch();
   });
@@ -36,7 +36,10 @@ import BTable from "react-bootstrap/table";
  
    return (
     <Container className="pt-5">
-      <h2>Satellites</h2>
+      <div className="d-flex justify-content-between">
+        <h2>Satellites</h2>
+      </div>
+      <p>Each Satellite in the catalogue contains a number of Schemas (defined on the next page). Feel free to browse around!</p>
       <BTable {...getTableProps()} striped bordered hover variant="dark" responsive>
        <thead>
          {headerGroups.map(headerGroup => (
