@@ -4,16 +4,13 @@
     "fields": [
         {
             "name": "reference",
-            "type": "string"
+            "type": "string",
+            "allowedValues": []
         },
-		{
-			"name": "manufacturers",
-			"type": [
-				{
-					"name": "name",
-					"type": "string"
-				}
-			]
-		}
+        {
+                "name": "manufacturers",
+                "type": "string",
+                "allowedValues": []
+        }
     ]
 }

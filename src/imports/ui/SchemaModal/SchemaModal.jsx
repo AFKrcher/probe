@@ -43,18 +43,18 @@ export const SchemaModal = ({ show, handleClose }) => {
 
   const handleSubmit = () => {
     const schemaObject = {};
-    schemaObject.name = name.toLowerCase();
+    schemaObject.name = name;
     schemaObject.description = desc;
     schemaObject.fields = [
       {
         name: "reference",
         type: "string",
-        allowed: []
+        allowedValues: []
       },
       ...fields.map((field) => ({
         name: field.name.toLowerCase(),
         type: field.type.value,
-        allowed: field.allowed.map((allowed) => allowed.value)
+        allowed: field.allowedValues.map((allowed) => allowed.value)
       }))
     ];
     console.log(JSON.stringify(schemaObject));

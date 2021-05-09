@@ -52,7 +52,7 @@ import { SchemaEditModal } from './SchemaEditModal/SchemaEditModal';
    }
  
    return (
-    <Container className="pt-5">
+    <Container className="py-5">
       {console.log(schemas)}
       <div className="d-flex justify-content-between">
         <h2>Schemas</h2>

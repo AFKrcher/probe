@@ -35,9 +35,9 @@
         {
           "reference" : "Placeholder",
           "dimensionDescription" : "Placeholder",
-          "length" : "Placeholder",
-          "width" : "Placeholder",
-          "height" : "Placeholder"
+          "lengthMeters" : 1234,
+          "widthMeters" : 1234,
+          "heightMeters" : 1234
         }
       ],
 
@@ -67,14 +67,7 @@
       "manufacturer" : [
         {
           "reference" : "Placeholder",
-          "manufacturer" : 
-            [
-              {
-                "name" : "Placeholder",
-                "name" : "Placeholder",
-                "name" : "Placeholder"
-              }
-            ]
+          "manufacturer" : "Placeholder"
         }
       ],
 

@@ -4,19 +4,23 @@
     "fields": [
         {
             "name": "reference",
-            "type": "string"
+            "type": "string",
+            "allowedValues": []
         },
         {
             "name": "start",
-            "type": "string"
+            "type": "string",
+            "allowedValues": []
         },
         {
             "name": "plannedMissionDuration",
-            "type": "string"
+            "type": "string",
+            "allowedValues": []
         },
         {
             "name": "actualMissionDuration",
-            "type": "string"
+            "type": "string",
+            "allowedValues": []
         }
     ]
 }

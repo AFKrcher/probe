@@ -31,7 +31,7 @@ export const SchemaFormField = ( { className, index, field, handleFieldChange, e
 
   const handleAllowedChange = (value, actionMeta) => {
     newField = field;
-    newField.allowed = value;
+    newField.allowedValues = value;
     handleFieldChange(newField, index);
   }
 
@@ -45,7 +45,7 @@ export const SchemaFormField = ( { className, index, field, handleFieldChange, e
       case "Enter":
       case "Tab":
         newField = field;
-        newField.allowed = [...field.allowed, createOption(allowedInputText)];
+        newField.allowedValues = [...field.allowedValues, createOption(allowedInputText)];
         setAllowedInputText("");
         event.preventDefault();
     }
@@ -71,7 +71,7 @@ export const SchemaFormField = ( { className, index, field, handleFieldChange, e
         <Col>
           <MultiSelectTextInput 
             inputText={allowedInputText} 
-            value={field.allowed}
+            value={field.allowedValues}
             handleChange={handleAllowedChange}
             handleInputChange={handleInputChange}
             handleKeyDown={handleKeyDown}

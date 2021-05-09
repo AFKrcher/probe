@@ -28,7 +28,7 @@ export const SchemaEditModal = ({ editSchema, show, handleClose }) => {
       setFields(editSchema.fields.map((field) => ({
         name: field.name,
         type: {value: field.type, label: capitalise(field.type)},
-        allowed: field.allowed.map((allowed) => ({value: allowed, label: capitalise(allowed)}))
+        allowedValues: field.allowedValues.map((allowed) => ({value: allowed, label: capitalise(allowed)}))
       })));
     }
   }, [editSchema]);
@@ -47,7 +47,7 @@ export const SchemaEditModal = ({ editSchema, show, handleClose }) => {
     setFields(editSchema.fields.map((field) => ({
       name: field.name,
       type: {value: field.type, label: capitalise(field.type)},
-      allowed: field.allowed.map((allowed) => ({value: allowed, label: capitalise(allowed)}))
+      allowedValues: field.allowedValues.map((allowed) => ({value: allowed, label: capitalise(allowed)}))
     })));
     setEditing(false);
   } 
@@ -72,21 +72,15 @@ export const SchemaEditModal = ({ editSchema, show, handleClose }) => {
 
   const handleSubmit = () => {
     const schemaObject = {};
-
-    console.group("Submitting data");
-    console.log(name);
-    console.log(desc);
-    console.log(fields);
-    console.groupEnd();
-
-    schemaObject.name = name.toLowerCase();
+    schemaObject.name = name;
     schemaObject.description = desc;
     schemaObject.fields = fields.map((field) => ({
       name: field.name.toLowerCase(),
       type: field.type.value,
-      allowed: field.allowed.map((allowed) => allowed.value)
+      allowedValues: field.allowedValues.map((allowed) => allowed.value)
     }));
-    SchemaCollection.update({name: editSchema.name}, schemaObject);
+    SchemaCollection.update({_id: editSchema._id}, schemaObject);
+    setEditing(false);
     handleClose();
   }
 
