@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import { SchemaForm } from './SchemaForm';
+import { SchemaForm } from '../SchemaModal/SchemaForm';
 import { SchemaCollection } from '../../api/schema';
 
 const createOption = (label) => ({
@@ -9,19 +9,28 @@ const createOption = (label) => ({
   value: label,
 });
 
-export const SchemaModal = ({ show, handleClose }) => {
+export const SchemaEditModal = ({ editSchema, show, handleClose }) => {
   // Store the current form values in the state
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [fields, setFields] = useState([]);
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
-    if (show === false) {
-      setName("");
-      setDesc("");
-      setFields([]);
+    console.log(editSchema);
+    if (editSchema !== null && editSchema !== undefined) {
+      setName(editSchema.name);
+      setDesc(editSchema.description);
+      setFields(editSchema.fields);
     }
-  }, [show]);
+  }, [editSchema]);
+
+  const handleEditCancel = () => {
+    setName(editSchema ? editSchema.name : "");
+    setDesc(editSchema ? editSchema.description : "");
+    setFields(editSchema ? editSchema.fields : []);
+    setEditing(false);
+  } 
 
   const createNewField = () => {
     setFields([...fields, {name: "", type: "", allowed: []}]); 
@@ -65,7 +74,7 @@ export const SchemaModal = ({ show, handleClose }) => {
   return(
     <Modal show={show} onHide={handleClose} >
         <Modal.Header closeButton>
-          <Modal.Title>Create a new schema</Modal.Title>
+          <Modal.Title>{editing ? "Edit schema" : "View schema"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <SchemaForm
@@ -76,12 +85,21 @@ export const SchemaModal = ({ show, handleClose }) => {
             handleNameChange={handleNameChange}
             handleDescChange={handleDescChange}
             handleFieldChange={handleFieldChange}
-            editing={false}
+            editing={editing}
           />
         </Modal.Body>
         <Modal.Footer>
+          {
+            editing ? 
+            <Button className="align-self-start" variant="outline-danger" onClick={handleEditCancel}>Cancel Editing</Button>
+            :
+            <Button className="align-self-start" variant="outline-danger" onClick={() => setEditing(true)}>Enable Editing</Button>
+          }
           <Button variant="secondary" onClick={handleClose}>Close</Button>
-          <Button variant="success" onClick={handleSubmit}>Save Schema</Button>
+          {
+            editing &&
+            <Button variant="success" onClick={handleSubmit}>Save Schema</Button>
+          }
         </Modal.Footer>
     </Modal>
   )

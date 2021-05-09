@@ -14,7 +14,7 @@ const createOption = (label) => ({
   value: label,
 });
 
-export const SchemaFormField = ( { className, index, field, handleFieldChange} ) => {
+export const SchemaFormField = ( { className, index, field, handleFieldChange, editing} ) => {
   const [allowedInputText, setAllowedInputText] = useState("");
   
   const handleNameChange = (event) => {
@@ -55,7 +55,7 @@ export const SchemaFormField = ( { className, index, field, handleFieldChange} )
     <div className={className}>
       <Form.Row>
         <Col>
-          <Form.Control onChange={handleNameChange} value={field.name} placeholder="Field name" />
+          <Form.Control disabled={!editing} onChange={handleNameChange} value={field.name} placeholder="Field name" />
         </Col>
         <Col>
           <Select 
@@ -63,6 +63,7 @@ export const SchemaFormField = ( { className, index, field, handleFieldChange} )
             value={field.type}
             onChange={handleTypeChange}
             placeholder="Data type"
+            isDisabled={!editing}
           />
         </Col>
       </Form.Row>
@@ -74,6 +75,7 @@ export const SchemaFormField = ( { className, index, field, handleFieldChange} )
             handleChange={handleAllowedChange}
             handleInputChange={handleInputChange}
             handleKeyDown={handleKeyDown}
+            disabled={!editing}
           />
         </Col>
       </Form.Row>
