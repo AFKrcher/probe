@@ -1,14 +1,14 @@
 {
-    "name": "names",
+    "name": "descriptionLong",
     "description" : "",
     "fields": [
         {
             "name": "reference",
             "type": "string"
         },
-		{
-			"name": "name",
-			"type": "string"
-		}
+        {
+            "name": "descriptionLong",
+            "type": "string"
+        }
     ]
 }

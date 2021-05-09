@@ -1,0 +1,22 @@
+{
+    "name": "launchSites",
+    "description" : "",
+    "fields": [
+        {
+            "name": "reference",
+            "type": "string"
+        },
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "latitude",
+            "type": "double"
+        },
+        {
+            "name": "longitude",
+            "type": "double"
+        }
+    ]
+}

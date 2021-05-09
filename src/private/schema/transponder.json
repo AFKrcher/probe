@@ -1,27 +1,28 @@
 {
-    "Name": "Transponder",
-    "Fields": [
+    "name": "transponder",
+    "description" : "",
+    "fields": [
         {
-            "Name": "Ref",
-            "Type": "string"
+            "name": "reference",
+            "type": "string"
         },
         {
-            "Name": "Band",
-            "Type": "string"
+            "name": "band",
+            "type": "string"
         },
         {
-            "Name": "Scale",
-            "Type": "string",
-            "AllowedValues": [
+            "name": "scale",
+            "type": "string",
+            "allowedValues": [
                 "Mhz",
                 "Khz",
                 "Hz"
             ]
         },
         {
-            "Name": "Direction",
-            "Type": "string",
-            "AllowedValues": [
+            "name": "direction",
+            "type": "string",
+            "allowedValues": [
                 "up",
                 "down",
                 "both"

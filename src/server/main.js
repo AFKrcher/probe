@@ -4,22 +4,76 @@ import { SatelliteCollection } from '/imports/api/satellite';
 import './routes'
 var fs = Npm.require('fs');
 
-function insertSchema({ schema }) {
-  SchemaCollection.insert({"schema": schema});
-}
-
-function insertSat({ name, noradID }) {
-  SatelliteCollection.insert({name, noradID});
-}
-
-function insertSatEx({ name, noradID, observation }) {
-  SatelliteCollection.insert({name, noradID, observation});
-}
-
-
-
-
 Meteor.startup(() => {
+
+  // From schema output data format
+
+  schema = {
+    "Name": "Transponder",
+    "Fields": [
+        {
+            "Name": "Ref",
+            "Type": "string"
+        },
+        {
+            "Name": "Band",
+            "Type": "string"
+        },
+        {
+            "Name": "Scale",
+            "Type": "string",
+            "AllowedValues": [
+                "Mhz",
+                "Khz",
+                "Hz"
+            ]
+        },
+        {
+            "Name": "Direction",
+            "Type": "string",
+            "AllowedValues": [
+                "up",
+                "down",
+                "both"
+            ]
+        }
+    ]
+  }
+
+  schema2 = {
+    "Name": "Manufacturer",
+    "Fields": [
+          {
+              "Name": "Ref",
+              "Type": "string"
+          },
+      {
+        "Name": "Manufacturers",
+        "Type": [
+          {
+            "Name": "Name",
+            "Type": "string"
+          }
+        ]
+      }
+      ]
+}
+
+  schemaName = schema["Name"]
+  output = {
+    schemaName : "1234"
+
+  };
+  
+  for(var attributename in schema["Fields"]){
+    propName =   schema["Fields"][attributename]["Name"]
+    console.log(attributename+": "+ propName);
+    output[propName] = "EmptyVal"
+  }
+
+  
+
+  console.log(output);
 
 
   if (SchemaCollection.find().count() === 0 ){
@@ -116,6 +170,7 @@ Meteor.startup(() => {
         }
       ],
 
+      // Modify 
       "Manufacturer" : [
         {
           "Ref" : "Placeholder",
@@ -134,10 +189,8 @@ Meteor.startup(() => {
         {
           "Ref" : "Placeholder",
           "Start" : "Placeholder",
-          // possible:
-          // PlannedMissionDuration
-          // ActualMissionDuration
-          "End" : "Placeholder"
+          "PlannedMissionDuration" : "Placeholder",
+          "ActualMissionDuration" : "Placeholder"
         }
       ],
 
@@ -179,18 +232,25 @@ Meteor.startup(() => {
      
     };
 
+
     SatelliteCollection.insert(
 
       data
     );
 
-    // insertSatEx({
-    //   name: ['ISS - Zarya','ISS','Floaty Space Ship'],
-    //   noradID: '25544',
-    //   observation: "{name:'whack json string'}"
-    // });
+    
+    // Sats:
+    // 1. ISS  
+    // 2. NOAA 20 
+    // 3. GOES 17  
+    // 4. METEOR-M2 2 
+    // 5. Landsat 9
+    // 6. SENTINEL-1B 
+    // 7. STARLINK-2441 
+    // 8. IRIDIUM 16 
+    // 9. BEIDOU 20 
+    // 10. GPS BIIR-9
   }
-
 
 
 });

@@ -1,0 +1,26 @@
+{
+    "name": "dimensionDescription",
+    "description" : "",
+    "fields": [
+        {
+            "name": "reference",
+            "type": "string"
+        },
+        {
+            "name": "dimensionDescription",
+            "type": "any"
+        },
+        {
+            "name": "length",
+            "type": "any"
+        },
+        {
+            "name": "width",
+            "type": "any"
+        },
+        {
+            "name": "height",
+            "type": "any"
+        }
+    ]
+}

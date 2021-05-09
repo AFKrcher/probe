@@ -1,5 +1,5 @@
 {
-    "name": "manufacturer",
+    "name": "cosparID",
     "description" : "",
     "fields": [
         {
@@ -7,13 +7,8 @@
             "type": "string"
         },
 		{
-			"name": "manufacturers",
-			"type": [
-				{
-					"name": "name",
-					"type": "string"
-				}
-			]
+            "name": "cosparID",
+            "type": "int"
 		}
     ]
 }
