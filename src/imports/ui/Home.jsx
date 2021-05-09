@@ -36,21 +36,18 @@ export const Home = () => {
             </Container>
 
             <Container fluid className="pt-4">
-                {
-                    demoSats.map(s=>{
-                        return (
-                            <Row>
-                                <h1 className="pl-4">Some example data</h1>
-                                <Col className="d-flex justify-content-center">
-                                    <SatCard Satellite={s} />
-                                    <SatCard Satellite={s} />
-                                    <SatCard Satellite={s} />
-                                    <SatCard Satellite={s} />
-                                </Col>
-                            </Row>
-                        )
-                    })
-                }
+                <Row>
+                    <h1 className="pl-4">Some example data</h1>
+                    <Col className="d-flex justify-content-center">
+                        {
+                            demoSats.map((s, index) =>{
+                                return ( 
+                                    <SatCard Satellite={s} key={index} />
+                                )
+                            })
+                        }
+                    </Col>
+                </Row>
             </Container>
         </>
     );

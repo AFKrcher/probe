@@ -1,7 +1,6 @@
 import React from 'react';
 import Navbar from "react-bootstrap/navbar";
 import NavB from "react-bootstrap/nav";
-import { Link } from "react-router-dom";
 
 export const Nav = () => (
     <Navbar bg="dark" variant="dark" className="p-2">
