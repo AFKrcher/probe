@@ -30,7 +30,6 @@ export const App = () => {
           </Route> */}
           <Route path="/">
             <Home/>
-            <SatCard/>
           </Route>
         </Switch>
         <Footer/>

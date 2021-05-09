@@ -2,6 +2,7 @@ import React from 'react';
 import Container from "react-bootstrap/container";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Button from "react-bootstrap/Button";
+import { Link } from "react-router-dom";
 import { SatCard } from "./SatCard.jsx";
 import { useTracker } from 'meteor/react-meteor-data';
 import { SatelliteCollection } from '../api/satellite';
@@ -25,7 +26,11 @@ export const Home = () => {
                         100% Open Source, 100% Machine Readable.
                     </p>
                     <p>
+                    <Link to="/satellites">
                         <Button variant="primary">Check it out</Button>
+                    </Link>
+
+
                     </p>
                 </Jumbotron>
             </Container>
@@ -33,13 +38,17 @@ export const Home = () => {
             <Container fluid className="pt-4">
                 {
                     demoSats.map(s=>{
-                    return (
-                        <Row>
-                            <Col>
-                                <SatCard Satellite={s} />
-                            </Col>
-                        </Row>
-                    )
+                        return (
+                            <Row>
+                                <h1 className="pl-4">Some example data</h1>
+                                <Col className="d-flex justify-content-center">
+                                    <SatCard Satellite={s} />
+                                    <SatCard Satellite={s} />
+                                    <SatCard Satellite={s} />
+                                    <SatCard Satellite={s} />
+                                </Col>
+                            </Row>
+                        )
                     })
                 }
             </Container>
