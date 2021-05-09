@@ -14,7 +14,7 @@ const createOption = (label) => ({
   value: label,
 });
 
-export const SchemaFormField = ( { className, index, field, handleFieldChange} ) => {
+export const SchemaFormField = ( { className, index, field, handleFieldChange, editing} ) => {
   const [allowedInputText, setAllowedInputText] = useState("");
   
   const handleNameChange = (event) => {
@@ -31,7 +31,7 @@ export const SchemaFormField = ( { className, index, field, handleFieldChange} )
 
   const handleAllowedChange = (value, actionMeta) => {
     newField = field;
-    newField.allowed = value;
+    newField.allowedValues = value;
     handleFieldChange(newField, index);
   }
 
@@ -45,7 +45,7 @@ export const SchemaFormField = ( { className, index, field, handleFieldChange} )
       case "Enter":
       case "Tab":
         newField = field;
-        newField.allowed = [...field.allowed, createOption(allowedInputText)];
+        newField.allowedValues = [...field.allowedValues, createOption(allowedInputText)];
         setAllowedInputText("");
         event.preventDefault();
     }
@@ -55,7 +55,7 @@ export const SchemaFormField = ( { className, index, field, handleFieldChange} )
     <div className={className}>
       <Form.Row>
         <Col>
-          <Form.Control onChange={handleNameChange} value={field.name} placeholder="Field name" />
+          <Form.Control disabled={!editing} onChange={handleNameChange} value={field.name} placeholder="Field name" />
         </Col>
         <Col>
           <Select 
@@ -63,6 +63,7 @@ export const SchemaFormField = ( { className, index, field, handleFieldChange} )
             value={field.type}
             onChange={handleTypeChange}
             placeholder="Data type"
+            isDisabled={!editing}
           />
         </Col>
       </Form.Row>
@@ -70,10 +71,11 @@ export const SchemaFormField = ( { className, index, field, handleFieldChange} )
         <Col>
           <MultiSelectTextInput 
             inputText={allowedInputText} 
-            value={field.allowed}
+            value={field.allowedValues}
             handleChange={handleAllowedChange}
             handleInputChange={handleInputChange}
             handleKeyDown={handleKeyDown}
+            disabled={!editing}
           />
         </Col>
       </Form.Row>

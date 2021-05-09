@@ -4,23 +4,28 @@
     "fields": [
         {
             "name": "reference",
-            "type": "string"
+            "type": "string",
+            "allowedValues": []
         },
         {
             "name": "dimensionDescription",
-            "type": "any"
+            "type": "string",
+            "allowedValues": []
         },
         {
-            "name": "length",
-            "type": "any"
+            "name": "lengthMeters",
+            "type": "number",
+            "allowedValues": []
         },
         {
-            "name": "width",
-            "type": "any"
+            "name": "widthMeters",
+            "type": "number",
+            "allowedValues": []
         },
         {
-            "name": "height",
-            "type": "any"
+            "name": "heightMeters",
+            "type": "number",
+            "allowedValues": []
         }
     ]
 }

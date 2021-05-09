@@ -4,25 +4,25 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import { SchemaFormField } from './SchemaFormField';
 
-export const SchemaForm = ({name, desc, fields, createNewField, handleNameChange, handleDescChange, handleFieldChange}) => {
+export const SchemaForm = ({name, desc, fields, createNewField, handleNameChange, handleDescChange, handleFieldChange, editing}) => {
   return (
     <Form>
-      <Form.Row >
+      <Form.Row>
         <Col>
-          <Form.Control onChange={handleNameChange} value={name} placeholder="Schema name" />
+          <Form.Control disabled={!editing} onChange={handleNameChange} value={name} placeholder="Schema name" />
         </Col>
       </Form.Row>
       <Form.Row className="mt-3">
         <Col>
-          <Form.Control as="textarea" onChange={handleDescChange} value={desc} placeholder="Schema description" />
+          <Form.Control disabled={!editing} as="textarea" onChange={handleDescChange} value={desc} placeholder="Schema description" />
         </Col>
       </Form.Row>
       {fields.map((field, index) => {
         return (
-          <SchemaFormField key={`field-${index}`} className="mt-3" index={index} field={field} handleFieldChange={handleFieldChange}/>
+          <SchemaFormField editing={editing} key={`field-${index}`} className="mt-3" index={index} field={field} handleFieldChange={handleFieldChange}/>
         )
       })}
-      <Button className="mt-3" variant="outline-dark" onClick={createNewField}>Add new field</Button>
+      {editing && <Button className="mt-3" variant="outline-dark" onClick={createNewField}>Add new field</Button>}
     </Form>
   )
 };

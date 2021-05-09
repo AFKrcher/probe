@@ -18,6 +18,7 @@ export const MultiSelectTextInput = ( props ) => {
       onKeyDown={props.handleKeyDown}
       placeholder="Allowed values (type a value and press Enter)"
       value={props.value}
+      isDisabled={props.disabled}
     />
   )
 };

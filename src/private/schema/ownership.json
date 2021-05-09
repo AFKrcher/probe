@@ -4,15 +4,18 @@
     "fields": [
         {
             "name": "reference",
-            "type": "string"
+            "type": "string",
+            "allowedValues": []
         },
         {
             "name": "country",
-            "type": "string"
+            "type": "string",
+            "allowedValues": []
         },
         {
             "name": "company",
-            "type": "string"
+            "type": "string",
+            "allowedValues": []
         }
     ]
 }

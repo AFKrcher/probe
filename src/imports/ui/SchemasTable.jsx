@@ -6,15 +6,18 @@ import { SchemaModal } from './SchemaModal/SchemaModal.jsx';
 import Container from "react-bootstrap/container";
 import BTable from "react-bootstrap/table";
 import Button from 'react-bootstrap/Button';
+import { SchemaEditModal } from './SchemaEditModal/SchemaEditModal';
 
  export const SchemasTable = () => {
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [schemaEditingObject, setSchemaEditingObject] = useState(null);
 
-  const sat = useTracker(() => {
+  const schemas = useTracker(() => {
     return SchemaCollection.find().fetch();
   });
 
-   const data = React.useMemo(() => sat, [sat]);
+   const data = React.useMemo(() => schemas, [schemas]);
  
    const columns = React.useMemo(
      () => [
@@ -23,8 +26,8 @@ import Button from 'react-bootstrap/Button';
          accessor: 'name',
        },
        {
-        Header: 'Norad Id',
-        accessor: 'noradID',
+        Header: 'Description',
+        accessor: 'description',
       },
      ],
      []
@@ -37,9 +40,20 @@ import Button from 'react-bootstrap/Button';
      rows,
      prepareRow,
    } = useTable({ columns, data })
+
+   const handleRowClick = (schemaObject) => {
+      setSchemaEditingObject(schemaObject);
+      setShowEditModal(true);
+   }
+
+   const handleCloseEditModal = () => {
+     setShowEditModal(false);
+     setSchemaEditingObject(null);
+   }
  
    return (
-    <Container className="pt-5">
+    <Container className="py-5">
+      {console.log(schemas)}
       <div className="d-flex justify-content-between">
         <h2>Schemas</h2>
         <Button variant="dark mb-2" onClick={() => setShowModal(true)}>+ Add New Schema</Button>
@@ -61,8 +75,9 @@ import Button from 'react-bootstrap/Button';
        <tbody {...getTableBodyProps()}>
          {rows.map(row => {
            prepareRow(row)
+           console.log(row);
            return (
-             <tr {...row.getRowProps()}>
+             <tr onClick={() => handleRowClick(row.original)} {...row.getRowProps()}>
                {row.cells.map(cell => {
                  return (
                    <td {...cell.getCellProps()} >
@@ -75,6 +90,7 @@ import Button from 'react-bootstrap/Button';
          })}
        </tbody>
      </BTable>
+     <SchemaEditModal editSchema={schemaEditingObject} show={showEditModal} handleClose={handleCloseEditModal} />
      <SchemaModal show={showModal} handleClose={() => { setShowModal(false) }} />
     </Container>
    )

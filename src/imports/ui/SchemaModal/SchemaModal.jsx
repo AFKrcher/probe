@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { SchemaForm } from './SchemaForm';
+import { SchemaCollection } from '../../api/schema';
 
 const createOption = (label) => ({
   label,
@@ -48,15 +49,16 @@ export const SchemaModal = ({ show, handleClose }) => {
       {
         name: "reference",
         type: "string",
-        allowed: []
+        allowedValues: []
       },
       ...fields.map((field) => ({
         name: field.name.toLowerCase(),
         type: field.type.value,
-        allowed: field.allowed.map((allowed) => allowed.value)
+        allowed: field.allowedValues.map((allowed) => allowed.value)
       }))
     ];
-    console.log(schemaObject);
+    console.log(JSON.stringify(schemaObject));
+    SchemaCollection.insert(schemaObject);
     handleClose();
   }
 
@@ -74,6 +76,7 @@ export const SchemaModal = ({ show, handleClose }) => {
             handleNameChange={handleNameChange}
             handleDescChange={handleDescChange}
             handleFieldChange={handleFieldChange}
+            editing={false}
           />
         </Modal.Body>
         <Modal.Footer>

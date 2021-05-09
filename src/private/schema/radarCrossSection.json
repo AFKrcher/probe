@@ -4,11 +4,13 @@
     "fields": [
         {
             "name": "reference",
-            "type": "string"
+            "type": "string",
+            "allowedValues": []
         },
         {
             "name": "radarCrossSection",
-            "type": "double"
+            "type": "number",
+            "allowedValues": []
         }
     ]
 }

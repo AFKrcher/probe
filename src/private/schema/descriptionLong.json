@@ -4,11 +4,13 @@
     "fields": [
         {
             "name": "reference",
-            "type": "string"
+            "type": "string",
+            "allowedValues": []
         },
         {
             "name": "descriptionLong",
-            "type": "string"
+            "type": "string",
+            "allowedValues": []
         }
     ]
 }

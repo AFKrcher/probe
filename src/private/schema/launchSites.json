@@ -4,19 +4,23 @@
     "fields": [
         {
             "name": "reference",
-            "type": "string"
+            "type": "string",
+            "allowedValues": []
         },
         {
             "name": "name",
-            "type": "string"
+            "type": "string",
+            "allowedValues": []
         },
         {
             "name": "latitude",
-            "type": "double"
+            "type": "number",
+            "allowedValues": []
         },
         {
             "name": "longitude",
-            "type": "double"
+            "type": "number",
+            "allowedValues": []
         }
     ]
 }
