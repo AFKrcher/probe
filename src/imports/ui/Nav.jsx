@@ -9,8 +9,7 @@ export const Nav = () => (
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <NavB className="mr-auto">
-                    
-                    <NavB.Link to="/satellites">Satellites</NavB.Link>
+                    <NavB.Link href="satellites">Satellites</NavB.Link>
                     <NavB.Link href="schemas">Schemas</NavB.Link>
                     {/* <NavB.Link href="sources">Data Sources</NavB.Link> */}
                     <NavB.Link href="about">About</NavB.Link>
