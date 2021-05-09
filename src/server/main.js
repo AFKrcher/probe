@@ -26,12 +26,25 @@ Meteor.startup(() => {
 
   // write example sat
   if (SatelliteCollection.find().count() === 0 ){
-    // Add some data 
 
-    // SatelliteCollection.insert(
-    //   data
-    // );
+    var jsonObj = new Array();
+  
+    // files = fs.readdirSync('./assets/app/satellite' );
+  
+    // // create the large JSON array 
+    // files.forEach(function (file) {
+    //   data = fs.readFileSync('./assets/app/satellite/' + file,'ascii');
+    //   jsonObj.push(JSON.parse(data));
+    // })
+  
+    // // Write to Mongo
+    // jsonObj.forEach(function (data) {
+    //   SatelliteCollection.insert(data);
+    // })
 
+    
+    data = fs.readFileSync('./assets/app/exampleSatellite.json','ascii');
+    SatelliteCollection.insert(JSON.parse(data));
   }
 
 });

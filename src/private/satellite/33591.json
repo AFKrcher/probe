@@ -1,0 +1,114 @@
+{
+      "noradID" : "12345",
+      "bus": [
+        {
+          "reference": "Placeholder",
+          "bus": "Placeholder"
+        }
+      ],
+      "contractor" : [
+        {
+          "reference" : "Placeholder",
+          "contractor" : "Placeholder"
+        }
+      ],
+      
+      "cosparID" : [
+        {
+          "reference" : "Placeholder",
+          "cosparID" : "Placeholder"
+        }
+      ],
+      "descriptionLong" : [
+        {
+          "reference" : "Placeholder",
+          "descriptionLong" : "Placeholder"
+        }
+      ],
+      "descriptionShort" : [
+        {
+          "reference" : "Placeholder",
+          "descriptionShort" : "Placeholder"
+        }
+      ],
+      "dimensionDescription" : [
+        {
+          "reference" : "Placeholder",
+          "dimensionDescription" : "Placeholder",
+          "length" : "Placeholder",
+          "width" : "Placeholder",
+          "height" : "Placeholder"
+        }
+      ],
+
+      "dimensionVolumeM3" : [
+        {
+          "reference" : "Placeholder",
+          "cubicMeters" : 1234
+        }
+      ],
+
+      "launchMassKg" : [
+        {
+          "reference" : "Placeholder",
+          "launchMassKg" : 1234
+        }
+      ],
+
+      "launchSites" : [
+        {
+          "reference" : "Placeholder",
+          "name" : "Placeholder",
+          "latitude" : -123,
+          "longitude" : 123
+        }
+      ],
+
+      "manufacturer" : [
+        {
+          "reference" : "Placeholder",
+          "name" : "Placeholder"
+        }
+      ],
+
+      "missionDuration" : [
+        {
+          "reference" : "Placeholder",
+          "start" : "Placeholder",
+          "plannedMissionDuration" : "Placeholder",
+          "actualMissionDuration" : "Placeholder"
+        }
+      ],
+
+      "names": [      
+        {
+          "reference": "Placeholder",
+          "names": "Placeholder"
+        }
+      ],
+
+      "ownership" : [
+        {
+          "reference" : "Placeholder",
+          "country" : "Placeholder",
+          "company" : "Placeholder",
+          "endDate" : "12/34/56"
+        }
+      ],
+
+      "radarCrossSection" : [
+        {
+          "reference" : "Placeholder",
+          "radarCrossSection" : 1234
+        }
+      ],
+
+      "transponder": [
+        {
+          "reference": "Placeholder",
+          "band": "Placeholder",
+          "scale": "Placeholder",
+          "direction": "Placeholder"
+         }
+      ]
+}
