@@ -42,7 +42,7 @@ export const DataSourcesTable = () => {
   const columns = React.useMemo( 
 
     () => 
-        cols
+        cols,
     // [schema]
     []
   );

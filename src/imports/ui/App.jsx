@@ -24,9 +24,9 @@ export const App = () => {
           <Route path="/about">
             <About />
           </Route>
-          <Route path="/sources">
+          {/* <Route path="/sources">
             <DataSourcesTable />
-          </Route>
+          </Route> */}
           <Route path="/">
             <Home/>
           </Route>
