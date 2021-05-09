@@ -50,7 +50,7 @@
 
       "launchMassKg" : [
         {
-          "reference" : "",https://space.skyrocket.de/doc_sdat/sy-1.htm
+          "reference" : "https://space.skyrocket.de/doc_sdat/sy-1.htm",
           "launchMassKg" : 204
         }
       ],
