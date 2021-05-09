@@ -56,9 +56,7 @@ let TeamMembers = [
 ];
 
 export const About = () => (
-
     <>
-    
     <Container className="pt-4"> 
         <Row>
             <Col>
@@ -68,7 +66,7 @@ export const About = () => (
                     and gave up their weekend to complete this work during a Hackathon which took place over the 8th - 9th May 2021.                
                 </p>
                 <p>
-                    Fueled by Pizza, we had a lot of fun and hope you find this website helpful and useful! Now it is up to all of us to maintain and populate it!
+                    Fueled by Pizza and Lofi, we had a lot of fun and hope you find this website helpful and useful! Now it is up to all of us to maintain and populate it!
                 </p>
             </Col>
         </Row>
