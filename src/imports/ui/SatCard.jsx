@@ -15,10 +15,8 @@ export const SatCard = ({Satellite}) => (
             <div className="cardName">{(Satellite && Satellite.names.length>0) ? Satellite.names[0].names : ""}</div>
             <div>{(Satellite && Satellite.noradID) ? Satellite.noradID : "Unknown"}</div>
         </Card.Title>
-        <Card.Text>
-        <p className="cardShortDescription">
+        <Card.Text className="cardShortDescription">
             {(Satellite && Satellite.descriptionShort && Satellite.descriptionShort.length>0) ? Satellite.descriptionShort[0].descriptionShort : "No description found.."}
-        </p>
         </Card.Text>
     </Card.Body>
     <Card.Body className="text-center">
