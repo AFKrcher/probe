@@ -52,7 +52,7 @@ Meteor.startup(() => {
     // payload
     // prop
     // images
-    
+
 
     data = fs.readFileSync('./assets/app/exampleSatellite.json','ascii');
     SatelliteCollection.insert(JSON.parse(data));
@@ -78,8 +78,8 @@ Meteor.startup(() => {
     data = fs.readFileSync('./assets/app/satellite/46458.json','ascii');
     SatelliteCollection.insert(JSON.parse(data));
 
-    data = fs.readFileSync('./assets/app/satellite/46479.json','ascii');
-    SatelliteCollection.insert(JSON.parse(data));
+    // data = fs.readFileSync('./assets/app/satellite/46479.json','ascii');
+    // SatelliteCollection.insert(JSON.parse(data));
   }
 
 });
