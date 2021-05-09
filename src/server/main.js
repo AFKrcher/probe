@@ -6,73 +6,6 @@ var fs = Npm.require('fs');
 
 Meteor.startup(() => {
 
-//   // From schema output data format
-//   schema = {
-//     "Name": "Transponder",
-//     "Fields": [
-//         {
-//             "Name": "Ref",
-//             "Type": "string"
-//         },
-//         {
-//             "Name": "Band",
-//             "Type": "string"
-//         },
-//         {
-//             "Name": "Scale",
-//             "Type": "string",
-//             "AllowedValues": [
-//                 "Mhz",
-//                 "Khz",
-//                 "Hz"
-//             ]
-//         },
-//         {
-//             "Name": "Direction",
-//             "Type": "string",
-//             "AllowedValues": [
-//                 "up",
-//                 "down",
-//                 "both"
-//             ]
-//         }
-//     ]
-//   }
-
-//   schema2 = {
-//     "Name": "Manufacturer",
-//     "Fields": [
-//           {
-//               "Name": "Ref",
-//               "Type": "string"
-//           },
-//       {
-//         "Name": "Manufacturers",
-//         "Type": [
-//           {
-//             "Name": "Name",
-//             "Type": "string"
-//           }
-//         ]
-//       }
-//     ]
-// }
-
-  // schemaName = schema["Name"]
-  // output = {
-  //   schemaName : "1234"
-
-  // };
-  
-  // for(var attributename in schema["Fields"]){
-  //   propName =   schema["Fields"][attributename]["Name"]
-  //   console.log(attributename+": "+ propName);
-  //   output[propName] = "EmptyVal"
-  // }
-
-  // console.log(output);
-
-
   if (SchemaCollection.find().count() === 0 ){
     var jsonObj = new Array();
   
@@ -95,11 +28,10 @@ Meteor.startup(() => {
   if (SatelliteCollection.find().count() === 0 ){
     // Add some data 
 
-    SatelliteCollection.insert(
-      data
-    );
+    // SatelliteCollection.insert(
+    //   data
+    // );
 
   }
-
 
 });

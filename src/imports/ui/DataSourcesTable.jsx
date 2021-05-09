@@ -7,7 +7,7 @@ import Container from "react-bootstrap/container";
 import BTable from "react-bootstrap/table";
 import Button from 'react-bootstrap/Button';
 
-export const Sources = () => {
+export const DataSourcesTable = () => {
   const [showModal, setShowModal] = useState(false);
 
   const schema = useTracker(() => {
@@ -15,23 +15,56 @@ export const Sources = () => {
   });
 
   const data = React.useMemo(() => schema, [schema]);
-  
-  const columns = React.useMemo(
-        (schema) => schema.map(x=>{
-        return {
-            Header : x.name,
-            accessor : x.name
-        }
-    }), [schema]
-    );
+  console.log(data)
+  // const data = {'one','two','three'}
 
-    const {
-     getTableProps,
-     getTableBodyProps,
-     headerGroups,
-     rows,
-     prepareRow,
-   } = useTable({ columns, data })
+  // cols as schema 
+  // rows are data source 
+
+  cols =  [
+    {
+      Header: 'Name '  ,
+      accessor: 'name'  ,
+    },
+  ]
+
+  data.forEach(function (entry) {  
+    cols.push(
+      {
+        Header : entry.name,
+        accessor : entry.name
+      }
+    )
+
+  });
+
+  
+  const columns = React.useMemo( 
+
+    () => 
+    // data.forEach( function (data) {
+    
+    // }
+    cols
+    ,
+    [data]
+    // (schema) => schema.map( schema=>{
+    //   return {
+    //       Header : schema.name,
+    //       accessor : schema.name
+    //   }
+    // }), [schema]
+
+  );
+
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = useTable({ columns, data })
  
    return (
     <Container className="pt-5">
