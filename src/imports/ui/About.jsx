@@ -75,9 +75,9 @@ export const About = () => (
             <h2>Meet the Team</h2>
             <Col>
                 {
-                    TeamMembers.map( (member) => {
+                    TeamMembers.map( (member , index) => {
                         return (
-                            <a href={member.Link} target="_blank">
+                            <a href={member.Link} target="_blank" key={index}>
                                 <Figure className="p-1">
                                     <Figure.Image
                                         width={171}
