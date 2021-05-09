@@ -65,9 +65,10 @@ export const About = () => (
                 <h1>About this website</h1>
                 <p>
                     This website was created by an incredible team of space enthusiasts who got together
-                    and gave up their weekend to complete this work during a Hackathon which took place over the 8th - 9th May 2021.                </p>
+                    and gave up their weekend to complete this work during a Hackathon which took place over the 8th - 9th May 2021.                
+                </p>
                 <p>
-                    We had a lot of fun and hope you find this website helpful! Now it is up to all of us to maintain and populate it!
+                    Fueled by Pizza, we had a lot of fun and hope you find this website helpful and useful! Now it is up to all of us to maintain and populate it!
                 </p>
             </Col>
         </Row>

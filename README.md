@@ -11,3 +11,10 @@ This open source project seeks to design a system that allows a community to upd
 4. Inside the src folder run `meteor npm install`
 5. Run `meteor` 
 6. Go to `http://localhost:3000` and you should see the test app running.
+
+## Access Mongo
+1. Meteor must be running
+2. In the command prompt run 
+`meteor mongo`
+`show collections`
+`db.satellites.find()`
