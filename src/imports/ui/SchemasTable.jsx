@@ -11,7 +11,7 @@ import { SchemaEditModal } from './SchemaEditModal/SchemaEditModal';
  export const SchemasTable = () => {
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [schemaEditingObject, setSchemaEditingObject] = useState();
+  const [schemaEditingObject, setSchemaEditingObject] = useState(null);
 
   const schemas = useTracker(() => {
     return SchemaCollection.find().fetch();
@@ -90,7 +90,7 @@ import { SchemaEditModal } from './SchemaEditModal/SchemaEditModal';
          })}
        </tbody>
      </BTable>
-     <SchemaEditModal editschema={schemaEditingObject} show={showEditModal} handleClose={handleCloseEditModal} />
+     <SchemaEditModal editSchema={schemaEditingObject} show={showEditModal} handleClose={handleCloseEditModal} />
      <SchemaModal show={showModal} handleClose={() => { setShowModal(false) }} />
     </Container>
    )

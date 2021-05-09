@@ -9,6 +9,10 @@ const createOption = (label) => ({
   value: label,
 });
 
+const capitalise = (string) => {
+  return string.substring(0,1).toUpperCase() + string.substring(1);
+}
+
 export const SchemaEditModal = ({ editSchema, show, handleClose }) => {
   // Store the current form values in the state
   const [name, setName] = useState("");
@@ -21,14 +25,30 @@ export const SchemaEditModal = ({ editSchema, show, handleClose }) => {
     if (editSchema !== null && editSchema !== undefined) {
       setName(editSchema.name);
       setDesc(editSchema.description);
-      setFields(editSchema.fields);
+      setFields(editSchema.fields.map((field) => ({
+        name: field.name,
+        type: {value: field.type, label: capitalise(field.type)},
+        allowed: field.allowed.map((allowed) => ({value: allowed, label: capitalise(allowed)}))
+      })));
     }
   }, [editSchema]);
 
+  const closeModal = () => {
+    setName("");
+    setDesc("");
+    setFields([]);
+    setEditing(false);
+    handleClose();
+  }
+
   const handleEditCancel = () => {
-    setName(editSchema ? editSchema.name : "");
-    setDesc(editSchema ? editSchema.description : "");
-    setFields(editSchema ? editSchema.fields : []);
+    setName(editSchema.name);
+    setDesc(editSchema.description);
+    setFields(editSchema.fields.map((field) => ({
+      name: field.name,
+      type: {value: field.type, label: capitalise(field.type)},
+      allowed: field.allowed.map((allowed) => ({value: allowed, label: capitalise(allowed)}))
+    })));
     setEditing(false);
   } 
 
@@ -52,27 +72,26 @@ export const SchemaEditModal = ({ editSchema, show, handleClose }) => {
 
   const handleSubmit = () => {
     const schemaObject = {};
+
+    console.group("Submitting data");
+    console.log(name);
+    console.log(desc);
+    console.log(fields);
+    console.groupEnd();
+
     schemaObject.name = name.toLowerCase();
     schemaObject.description = desc;
-    schemaObject.fields = [
-      {
-        name: "reference",
-        type: "string",
-        allowed: []
-      },
-      ...fields.map((field) => ({
-        name: field.name.toLowerCase(),
-        type: field.type.value,
-        allowed: field.allowed.map((allowed) => allowed.value)
-      }))
-    ];
-    console.log(JSON.stringify(schemaObject));
-    SchemaCollection.insert(schemaObject);
+    schemaObject.fields = fields.map((field) => ({
+      name: field.name.toLowerCase(),
+      type: field.type.value,
+      allowed: field.allowed.map((allowed) => allowed.value)
+    }));
+    SchemaCollection.update({name: editSchema.name}, schemaObject);
     handleClose();
   }
 
   return(
-    <Modal show={show} onHide={handleClose} >
+    <Modal show={show} onHide={closeModal} >
         <Modal.Header closeButton>
           <Modal.Title>{editing ? "Edit schema" : "View schema"}</Modal.Title>
         </Modal.Header>
