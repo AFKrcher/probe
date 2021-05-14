@@ -10,18 +10,28 @@ import BTable from "react-bootstrap/table";
     return SatelliteCollection.find().fetch();
   });
 
-   const data = React.useMemo(() => sat, [sat]);
+  let format = (sats)=>{
+    return sats.map(x=>{
+      return {
+        "noradID" : x.noradID,
+        "name" : x.names.map(n=>n.names).join(", "),
+        "descriptionShort" : x.descriptionShort[0].descriptionShort
+      }
+    });
+  };
+
+  const data = React.useMemo(() => format(sat), [sat]);
  
    const columns = React.useMemo(
      () => [
-       {
-         Header: 'Name',
-         accessor: 'name',
-       },
-       {
+      {
         Header: 'Norad Id',
         accessor: 'noradID',
       },
+      {
+         Header: 'Name(s)',
+         accessor: 'name',
+      }
      ],
      []
    );
