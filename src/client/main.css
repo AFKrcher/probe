@@ -1,12 +1,6 @@
 /* Sticky footer styles
 -------------------------------------------------- */
 
-
-/* NOTE: For some reasoning bot hbootstraps (light and dark are loading).
-So we have hacked it by adding Color to body and background-color: #222 to other eelemnts
-Once we fix the bootstrap theme we should remove these they are marked with !important
-*/
-
 html {
     position: relative;
     min-height: 100%;
@@ -14,8 +8,6 @@ html {
 
 body {
   margin-bottom: 60px; /* Margin bottom by footer height */
-  background-color: #222 !important;
-  color: #FFF !important;
 }
 
 .footer {
@@ -31,27 +23,11 @@ tr{
   cursor: pointer;
 }
 
-.card-link{
-  color:#FFF !important;
-}
-
-.jumbotron{
-  background-color:transparent !important;
-}
-/* Custom page CSS
--------------------------------------------------- */
-/* Not required for template or sticky footer method. */
-
 .container {
   width: auto;
-  max-width: 680px;
   padding: 0 15px;
 }
 
-
-.card{
-  background-color:rgb(58, 58, 58) !important;
-}
 
 .cardShortDescription{
   max-height:120px;
