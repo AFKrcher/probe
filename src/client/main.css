@@ -28,9 +28,12 @@ tr{
   padding: 0 15px;
 }
 
+.card-img-top{
+  height:150px;
+}
 
 .cardShortDescription{
-  max-height:120px;
+  height:120px;
   overflow: hidden; 
 }
 

@@ -1,13 +1,9 @@
 import React from 'react';
-import Container from "react-bootstrap/container";
-import Jumbotron from "react-bootstrap/Jumbotron";
-import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import { SatCard } from "./SatCard.jsx";
 import { useTracker } from 'meteor/react-meteor-data';
 import { SatelliteCollection } from '../api/satellite';
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Col, Row, Button, Jumbotron, Container} from 'react-bootstrap';
 
 export const Home = () => {
     const demoSats = useTracker(() => {
@@ -16,7 +12,7 @@ export const Home = () => {
 
     return(
         <>
-            <Container fluid className="pt-4"> 
+            <Container fluid className="py-5"> 
                 <Jumbotron>
                     <h1>Welcome to SpaceIntel!</h1>
                     <p>
@@ -35,20 +31,21 @@ export const Home = () => {
                 </Jumbotron>
             </Container>
 
-            <Container fluid className="pt-4">
-                <Row>
-                    <h1 className="pl-4">Some example data</h1>
-                    <Col className="d-flex justify-content-center">
-                        {
-                            demoSats.map((s, index) =>{
-                                return ( 
-                                    <SatCard Satellite={s} key={index} />
-                                )
-                            })
-                        }
-                    </Col>
-                </Row>
-            </Container>
+            
+            <Row className="m-2">
+                <h1 className="pl-4">Some example data</h1>
+                {
+                    //Take 8 for a demo
+                    demoSats.slice(0,8).map((s, index) =>{
+                        return ( 
+                            <Col sm="6" md="5" lg="4" xl="3">
+                                <SatCard Satellite={s} key={index} />
+                            </Col>
+                        )
+                    })
+                }
+            </Row>
+
         </>
     );
 };
