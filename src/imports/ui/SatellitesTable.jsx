@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTable } from 'react-table';
+import { useTable, useSortBy} from 'react-table';
 import { useTracker } from 'meteor/react-meteor-data';
 import { SatelliteCollection } from '../api/satellite';
 import Container from "react-bootstrap/container";
@@ -14,13 +14,12 @@ import BTable from "react-bootstrap/table";
     return sats.map(x=>{
       return {
         "noradID" : x.noradID,
-        "name" : x.names.map(n=>n.names).join(", "),
-        "descriptionShort" : x.descriptionShort[0].descriptionShort
+        "names" : x.names.map(n=>n.names).join(", ")
       }
     });
   };
 
-  const data = React.useMemo(() => format(sat), [sat]);
+  const data = React.useMemo( () => format(sat), []); //instead of [] use format(sat) to handle refreshses, but causes other bugs
  
    const columns = React.useMemo(
      () => [
@@ -30,7 +29,7 @@ import BTable from "react-bootstrap/table";
       },
       {
          Header: 'Name(s)',
-         accessor: 'name',
+         accessor: 'names',
       }
      ],
      []
@@ -42,7 +41,7 @@ import BTable from "react-bootstrap/table";
      headerGroups,
      rows,
      prepareRow,
-   } = useTable({ columns, data })
+   } = useTable({ columns, data }, useSortBy )
  
    return (
     <Container className="pt-5">
@@ -51,17 +50,27 @@ import BTable from "react-bootstrap/table";
       </div>
       <p>Each Satellite in the catalogue contains a number of Schemas (defined on the next page). Feel free to browse around!</p>
       <BTable {...getTableProps()} striped bordered hover variant="dark" responsive>
-       <thead>
-         {headerGroups.map(headerGroup => (
-           <tr {...headerGroup.getHeaderGroupProps()}>
-             {headerGroup.headers.map(column => (
-               <th {...column.getHeaderProps()} >
-                 {column.render('Header')}
-               </th>
-             ))}
-           </tr>
-         ))}
-       </thead>
+      <thead>
+          {headerGroups.map(headerGroup => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map(column => (
+                // Add the sorting props to control sorting. For this example
+                // we can add them into the header props
+                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  {column.render('Header')}
+                  {/* Add a sort direction indicator */}
+                  <span>
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? ' 🔽'
+                        : ' 🔼'
+                      : ''}
+                  </span>
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
        <tbody {...getTableBodyProps()}>
          {rows.map(row => {
            prepareRow(row)
