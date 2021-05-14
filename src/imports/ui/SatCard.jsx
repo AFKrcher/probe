@@ -8,7 +8,7 @@ export const SatCard = ({Satellite}) => (
         <Card.Img variant="top" src={(Satellite && Satellite.images && Satellite.images.length>0) ? Satellite.images[0].link : missingSatImage} />
         <Card.Body>
             <Card.Title className="text-center">
-                <div className="cardName">{(Satellite && Satellite.names.length>0) ? Satellite.names[0].names : ""}</div>
+                <div className="cardName">{(Satellite && Satellite.names && Satellite.names.length>0) ? Satellite.names[0].names : ""}</div>
                 <div>{(Satellite && Satellite.noradID) ? Satellite.noradID : "Unknown"}</div>
             </Card.Title>
             <Card.Text className="cardShortDescription">
