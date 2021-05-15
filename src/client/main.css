@@ -34,11 +34,16 @@ tr{
 
 .cardShortDescription{
   height:120px;
-  overflow: hidden; 
+  overflow: overlay;
+
 }
 
 .cardName{
   text-overflow: ellipsis; 
   overflow: hidden; 
   white-space: nowrap;
+}
+
+Flippy{
+  box-shadow:"none";
 }

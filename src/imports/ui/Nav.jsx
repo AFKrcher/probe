@@ -10,10 +10,10 @@ export const Nav = () => (
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <NavB className="mr-auto">
-                    <NavB.Link href="#"><Link to="/satellites">Satellites</Link></NavB.Link>
-                    <NavB.Link href="#"><Link to="/schemas">Schemas</Link></NavB.Link>
+                    <Link to="/satellites">Satellites | </Link>
+                    <Link to="/schemas"> Schemas | </Link>
                     {/* <NavB.Link href="sources">Data Sources</NavB.Link> */}
-                    <NavB.Link href="#"><Link to="/about">About</Link></NavB.Link>
+                    <Link to="/about"> About </Link>
                 </NavB>
             </Navbar.Collapse>
     </Navbar>

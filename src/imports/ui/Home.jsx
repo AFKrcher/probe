@@ -5,6 +5,7 @@ import { useTracker } from 'meteor/react-meteor-data';
 import { SatelliteCollection } from '../api/satellite';
 import { Col, Row, Button, Jumbotron, Container} from 'react-bootstrap';
 
+
 export const Home = () => {
     const demoSats = useTracker(() => {
         return SatelliteCollection.find().fetch(4);
@@ -38,7 +39,7 @@ export const Home = () => {
                     //Take 8 for a demo
                     demoSats.slice(0,8).map((s, index) =>{
                         return ( 
-                            <Col sm="6" md="5" lg="4" xl="3">
+                            <Col sm="6" md="5" lg="4" xl="3" key={index}>
                                 <SatCard Satellite={s} key={index} />
                             </Col>
                         )
