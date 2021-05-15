@@ -64,7 +64,7 @@ export const SchemaModal = ({ show, handleClose }) => {
 
   return(
     <Modal show={show} onHide={handleClose} >
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>Create a new schema</Modal.Title>
         </Modal.Header>
         <Modal.Body>

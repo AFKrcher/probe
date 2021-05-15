@@ -5,14 +5,16 @@ import { useTracker } from 'meteor/react-meteor-data';
 import { SatelliteCollection } from '../api/satellite';
 import { Col, Row, Button, Jumbotron, Container} from 'react-bootstrap';
 
-
 export const Home = () => {
+
+
     const demoSats = useTracker(() => {
         return SatelliteCollection.find().fetch(4);
     });
 
     return(
         <>
+
             <Container fluid className="py-5"> 
                 <Jumbotron>
                     <h1>Welcome to SpaceIntel!</h1>
@@ -46,7 +48,7 @@ export const Home = () => {
                     })
                 }
             </Row>
-
+           
         </>
     );
 };

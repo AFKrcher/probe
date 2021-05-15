@@ -86,7 +86,7 @@ export const SchemaEditModal = ({ editSchema, show, handleClose }) => {
 
   return(
     <Modal show={show} onHide={closeModal} >
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>{editing ? "Edit schema" : "View schema"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>

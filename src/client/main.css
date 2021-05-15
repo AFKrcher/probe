@@ -44,6 +44,6 @@ tr{
   white-space: nowrap;
 }
 
-Flippy{
-  box-shadow:"none";
+.modal-90w { 
+  max-width: 90% !important; 
 }
