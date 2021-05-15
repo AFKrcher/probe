@@ -4,8 +4,6 @@
 
 ## 1 Bugs 
 - Add Schema Button, modal has all fields disabled.
-- Deployed version not loading from DB
-- Home page, split example data across two rows of four
 
 ## 2 Restore schemas:     
 mission type 
@@ -29,7 +27,7 @@ Add client side validation for Add Satellite and Add/Edit Schema (ensure no empt
 The Bootstrap dark theme is being overidden by the normal theme, we have added css (see !important's) to override this temporarily.
 
 ## 7 Design satellite baseball card
-
+- Use react-flip-card, front side has general overview, rear has more detailed info.
 
 ====================================================
 
