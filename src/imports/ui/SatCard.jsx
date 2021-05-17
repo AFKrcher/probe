@@ -1,9 +1,9 @@
 import React from 'react';
-import { Card, Col, Row, Button, Accordion} from 'react-bootstrap';
+import { Card, Col, Row, Button, Accordion, Carousel} from 'react-bootstrap';
 import Flippy, { FrontSide, BackSide } from 'react-flippy';
 import {Modal} from 'react-bootstrap';
 
-let missingSatImage = "https://newsroom.haas.berkeley.edu/wp-content/uploads/2019/05/Satellite_Panos-Patatoukas-research.jpg";
+let missingSatImage = "https://i.stack.imgur.com/y9DpT.jpg";
 
 export const SatCard = ({Satellite}) => {
     const [isOpen, setIsOpen] = React.useState(false);
@@ -27,6 +27,9 @@ export const SatCard = ({Satellite}) => {
     let getValues = (key)=>{
         return (Array.isArray(Satellite[key])) ? Satellite[key] : [];
     }
+    let getImages = ()=>{
+        return (Array.isArray(Satellite["images"])) ? Satellite["images"] : [{link:missingSatImage}];
+    }
     return(
     <>
         <Card border="secondary" style={{ width: "18rem", minWidth:"18rem"}} className="mt-5">
@@ -48,50 +51,70 @@ export const SatCard = ({Satellite}) => {
             </Card.Body>
         </Card>
   
-        <Modal show={isOpen} onHide={hideModal} dialogClassName="modal-90w">
-            <Modal.Header>{satName()}</Modal.Header>
+        <Modal show={isOpen} onHide={hideModal}>
+            <Modal.Header>
+                <h3>{satName()}</h3>
+                <p>{Satellite.noradID}</p>
+            </Modal.Header>
             <Modal.Body>
-            <Accordion>
+                <Carousel>
                 {
-                    getDataKeys().map((key, index) =>{
+                    getImages().map( (image,index)=>{
                         return(
-                            <Card>
-                                <Accordion.Toggle as={Card.Header} eventKey={index}>
-                                {key}
-                                </Accordion.Toggle>
-                                <Accordion.Collapse eventKey={index}>
-                                <Card.Body>
-  
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                            <th scope="col">Reference</th>
-                                            <th scope="col">Data</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {
-                                                getValues(key).map( (value,valIndex)=>{
-                                                    return(
-                                                        <tr eventKey={valIndex}>
-                                                            <td>{value["reference"]}</td>
-                                                            <td>{JSON.stringify(value[key])}</td>
-                                                        </tr>
-                                                    );
-                                                })
-                                            }
-                                        </tbody>
-                                    </table>
-                                    
-                                </Card.Body>
-                                </Accordion.Collapse>
-                            </Card>
-                        );
+                            <Carousel.Item >
+                                <img
+                                    className="d-block w-100"
+                                    src={image.link}
+                                    alt="First slide"
+                                />
+                            </Carousel.Item>
+                        )
                     })
                 }
-            </Accordion>
 
-                
+                </Carousel>
+
+                <Accordion>
+                {
+                    getDataKeys().map((key, index) =>{
+                        if(getValues(key).length>0){
+                            return(
+                                <Card>
+                                    <Accordion.Toggle as={Card.Header} eventKey={index}>
+                                    {key}
+                                    </Accordion.Toggle>
+                                    <Accordion.Collapse eventKey={index}>
+                                    <Card.Body>
+                                        <table className="table">
+                                            <thead>
+                                                <tr>
+                                                <th scope="col"></th>
+                                                <th scope="col">Reference</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    getValues(key).map( (value,valIndex)=>{
+                                                        return(
+                                                            <tr eventKey={valIndex}>
+                                                                <td>{JSON.stringify(value[key])}</td>
+                                                                <td>{value["reference"]}</td>
+                                                            </tr>
+                                                        );
+                                                    })
+                                                }
+                                            </tbody>
+                                        </table>
+                                        
+                                    </Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                            );
+                        }
+                        
+                    })
+                }
+                </Accordion>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={hideModal}>Close</Button>
