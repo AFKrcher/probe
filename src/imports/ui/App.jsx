@@ -7,32 +7,38 @@ import { Home } from "./Home.jsx";
 import { About } from "./About.jsx";
 import { DataSourcesTable } from "./DataSourcesTable";
 import { Footer } from "./Footer.jsx";
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import '../../bootstrap_theme/bootstrap.min.css';
+import { darkTheme } from './Themes.jsx';
+
+
 
 export const App = () => {
   return (
-    <Router>
-      <div>
-        <Nav/>
-        <Switch>
-          <Route path="/satellites">
-            <SatellitesTable />
-          </Route>
-          <Route path="/schemas">
-            <SchemasTable />
-          </Route>
-          <Route path="/about">
-            <About />
-          </Route>
-          {/* <Route path="/sources">
-            <DataSourcesTable />
-          </Route> */}
-          <Route path="/">
-            <Home/>
-          </Route>
-        </Switch>
-        <Footer/>
-      </div>
-    </Router>
+    <ThemeProvider theme={darkTheme}>
+      <Router>
+        <div>
+          <Nav/>
+          <Switch>
+            <Route path="/satellites">
+              <SatellitesTable />
+            </Route>
+            <Route path="/schemas">
+              <SchemasTable />
+            </Route>
+            <Route path="/about">
+              <About />
+            </Route>
+            {/* <Route path="/sources">
+              <DataSourcesTable />
+            </Route> */}
+            <Route path="/">
+              <Home/>
+            </Route>
+          </Switch>
+          <Footer/>
+        </div>
+      </Router>
+    </ThemeProvider>
   )
 };
