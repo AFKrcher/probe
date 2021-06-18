@@ -1,125 +1,72 @@
 import React from 'react';
-import { Card, Col, Row, Button, Accordion, Carousel} from 'react-bootstrap';
-import Flippy, { FrontSide, BackSide } from 'react-flippy';
-import {Modal} from 'react-bootstrap';
+import { makeStyles } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Clamp from 'react-multiline-clamp'
 
-let missingSatImage = "https://i.stack.imgur.com/y9DpT.jpg";
-
-export const SatCard = ({Satellite}) => {
-    const [isOpen, setIsOpen] = React.useState(false);
-
-    const showModal = () => {
-    setIsOpen(true);
-    };
-
-    const hideModal = () => {
-    setIsOpen(false);
-    };
-
-    let satName = ()=>{
-        return ((Satellite && Satellite.names && Satellite.names.length>0) ? Satellite.names[0].names : "");
-    };
-
-    let getDataKeys = ()=>{
-        return Object.keys(Satellite);
+const useStyles = makeStyles((theme) => ({
+    satCard: {
+        width: '100%',
+    },
+    image: {
+        height: '150px',
+    },
+    description: {
+        height: '130px',
     }
+}));
 
-    let getValues = (key)=>{
-        return (Array.isArray(Satellite[key])) ? Satellite[key] : [];
+export const SatCard = ({satellite, index}) => {
+    const classes = useStyles();
+
+    const getSatName = () => {
+        return ((satellite && satellite.names && satellite.names.length > 0) ? satellite.names[0].names : "Name not found...");
+    };
+    const getSatImage = () => {
+        return ((satellite && satellite.images && satellite.images.length > 0) ? satellite.images[0].link : "/sat-placeholder.jpg");
     }
-    let getImages = ()=>{
-        return (Array.isArray(Satellite["images"])) ? Satellite["images"] : [{link:missingSatImage}];
+    const getSatID = () => {
+        return ((satellite && satellite.noradID) ? satellite.noradID : "NORAD ID not found...");
+    }
+    const getSatDesc = () => {
+        return ((satellite && satellite.descriptionShort && satellite.descriptionShort.length > 0) ? satellite.descriptionShort[0].descriptionShort : "")
     }
     return(
-    <>
-        <Card border="secondary" style={{ width: "18rem", minWidth:"18rem"}} className="mt-5">
-            <Card.Img variant="top" src={(Satellite && Satellite.images && Satellite.images.length>0) ? Satellite.images[0].link : missingSatImage} />
-            <Card.Body>
-                <Card.Title className="text-center">
-                    <div className="cardName">{satName()}</div>
-                    <div>{(Satellite && Satellite.noradID) ? Satellite.noradID : "Unknown"}</div>
-                </Card.Title>
-                <Card.Text className="cardShortDescription">
-                    {(Satellite && Satellite.descriptionShort && Satellite.descriptionShort.length>0) ? Satellite.descriptionShort[0].descriptionShort : "No description found.."}
-                </Card.Text>
-            </Card.Body>
-            <Card.Body className="text-center">
-                <Row>
-                    <Col><Card.Link href="#" onClick={showModal}>View Card</Card.Link></Col>
-                    <Col><Card.Link href="#">Visualize</Card.Link></Col>
-                </Row>
-            </Card.Body>
+        <Card className={classes.satCard}>
+            <CardMedia 
+                className={classes.image}
+                image={getSatImage()}
+                title="Satellite image"
+            />
+            <CardContent>
+                <Typography variant="h5" component="h2">
+                    {getSatName()}
+                </Typography>
+                <Typography gutterBottom variant="button" component="p">
+                    {getSatID()}
+                </Typography>
+                <Typography 
+                    className={classes.description}
+                    variant="body2" 
+                    color="textSecondary" 
+                    component="p"
+                >
+                    <Clamp lines={7}>{getSatDesc()}</Clamp>
+                </Typography>
+            </CardContent>
+            <CardActions>
+                <Button size="small">
+                    Visualise
+                </Button>
+                <Button size="small">
+                    View more
+                </Button>
+            </CardActions>
         </Card>
-  
-        <Modal show={isOpen} onHide={hideModal}>
-            <Modal.Header>
-                <h3>{satName()}</h3>
-                <p>{Satellite.noradID}</p>
-            </Modal.Header>
-            <Modal.Body>
-                <Carousel>
-                {
-                    getImages().map( (image,index)=>{
-                        return(
-                            <Carousel.Item >
-                                <img
-                                    className="d-block w-100"
-                                    src={image.link}
-                                    alt="First slide"
-                                />
-                            </Carousel.Item>
-                        )
-                    })
-                }
-
-                </Carousel>
-
-                <Accordion>
-                {
-                    getDataKeys().map((key, index) =>{
-                        if(getValues(key).length>0){
-                            return(
-                                <Card>
-                                    <Accordion.Toggle as={Card.Header} eventKey={index}>
-                                    {key}
-                                    </Accordion.Toggle>
-                                    <Accordion.Collapse eventKey={index}>
-                                    <Card.Body>
-                                        <table className="table">
-                                            <thead>
-                                                <tr>
-                                                <th scope="col"></th>
-                                                <th scope="col">Reference</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {
-                                                    getValues(key).map( (value,valIndex)=>{
-                                                        return(
-                                                            <tr eventKey={valIndex}>
-                                                                <td>{JSON.stringify(value[key])}</td>
-                                                                <td>{value["reference"]}</td>
-                                                            </tr>
-                                                        );
-                                                    })
-                                                }
-                                            </tbody>
-                                        </table>
-                                        
-                                    </Card.Body>
-                                    </Accordion.Collapse>
-                                </Card>
-                            );
-                        }
-                        
-                    })
-                }
-                </Accordion>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={hideModal}>Close</Button>
-            </Modal.Footer>
-        </Modal>
-    </>
     );
 };

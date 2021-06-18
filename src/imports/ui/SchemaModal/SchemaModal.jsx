@@ -1,38 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, CircularProgress } from '@material-ui/core';
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
 import { SchemaForm } from './SchemaForm';
 import { SchemaCollection } from '../../api/schema';
+import { makeStyles } from '@material-ui/core';
 
-const createOption = (label) => ({
-  label,
-  value: label,
-});
+const useStyles = makeStyles((theme) => ({
+  modal: {
+    width: '500px',
+  }
+}))
 
+const schemaValidationSchema = Yup.object().shape({});
 export const SchemaModal = ({ show, handleClose }) => {
-  // Store the current form values in the state
-  const [name, setName] = useState("");
-  const [desc, setDesc] = useState("");
-  const [fields, setFields] = useState([]);
-
-  useEffect(() => {
-    if (show === false) {
-      setName("");
-      setDesc("");
-      setFields([]);
-    }
-  }, [show]);
+  const classes = useStyles();
+  
+  const initialValues = {
+    name: "",
+    description: "",
+    fields: []
+  };
 
   const createNewField = () => {
     setFields([...fields, {name: "", type: "", allowed: []}]); 
-  }
-
-  const handleNameChange = (event) => {
-    setName(event.currentTarget.value);
-  }
-
-  const handleDescChange = (event) => {
-    setDesc(event.currentTarget.value);
   }
 
   const handleFieldChange = (newField, index) => {
@@ -43,8 +34,6 @@ export const SchemaModal = ({ show, handleClose }) => {
 
   const handleSubmit = () => {
     const schemaObject = {};
-    schemaObject.name = name;
-    schemaObject.description = desc;
     schemaObject.fields = [
       {
         name: "reference",
@@ -63,26 +52,75 @@ export const SchemaModal = ({ show, handleClose }) => {
   }
 
   return(
-    <Modal show={show} onHide={handleClose} >
-        <Modal.Header>
-          <Modal.Title>Create a new schema</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <SchemaForm
-            name={name} 
-            desc={desc}
-            fields={fields}
-            createNewField={createNewField}
-            handleNameChange={handleNameChange}
-            handleDescChange={handleDescChange}
-            handleFieldChange={handleFieldChange}
-            editing={false}
-          />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>Close</Button>
-          <Button variant="success" onClick={handleSubmit}>Save Schema</Button>
-        </Modal.Footer>
-    </Modal>
+    <Dialog 
+      open={show}
+      scroll="paper"
+      onClose={handleClose}
+    >
+      <div className={classes.modal} >
+        <DialogTitle>Create a new schema</DialogTitle>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={schemaValidationSchema}
+          onSubmit={(values, { setSubmitting }) => {
+            console.log(values);
+            setSubmitting(false);
+          }}
+        >
+          {({ isSubmitting, dirty, values, setValues, setFieldValue }) => (
+            <Form noValidate>
+              <DialogContent>
+                  <SchemaForm 
+                    fields={[{name: "", type: "", allowed: []}]}
+                    formValues={values}
+                    setValues={setValues}
+                    setFieldValue={setFieldValue}
+                    createNewField={createNewField}
+                    handleFieldChange={handleFieldChange}
+                    editing={true}
+                  />
+              </DialogContent>
+              <DialogActions>
+                <Button 
+                  variant="outlined" 
+                  onClick={handleClose}
+                >
+                  Close
+                </Button>
+                <Button 
+                  type="submit" 
+                  variant="contained" 
+                  color="primary"
+                >
+                  {isSubmitting ? <CircularProgress size={24} /> : "Submit"}
+                </Button>
+              </DialogActions>
+            </Form>
+          )}
+        </Formik>
+      </div>
+    </Dialog>
+
+    // <Modal show={show} onHide={handleClose} >
+    //     <Modal.Header>
+    //       <Modal.Title>Create a new schema</Modal.Title>
+    //     </Modal.Header>
+    //     <Modal.Body>
+    //       <SchemaForm
+    //         name={name} 
+    //         desc={desc}
+    //         fields={fields}
+    //         createNewField={createNewField}
+    //         handleNameChange={handleNameChange}
+    //         handleDescChange={handleDescChange}
+    //         handleFieldChange={handleFieldChange}
+    //         editing={false}
+    //       />
+    //     </Modal.Body>
+    //     <Modal.Footer>
+    //       <Button variant="secondary" onClick={handleClose}>Close</Button>
+    //       <Button variant="success" onClick={handleSubmit}>Save Schema</Button>
+    //     </Modal.Footer>
+    // </Modal>
   )
 };

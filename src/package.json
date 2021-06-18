@@ -14,15 +14,20 @@
     "@material-ui/lab": "^4.0.0-alpha.58",
     "bootstrap": "^5.0.0",
     "bootswatch": "^5.0.0",
+    "formik": "^2.2.9",
+    "formik-material-ui": "^3.0.1",
+    "formik-material-ui-lab": "0.0.8",
     "meteor-node-stubs": "^1.0.1",
     "react": "^16.14.0",
     "react-bootstrap": "^1.5.2",
     "react-dom": "^16.14.0",
     "react-flippy": "^1.1.0",
+    "react-multiline-clamp": "^2.0.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-select": "^4.3.0",
-    "react-table": "^7.7.0"
+    "react-table": "^7.7.0",
+    "yup": "^0.32.9"
   },
   "meteor": {
     "mainModule": {

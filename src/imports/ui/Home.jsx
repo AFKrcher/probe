@@ -1,54 +1,64 @@
 import React from 'react';
-import { Link } from "react-router-dom";
 import { SatCard } from "./SatCard.jsx";
 import { useTracker } from 'meteor/react-meteor-data';
 import { SatelliteCollection } from '../api/satellite';
-import { Col, Row, Button, Jumbotron, Container} from 'react-bootstrap';
+import { Container, TextField,Grid, Typography, makeStyles } from '@material-ui/core';
+import Skeleton from '@material-ui/lab/Skeleton'
+
+const useStyles = makeStyles((theme) => ({
+    jumbo: {
+        paddingTop: '60px',
+    },
+    showcase: {
+        marginTop: '60px',
+    }
+}))
 
 export const Home = () => {
+    const classes = useStyles();
 
-
-    const demoSats = useTracker(() => {
-        return SatelliteCollection.find().fetch(4);
+    const [demoSats, isLoading] = useTracker(() => {
+        const sub = Meteor.subscribe('satellites');
+        const sats = SatelliteCollection.find({}, {limit: 3}).fetch();
+        return [sats, !sub.ready()]
     });
 
     return(
-        <>
-
-            <Container fluid className="py-5"> 
-                <Jumbotron>
-                    <h1>Welcome to SpaceIntel!</h1>
-                    <p>
-                        SpaceIntel is seeking to become the world's most complete and easy to use resource for spacecraft data and information.
-                    </p>
-                    <p>
-                        100% Open Source, 100% Machine Readable.
-                    </p>
-                    <p>
-                    <Link to="/satellites">
-                        <Button variant="primary">Check it out</Button>
-                    </Link>
-
-
-                    </p>
-                </Jumbotron>
+        <React.Fragment>
+            <Container className={classes.jumbo} maxWidth="md">
+                <Typography variant="h2">Welcome to <strong>SpaceIntel!</strong></Typography>
+                <Typography variant="body1">
+                    SpaceIntel is seeking to become the world's most complete and easy to use resource for spacecraft data and information.
+                </Typography>
+                <Typography variant="subtitle1">
+                    100% Open Source, 100% Machine Readable. 
+                    </Typography>
             </Container>
-
-            
-            <Row className="m-2">
-                <h1 className="pl-4">Some example data</h1>
-                {
-                    //Take 8 for a demo
-                    demoSats.slice(0,8).map((s, index) =>{
-                        return ( 
-                            <Col sm="6" md="5" lg="4" xl="3" key={index}>
-                                <SatCard Satellite={s} key={index} />
-                            </Col>
-                        )
-                    })
-                }
-            </Row>
-           
-        </>
+            <Container className={classes.showcase} maxWidth="md">
+                <Typography variant="h4" gutterBottom>Some example data</Typography>
+                <Grid container justify="center" spacing={2}>
+                    { !isLoading &&
+                        demoSats.map((sat, index) => (
+                            <Grid item xs key={index}>
+                                <SatCard satellite={sat} key={index}/>
+                            </Grid>
+                        ))
+                    }
+                    { isLoading && 
+                        <React.Fragment>
+                            <Grid item xs>
+                                <Skeleton variant="rect" width={280} height={415} />
+                            </Grid>
+                            <Grid item xs>
+                                <Skeleton variant="rect" width={280} height={415} />
+                            </Grid>
+                            <Grid item xs>
+                                <Skeleton variant="rect" width={280} height={415} />
+                            </Grid>
+                        </React.Fragment>
+                    }
+                </Grid>
+            </Container>
+        </React.Fragment>
     );
 };

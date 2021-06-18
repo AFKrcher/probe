@@ -8,14 +8,15 @@ import { About } from "./About.jsx";
 import { DataSourcesTable } from "./DataSourcesTable";
 import { Footer } from "./Footer.jsx";
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
-import '../../bootstrap_theme/bootstrap.min.css';
 import { darkTheme } from './Themes.jsx';
+import { CssBaseline } from '@material-ui/core';
 
 
 
 export const App = () => {
   return (
     <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
       <Router>
         <div>
           <Nav/>

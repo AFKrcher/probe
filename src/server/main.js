@@ -24,6 +24,15 @@ Meteor.startup(() => {
     
   }
 
+  // Publish satellites collection
+  Meteor.publish('satellites', () => {
+    return SatelliteCollection.find({});
+  })
+  // Publish schemas collection
+  Meteor.publish('schemas', () => {
+    return SchemaCollection.find({});
+  })
+
   // write example sat
   if (SatelliteCollection.find().count() === 0 ){
 

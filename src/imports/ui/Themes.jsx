@@ -3,9 +3,12 @@ import { createMuiTheme } from '@material-ui/core/styles';
 export const darkTheme = createMuiTheme({
   palette: {
     type: 'dark',
+    primary: {
+      main: '#64B5F6',
+    },
     navigation: {
-      main: '#1f1f1f',
-      hover: '#404040'
+      main: '#424242',
+      hover: '#515151',
     }
   },
 });

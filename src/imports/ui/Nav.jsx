@@ -1,7 +1,5 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import Navbar from "react-bootstrap/navbar";
-import NavB from "react-bootstrap/nav";
 import { AppBar, Toolbar, Button, Typography, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
