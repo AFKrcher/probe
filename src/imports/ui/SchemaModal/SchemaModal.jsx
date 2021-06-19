@@ -8,29 +8,21 @@ import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
-    width: '500px',
+    width: '600px',
+  },
+  title: {
+    paddingBottom: '0px',
   }
 }))
 
 const schemaValidationSchema = Yup.object().shape({});
-export const SchemaModal = ({ show, handleClose }) => {
+export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
   const classes = useStyles();
-  
-  const initialValues = {
-    name: "",
-    description: "",
-    fields: []
-  };
 
-  const createNewField = () => {
-    setFields([...fields, {name: "", type: "", allowed: []}]); 
-  }
-
-  const handleFieldChange = (newField, index) => {
-    const updated = fields.slice();
-    updated[index] = newField;
-    setFields(updated);
-  }
+  const [editing, setEditing] = useState((newSchema || false));
+  useEffect(() => {
+    setEditing(newSchema || false)
+  }, [newSchema, show])
 
   const handleSubmit = () => {
     const schemaObject = {};
@@ -57,10 +49,10 @@ export const SchemaModal = ({ show, handleClose }) => {
       scroll="paper"
       onClose={handleClose}
     >
-      <div className={classes.modal} >
-        <DialogTitle>Create a new schema</DialogTitle>
+      <div className={classes.modal}>
+        <DialogTitle className={classes.title}><strong>Create a new schema</strong></DialogTitle>
         <Formik
-          initialValues={initialValues}
+          initialValues={initValues}
           validationSchema={schemaValidationSchema}
           onSubmit={(values, { setSubmitting }) => {
             console.log(values);
@@ -71,16 +63,24 @@ export const SchemaModal = ({ show, handleClose }) => {
             <Form noValidate>
               <DialogContent>
                   <SchemaForm 
-                    fields={[{name: "", type: "", allowed: []}]}
                     formValues={values}
                     setValues={setValues}
                     setFieldValue={setFieldValue}
-                    createNewField={createNewField}
-                    handleFieldChange={handleFieldChange}
-                    editing={true}
+                    editing={editing}
                   />
               </DialogContent>
               <DialogActions>
+                { !newSchema && (
+                  <Button 
+                    type="submit" 
+                    variant="contained" 
+                    color="secondary"
+                    onClick={() => setEditing(!editing)}
+                  >
+                    {editing ? "Cancel editing" : "Edit schema"}
+                  </Button>
+                )
+                }
                 <Button 
                   variant="outlined" 
                   onClick={handleClose}

@@ -16,15 +16,34 @@ const useStyles = makeStyles((theme) => ({
   tableNameCol: {
     width: '25%',
   },
+  tableRow: {
+    '&:hover': {
+      backgroundColor: theme.palette.action.hover,
+    }
+  },
   spinner: {
     color: theme.palette.text.primary,
   }
 }));
 
+const newSchemaValues = {
+  name: "", 
+  description: "", 
+  fields: [
+    { 
+      name: "reference",
+      type: "string",
+      allowed: []
+    }
+  ]};
+
 export const SchemasTable = () => {
   const classes = useStyles();
 
   const [showModal, setShowModal] = useState(false);
+  const [newSchema, setNewSchema] = useState(true);
+  const [initialSchemaValues, setInitialSchemaValues] = useState(newSchemaValues)
+
   const [showEditModal, setShowEditModal] = useState(false);
   const [schemaEditingObject, setSchemaEditingObject] = useState(null);
 
@@ -34,9 +53,16 @@ export const SchemasTable = () => {
     return [schemas, !sub.ready()]
   });
 
+  const handleAddNewSchema = () => {
+    setNewSchema(true);
+    setShowModal(true);
+    setInitialSchemaValues(newSchemaValues);
+  }
+
   const handleRowClick = (schemaObject) => {
-    setSchemaEditingObject(schemaObject);
-    setShowEditModal(true);
+    setNewSchema(false);
+    setShowModal(true);
+    setInitialSchemaValues(schemaObject);
   };
 
   const handleCloseEditModal = () => {
@@ -55,7 +81,7 @@ export const SchemasTable = () => {
             <Button 
               variant="contained" 
               color="primary"
-              onClick={() => setShowModal(true)}
+              onClick={handleAddNewSchema}
             >+ Add New Schema</Button>
           </Grid>
         </Grid>
@@ -84,7 +110,7 @@ export const SchemasTable = () => {
               </TableRow>
               }
               {!isLoading && schemas.map((schema, i) => (
-                <TableRow key={`schema-row-${i}`}>
+                <TableRow key={`schema-row-${i}`} className={classes.tableRow} onClick={() => handleRowClick(schema)}>
                   <TableCell key={`schema-name-${i}`} className={classes.tableNameCol}>{schema.name}</TableCell>
                   <TableCell key={`schema-desc-${i}`}>{schema.description}</TableCell>
                 </TableRow>
@@ -93,7 +119,12 @@ export const SchemasTable = () => {
           </Table>
         </TableContainer>
       </Container>
-      <SchemaModal show={showModal} handleClose={() => setShowModal(false)} />
+      <SchemaModal 
+        show={showModal} 
+        newSchema={newSchema} 
+        initValues={initialSchemaValues} 
+        handleClose={() => setShowModal(false)} 
+      />
     </React.Fragment>
 
     // <BContainer className="py-5">

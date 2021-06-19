@@ -1,28 +1,30 @@
 import React, { useState } from 'react';
 import { SchemaFormField } from './SchemaFormField';
-import { Divider, Grid, Button, makeStyles } from '@material-ui/core';
+import { Divider, Grid, Button, IconButton, makeStyles } from '@material-ui/core';
 import { Field, Form, Formik } from 'formik';
 import { TextField } from 'formik-material-ui';
-import * as Yup from 'yup';
+import DeleteIcon from '@material-ui/icons/Delete'
 import { Alert } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
-  form: {
-
-  },
   alert: {
     width: '100%',
   }
 }))
 
-export const SchemaForm = ({fields, formValues, setValues, setFieldValue, handleFieldChange, editing}) => {
+export const SchemaForm = ({formValues, setValues, setFieldValue, editing}) => {
   const classes = useStyles();
   const [error, setError] = useState('');
 
   const onAddField = () => {
-    console.log(formValues);
     const fields = [...formValues.fields, {name: "", type: "", allowed: []}];
-    setValues({...formValues, fields})
+    setValues({...formValues, fields});
+  }
+
+  const handleFieldDelete = (index) => {
+    const fields = [...formValues.fields]
+    fields.splice(index, 1);
+    setValues({...formValues, fields});
   }
 
   return (
@@ -43,6 +45,7 @@ export const SchemaForm = ({fields, formValues, setValues, setFieldValue, handle
               required
               fullWidth
               variant="outlined"
+              disabled={!editing}
               component={TextField}
             />
           </Grid>
@@ -57,54 +60,47 @@ export const SchemaForm = ({fields, formValues, setValues, setFieldValue, handle
               multiline
               color="primary"
               rows={4}
+              disabled={!editing}
               component={TextField}
             />
           </Grid>
         </Grid>
         {
-          formValues.fields.map((field, i) => (
-            <React.Fragment key={`fragment-${i}`}>
-              <Grid key={`divider-${i}`} item xs={12}><Divider /></Grid>
-              <Grid key={`grid-${i}`} item container>
-                <SchemaFormField 
-                  key={`form-field-${i}`} 
-                  index={i} 
-                  editing={editing} 
-                  field={field} 
-                  setFieldValue={setFieldValue}
-                  handleFieldChange={handleFieldChange} />
-              </Grid>
-            </React.Fragment>
-          ))
+          formValues.fields.map((field, i) => {
+            if (field.name === "reference") return;
+            return (
+              <React.Fragment key={`fragment-${i}`}>
+                <Grid key={`divider-${i}`} item xs={12}><Divider /></Grid>
+                <Grid key={`grid-${i}`} item container xs={11} alignItems="center">
+                  <SchemaFormField 
+                    key={`form-field-${i}`} 
+                    index={i} 
+                    field={field} 
+                    setFieldValue={setFieldValue}
+                    editing={editing} 
+                  />
+                </Grid>
+                <Grid container item xs={1} alignContent="center">
+                    <IconButton aria-label="delete field" onClick={() => handleFieldDelete(i)}>
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  </Grid>
+              </React.Fragment>
+            )
+          })
         }
         <Grid item xs={12}>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={onAddField}
-          >
-            Add field
-          </Button>
+          { editing && (
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={onAddField}
+              >
+                Add field
+              </Button>
+            )
+          }
         </Grid>
       </Grid>
-
-    // <Form>
-    //   <Form.Row>
-    //     <Col>
-    //       <Form.Control disabled={!editing} onChange={handleNameChange} value={name} placeholder="Schema name" />
-    //     </Col>
-    //   </Form.Row>
-    //   <Form.Row className="mt-3">
-    //     <Col>
-    //       <Form.Control disabled={!editing} as="textarea" onChange={handleDescChange} value={desc} placeholder="Schema description" />
-    //     </Col>
-    //   </Form.Row>
-    //   {fields.map((field, index) => {
-    //     return (
-    //       <SchemaFormField editing={editing} key={`field-${index}`} className="mt-3" index={index} field={field} handleFieldChange={handleFieldChange}/>
-    //     )
-    //   })}
-    //   {editing && <Button className="mt-3" variant="outline-dark" onClick={createNewField}>Add new field</Button>}
-    // </Form>
   )
 };

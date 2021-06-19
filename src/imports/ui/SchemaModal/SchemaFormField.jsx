@@ -1,61 +1,34 @@
-import React, { useState } from 'react';
-// import Form from 'react-bootstrap/Form'
-// import Col from 'react-bootstrap/Col'
-// import Select from 'react-select';
+import React from 'react';
 import { MultiSelectTextInput } from './MultiSelectTextInput';
 import { FormControl, Grid, InputLabel, makeStyles, MenuItem, Select, TextField } from '@material-ui/core';
 import { Field } from 'formik';
 
-const useStyles = makeStyles((theme) => ({
-  formfield: {
-
-  }
-}));
-
-const typeOptions = [ "Number", "String"];
-
-const createOption = (label) => ({
-  label,
-  value: label,
-});
-
-export const SchemaFormField = ( { className, index, field, setFieldValue, handleFieldChange, editing} ) => {
-  const classes = useStyles();
+export const SchemaFormField = ( {index, field, setFieldValue, editing} ) => {
 
   const onNameChange = (event) => {
-    setFieldValue(event.target.name, event.target.value.toLowerCase());
+    setFieldValue(event.target.name, event.target.value);
   }
 
   const onTypeChange = (event) => {
     setFieldValue(event.target.name, event.target.value);
   }
-
-  const handleKeyDown = (event) => {
-    if (!allowedInputText) return;
-    switch (event.key) {
-      case "Enter":
-      case "Tab":
-        newField = field;
-        newField.allowedValues = [...field.allowedValues, createOption(allowedInputText)];
-        setAllowedInputText("");
-        event.preventDefault();
-    }
-  }
   
   return (
-      <Grid container>
+      <Grid container item>
         <Grid container item spacing={2}>
           <Grid item xs>
             <Field
               inputProps={{
                 name: `fields.${index}.name`
               }}
+              value={field.name}
               onChange={onNameChange}
               label="Field name"
               margin="dense"
               required
               fullWidth
               variant="outlined"
+              disabled={!editing}
               component={TextField}
             />
           </Grid>
@@ -86,7 +59,6 @@ export const SchemaFormField = ( { className, index, field, setFieldValue, handl
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          {console.log(field.allowed)}
           <MultiSelectTextInput
             index={index}
             allowedValues={field.allowed} 
@@ -95,32 +67,5 @@ export const SchemaFormField = ( { className, index, field, setFieldValue, handl
           />
         </Grid>
       </Grid>
-
-      // <Form.Row>
-      //   <Col>
-      //     <Form.Control disabled={!editing} onChange={handleNameChange} value={field.name} placeholder="Field name" />
-      //   </Col>
-      //   <Col>
-      //     <Select 
-      //       options={typeOptions}
-      //       value={field.type}
-      //       onChange={handleTypeChange}
-      //       placeholder="Data type"
-      //       isDisabled={!editing}
-      //     />
-      //   </Col>
-      // </Form.Row>
-      // <Form.Row className="pt-2">
-      //   <Col>
-      //     <MultiSelectTextInput 
-      //       inputText={allowedInputText} 
-      //       value={field.allowedValues}
-      //       handleChange={handleAllowedChange}
-      //       handleInputChange={handleInputChange}
-      //       handleKeyDown={handleKeyDown}
-      //       disabled={!editing}
-      //     />
-      //   </Col>
-      // </Form.Row>
   )
 };

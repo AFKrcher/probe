@@ -8,18 +8,24 @@ import { About } from "./About.jsx";
 import { DataSourcesTable } from "./DataSourcesTable";
 import { Footer } from "./Footer.jsx";
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
-import { darkTheme } from './Themes.jsx';
+import { themes } from './Themes.jsx';
 import { CssBaseline } from '@material-ui/core';
 
 
 
 export const App = () => {
+  const [theme, setTheme] = useState(themes.dark);
+
+  const toggleTheme = () => {
+    setTheme(theme => theme === themes.dark ? themes.light : themes.dark);
+  }
+
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
         <div>
-          <Nav/>
+          <Nav theme={theme} toggleTheme={toggleTheme} />
           <Switch>
             <Route path="/satellites">
               <SatellitesTable />
