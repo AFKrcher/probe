@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, CircularProgress } from '@material-ui/core';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { SchemaForm } from './SchemaForm';
+import { SchemaForm } from './SatelliteForm';
 import { SchemaCollection } from '../../api/schema';
 import { makeStyles } from '@material-ui/core';
 
@@ -15,19 +15,19 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const schemaValidationSchema = Yup.object().shape({});
-export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
+const satValidationSchema = Yup.object().shape({});
+export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
   const classes = useStyles();
 
-  const [editing, setEditing] = useState((newSchema || false));
+  const [editing, setEditing] = useState((newSat || false));
   useEffect(() => {
-    setEditing(newSchema || false)
+    setEditing(newSat || false)
     console.log(initValues);
-  }, [newSchema, show])
+  }, [newSat, show])
 
   const handleSubmit = (values, { setSubmitting }) => {
     console.log(values);
-    if (newSchema) {
+    if (newSat) {
       SchemaCollection.insert(values);
     } else {
       SchemaCollection.update({_id: values._id}, values);
@@ -53,10 +53,10 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
       onClose={handleClose}
     >
       <div className={classes.modal}>
-        <DialogTitle className={classes.title}><strong>Create a new schema</strong></DialogTitle>
+        <DialogTitle className={classes.title}><strong>Create a new satellite</strong></DialogTitle>
         <Formik
           initialValues={initValues}
-          validationSchema={schemaValidationSchema}
+          validationSchema={satValidationSchema}
           onSubmit={handleSubmit}
         >
           {({ isSubmitting, dirty, values, setValues, setFieldValue }) => (
@@ -70,7 +70,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
                   />
               </DialogContent>
               <DialogActions>
-                { !newSchema && (
+                { !newSat && (
                     <>
                       <Button 
                         variant="outlined" 

@@ -61,7 +61,7 @@ export const SchemaFormField = ( {index, field, setFieldValue, editing} ) => {
         <Grid item xs={12}>
           <MultiSelectTextInput
             index={index}
-            allowedValues={field.allowed} 
+            allowedValues={field.allowedValues} 
             disabled={!editing}
             setFieldValue={setFieldValue}
           />

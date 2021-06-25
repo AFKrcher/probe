@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SchemaFormField } from './SchemaFormField';
 import { Divider, Grid, Button, IconButton, makeStyles } from '@material-ui/core';
-import { Field, Form, Formik } from 'formik';
+import { Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import DeleteIcon from '@material-ui/icons/Delete'
 import { Alert } from '@material-ui/lab';
@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export const SchemaForm = ({formValues, setValues, setFieldValue, editing}) => {
+export const SatelliteForm = ({formValues, setValues, setFieldValue, editing}) => {
   const classes = useStyles();
   const [error, setError] = useState('');
 

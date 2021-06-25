@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { useTable } from "react-table";
 import { useTracker } from "meteor/react-meteor-data";
 import { SchemaCollection } from "../api/schema";
 import { SchemaModal } from "./SchemaModal/SchemaModal.jsx";
-import { SchemaEditModal } from "./SchemaEditModal/SchemaEditModal";
 import { Container, Button, Grid, makeStyles, Typography, Table, TableContainer, Paper, TableHead, TableBody, TableRow, TableCell, CircularProgress } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -33,9 +31,10 @@ const newSchemaValues = {
     { 
       name: "reference",
       type: "string",
-      allowed: []
+      allowedValues: []
     }
-  ]};
+  ]
+};
 
 export const SchemasTable = () => {
   const classes = useStyles();
@@ -43,9 +42,6 @@ export const SchemasTable = () => {
   const [showModal, setShowModal] = useState(false);
   const [newSchema, setNewSchema] = useState(true);
   const [initialSchemaValues, setInitialSchemaValues] = useState(newSchemaValues)
-
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [schemaEditingObject, setSchemaEditingObject] = useState(null);
 
   const [schemas, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe('schemas');
@@ -63,11 +59,6 @@ export const SchemasTable = () => {
     setNewSchema(false);
     setShowModal(true);
     setInitialSchemaValues(schemaObject);
-  };
-
-  const handleCloseEditModal = () => {
-    setShowEditModal(false);
-    setSchemaEditingObject(null);
   };
 
   return (
@@ -126,71 +117,5 @@ export const SchemasTable = () => {
         handleClose={() => setShowModal(false)} 
       />
     </React.Fragment>
-
-    // <BContainer className="py-5">
-    //   {console.log(schemas)}
-    //   <div className="d-flex justify-content-between">
-    //     <h2>Schemas</h2>
-    //     <Button variant="dark mb-2" onClick={() => setShowModal(true)}>
-    //       + Add New Schema
-    //     </Button>
-    //   </div>
-    //   <p>Each peice of data you want to store has its own Schema.</p>
-    //   <p>
-    //     Each Schema has a <span className="font-weight-bold">reference</span>{" "}
-    //     (where the data was found), a{" "}
-    //     <span className="font-weight-bold">description</span> (describing what
-    //     the data type is) and a number of{" "}
-    //     <span className="font-weight-bold">data fields</span> (that contain the
-    //     actual information).
-    //   </p>
-    //   <BTable
-    //     {...getTableProps()}
-    //     striped
-    //     bordered
-    //     hover
-    //     variant="dark"
-    //     responsive
-    //   >
-    //     <thead>
-    //       {headerGroups.map((headerGroup) => (
-    //         <tr {...headerGroup.getHeaderGroupProps()}>
-    //           {headerGroup.headers.map((column) => (
-    //             <th {...column.getHeaderProps()}>{column.render("Header")}</th>
-    //           ))}
-    //         </tr>
-    //       ))}
-    //     </thead>
-    //     <tbody {...getTableBodyProps()}>
-    //       {rows.map((row) => {
-    //         prepareRow(row);
-    //         console.log(row);
-    //         return (
-    //           <tr
-    //             onClick={() => handleRowClick(row.original)}
-    //             {...row.getRowProps()}
-    //           >
-    //             {row.cells.map((cell) => {
-    //               return (
-    //                 <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-    //               );
-    //             })}
-    //           </tr>
-    //         );
-    //       })}
-    //     </tbody>
-    //   </BTable>
-    //   <SchemaEditModal
-    //     editSchema={schemaEditingObject}
-    //     show={showEditModal}
-    //     handleClose={handleCloseEditModal}
-    //   />
-    //   <SchemaModal
-    //     show={showModal}
-    //     handleClose={() => {
-    //       setShowModal(false);
-    //     }}
-    //   />
-    // </BContainer>
   );
 };

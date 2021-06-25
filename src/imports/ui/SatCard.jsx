@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
+import {getSatID, getSatName, getSatDesc, getSatImage} from './util/satelliteDataFuncs';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -23,32 +23,19 @@ const useStyles = makeStyles((theme) => ({
 
 export const SatCard = ({satellite, index}) => {
     const classes = useStyles();
-
-    const getSatName = () => {
-        return ((satellite && satellite.names && satellite.names.length > 0) ? satellite.names[0].names : "Name not found...");
-    };
-    const getSatImage = () => {
-        return ((satellite && satellite.images && satellite.images.length > 0) ? satellite.images[0].link : "/sat-placeholder.jpg");
-    }
-    const getSatID = () => {
-        return ((satellite && satellite.noradID) ? satellite.noradID : "NORAD ID not found...");
-    }
-    const getSatDesc = () => {
-        return ((satellite && satellite.descriptionShort && satellite.descriptionShort.length > 0) ? satellite.descriptionShort[0].descriptionShort : "")
-    }
     return(
         <Card className={classes.satCard}>
             <CardMedia 
                 className={classes.image}
-                image={getSatImage()}
+                image={getSatImage(satellite)}
                 title="Satellite image"
             />
             <CardContent>
                 <Typography variant="h5" component="h2">
-                    {getSatName()}
+                    {getSatName(satellite)}
                 </Typography>
                 <Typography gutterBottom variant="button" component="p">
-                    {getSatID()}
+                    {getSatID(satellite)}
                 </Typography>
                 <Typography 
                     className={classes.description}
@@ -56,7 +43,7 @@ export const SatCard = ({satellite, index}) => {
                     color="textSecondary" 
                     component="p"
                 >
-                    <Clamp lines={7}>{getSatDesc()}</Clamp>
+                    <Clamp lines={7}>{getSatDesc(satellite)}</Clamp>
                 </Typography>
             </CardContent>
             <CardActions>

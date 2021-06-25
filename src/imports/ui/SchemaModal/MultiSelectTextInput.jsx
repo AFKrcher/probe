@@ -5,7 +5,7 @@ import Close from '@material-ui/icons/Close';
 import { Field } from 'formik';
 
 export const MultiSelectTextInput = ({ index, allowedValues, disabled, setFieldValue }) => {
-  const fieldName = `fields.${index}.allowed`;
+  const fieldName = `fields.${index}.allowedValues`;
   const [inputText, setInputText] = useState("");
 
   const handleChange = (event, values) => {
