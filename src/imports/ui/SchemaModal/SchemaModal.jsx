@@ -5,6 +5,9 @@ import * as Yup from 'yup';
 import { SchemaForm } from './SchemaForm';
 import { SchemaCollection } from '../../api/schema';
 import { makeStyles } from '@material-ui/core';
+import Delete from '@material-ui/icons/Delete';
+import Edit from '@material-ui/icons/Edit';
+import Save from '@material-ui/icons/Save';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -72,16 +75,23 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
               <DialogActions>
                 { !newSchema && (
                     <>
-                      <Button 
-                        variant="outlined" 
-                        color="secondary"
-                        onClick={handleDelete}
-                      >
-                        Delete Schema
-                      </Button>
+                      { editing && (
+                          <Button 
+                            variant="contained" 
+                            color="secondary"
+                            disableElevation
+                            startIcon={<Delete/>}
+                            onClick={handleDelete}
+                          >
+                            Delete Schema
+                          </Button>
+                        )
+                      }
                       <Button 
                         variant="contained" 
                         color="secondary"
+                        disableElevation
+                        startIcon={<Edit/>}
                         onClick={() => handleToggleEdit(setValues)}
                       >
                         {editing ? "Cancel editing" : "Edit schema"}
@@ -100,9 +110,10 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
                       type="submit" 
                       variant="contained" 
                       color="primary"
+                      startIcon={<Save/>}
                       disabled={!editing}
                     >
-                      {isSubmitting ? <CircularProgress size={24} /> : "Submit"}
+                      {isSubmitting ? <CircularProgress size={24} /> : "Save"}
                     </Button>
                   )
                 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SchemaFormField } from './SchemaFormField';
+// import { SchemaFormField } from './SchemaFormField';
 import { Divider, Grid, Button, IconButton, makeStyles } from '@material-ui/core';
 import { Field } from 'formik';
 import { TextField } from 'formik-material-ui';
@@ -29,78 +29,7 @@ export const SatelliteForm = ({formValues, setValues, setFieldValue, editing}) =
 
   return (
       <Grid container spacing={1}>
-        <Grid container item>
-          {error && (
-            <Grid item xs={12}>
-              <Alert severity="error" className={classes.alert}>
-                {error}
-              </Alert>
-            </Grid>
-          )}
-          <Grid item xs={12}>
-            <Field
-              name="name"
-              label="Schema name"
-              margin="dense"
-              required
-              fullWidth
-              variant="outlined"
-              disabled={!editing}
-              component={TextField}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Field
-              name="description"
-              label="Schema description"
-              margin="dense"
-              required
-              fullWidth
-              variant="outlined"
-              multiline
-              color="primary"
-              rows={4}
-              disabled={!editing}
-              component={TextField}
-            />
-          </Grid>
-        </Grid>
-        {
-          formValues.fields.map((field, i) => {
-            if (field.name === "reference") return;
-            return (
-              <React.Fragment key={`fragment-${i}`}>
-                <Grid key={`divider-${i}`} item xs={12}><Divider /></Grid>
-                <Grid key={`grid-${i}`} item container xs={11} alignItems="center">
-                  <SchemaFormField 
-                    key={`form-field-${i}`} 
-                    index={i} 
-                    field={field} 
-                    setFieldValue={setFieldValue}
-                    editing={editing} 
-                  />
-                </Grid>
-                <Grid container item xs={1} alignContent="center">
-                    <IconButton aria-label="delete field" onClick={() => handleFieldDelete(i)}>
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                  </Grid>
-              </React.Fragment>
-            )
-          })
-        }
-        <Grid item xs={12}>
-          { editing && (
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={onAddField}
-              >
-                Add field
-              </Button>
-            )
-          }
-        </Grid>
+        
       </Grid>
   )
 };
