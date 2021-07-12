@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import { SchemaFormField } from './SchemaFormField';
+import { SatelliteSchemaAccordion } from './SatelliteSchemaAccordion';
 import { Divider, Grid, Button, IconButton, makeStyles } from '@material-ui/core';
 import { Field } from 'formik';
 import { TextField } from 'formik-material-ui';
@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export const SatelliteForm = ({formValues, setValues, setFieldValue, editing}) => {
+export const SatelliteForm = ({formValues, schemas, setValues, setFieldValue, editing}) => {
   const classes = useStyles();
   const [error, setError] = useState('');
 
@@ -28,8 +28,39 @@ export const SatelliteForm = ({formValues, setValues, setFieldValue, editing}) =
   }
 
   return (
-      <Grid container spacing={1}>
-        
+    <Grid container spacing={1}>
+      <Grid container item>
+        {error && (
+          <Grid item xs={12}>
+            <Alert severity="error" className={classes.alert}>
+              {error}
+            </Alert>
+          </Grid>
+        )}
+        <Grid item xs={12}>
+          <Field
+            name="noradID"
+            label="NORAD ID"
+            margin="dense"
+            required
+            fullWidth
+            variant="outlined"
+            disabled={!editing}
+            component={TextField}
+          />
+        </Grid>
       </Grid>
+      <Grid item xs={12}>
+        {schemas.map((schema, index) => (
+          <SatelliteSchemaAccordion
+            key={index}
+            schema={schema}
+            entries={formValues[`${schema.name}`]}
+            setFieldValue={setFieldValue}
+            editing={true}
+          />
+        ))}
+      </Grid>
+    </Grid>
   )
 };

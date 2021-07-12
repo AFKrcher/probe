@@ -81,10 +81,10 @@ export const SchemaForm = ({formValues, setValues, setFieldValue, editing}) => {
                   />
                 </Grid>
                 <Grid container item xs={1} alignContent="center">
-                    <IconButton aria-label="delete field" onClick={() => handleFieldDelete(i)}>
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                  </Grid>
+                  <IconButton aria-label="delete field" onClick={() => handleFieldDelete(i)}>
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </Grid>
               </React.Fragment>
             )
           })

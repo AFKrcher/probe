@@ -11,7 +11,7 @@ import Save from '@material-ui/icons/Save';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
-    width: '600px',
+    width: '550px',
   },
   title: {
     paddingBottom: '0px',
@@ -56,7 +56,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
       onClose={handleClose}
     >
       <div className={classes.modal}>
-        <DialogTitle className={classes.title}><strong>Create a new schema</strong></DialogTitle>
+        <DialogTitle className={classes.title}><strong>{`${(newSchema ? 'Create a new' : 'Edit existing')} schema`}</strong></DialogTitle>
         <Formik
           initialValues={initValues}
           validationSchema={schemaValidationSchema}

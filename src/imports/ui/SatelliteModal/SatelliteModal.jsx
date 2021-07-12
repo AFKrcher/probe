@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useTracker } from "meteor/react-meteor-data";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, CircularProgress } from '@material-ui/core';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { SchemaForm } from './SatelliteForm';
+import { SatelliteForm } from './SatelliteForm';
 import { SchemaCollection } from '../../api/schema';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
-    width: '600px',
   },
   title: {
     paddingBottom: '0px',
@@ -18,6 +18,12 @@ const useStyles = makeStyles((theme) => ({
 const satValidationSchema = Yup.object().shape({});
 export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
   const classes = useStyles();
+
+  const [schemas, isLoading] = useTracker(() => {
+    const sub = Meteor.subscribe('schemas');
+    const schemas = SchemaCollection.find().fetch();
+    return [schemas, !sub.ready()]
+  });
 
   const [editing, setEditing] = useState((newSat || false));
   useEffect(() => {
@@ -62,8 +68,9 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
           {({ isSubmitting, dirty, values, setValues, setFieldValue }) => (
             <Form noValidate>
               <DialogContent>
-                  <SchemaForm 
+                  <SatelliteForm 
                     formValues={values}
+                    schemas={schemas}
                     setValues={setValues}
                     setFieldValue={setFieldValue}
                     editing={editing}
