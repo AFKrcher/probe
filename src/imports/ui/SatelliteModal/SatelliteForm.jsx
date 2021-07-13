@@ -16,17 +16,6 @@ export const SatelliteForm = ({formValues, schemas, setValues, setFieldValue, ed
   const classes = useStyles();
   const [error, setError] = useState('');
 
-  const onAddField = () => {
-    const fields = [...formValues.fields, {name: "", type: "", allowedValues: []}];
-    setValues({...formValues, fields});
-  }
-
-  const handleFieldDelete = (index) => {
-    const fields = [...formValues.fields]
-    fields.splice(index, 1);
-    setValues({...formValues, fields});
-  }
-
   return (
     <Grid container spacing={1}>
       <Grid container item>
@@ -57,7 +46,7 @@ export const SatelliteForm = ({formValues, schemas, setValues, setFieldValue, ed
             schema={schema}
             entries={formValues[`${schema.name}`]}
             setFieldValue={setFieldValue}
-            editing={true}
+            editing={editing}
           />
         ))}
       </Grid>

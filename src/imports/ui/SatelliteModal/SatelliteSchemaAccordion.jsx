@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Typography, Accordion, AccordionSummary, AccordionDetails, Chip, Grid, Button, InputLabel, makeStyles, MenuItem, Select, TextField } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { Field } from 'formik';
@@ -6,7 +6,7 @@ import { SatelliteSchemaEntry } from './SatelliteSchemaEntry';
 
 const useStyles = makeStyles((theme) => ({
   accordionbody: {
-    backgroundColor: "#515151",
+    backgroundColor: theme.palette.action.hover,
   },
   accordionheader: {
     display: "flex"
@@ -19,6 +19,10 @@ const useStyles = makeStyles((theme) => ({
 export const SatelliteSchemaAccordion = ( {schema, entries, setFieldValue, editing} ) => {
   const classes = useStyles();
 
+  useEffect(() => {
+    if (!entries) setFieldValue(schema.name, []);
+  }, [entries])
+
   const onAddField = () => {
     const schemaFields = schema.fields.reduce((acc, cur) => ({ ...acc, [cur.name]: ""}), {});
     const newEntries = [...entries, schemaFields];
@@ -28,9 +32,6 @@ export const SatelliteSchemaAccordion = ( {schema, entries, setFieldValue, editi
   const handleEntryDelete = (schemaName, index) => {
     const newEntries = entries;
     newEntries.splice(index, 1);
-    console.log(schema);
-    console.log(schemaName);
-    console.log(newEntries);
     setFieldValue(schemaName, newEntries);
   }
   
@@ -41,16 +42,16 @@ export const SatelliteSchemaAccordion = ( {schema, entries, setFieldValue, editi
         id={`${schema.name}-accord-header`}
       >
         <div className={classes.accordionheader}>
-          <Chip className={classes.accordioncount} size="small" label={entries.length} />
+          <Chip className={classes.accordioncount} size="small" label={entries?.length ? entries.length : "0"} />
           <Typography variant="subtitle1">{schema.name}</Typography>
         </div>
       </AccordionSummary>
       <AccordionDetails>
-        <Grid container spacing={1} justifyContent="center">
+        <Grid container spacing={1} justifycontent="center">
           <Grid item xs={12}>
             <Typography>{schema.description}</Typography>
           </Grid>
-          {entries.map((entry, index) => (
+          {entries?.map((entry, index) => (
             <SatelliteSchemaEntry 
               key={index}  
               index={index}

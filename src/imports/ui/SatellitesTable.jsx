@@ -36,10 +36,16 @@ export const SatellitesTable = () => {
   const [newSat, setNewSat] = useState(true);
   const [initialSatValues, setInitialSatValues] = useState(newSatValues)
 
-  const [sats, isLoading] = useTracker(() => {
+  const [sats, satsIsLoading] = useTracker(() => {
     const sub = Meteor.subscribe("satellites");
     const sats = SatelliteCollection.find().fetch();
     return [sats, !sub.ready()];
+  });
+
+  const [schemas, schemasIsLoading] = useTracker(() => {
+    const sub = Meteor.subscribe("satellites");
+    const schemas = SatelliteCollection.find().fetch();
+    return [schemas, !sub.ready()];
   });
 
   const handleAddNewSatellite = () => {
@@ -81,14 +87,14 @@ export const SatellitesTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {isLoading && 
+              {satsIsLoading && 
               <TableRow>
                 <TableCell colSpan={2} align="center">
                   <CircularProgress className={classes.spinner} />
                 </TableCell>
               </TableRow>
               }
-              {!isLoading && sats.map((satellite, i) => (
+              {!satsIsLoading && sats.map((satellite, i) => (
                 <TableRow key={`sat-row-${i}`} className={classes.tableRow} onClick={() => handleRowClick(satellite)}>
                   <TableCell key={`sat-name-${i}`} className={classes.tableNameCol}>{getSatID(satellite)}</TableCell>
                   <TableCell key={`sat-desc-${i}`}>{satellite.names.map((name) => name.names).join(", ")}</TableCell>

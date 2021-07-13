@@ -5,6 +5,7 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { SatelliteForm } from './SatelliteForm';
 import { SchemaCollection } from '../../api/schema';
+import { SatelliteCollection } from '../../api/satellite';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -34,16 +35,16 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
   const handleSubmit = (values, { setSubmitting }) => {
     console.log(values);
     if (newSat) {
-      SchemaCollection.insert(values);
+      SatelliteCollection.insert(values);
     } else {
-      SchemaCollection.update({_id: values._id}, values);
+      SatelliteCollection.update({_id: values._id}, values);
     }
     setSubmitting(false);
     handleClose();
   }
 
   const handleDelete = () => {
-    SchemaCollection.remove(initValues._id);
+    SatelliteCollection.remove(initValues._id);
     handleClose();
   }
 

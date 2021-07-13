@@ -19,9 +19,9 @@ export const SatelliteSchemaEntry = ( {index, schema, entry, deleteEntry, setFie
     setFieldValue(event.target.name, event.target.value);
   }
 
-  handleEntryDelete = (index) => {
-    console.log("test", schema);
-    deleteEntry(schema.name, index);
+  handleEntryDelete = (schemaName, index) => {
+    console.log("Schema before call: ", schemaName);
+    deleteEntry(schemaName, index);
   }
 
   return (
@@ -48,7 +48,7 @@ export const SatelliteSchemaEntry = ( {index, schema, entry, deleteEntry, setFie
             ))}
           </Grid>
           <Grid container item xs={1} alignContent="center">
-            <IconButton aria-label="delete field" onClick={() => handleEntryDelete(index)}>
+            <IconButton aria-label="delete field" onClick={() => handleEntryDelete(schema.name, index)}>
               <DeleteIcon fontSize="small" />
             </IconButton>
           </Grid>

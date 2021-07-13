@@ -71,7 +71,7 @@ export const SchemaForm = ({formValues, setValues, setFieldValue, editing}) => {
             return (
               <React.Fragment key={`fragment-${i}`}>
                 <Grid key={`divider-${i}`} item xs={12}><Divider /></Grid>
-                <Grid key={`grid-${i}`} item container xs={11} alignItems="center">
+                <Grid key={`grid-${i}`} item container xs alignItems="center">
                   <SchemaFormField 
                     key={`form-field-${i}`} 
                     index={i} 
@@ -80,11 +80,14 @@ export const SchemaForm = ({formValues, setValues, setFieldValue, editing}) => {
                     editing={editing} 
                   />
                 </Grid>
-                <Grid container item xs={1} alignContent="center">
-                  <IconButton aria-label="delete field" onClick={() => handleFieldDelete(i)}>
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
-                </Grid>
+                { editing && (
+                    <Grid container item xs={1} alignContent="center">
+                      <IconButton aria-label="delete field" onClick={() => handleFieldDelete(i)}>
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </Grid>
+                  )
+                }
               </React.Fragment>
             )
           })
