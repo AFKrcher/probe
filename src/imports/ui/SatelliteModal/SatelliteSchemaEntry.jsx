@@ -16,6 +16,7 @@ export const SatelliteSchemaEntry = ( {index, schema, entry, deleteEntry, setFie
   const classes = useStyles();
 
   const onChange = (event) => {
+    console.log(event.target);
     setFieldValue(event.target.name, event.target.value);
   }
 
@@ -29,9 +30,9 @@ export const SatelliteSchemaEntry = ( {index, schema, entry, deleteEntry, setFie
       <Paper className={classes.entrypaper}>
         <Grid container spacing={0}>
           <Grid item xs={11} className={classes.marginright}>
-            {schema.fields.map((field, index) => (
+            {schema.fields.map((field, fieldindex) => (
               <Field
-                key={index}
+                key={fieldindex}
                 inputProps={{
                   name: `${schema.name}.${index}.${field.name}`
                 }}
