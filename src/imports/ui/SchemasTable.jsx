@@ -2,38 +2,52 @@ import React, { useState } from "react";
 import { useTracker } from "meteor/react-meteor-data";
 import { SchemaCollection } from "../api/schema";
 import { SchemaModal } from "./SchemaModal/SchemaModal.jsx";
-import { Container, Button, Grid, makeStyles, Typography, Table, TableContainer, Paper, TableHead, TableBody, TableRow, TableCell, CircularProgress } from "@material-ui/core";
+import {
+  Container,
+  Button,
+  Grid,
+  makeStyles,
+  Typography,
+  Table,
+  TableContainer,
+  Paper,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  CircularProgress,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   schemacontainer: {
-    marginTop: '60px',
+    marginTop: "60px",
   },
   tableHead: {
     bckgroundColor: theme.palette.grey[700],
   },
   tableNameCol: {
-    width: '25%',
+    width: "25%",
   },
   tableRow: {
-    '&:hover': {
+    "&:hover": {
       backgroundColor: theme.palette.action.hover,
-    }
+    },
   },
   spinner: {
     color: theme.palette.text.primary,
-  }
+  },
 }));
 
 const newSchemaValues = {
-  name: "", 
-  description: "", 
+  name: "",
+  description: "",
   fields: [
-    { 
+    {
       name: "reference",
       type: "string",
-      allowedValues: []
-    }
-  ]
+      allowedValues: [],
+    },
+  ],
 };
 
 export const SchemasTable = () => {
@@ -41,19 +55,20 @@ export const SchemasTable = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [newSchema, setNewSchema] = useState(true);
-  const [initialSchemaValues, setInitialSchemaValues] = useState(newSchemaValues)
+  const [initialSchemaValues, setInitialSchemaValues] =
+    useState(newSchemaValues);
 
   const [schemas, isLoading] = useTracker(() => {
-    const sub = Meteor.subscribe('schemas');
+    const sub = Meteor.subscribe("schemas");
     const schemas = SchemaCollection.find().fetch();
-    return [schemas, !sub.ready()]
+    return [schemas, !sub.ready()];
   });
 
   const handleAddNewSchema = () => {
     setNewSchema(true);
     setShowModal(true);
     setInitialSchemaValues(newSchemaValues);
-  }
+  };
 
   const handleRowClick = (schemaObject) => {
     setNewSchema(false);
@@ -69,52 +84,71 @@ export const SchemasTable = () => {
             <Typography variant="h3">Schemas</Typography>
           </Grid>
           <Grid container item xs justify="flex-end">
-            <Button 
-              variant="contained" 
+            <Button
+              variant="contained"
               color="primary"
               onClick={handleAddNewSchema}
-            >+ Add New Schema</Button>
+            >
+              + Add New Schema
+            </Button>
           </Grid>
         </Grid>
         <Typography gutterBottom variant="body2">
-            Each piece of data you want to store has its own <strong>schema</strong>
+          Each piece of data you want to store has its own{" "}
+          <strong>schema</strong>
         </Typography>
         <Typography gutterBottom variant="body2">
-            Each <strong>schema</strong> has a reference (where the data was found), 
-            a description (describing what the data is), and a number of data fields 
-            (that contain the actual information)
+          Each <strong>schema</strong> has a reference (where the data was
+          found), a description (describing what the data is), and a number of
+          data fields (that contain the actual information)
         </Typography>
         <TableContainer component={Paper}>
           <Table size="small" aria-label="Schema table">
             <TableHead>
               <TableRow color="secondary">
-                <TableCell className={classes.tableNameCol}>Name</TableCell>
-                <TableCell>Description</TableCell>
+                <TableCell className={classes.tableNameCol}>
+                  <strong>NAME</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>DESCRIPTION</strong>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {isLoading && 
-              <TableRow>
-                <TableCell colSpan={2} align="center">
-                  <CircularProgress className={classes.spinner} />
-                </TableCell>
-              </TableRow>
-              }
-              {!isLoading && schemas.map((schema, i) => (
-                <TableRow key={`schema-row-${i}`} className={classes.tableRow} onClick={() => handleRowClick(schema)}>
-                  <TableCell key={`schema-name-${i}`} className={classes.tableNameCol}>{schema.name}</TableCell>
-                  <TableCell key={`schema-desc-${i}`}>{schema.description}</TableCell>
+              {isLoading && (
+                <TableRow>
+                  <TableCell colSpan={2} align="center">
+                    <CircularProgress className={classes.spinner} />
+                  </TableCell>
                 </TableRow>
-              ))}
+              )}
+              {!isLoading &&
+                schemas.map((schema, i) => (
+                  <TableRow
+                    key={`schema-row-${i}`}
+                    className={classes.tableRow}
+                    onClick={() => handleRowClick(schema)}
+                  >
+                    <TableCell
+                      key={`schema-name-${i}`}
+                      className={classes.tableNameCol}
+                    >
+                      {schema.name}
+                    </TableCell>
+                    <TableCell key={`schema-desc-${i}`}>
+                      {schema.description}
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
       </Container>
-      <SchemaModal 
-        show={showModal} 
-        newSchema={newSchema} 
-        initValues={initialSchemaValues} 
-        handleClose={() => setShowModal(false)} 
+      <SchemaModal
+        show={showModal}
+        newSchema={newSchema}
+        initValues={initialSchemaValues}
+        handleClose={() => setShowModal(false)}
       />
     </React.Fragment>
   );

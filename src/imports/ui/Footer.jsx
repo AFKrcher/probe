@@ -1,9 +1,11 @@
-import React from 'react';
+import React from "react";
 
 export const Footer = () => (
-    <footer className="footer">
-      <div className="container">
-        <span className="text-muted" >2020 - SpaceIntel - Terms - Privacy Policy</span>
-      </div>
-    </footer>
-  );
+  <footer className="footer" style={{ paddingTop: 50 }}>
+    <div className="container">
+      <span className="text-muted">
+        2021 - SpaceIntel - Terms - Privacy Policy
+      </span>
+    </div>
+  </footer>
+);

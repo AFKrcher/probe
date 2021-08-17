@@ -1,32 +1,46 @@
 import React, { useState } from "react";
 import { useTracker } from "meteor/react-meteor-data";
-import { SatelliteModal } from './SatelliteModal/SatelliteModal';
+import { SatelliteModal } from "./SatelliteModal/SatelliteModal";
 import { SatelliteCollection } from "../api/satellite";
-import { getSatID, getSatName } from './util/satelliteDataFuncs';
-import { Container, Button, Grid, makeStyles, Typography, Table, TableContainer, Paper, TableHead, TableBody, TableRow, TableCell, CircularProgress } from "@material-ui/core";
+import { getSatID, getSatName } from "./util/satelliteDataFuncs";
+import {
+  Container,
+  Button,
+  Grid,
+  makeStyles,
+  Typography,
+  Table,
+  TableContainer,
+  Paper,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  CircularProgress,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   satellitecontainer: {
-    marginTop: '60px',
+    marginTop: "60px",
   },
   tableHead: {
     bckgroundColor: theme.palette.grey[700],
   },
   tableNameCol: {
-    width: '25%',
+    width: "25%",
   },
   tableRow: {
-    '&:hover': {
+    "&:hover": {
       backgroundColor: theme.palette.action.hover,
-    }
+    },
   },
   spinner: {
     color: theme.palette.text.primary,
-  }
+  },
 }));
 
 const newSatValues = {
-  noradID: ""
+  noradID: "",
 };
 
 export const SatellitesTable = () => {
@@ -34,7 +48,7 @@ export const SatellitesTable = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [newSat, setNewSat] = useState(true);
-  const [initialSatValues, setInitialSatValues] = useState(newSatValues)
+  const [initialSatValues, setInitialSatValues] = useState(newSatValues);
 
   const [sats, satsIsLoading] = useTracker(() => {
     const sub = Meteor.subscribe("satellites");
@@ -52,7 +66,7 @@ export const SatellitesTable = () => {
     setNewSat(true);
     setShowModal(true);
     setInitialSatValues(newSatValues);
-  }
+  };
 
   const handleRowClick = (schemaObject) => {
     setNewSat(false);
@@ -68,47 +82,66 @@ export const SatellitesTable = () => {
             <Typography variant="h3">Satellites</Typography>
           </Grid>
           <Grid container item xs justify="flex-end">
-            <Button 
-              variant="contained" 
+            <Button
+              variant="contained"
               color="primary"
               onClick={handleAddNewSatellite}
-            >+ Add New Satellite</Button>
+            >
+              + Add New Satellite
+            </Button>
           </Grid>
         </Grid>
         <Typography gutterBottom variant="body2">
-            Each <strong>satellite </strong> in the catalogue contains a number of fields based on schemas defined on the next page.
+          Each <strong>satellite</strong> in the catalogue contains a number of
+          fields based on schemas defined on the next page.
         </Typography>
         <TableContainer component={Paper}>
           <Table size="small" aria-label="Satellite table">
             <TableHead>
               <TableRow color="secondary">
-                <TableCell className={classes.tableNameCol}>NORAD ID</TableCell>
-                <TableCell>Name(s)</TableCell>
+                <TableCell className={classes.tableNameCol}>
+                  <strong>NORAD ID</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>NAME(S)</strong>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {satsIsLoading && 
-              <TableRow>
-                <TableCell colSpan={2} align="center">
-                  <CircularProgress className={classes.spinner} />
-                </TableCell>
-              </TableRow>
-              }
-              {!satsIsLoading && sats.map((satellite, i) => (
-                <TableRow key={`sat-row-${i}`} className={classes.tableRow} onClick={() => handleRowClick(satellite)}>
-                  <TableCell key={`sat-name-${i}`} className={classes.tableNameCol}>{getSatID(satellite)}</TableCell>
-                  <TableCell key={`sat-desc-${i}`}>{satellite.names.map((name) => name.names).join(", ")}</TableCell>
+              {satsIsLoading && (
+                <TableRow>
+                  <TableCell colSpan={2} align="center">
+                    <CircularProgress className={classes.spinner} />
+                  </TableCell>
                 </TableRow>
-              ))}
+              )}
+              {!satsIsLoading &&
+                sats.map((satellite, i) => (
+                  <TableRow
+                    key={`sat-row-${i}`}
+                    className={classes.tableRow}
+                    onClick={() => handleRowClick(satellite)}
+                  >
+                    <TableCell
+                      key={`sat-name-${i}`}
+                      className={classes.tableNameCol}
+                    >
+                      {getSatID(satellite)}
+                    </TableCell>
+                    <TableCell key={`sat-desc-${i}`}>
+                      {satellite.names.map((name) => name.names).join(", ")}
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
       </Container>
-      <SatelliteModal 
-        show={showModal} 
-        newSat={newSat} 
-        initValues={initialSatValues} 
-        handleClose={() => setShowModal(false)} 
+      <SatelliteModal
+        show={showModal}
+        newSat={newSat}
+        initValues={initialSatValues}
+        handleClose={() => setShowModal(false)}
       />
     </React.Fragment>
 
