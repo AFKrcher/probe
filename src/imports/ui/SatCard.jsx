@@ -21,10 +21,12 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   image: {
-    height: "150px",
+    minHeight: "170px",
+    maxHeight: "170px",
   },
   description: {
-    height: "130px",
+    minHeight: "150px",
+    maxHeight: "150px",
   },
   link: {
     textDecoration: "none",
@@ -67,6 +69,7 @@ export const SatCard = ({ satellite }) => {
             variant="body2"
             color="textSecondary"
             component="p"
+            className={classes.description}
           >
             <Clamp lines={7}>{getSatDesc(satellite)}</Clamp>
           </Typography>

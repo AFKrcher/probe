@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
-import { Autocomplete } from '@material-ui/lab'
-import { Chip, TextField } from '@material-ui/core';
-import Close from '@material-ui/icons/Close';
-import { Field } from 'formik';
+import React, { useState } from "react";
+import { Autocomplete } from "@material-ui/lab";
+import { Chip, TextField } from "@material-ui/core";
+import Close from "@material-ui/icons/Close";
+import { Field } from "formik";
 
-export const MultiSelectTextInput = ({ index, allowedValues, disabled, setFieldValue }) => {
+export const MultiSelectTextInput = ({
+  index,
+  allowedValues,
+  disabled,
+  setFieldValue,
+}) => {
   const fieldName = `fields.${index}.allowedValues`;
   const [inputText, setInputText] = useState("");
 
@@ -12,13 +17,15 @@ export const MultiSelectTextInput = ({ index, allowedValues, disabled, setFieldV
     console.log(fieldName);
     console.log(values);
     setFieldValue(fieldName, values);
-  }
+  };
 
   const handleInputChange = (event, newInputValue) => {
     console.log(allowedValues);
 
     const options = newInputValue.split(/[ ,]+/);
-    const fieldValue = [...allowedValues, ...options].map(x => x.trim()).filter(x => x);
+    const fieldValue = [...allowedValues, ...options]
+      .map((x) => x.trim())
+      .filter((x) => x);
     console.log(event, newInputValue);
 
     if (options.length > 1) {
@@ -26,7 +33,7 @@ export const MultiSelectTextInput = ({ index, allowedValues, disabled, setFieldV
     } else {
       setInputText(newInputValue);
     }
-  }
+  };
 
   return (
     <Field
@@ -34,7 +41,7 @@ export const MultiSelectTextInput = ({ index, allowedValues, disabled, setFieldV
       disableClearable
       options={[]}
       freeSolo
-      renderTags={(options, getTagProps) => 
+      renderTags={(options, getTagProps) =>
         options.map((option, index) => (
           <Chip
             deleteIcon={<Close />}
@@ -50,15 +57,15 @@ export const MultiSelectTextInput = ({ index, allowedValues, disabled, setFieldV
       onInputChange={handleInputChange}
       disabled={disabled}
       renderInput={(params) => (
-        <TextField 
+        <TextField
           {...params}
-          label="Allowed values"
+          label="Allowed Values"
           variant="outlined"
           fullWidth
-          margin="dense" 
+          margin="dense"
         />
       )}
       component={Autocomplete}
     />
-  )
+  );
 };

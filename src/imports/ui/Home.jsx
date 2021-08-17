@@ -16,16 +16,19 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: "20px",
   },
   showcase: {
-    marginTop: "40px",
+    marginTop: 30,
+    marginBottom: 30,
   },
 }));
+
+const skeletonHeight = 420;
 
 export const Home = () => {
   const classes = useStyles();
 
   const [demoSats, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("satellites");
-    const sats = SatelliteCollection.find({}, { limit: 3 }).fetch();
+    const sats = SatelliteCollection.find().fetch();
     return [sats, !sub.ready()];
   });
 
@@ -35,7 +38,7 @@ export const Home = () => {
         <Typography variant="h3">
           Welcome to <strong>SpaceIntel!</strong>
         </Typography>
-        <Typography variant="body1">
+        <Typography variant="body1" style={{ marginTop: 10 }}>
           SpaceIntel is seeking to become the world's most complete and easy to
           use resource for spacecraft data and information.
         </Typography>
@@ -45,25 +48,43 @@ export const Home = () => {
       </Container>
       <Container className={classes.showcase} maxWidth="md">
         <Typography variant="h4" gutterBottom>
-          Some example data
+          Satellite Data Cards
         </Typography>
-        <Grid container justify="center" spacing={2}>
+        <Grid container justify="left" spacing={2}>
           {!isLoading &&
             demoSats.map((sat, index) => (
-              <Grid item xs key={index}>
+              <Grid item xs={4} key={index}>
                 <SatCard satellite={sat} key={index} />
               </Grid>
             ))}
           {isLoading && (
             <React.Fragment>
-              <Grid item xs>
-                <Skeleton variant="rect" width={280} height={415} />
+              <Grid item xs={4}>
+                <Skeleton variant="rect" height={skeletonHeight} />
               </Grid>
-              <Grid item xs>
-                <Skeleton variant="rect" width={280} height={415} />
+              <Grid item xs={4}>
+                <Skeleton variant="rect" height={skeletonHeight} />
               </Grid>
-              <Grid item xs>
-                <Skeleton variant="rect" width={280} height={415} />
+              <Grid item xs={4}>
+                <Skeleton variant="rect" height={skeletonHeight} />
+              </Grid>
+              <Grid item xs={4}>
+                <Skeleton variant="rect" height={skeletonHeight} />
+              </Grid>
+              <Grid item xs={4}>
+                <Skeleton variant="rect" height={skeletonHeight} />
+              </Grid>
+              <Grid item xs={4}>
+                <Skeleton variant="rect" height={skeletonHeight} />
+              </Grid>
+              <Grid item xs={4}>
+                <Skeleton variant="rect" height={skeletonHeight} />
+              </Grid>
+              <Grid item xs={4}>
+                <Skeleton variant="rect" height={skeletonHeight} />
+              </Grid>
+              <Grid item xs={4}>
+                <Skeleton variant="rect" height={skeletonHeight} />
               </Grid>
             </React.Fragment>
           )}

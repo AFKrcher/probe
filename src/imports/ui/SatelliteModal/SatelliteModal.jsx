@@ -15,7 +15,10 @@ import {
   CircularProgress,
   makeStyles,
 } from "@material-ui/core";
-import { Delete } from "@material-ui/icons";
+import Delete from "@material-ui/icons/Delete";
+import Edit from "@material-ui/icons/Edit";
+import Save from "@material-ui/icons/Save";
+import Close from "@material-ui/icons/Close";
 import { Formik, Form } from "formik";
 import { SatelliteForm } from "./SatelliteForm";
 
@@ -44,14 +47,13 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
   }, [newSat, show]);
 
   const handleSubmit = (values, { setSubmitting }) => {
-    console.log(values);
     if (newSat) {
       SatelliteCollection.insert(values);
     } else {
       SatelliteCollection.update({ _id: values._id }, values);
     }
     setSubmitting(false);
-    handleClose();
+    setEditing(false);
   };
 
   const handleDelete = () => {
@@ -93,34 +95,48 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
               <DialogActions>
                 {!newSat && (
                   <>
+                    {editing && (
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        disabled={!editing}
+                        startIcon={<Save />}
+                      >
+                        {isSubmitting ? <CircularProgress size={24} /> : "Save"}
+                      </Button>
+                    )}
+                    {editing ? (
+                      ""
+                    ) : (
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={handleDelete}
+                        startIcon={<Delete />}
+                      >
+                        Delete
+                      </Button>
+                    )}
                     <Button
                       variant="contained"
-                      color="secondary"
-                      onClick={handleDelete}
-                      startIcon={<Delete />}
-                    >
-                      Delete
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
+                      color={editing ? "secondary" : "primary"}
                       onClick={() => handleToggleEdit(setValues)}
+                      startIcon={editing ? <Delete /> : <Edit />}
                     >
-                      {editing ? "Cancel editing" : "Edit"}
+                      {editing ? "Cancel Changes" : "Edit"}
                     </Button>
                   </>
                 )}
-                <Button variant="contained" onClick={handleClose}>
-                  Close
-                </Button>
-                {editing && (
+                {editing ? (
+                  ""
+                ) : (
                   <Button
-                    type="submit"
                     variant="contained"
-                    color="primary"
-                    disabled={!editing}
+                    onClick={handleClose}
+                    startIcon={<Close />}
                   >
-                    {isSubmitting ? <CircularProgress size={24} /> : "Submit"}
+                    Close
                   </Button>
                 )}
               </DialogActions>

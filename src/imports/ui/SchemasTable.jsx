@@ -93,11 +93,11 @@ export const SchemasTable = () => {
             </Button>
           </Grid>
         </Grid>
-        <Typography gutterBottom variant="body2">
+        <Typography gutterBottom variant="body2" style={{ marginTop: 10 }}>
           Each piece of data you want to store has its own{" "}
           <strong>schema</strong>
         </Typography>
-        <Typography gutterBottom variant="body2">
+        <Typography gutterBottom variant="body2" style={{ marginBottom: 25 }}>
           Each <strong>schema</strong> has a reference (where the data was
           found), a description (describing what the data is), and a number of
           data fields (that contain the actual information)
