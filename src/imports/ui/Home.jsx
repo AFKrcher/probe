@@ -13,7 +13,7 @@ import Skeleton from "@material-ui/lab/Skeleton";
 
 const useStyles = makeStyles((theme) => ({
   jumbo: {
-    paddingTop: "20px",
+    marginTop: 40,
   },
   showcase: {
     marginTop: 30,

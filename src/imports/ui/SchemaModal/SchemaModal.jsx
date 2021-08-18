@@ -48,6 +48,9 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
     }
     setSubmitting(false);
     setEditing(false);
+    if (newSchema) {
+      handleClose();
+    }
   };
 
   const handleDelete = () => {

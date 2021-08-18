@@ -1,29 +1,48 @@
-import React from 'react';
-import { Typography, Accordion, AccordionSummary, AccordionDetails, Chip, InputLabel, Grid, makeStyles, Paper, MenuItem, IconButton, Select, TextField } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete'
-import { Field } from 'formik';
+import React from "react";
+import {
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Chip,
+  InputLabel,
+  Grid,
+  makeStyles,
+  Paper,
+  MenuItem,
+  IconButton,
+  Select,
+  TextField,
+} from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { Field } from "formik";
 
 const useStyles = makeStyles((theme) => ({
   entrypaper: {
-    padding: "15px"
+    padding: "15px",
   },
   marginright: {
-    paddingRight: "10px"
-  }
-}))
+    paddingRight: "10px",
+  },
+}));
 
-export const SatelliteSchemaEntry = ( {index, schema, entry, deleteEntry, setFieldValue, editing} ) => {
+export const SatelliteSchemaEntry = ({
+  index,
+  schema,
+  entry,
+  deleteEntry,
+  setFieldValue,
+  editing,
+}) => {
   const classes = useStyles();
 
   const onChange = (event) => {
-    console.log(event.target);
     setFieldValue(event.target.name, event.target.value);
-  }
+  };
 
   handleEntryDelete = (schemaName, index) => {
-    console.log("Schema before call: ", schemaName);
     deleteEntry(schemaName, index);
-  }
+  };
 
   return (
     <Grid item xs={12}>
@@ -34,7 +53,7 @@ export const SatelliteSchemaEntry = ( {index, schema, entry, deleteEntry, setFie
               <Field
                 key={fieldindex}
                 inputProps={{
-                  name: `${schema.name}.${index}.${field.name}`
+                  name: `${schema.name}.${index}.${field.name}`,
                 }}
                 value={entry[`${field.name}`]}
                 onChange={onChange}
@@ -49,12 +68,15 @@ export const SatelliteSchemaEntry = ( {index, schema, entry, deleteEntry, setFie
             ))}
           </Grid>
           <Grid container item xs={1} alignContent="center">
-            <IconButton aria-label="delete field" onClick={() => handleEntryDelete(schema.name, index)}>
+            <IconButton
+              aria-label="delete field"
+              onClick={() => handleEntryDelete(schema.name, index)}
+            >
               <DeleteIcon fontSize="small" />
             </IconButton>
           </Grid>
         </Grid>
       </Paper>
     </Grid>
-  )
+  );
 };

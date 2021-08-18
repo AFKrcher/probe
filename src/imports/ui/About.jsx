@@ -1,6 +1,6 @@
 import React from "react";
 import Container from "react-bootstrap/container";
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid, makeStyles, Typography } from "@material-ui/core";
 import Figure from "react-bootstrap/figure";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -98,12 +98,14 @@ export const About = () => {
   const classes = useStyles();
   return (
     <>
-      <Container className="pt-4">
+      <Container className="pt-4" style={{ margin: "40px 100px 0px 100px" }}>
         <Row>
           <Col>
-            <h1>About this website</h1>
+            <Typography variant="h3">
+              About <strong>SpaceIntel</strong>
+            </Typography>
             <p>
-              This website was created by an incredible team of space
+              This web application was created by an incredible team of space
               enthusiasts who got together and gave up their weekend to complete
               this work during a Hackathon which took place over the 8th - 9th
               May 2021.
@@ -113,10 +115,19 @@ export const About = () => {
               this website helpful and useful! Now it is up to all of us to
               maintain and populate it!
             </p>
+            <p>
+              After the Hackathon, a pair of developers, Justin and Archer,
+              continued the development of the application from August into
+              November of 2021. Features were added to provide better data entry
+              UX/UI and to provide integration into Saber Astronautics' Space
+              Cockpit for data visualization and analysis.
+            </p>
           </Col>
         </Row>
 
-        <h1>Meet the Team</h1>
+        <Typography variant="h4" style={{ marginTop: 30 }}>
+          Meet the Team
+        </Typography>
         <p>Click on our profile pictures or names to connect with us!</p>
         <Container>
           <Grid container spacing={0} className={classes.container}>

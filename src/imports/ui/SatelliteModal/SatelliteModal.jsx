@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const satValidationSchema = Yup.object().shape({});
+
 export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
   const classes = useStyles();
 
@@ -43,7 +44,6 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
 
   useEffect(() => {
     setEditing(newSat || false);
-    console.log(initValues, "init values");
   }, [newSat, show]);
 
   const handleSubmit = (values, { setSubmitting }) => {
@@ -81,8 +81,8 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
           validationSchema={satValidationSchema}
           onSubmit={handleSubmit}
         >
-          {({ isSubmitting, dirty, values, setValues, setFieldValue }) => (
-            <Form noValidate>
+          {({ isSubmitting, values, setValues, setFieldValue }) => (
+            <Form>
               <DialogContent>
                 <SatelliteForm
                   formValues={values}

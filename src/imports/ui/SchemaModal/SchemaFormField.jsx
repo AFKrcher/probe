@@ -64,6 +64,7 @@ export const SchemaFormField = ({ index, field, setFieldValue, editing }) => {
               <MenuItem value="string">String</MenuItem>
               <MenuItem value="number">Number</MenuItem>
               <MenuItem value="date">Date</MenuItem>
+              <MenuItem value="date">Multi-List</MenuItem>
             </Field>
           </FormControl>
         </Grid>

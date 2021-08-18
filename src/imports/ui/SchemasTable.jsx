@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 import { SchemaCollection } from "../api/schema";
 import { SchemaModal } from "./SchemaModal/SchemaModal.jsx";
@@ -16,11 +17,12 @@ import {
   TableRow,
   TableCell,
   CircularProgress,
+  Tooltip,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  schemacontainer: {
-    marginTop: "60px",
+  schemaContainer: {
+    marginTop: 40,
   },
   tableHead: {
     bckgroundColor: theme.palette.grey[700],
@@ -34,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   spinner: {
+    color: theme.palette.text.primary,
+  },
+  link: {
     color: theme.palette.text.primary,
   },
 }));
@@ -78,7 +83,7 @@ export const SchemasTable = () => {
 
   return (
     <React.Fragment>
-      <Container className={classes.schemacontainer} maxWidth="md">
+      <Container className={classes.schemaContainer} maxWidth="md">
         <Grid container justify="space-between" alignItems="center">
           <Grid item xs>
             <Typography variant="h3">Schemas</Typography>
@@ -95,12 +100,23 @@ export const SchemasTable = () => {
         </Grid>
         <Typography gutterBottom variant="body2" style={{ marginTop: 10 }}>
           Each piece of data you want to store has its own{" "}
-          <strong>schema</strong>
+          <strong>schema</strong>. You can characterize a given satellite using
+          any number of schemas. Please see the satellites on the{" "}
+          <Tooltip title="Bring me to the schemas page">
+            <Link exact to="/satellites" className={classes.link}>
+              previous page
+            </Link>
+          </Tooltip>{" "}
+          for usage examples.
         </Typography>
-        <Typography gutterBottom variant="body2" style={{ marginBottom: 25 }}>
+        <Typography gutterBottom variant="body2">
           Each <strong>schema</strong> has a reference (where the data was
           found), a description (describing what the data is), and a number of
-          data fields (that contain the actual information)
+          data fields (that contain the actual information).
+        </Typography>
+        <Typography gutterBottom variant="body2" style={{ marginBottom: 25 }}>
+          Click on a desired <strong>schema</strong> below to view its details
+          and edit the entry fields.
         </Typography>
         <TableContainer component={Paper}>
           <Table size="small" aria-label="Schema table">
