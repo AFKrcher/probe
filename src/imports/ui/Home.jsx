@@ -40,10 +40,10 @@ export const Home = () => {
     <React.Fragment>
       <Container className={classes.jumbo} maxWidth="md">
         <Typography variant="h3">
-          Welcome to <strong>Open Orbit!</strong>
+          Welcome to <strong>OpenOrbit!</strong>
         </Typography>
         <Typography variant="body1" style={{ marginTop: 10 }}>
-          Open Orbit is seeking to become the world's most complete and easy to
+          OpenOrbit is seeking to become the world's most complete and easy to
           use resource for spacecraft data and information.
         </Typography>
         <Typography variant="subtitle1">

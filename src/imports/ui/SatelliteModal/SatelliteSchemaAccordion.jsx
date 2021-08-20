@@ -1,4 +1,10 @@
 import React, { useEffect } from "react";
+// Imports
+
+// Components
+import { SatelliteSchemaEntry } from "./SatelliteSchemaEntry";
+
+// @material-ui
 import {
   Typography,
   Accordion,
@@ -7,15 +13,9 @@ import {
   Chip,
   Grid,
   Button,
-  InputLabel,
   makeStyles,
-  MenuItem,
-  Select,
-  TextField,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { Field } from "formik";
-import { SatelliteSchemaEntry } from "./SatelliteSchemaEntry";
 
 const useStyles = makeStyles((theme) => ({
   accordionbody: {

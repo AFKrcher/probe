@@ -118,7 +118,7 @@ export const About = () => {
         <Row>
           <Col>
             <Typography variant="h3">
-              About <strong>SpaceIntel</strong>
+              About <strong>OpenOrbit</strong>
             </Typography>
             <p>
               This web application was created by an incredible team of space
@@ -135,8 +135,8 @@ export const About = () => {
               After the Hackathon, a pair of developers, Justin and Archer,
               continued the development of the application from August into
               November of 2021. Features were added to provide better data entry
-              UX/UI and to provide integration into Saber Astronautics' Space
-              Cockpit for data visualization and analysis.
+              UX/UI and integration into Saber Astronautics' Space Cockpit for
+              data visualization and analysis.
             </p>
           </Col>
         </Row>

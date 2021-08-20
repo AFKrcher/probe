@@ -101,24 +101,14 @@ export const SatellitesTable = () => {
   const [newSat, setNewSat] = useState(true);
   const [initialSatValues, setInitialSatValues] = useState(newSatValues);
 
-  const [sats, satsIsLoading] = useTracker(() => {
-    const sub = Meteor.subscribe("satellites");
-    const sats = SatelliteCollection.find({}, { limit: 4 }).fetch();
-    return [sats, !sub.ready()];
-  });
-
-  const [rows, setRows] = useTracker(() => {
-    const sub = Meteor.subscribe("satellites");
-    const rows = SatelliteCollection.find()
-      .fetch()
-      .map((sat) => {
-        return {
-          id: sat.noradID,
-          names: sat.names.map((name) => name.names).join(", "),
-        };
-      });
-    return [rows, !sub.ready()];
-  });
+  // const [sats, satsIsLoading] = useTracker(() => {
+  //   const sub = Meteor.subscribe("satellites");
+  //   const sats = SatelliteCollection.find(
+  //     {},
+  //     { limit: perPage, skip: perPage * page }
+  //   ).fetch();
+  //   return [sats, !sub.ready()];
+  // });
 
   const [schemas, schemasIsLoading] = useTracker(() => {
     const sub = Meteor.subscribe("satellites");
@@ -138,55 +128,75 @@ export const SatellitesTable = () => {
     setInitialSatValues(schemaObject);
   };
 
-  // AG Grid stuff
-  const [gridApi, setGridApi] = useState(null);
-  const [skip, setSkip] = useState(0);
-  // const [currentData, setCurrentData] = useState([]);
-  // const [length, setLength] = useState([]);
-  const perPage = 4;
-
-  let length = SatelliteCollection.find().count();
-  let currentData = SatelliteCollection.find(
-    {},
-    { skip: skip, limit: perPage }
-  ).fetch();
-
-  const onGridReady = (params) => {
-    setGridApi(params.api);
-  };
-
-  useEffect(() => {
-    if (gridApi) {
-      const dataSource = {
-        getRows: (params) => {
-          params.startRow = 1;
-          params.endRow = perPage;
-
-          params.successCallback(currentData, length);
-        },
-      };
-      gridApi.setDatasource(dataSource);
-    }
-  }, [gridApi]);
+  const [page, setPage] = useState(0);
+  const [limiter, setLimiter] = useState(3);
+  const [rows, loading] = useTracker(() => {
+    const sub = Meteor.subscribe("satellites");
+    const count = SatelliteCollection.find().count();
+    const rows = SatelliteCollection.find({}, { limit: limiter, page: page })
+      .fetch()
+      .map((sat) => {
+        return {
+          id: sat.noradID,
+          names: sat.names.map((name) => name.names).join(", "),
+        };
+      });
+    return [rows, !sub.ready()];
+  });
 
   return (
     <React.Fragment>
       <Container className={classes.satelliteContainer} maxWidth="md">
         <DataGrid
-          style={{ height: "50vh", width: "100%" }}
           columns={columns}
           rows={rows}
-          pageSize={4}
-          rowsPerPageOptions={[10]}
+          pagination
+          pageSize={2}
+          paginationMode="server"
+          onPageChange={(newPage) => setPage(newPage)}
+          loading={loading}
+          style={{ height: "50vh", width: "100%" }}
           disableSelectionOnClick
           components={{
             Toolbar: GridToolbar,
           }}
           onClick={() => {
-            console.log("sat", satellite);
             handleRowClick(satellite);
           }}
         />
+        {/* <div
+          className="ag-theme-alpine-dark ag-theme-astro dark-theme"
+          // style={{ height: "60vh" }}
+        >
+          <AgGridReact
+            // rowData={rows}
+            defaultColDef={{
+              sortable: true,
+              filter: true,
+              resizable: true,
+              flex: 1,
+            }}
+            domLayout="autoHeight"
+            rowModelType="infinite"
+            cacheBlockSize={perPage}
+            animateRows={true}
+            pagination={true}
+            paginationPageSize={perPage}
+            cacheBlockSize={perPage}
+            onGridReady={onGridReady}
+            onRowClicked={(e) => {
+              setInitialSatValues(
+                SatelliteCollection.find({ noradID: e.data.id }).fetch()[0]
+              );
+              handleRowClick(
+                SatelliteCollection.find({ noradID: e.data.id }).fetch()
+              );
+            }}
+          >
+            <AgGridColumn field="noradID" headerName="NORAD ID" />
+            <AgGridColumn field="names" headerName="NAME(S)" />
+          </AgGridReact>
+        </div> */}
         {/* <TableContainer component={Paper}>
           <Table size="small" aria-label="Satellite table">
             <TableHead>
@@ -237,39 +247,6 @@ export const SatellitesTable = () => {
           </Table>
         </TableContainer> */}
 
-        <div
-          className="ag-theme-alpine-dark ag-theme-astro dark-theme"
-          // style={{ height: "60vh" }}
-        >
-          <AgGridReact
-            // rowData={rows}
-            defaultColDef={{
-              sortable: true,
-              filter: true,
-              resizable: true,
-              flex: 1,
-            }}
-            domLayout="autoHeight"
-            rowModelType="infinite"
-            cacheBlockSize={perPage}
-            animateRows={true}
-            pagination={true}
-            paginationPageSize={perPage}
-            cacheBlockSize={perPage}
-            onGridReady={onGridReady}
-            onRowClicked={(e) => {
-              setInitialSatValues(
-                SatelliteCollection.find({ noradID: e.data.id }).fetch()[0]
-              );
-              handleRowClick(
-                SatelliteCollection.find({ noradID: e.data.id }).fetch()
-              );
-            }}
-          >
-            <AgGridColumn field="noradID" headerName="NORAD ID" />
-            <AgGridColumn field="names" headerName="NAME(S)" />
-          </AgGridReact>
-        </div>
         <Grid container justify="space-between" alignItems="center">
           <Grid item xs>
             <Typography variant="h3">Satellites</Typography>

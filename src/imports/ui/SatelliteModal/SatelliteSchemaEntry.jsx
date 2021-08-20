@@ -57,7 +57,7 @@ export const SatelliteSchemaEntry = ({
                   name: `${schema.name}.${index}.${field.name}`,
                 }}
                 InputLabelProps={{
-                  shrink: field.type === "date" ? true : false,
+                  shrink: true,
                 }}
                 value={entry[`${field.name}`]}
                 onChange={onChange}
@@ -77,7 +77,7 @@ export const SatelliteSchemaEntry = ({
               aria-label="delete field"
               onClick={() => handleEntryDelete(schema.name, index)}
             >
-              <DeleteIcon fontSize="small" />
+              <DeleteIcon fontSize="default" />
             </IconButton>
           </Grid>
         </Grid>

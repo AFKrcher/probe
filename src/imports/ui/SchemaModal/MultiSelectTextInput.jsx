@@ -14,7 +14,7 @@ export const MultiSelectTextInput = ({
   const fieldName = `fields.${index}.allowedValues`;
   const [inputText, setInputText] = useState("");
 
-  const handleChange = (values) => {
+  const handleChange = (event, values) => {
     setFieldValue(fieldName, values);
   };
 
@@ -35,7 +35,6 @@ export const MultiSelectTextInput = ({
   return (
     <Field
       multiple
-      name="allowedValues"
       disableClearable
       options={[]}
       freeSolo
@@ -57,20 +56,14 @@ export const MultiSelectTextInput = ({
       renderInput={(params) => (
         <TextField
           {...params}
-          label="Allowed Values"
+          label="Allowed Strings"
           variant="outlined"
+          fullWidth
           margin="dense"
           helperText={
             <>
-              <span>
-                Number range limits can be defined using min-max (e.g.{" "}
-                <strong>1-10</strong>)
-              </span>
-              <br />
-              <span>
-                String limits can be defined by separating strings with commas
-                (e.g. <strong>Foo, Bar</strong>)
-              </span>
+              OPTIONAL: separate each string constraint with a comma (e.g.{" "}
+              <strong>foo, bar, baz</strong>)
             </>
           }
         />

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 // Imports
-import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import { schemaValidator } from "../util/yupFuncs.js";
 import HelpersContext from "../helpers/HelpersContext.jsx";
@@ -90,7 +89,6 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
   };
 
   const handleDeleteDialog = () => {
-    console.log(initValues);
     setAlert({
       title: (
         <span>

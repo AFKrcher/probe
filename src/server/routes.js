@@ -4,9 +4,36 @@ import { SchemaCollection } from "/imports/api/schema";
 WebApp.connectHandlers.use("/api/satellite", async (req, res, next) => {
   async function getSats() {
     res.setHeader("Content-Type", "application/json");
-    const sats = await SatelliteCollection.find().fetch();
+    const sats = await SatelliteCollection.find({});
 
-    if (req.query.noradID) {
+    if (req.query.limit) {
+      console.log(req.query.limit);
+      const limiter = parseInt(req.query.limit);
+      const page = parseInt(req.query.page);
+      // const skipper = page * limiter - limiter;
+      try {
+        const result = await SatelliteCollection.find(
+          {},
+          { limit: limiter * page }
+          // { limit: limiter, skip: skipper }
+        ).fetch();
+        if (result.length > 0) {
+          res.writeHead(200);
+          res.end(JSON.stringify(result));
+        } else {
+          error = {
+            error:
+              "Could not fetch sat based on noradID - non-existent noradID",
+          };
+          res.writeHead(500);
+          res.end(JSON.stringify(error));
+        }
+      } catch (err) {
+        error = { error: "Could not fetch limit " };
+        res.writeHead(500);
+        res.end(JSON.stringify(error));
+      }
+    } else if (req.query.noradID) {
       try {
         const noradID = req.query.noradID;
         const result = await SatelliteCollection.find({
@@ -32,7 +59,7 @@ WebApp.connectHandlers.use("/api/satellite", async (req, res, next) => {
       let result = null;
       try {
         const target = req.query.name;
-        const finder = sats.forEach((sat) => {
+        const finder = sats.fetch().forEach((sat) => {
           bool = sat.names.find((name) =>
             name.names === target ? true : false
           );
@@ -58,7 +85,7 @@ WebApp.connectHandlers.use("/api/satellite", async (req, res, next) => {
     } else {
       try {
         res.writeHead(200);
-        res.end(JSON.stringify(sats));
+        res.end(JSON.stringify(sats.fetch()));
       } catch (err) {
         error = { error: "Could not fetch list of sats" };
         res.writeHead(500);
@@ -76,10 +103,10 @@ WebApp.connectHandlers.use("/api/schema", (req, res, next) => {
       schemaName = req.query.name;
       if (schemaName !== null && schemaName !== "") {
         res.writeHead(200);
-        res.end(JSON.stringify(sats));
+        res.end(JSON.stringify(sats.fetch()));
       } else {
         res.writeHead(200);
-        res.end(JSON.stringify(sats));
+        res.end(JSON.stringify(sats.fetch()));
       }
     } catch (err) {
       error = { error: "Could not fetch schema" };

@@ -21,6 +21,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.navigation.main,
   },
   toolbar: {
+    display: "flex",
+    flexWrap: "wrap",
     justifyContent: "space-between",
   },
   logo: {
@@ -32,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   links: {
     display: "flex",
+    flexWrap: "wrap",
     alignItems: "center",
   },
   navBtn: {
@@ -55,7 +58,7 @@ export const Nav = ({ theme, toggleTheme }) => {
         <div className={classes.links}>
           <Tooltip title="To Home">
             <Typography
-              variant="h6"
+              variant="h5"
               className={classes.logo}
               component={Link}
               onClick={() => {
@@ -64,7 +67,7 @@ export const Nav = ({ theme, toggleTheme }) => {
               }}
               to="/"
             >
-              Open Orbit
+              <strong>OpenOrbit</strong>
             </Typography>
           </Tooltip>
           <Button

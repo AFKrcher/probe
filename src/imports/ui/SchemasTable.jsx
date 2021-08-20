@@ -23,14 +23,20 @@ import {
   CircularProgress,
   Tooltip,
 } from "@material-ui/core";
+// import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 
 const useStyles = makeStyles((theme) => ({
   schemaContainer: {
     marginTop: 40,
+    marginBottom: 10,
   },
   table: {
     overflow: "auto",
     maxHeight: "70vh",
+  },
+  dataGrid: {
+    display: "flex",
+    height: "100%",
   },
   tableHead: {
     backgroundColor: theme.palette.grey[700],
@@ -63,6 +69,8 @@ const newSchemaValues = {
       description: "",
       type: "string",
       allowedValues: [],
+      min: null,
+      max: null,
       required: true,
     },
   ],
