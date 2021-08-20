@@ -1,4 +1,10 @@
 import React, { useState } from "react";
+import Clamp from "react-multiline-clamp";
+
+// Components
+import { SatelliteModal } from "./SatelliteModal/SatelliteModal";
+
+// @material-ui
 import { makeStyles } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import {
@@ -12,9 +18,6 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import Clamp from "react-multiline-clamp";
-
-import { SatelliteModal } from "./SatelliteModal/SatelliteModal";
 
 const useStyles = makeStyles((theme) => ({
   satCard: {

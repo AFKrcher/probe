@@ -1,16 +1,18 @@
 {
-    "name": "descriptionShort",
-    "description" : "",
-    "fields": [
-        {
-            "name": "reference",
-            "type": "string",
-            "allowedValues": []
-        },
-        {
-            "name": "descriptionShort",
-            "type": "string",
-            "allowedValues": []
-        }
-    ]
+  "name": "descriptionShort",
+  "description": "",
+  "fields": [
+    {
+      "name": "reference",
+      "type": "string",
+      "description": "Provide a source or rationale for the provided data",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "descriptionShort",
+      "type": "string",
+      "allowedValues": []
+    }
+  ]
 }

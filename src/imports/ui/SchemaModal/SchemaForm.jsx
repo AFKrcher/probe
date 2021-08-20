@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
+import { Field, FieldArray } from "formik";
+// Components
 import { SchemaFormField } from "./SchemaFormField";
+
+// @material-ui
 import {
   Divider,
   Grid,
@@ -7,10 +11,8 @@ import {
   IconButton,
   makeStyles,
 } from "@material-ui/core";
-import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-material-ui";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   alert: {
@@ -29,18 +31,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const SchemaForm = ({
+  touched,
+  errors,
   formValues,
   setValues,
   setFieldValue,
   editing,
+  initValues,
 }) => {
   const classes = useStyles();
-  const [error, setError] = useState("");
 
   const onAddField = () => {
     const fields = [
       ...formValues.fields,
-      { name: "", type: "", allowedValues: [] },
+      { name: "", type: "", allowedValues: [], required: false },
     ];
     setValues({ ...formValues, fields });
   };
@@ -54,13 +58,6 @@ export const SchemaForm = ({
   return (
     <Grid container spacing={1}>
       <Grid container item>
-        {error && (
-          <Grid item xs={12}>
-            <Alert severity="error" className={classes.alert}>
-              {error}
-            </Alert>
-          </Grid>
-        )}
         <Grid item xs={12}>
           <Field
             name="name"
@@ -89,35 +86,49 @@ export const SchemaForm = ({
           />
         </Grid>
       </Grid>
-      {formValues.fields.map((field, i) => {
-        if (field.name === "reference") return;
-        return (
-          <React.Fragment key={`fragment-${i}`}>
-            <Grid key={`divider-${i}`} item xs={12} className={classes.divider}>
-              <Divider />
-            </Grid>
-            <Grid key={`grid-${i}`} item container xs alignItems="center">
-              <SchemaFormField
-                key={`form-field-${i}`}
-                index={i}
-                field={field}
-                setFieldValue={setFieldValue}
-                editing={editing}
-              />
-            </Grid>
-            {editing && (
-              <Grid container item xs={1} alignContent="center">
-                <IconButton
-                  aria-label="delete field"
-                  onClick={() => handleFieldDelete(i)}
+      <FieldArray
+        name="fields"
+        render={() =>
+          formValues.fields.map((field, i) => {
+            if (field.name === "reference") return;
+
+            return (
+              <React.Fragment key={`fragment-${i}`}>
+                <Grid
+                  key={`divider-${i}`}
+                  item
+                  xs={12}
+                  className={classes.divider}
                 >
-                  <DeleteIcon fontSize="default" />
-                </IconButton>
-              </Grid>
-            )}
-          </React.Fragment>
-        );
-      })}
+                  <Divider />
+                </Grid>
+                <Grid key={`grid-${i}`} item container xs alignItems="center">
+                  <SchemaFormField
+                    touched={touched}
+                    errors={errors}
+                    key={`form-field-${i}`}
+                    index={i}
+                    field={field}
+                    setFieldValue={setFieldValue}
+                    editing={editing}
+                    initValues={initValues}
+                  />
+                </Grid>
+                {editing && (
+                  <Grid container item xs={1} alignContent="center">
+                    <IconButton
+                      aria-label="delete field"
+                      onClick={() => handleFieldDelete(i)}
+                    >
+                      <DeleteIcon fontSize="default" />
+                    </IconButton>
+                  </Grid>
+                )}
+              </React.Fragment>
+            );
+          })
+        }
+      />
       <Grid item xs={12} className={classes.addFieldContainer}>
         {editing && (
           <Button

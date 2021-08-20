@@ -38,6 +38,7 @@ export const SatelliteSchemaEntry = ({
 
   const onChange = (event) => {
     setFieldValue(event.target.name, event.target.value);
+    console.log();
   };
 
   handleEntryDelete = (schemaName, index) => {
@@ -55,15 +56,19 @@ export const SatelliteSchemaEntry = ({
                 inputProps={{
                   name: `${schema.name}.${index}.${field.name}`,
                 }}
+                InputLabelProps={{
+                  shrink: field.type === "date" ? true : false,
+                }}
                 value={entry[`${field.name}`]}
                 onChange={onChange}
                 label={field.name}
                 margin="dense"
-                required
+                required={field.required}
                 fullWidth
                 variant="outlined"
                 disabled={!editing}
                 component={TextField}
+                type={field.type === "date" ? "datetime-local" : ""}
               />
             ))}
           </Grid>

@@ -1,7 +1,11 @@
 import React from "react";
+
+// Components
 import { SatCard } from "./SatCard.jsx";
 import { useTracker } from "meteor/react-meteor-data";
 import { SatelliteCollection } from "../api/satellite";
+
+// @material-ui
 import {
   Container,
   TextField,
@@ -17,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   showcase: {
     marginTop: 30,
-    marginBottom: 30,
+    marginBottom: 70,
   },
 }));
 
@@ -28,7 +32,7 @@ export const Home = () => {
 
   const [demoSats, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("satellites");
-    const sats = SatelliteCollection.find().fetch();
+    const sats = SatelliteCollection.find({}, { limit: 9 }).fetch();
     return [sats, !sub.ready()];
   });
 
@@ -36,10 +40,10 @@ export const Home = () => {
     <React.Fragment>
       <Container className={classes.jumbo} maxWidth="md">
         <Typography variant="h3">
-          Welcome to <strong>SpaceIntel!</strong>
+          Welcome to <strong>Open Orbit!</strong>
         </Typography>
         <Typography variant="body1" style={{ marginTop: 10 }}>
-          SpaceIntel is seeking to become the world's most complete and easy to
+          Open Orbit is seeking to become the world's most complete and easy to
           use resource for spacecraft data and information.
         </Typography>
         <Typography variant="subtitle1">
@@ -50,7 +54,7 @@ export const Home = () => {
         <Typography variant="h4" gutterBottom>
           Satellite Data Cards
         </Typography>
-        <Grid container justify="left" spacing={2}>
+        <Grid container justify="flex-start" spacing={2}>
           {!isLoading &&
             demoSats.map((sat, index) => (
               <Grid item xs={4} key={index}>

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { Field } from "formik";
+// @material-ui
 import { Autocomplete } from "@material-ui/lab";
 import { Chip, TextField } from "@material-ui/core";
 import Close from "@material-ui/icons/Close";
-import { Field } from "formik";
 
 export const MultiSelectTextInput = ({
   index,
@@ -13,15 +14,11 @@ export const MultiSelectTextInput = ({
   const fieldName = `fields.${index}.allowedValues`;
   const [inputText, setInputText] = useState("");
 
-  const handleChange = (event, values) => {
-    console.log(fieldName);
-    console.log(values);
+  const handleChange = (values) => {
     setFieldValue(fieldName, values);
   };
 
   const handleInputChange = (event, newInputValue) => {
-    console.log(allowedValues);
-
     const options = newInputValue.split(/[ ,]+/);
     const fieldValue = [...allowedValues, ...options]
       .map((x) => x.trim())
@@ -38,6 +35,7 @@ export const MultiSelectTextInput = ({
   return (
     <Field
       multiple
+      name="allowedValues"
       disableClearable
       options={[]}
       freeSolo
@@ -61,8 +59,20 @@ export const MultiSelectTextInput = ({
           {...params}
           label="Allowed Values"
           variant="outlined"
-          fullWidth
           margin="dense"
+          helperText={
+            <>
+              <span>
+                Number range limits can be defined using min-max (e.g.{" "}
+                <strong>1-10</strong>)
+              </span>
+              <br />
+              <span>
+                String limits can be defined by separating strings with commas
+                (e.g. <strong>Foo, Bar</strong>)
+              </span>
+            </>
+          }
         />
       )}
       component={Autocomplete}

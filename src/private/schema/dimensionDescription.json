@@ -1,31 +1,33 @@
 {
-    "name": "dimensionDescription",
-    "description" : "",
-    "fields": [
-        {
-            "name": "reference",
-            "type": "string",
-            "allowedValues": []
-        },
-        {
-            "name": "dimensionDescription",
-            "type": "string",
-            "allowedValues": []
-        },
-        {
-            "name": "lengthMeters",
-            "type": "number",
-            "allowedValues": []
-        },
-        {
-            "name": "widthMeters",
-            "type": "number",
-            "allowedValues": []
-        },
-        {
-            "name": "heightMeters",
-            "type": "number",
-            "allowedValues": []
-        }
-    ]
+  "name": "dimensionDescription",
+  "description": "",
+  "fields": [
+    {
+      "name": "reference",
+      "description": "Provide a source or rationale for the provided data",
+      "type": "string",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "dimensionDescription",
+      "type": "string",
+      "allowedValues": []
+    },
+    {
+      "name": "lengthMeters",
+      "type": "number",
+      "allowedValues": []
+    },
+    {
+      "name": "widthMeters",
+      "type": "number",
+      "allowedValues": []
+    },
+    {
+      "name": "heightMeters",
+      "type": "number",
+      "allowedValues": []
+    }
+  ]
 }

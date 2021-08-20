@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import HelpersContext from "./helpers/HelpersContext.jsx";
+
+// @material-ui
 import {
   AppBar,
   Toolbar,
@@ -43,6 +46,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Nav = ({ theme, toggleTheme }) => {
+  const { setOpenAlert, setOpenSnack } = useContext(HelpersContext);
+
   const classes = useStyles();
   return (
     <AppBar className={classes.navbar} position="static">
@@ -53,43 +58,59 @@ export const Nav = ({ theme, toggleTheme }) => {
               variant="h6"
               className={classes.logo}
               component={Link}
+              onClick={() => {
+                setOpenAlert(false);
+                setOpenSnack(false);
+              }}
               to="/"
             >
-              SpaceIntel
+              Open Orbit
             </Typography>
           </Tooltip>
           <Button
-            variant="contained"
             disableElevation
             className={classes.navBtn}
             component={Link}
+            onClick={() => {
+              setOpenAlert(false);
+              setOpenSnack(false);
+            }}
             to="/"
           >
             Home
           </Button>
           <Button
-            variant="contained"
             disableElevation
             className={classes.navBtn}
             component={Link}
+            onClick={() => {
+              setOpenAlert(false);
+              setOpenSnack(false);
+            }}
             to="/satellites"
           >
             Satellites
           </Button>
           <Button
-            variant="contained"
             disableElevation
             className={classes.navBtn}
             component={Link}
+            onClick={() => {
+              setOpenAlert(false);
+              setOpenSnack(false);
+            }}
             to="/schemas"
           >
             Schemas
           </Button>
           <Button
-            variant="contained"
             disableElevation
             className={classes.navBtn}
             component={Link}
+            onClick={() => {
+              setOpenAlert(false);
+              setOpenSnack(false);
+            }}
             to="/about"
           >
             About

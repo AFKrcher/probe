@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
+
+// Components
 import { SchemaCollection } from "../api/schema";
 import { SchemaModal } from "./SchemaModal/SchemaModal.jsx";
+
+// @material-ui
 import {
   Container,
   Button,
@@ -24,8 +28,12 @@ const useStyles = makeStyles((theme) => ({
   schemaContainer: {
     marginTop: 40,
   },
+  table: {
+    overflow: "auto",
+    maxHeight: "70vh",
+  },
   tableHead: {
-    bckgroundColor: theme.palette.grey[700],
+    backgroundColor: theme.palette.grey[700],
   },
   tableNameCol: {
     width: "25%",
@@ -40,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     color: theme.palette.text.primary,
+    "&:hover": {
+      color: theme.palette.info.light,
+    },
   },
 }));
 
@@ -49,8 +60,10 @@ const newSchemaValues = {
   fields: [
     {
       name: "reference",
+      description: "",
       type: "string",
       allowedValues: [],
+      required: true,
     },
   ],
 };
@@ -94,7 +107,7 @@ export const SchemasTable = () => {
               color="primary"
               onClick={handleAddNewSchema}
             >
-              + Add New Schema
+              + Add Schema
             </Button>
           </Grid>
         </Grid>
@@ -103,7 +116,7 @@ export const SchemasTable = () => {
           <strong>schema</strong>. You can characterize a given satellite using
           any number of schemas. Please see the satellites on the{" "}
           <Tooltip title="Bring me to the schemas page">
-            <Link exact to="/satellites" className={classes.link}>
+            <Link to="/satellites" className={classes.link}>
               previous page
             </Link>
           </Tooltip>{" "}
@@ -119,7 +132,11 @@ export const SchemasTable = () => {
           and edit the entry fields.
         </Typography>
         <TableContainer component={Paper}>
-          <Table size="small" aria-label="Schema table">
+          <Table
+            size="small"
+            aria-label="Schema table"
+            className={classes.table}
+          >
             <TableHead>
               <TableRow color="secondary">
                 <TableCell className={classes.tableNameCol}>

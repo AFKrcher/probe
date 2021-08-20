@@ -1,16 +1,18 @@
 {
-    "name": "bus",
-    "description" : "",
-    "fields": [
-        {
-            "name": "reference",
-            "type": "string",
-            "allowedValues": []
-        },
-        {
-            "name": "bus",
-            "type": "string",
-            "allowedValues": []
-        }
-    ]
+  "name": "bus",
+  "description": "",
+  "fields": [
+    {
+      "name": "reference",
+      "description": "Provide a source or rationale for the provided data",
+      "type": "string",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "bus",
+      "type": "string",
+      "allowedValues": []
+    }
+  ]
 }

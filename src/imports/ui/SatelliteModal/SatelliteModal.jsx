@@ -1,11 +1,12 @@
-// dependencies
 import React, { useState, useEffect } from "react";
+// Imports
 import { useTracker } from "meteor/react-meteor-data";
 import { SchemaCollection } from "../../api/schema";
 import { SatelliteCollection } from "../../api/satellite";
-import * as Yup from "yup";
+import { satelliteValidator } from "../util/yupFuncs.js";
+import HelpersContext from "../helpers/HelpersContext.jsx";
 
-// components
+// Components
 import {
   Dialog,
   DialogTitle,
@@ -28,8 +29,6 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: "0px",
   },
 }));
-
-const satValidationSchema = Yup.object().shape({});
 
 export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
   const classes = useStyles();
@@ -78,7 +77,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
         </DialogTitle>
         <Formik
           initialValues={initValues}
-          validationSchema={satValidationSchema}
+          validationSchema={satelliteValidator}
           onSubmit={handleSubmit}
         >
           {({ isSubmitting, values, setValues, setFieldValue }) => (

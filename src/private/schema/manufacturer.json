@@ -1,16 +1,18 @@
 {
-    "name": "manufacturer",
-    "description" : "",
-    "fields": [
-        {
-            "name": "reference",
-            "type": "string",
-            "allowedValues": []
-        },
-        {
-                "name": "manufacturers",
-                "type": "string",
-                "allowedValues": []
-        }
-    ]
+  "name": "manufacturer",
+  "description": "",
+  "fields": [
+    {
+      "name": "reference",
+      "description": "Provide a source or rationale for the provided data",
+      "type": "string",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "manufacturers",
+      "type": "string",
+      "allowedValues": []
+    }
+  ]
 }

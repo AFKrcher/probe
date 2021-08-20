@@ -1,23 +1,42 @@
 import React from "react";
+import { Field, ErrorMessage } from "formik";
+// Components
 import { MultiSelectTextInput } from "./MultiSelectTextInput";
+
+// @material-ui
 import {
   FormControl,
   Grid,
   InputLabel,
-  makeStyles,
   MenuItem,
   Select,
   TextField,
+  Checkbox,
 } from "@material-ui/core";
-import { Field } from "formik";
 
-export const SchemaFormField = ({ index, field, setFieldValue, editing }) => {
+export const SchemaFormField = ({
+  touched,
+  errors,
+  index,
+  field,
+  setFieldValue,
+  editing,
+}) => {
+  const nameErrors =
+    (errors.fields?.length && errors.fields[index]?.name) || {};
+  const typeErrors =
+    (errors.fields?.length && errors.fields[index]?.type) || {};
+
   const onNameChange = (event) => {
     setFieldValue(event.target.name, event.target.value);
   };
 
   const onTypeChange = (event) => {
     setFieldValue(event.target.name, event.target.value);
+  };
+
+  const onRequiredChange = (event) => {
+    setFieldValue(event.target.name, event.target.checked);
   };
 
   return (
@@ -30,14 +49,16 @@ export const SchemaFormField = ({ index, field, setFieldValue, editing }) => {
             }}
             value={field.name}
             onChange={onNameChange}
-            label="Field Name"
+            label="Field Name or Units"
             margin="dense"
             required
             fullWidth
             variant="outlined"
             disabled={!editing}
             component={TextField}
+            error={nameErrors === "Required" ? true : false}
           />
+          <ErrorMessage name={`fields.${index}.name`} component="div" />
         </Grid>
         <Grid item xs>
           <FormControl
@@ -47,7 +68,10 @@ export const SchemaFormField = ({ index, field, setFieldValue, editing }) => {
             required
             fullWidth
           >
-            <InputLabel htmlFor={`schema-field-${index}-data-type-label`}>
+            <InputLabel
+              htmlFor={`schema-field-${index}-data-type-label`}
+              error={typeErrors === "Required" ? true : false}
+            >
               Data type
             </InputLabel>
             <Field
@@ -60,22 +84,46 @@ export const SchemaFormField = ({ index, field, setFieldValue, editing }) => {
               onChange={onTypeChange}
               disabled={!editing}
               component={Select}
+              error={typeErrors === "Required" ? true : false}
             >
               <MenuItem value="string">String</MenuItem>
               <MenuItem value="number">Number</MenuItem>
               <MenuItem value="date">Date</MenuItem>
-              <MenuItem value="date">Multi-List</MenuItem>
             </Field>
+            <ErrorMessage name={`fields.${index}.type`} component="div" />
           </FormControl>
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        <MultiSelectTextInput
-          index={index}
-          allowedValues={field.allowedValues}
-          disabled={!editing}
-          setFieldValue={setFieldValue}
-        />
+        {field.type === "date" ? (
+          ""
+        ) : (
+          <>
+            <MultiSelectTextInput
+              index={index}
+              allowedValues={field.allowedValues}
+              disabled={!editing}
+              setFieldValue={setFieldValue}
+            />
+          </>
+        )}
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Field
+            inputProps={{
+              id: `schema-field-${index}-required-label`,
+              name: `fields.${index}.required`,
+            }}
+            checked={field.required}
+            onChange={onRequiredChange}
+            margin="dense"
+            disabled={!editing}
+            component={Checkbox}
+            type="checkbox"
+          />
+          <InputLabel htmlFor={`schema-field-${index}-required-label`}>
+            Required Input?
+          </InputLabel>
+        </div>
       </Grid>
     </Grid>
   );

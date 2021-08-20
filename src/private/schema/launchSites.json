@@ -1,26 +1,28 @@
 {
-    "name": "launchSites",
-    "description" : "",
-    "fields": [
-        {
-            "name": "reference",
-            "type": "string",
-            "allowedValues": []
-        },
-        {
-            "name": "name",
-            "type": "string",
-            "allowedValues": []
-        },
-        {
-            "name": "latitude",
-            "type": "number",
-            "allowedValues": []
-        },
-        {
-            "name": "longitude",
-            "type": "number",
-            "allowedValues": []
-        }
-    ]
+  "name": "launchSites",
+  "description": "",
+  "fields": [
+    {
+      "name": "reference",
+      "description": "Provide a source or rationale for the provided data",
+      "type": "string",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "allowedValues": []
+    },
+    {
+      "name": "latitude",
+      "type": "number",
+      "allowedValues": []
+    },
+    {
+      "name": "longitude",
+      "type": "number",
+      "allowedValues": []
+    }
+  ]
 }

@@ -1,21 +1,23 @@
 {
-    "name": "ownership",
-    "description" : "",
-    "fields": [
-        {
-            "name": "reference",
-            "type": "string",
-            "allowedValues": []
-        },
-        {
-            "name": "country",
-            "type": "string",
-            "allowedValues": []
-        },
-        {
-            "name": "company",
-            "type": "string",
-            "allowedValues": []
-        }
-    ]
+  "name": "ownership",
+  "description": "",
+  "fields": [
+    {
+      "name": "reference",
+      "description": "Provide a source or rationale for the provided data",
+      "type": "string",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "country",
+      "type": "string",
+      "allowedValues": []
+    },
+    {
+      "name": "company",
+      "type": "string",
+      "allowedValues": []
+    }
+  ]
 }

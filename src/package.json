@@ -13,6 +13,8 @@
     "@material-ui/data-grid": "^4.0.0-alpha.37",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
+    "ag-grid-community": "^26.0.0",
+    "ag-grid-react": "^26.0.0",
     "bootstrap": "^5.0.0",
     "bootswatch": "^5.0.0",
     "express": "^4.17.1",
@@ -29,6 +31,7 @@
     "react-router-dom": "^5.2.0",
     "react-select": "^4.3.0",
     "react-table": "^7.7.0",
+    "sass": "^1.38.0",
     "yup": "^0.32.9"
   },
   "meteor": {

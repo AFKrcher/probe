@@ -1,26 +1,28 @@
 {
-    "name": "missionDuration",
-    "description" : "",
-    "fields": [
-        {
-            "name": "reference",
-            "type": "string",
-            "allowedValues": []
-        },
-        {
-            "name": "start",
-            "type": "string",
-            "allowedValues": []
-        },
-        {
-            "name": "plannedMissionDuration",
-            "type": "string",
-            "allowedValues": []
-        },
-        {
-            "name": "actualMissionDuration",
-            "type": "string",
-            "allowedValues": []
-        }
-    ]
+  "name": "missionDuration",
+  "description": "",
+  "fields": [
+    {
+      "name": "reference",
+      "description": "Provide a source or rationale for the provided data",
+      "type": "string",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "start",
+      "type": "string",
+      "allowedValues": []
+    },
+    {
+      "name": "plannedMissionDuration",
+      "type": "string",
+      "allowedValues": []
+    },
+    {
+      "name": "actualMissionDuration",
+      "type": "string",
+      "allowedValues": []
+    }
+  ]
 }
