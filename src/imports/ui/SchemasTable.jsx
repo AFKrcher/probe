@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 
 // Components
-import { SchemaCollection } from "../api/schema";
+import { SchemaCollection } from "../api/schemas";
 import { SchemaModal } from "./SchemaModal/SchemaModal.jsx";
 
 // @material-ui
@@ -103,7 +103,7 @@ export const SchemasTable = () => {
   };
 
   return (
-    <React.Fragment>
+    <div style={{ paddingBottom: 50 }}>
       <Container className={classes.schemaContainer} maxWidth="md">
         <Grid container justify="space-between" alignItems="center">
           <Grid item xs>
@@ -191,6 +191,6 @@ export const SchemasTable = () => {
         initValues={initialSchemaValues}
         handleClose={() => setShowModal(false)}
       />
-    </React.Fragment>
+    </div>
   );
 };

@@ -2,8 +2,8 @@
 -------------------------------------------------- */
 
 html {
-    position: relative;
-    min-height: 100%;
+  position: relative;
+  min-height: 100%;
 }
 
 body {
@@ -16,10 +16,10 @@ body {
   width: 100%;
   height: 60px; /* Set the fixed height of the footer here */
   line-height: 60px; /* Vertically center the text there */
-  text-align:center;
+  text-align: center;
 }
 
-tr{
+tr {
   cursor: pointer;
 }
 
@@ -28,22 +28,21 @@ tr{
   padding: 0 15px;
 }
 
-.card-img-top{
-  height:150px;
+.card-img-top {
+  height: 150px;
 }
 
-.cardShortDescription{
-  height:120px;
+.cardShortDescription {
+  height: 120px;
   overflow: overlay;
-
 }
 
-.cardName{
-  text-overflow: ellipsis; 
-  overflow: hidden; 
+.cardName {
+  text-overflow: ellipsis;
+  overflow: hidden;
   white-space: nowrap;
 }
 
-.modal-90w { 
-  max-width: 90% !important; 
+.modal-90w {
+  max-width: 90% !important;
 }

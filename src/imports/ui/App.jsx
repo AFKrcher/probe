@@ -12,7 +12,7 @@ import { DataSourcesTable } from "./DataSourcesTable";
 import { Footer } from "./Footer.jsx";
 
 // @material-ui
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/core/styles";
 import { themes } from "./Themes.jsx";
 import { CssBaseline } from "@material-ui/core";
 

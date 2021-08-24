@@ -1,118 +1,118 @@
 {
-      "noradID" : "39765",
-      "bus": [
-        {
-          "reference": "Placeholder",
-          "bus": "Placeholder"
-        }
-      ],
-      "contractor" : [
-        {
-          "reference" : "Placeholder",
-          "contractor" : "Placeholder"
-        }
-      ],
-      
-      "cosparID" : [
-        {
-          "reference" : "https://en.wikipedia.org/wiki/Kosmos_2499",
-          "cosparID" : "2014-028E"
-        }
-      ],
-      "descriptionLong" : [
-        {
-          "reference" : "Placeholder",
-          "descriptionLong" : "The satellite was launched on May 23, 2014, from Plesetsk, Russia on a Rokot/Briz-KM launch vehicle. Following launch the spacecraft was provisionally described by the NASA Orbital Debris Program Office as Object E until its identity was confirmed. NORAD tracked it under the designation Norad 39765.Some reports have speculated, based on its unusual powered maneuvers, that it may be an experimental anti-satellite weapon, satellite maintenance vehicle, or collector of space debris. Chatham House research director and space security expert Patricia Lewis stated that- whatever it is, [Object 2014-280E] looks experimental. According to an article published on the official Moscow Institute of Physics and Technology website, congratulating the developers on the successful launch and deployment, the satellite is designed to test experimental plasma propulsion engines/ion thrusters, designed by the JSC Reshetnev Company and the Keldysh Research Center. The article states that the engines are part of a new generation of Hall effect thrusters and are designed to be able to shift a spacecraft on an east-west and north-south axis using a fraction of the energy required by current propulsion systems."
-        }
-      ],
-      "descriptionShort" : [
-        {
-          "reference" : "Placeholder",
-          "descriptionShort" : "Communication"
-        }
-      ],
-      "dimensionDescription" : [
-        {
-          "reference" : "Placeholder",
-          "dimensionDescription" : "Placeholder",
-          "length" : "Placeholder",
-          "width" : "Placeholder",
-          "height" : "Placeholder"
-        }
-      ],
+  "noradID": "39765",
+  "bus": [
+    {
+      "reference": "Placeholder",
+      "bus": "Placeholder"
+    }
+  ],
+  "contractor": [
+    {
+      "reference": "Placeholder",
+      "contractor": "Placeholder"
+    }
+  ],
 
-      "dimensionVolumeM3" : [
-        {
-          "reference" : "Placeholder",
-          "cubicMeters" : 1234
-        }
-      ],
+  "cosparID": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Kosmos_2499",
+      "cosparID": "2014-028E"
+    }
+  ],
+  "descriptionLong": [
+    {
+      "reference": "Placeholder",
+      "descriptionLong": "The satellite was launched on May 23, 2014, from Plesetsk, Russia on a Rokot/Briz-KM launch vehicle. Following launch the spacecraft was provisionally described by the NASA Orbital Debris Program Office as Object E until its identity was confirmed. NORAD tracked it under the designation Norad 39765.Some reports have speculated, based on its unusual powered maneuvers, that it may be an experimental anti-satellite weapon, satellite maintenance vehicle, or collector of space debris. Chatham House research director and space security expert Patricia Lewis stated that- whatever it is, [Object 2014-280E] looks experimental. According to an article published on the official Moscow Institute of Physics and Technology website, congratulating the developers on the successful launch and deployment, the satellite is designed to test experimental plasma propulsion engines/ion thrusters, designed by the JSC Reshetnev Company and the Keldysh Research Center. The article states that the engines are part of a new generation of Hall effect thrusters and are designed to be able to shift a spacecraft on an east-west and north-south axis using a fraction of the energy required by current propulsion systems."
+    }
+  ],
+  "descriptionShort": [
+    {
+      "reference": "Placeholder",
+      "descriptionShort": "Communication"
+    }
+  ],
+  "dimensionDescription": [
+    {
+      "reference": "Placeholder",
+      "dimensionDescription": "Placeholder",
+      "length": "Placeholder",
+      "width": "Placeholder",
+      "height": "Placeholder"
+    }
+  ],
 
-      "launchMassKg" : [
-        {
-          "reference" : "Placeholder",
-          "launchMassKg" : 1234
-        }
-      ],
+  "dimensionVolumeM3": [
+    {
+      "reference": "Placeholder",
+      "cubicMeters": 1234
+    }
+  ],
 
-      "launchSites" : [
-        {
-          "reference" : "https://en.wikipedia.org/wiki/Kosmos_2499",
-          "name" : "Plesetsk Missile and Space Complex, Russia, 133/3",
-          "latitude" : -123,
-          "longitude" : 123
-        }
-      ],
+  "launchMassKg": [
+    {
+      "reference": "Placeholder",
+      "launchMassKg": 1234
+    }
+  ],
 
-      "manufacturer" : [
-        {
-          "reference" : "https://en.wikipedia.org/wiki/Kosmos_2499",
-          "manufacturer" : "Moscow Institute of Physics and Technology"
-        }
-      ],
+  "launchSites": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Kosmos_2499",
+      "name": "Plesetsk Missile and Space Complex, Russia, 133/3",
+      "latitude": -123,
+      "longitude": 123
+    }
+  ],
 
-      "missionDuration" : [
-        {
-          "reference" : "https://en.wikipedia.org/wiki/Kosmos_2499",
-          "start" : "23 May 2014",
-          "plannedMissionDuration" : "Placeholder",
-          "actualMissionDuration" : "Placeholder"
-        }
-      ],
+  "manufacturer": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Kosmos_2499",
+      "manufacturer": "Moscow Institute of Physics and Technology"
+    }
+  ],
 
-      "names": [      
-        {
-          "reference": "https://en.wikipedia.org/wiki/Kosmos_2499",
-          "names": "COSMOS 2499"
-        },
-        {
-          "reference": "Placeholder",
-          "names": "Placeholder"
-        }
-      ],
+  "missionDuration": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Kosmos_2499",
+      "start": "23 May 2014",
+      "plannedMissionDuration": "Placeholder",
+      "actualMissionDuration": "Placeholder"
+    }
+  ],
 
-      "ownership" : [
-        {
-          "reference" : "Placeholder",
-          "country" : "Russia",
-          "company" : "Placeholder",
-          "endDate" : "12/34/56"
-        }
-      ],
+  "names": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Kosmos_2499",
+      "name": "COSMOS 2499"
+    },
+    {
+      "reference": "Placeholder",
+      "name": "Placeholder"
+    }
+  ],
 
-      "radarCrossSection" : [
-        {
-          "reference" : "Placeholder",
-          "radarCrossSection" : 1234
-        }
-      ],
+  "ownership": [
+    {
+      "reference": "Placeholder",
+      "country": "Russia",
+      "company": "Placeholder",
+      "endDate": "12/34/56"
+    }
+  ],
 
-      "transponder": [
-        {
-          "reference": "Placeholder",
-          "band": "Placeholder",
-          "scale": "Placeholder",
-          "direction": "Placeholder"
-         }
-      ]
+  "radarCrossSection": [
+    {
+      "reference": "Placeholder",
+      "radarCrossSection": 1234
+    }
+  ],
+
+  "transponder": [
+    {
+      "reference": "Placeholder",
+      "band": "Placeholder",
+      "scale": "Placeholder",
+      "direction": "Placeholder"
+    }
+  ]
 }

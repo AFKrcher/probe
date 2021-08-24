@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Clamp from "react-multiline-clamp";
+
+// Imports
+import HelpersContext from "./helpers/HelpersContext.jsx";
 
 // Components
 import { SatelliteModal } from "./SatelliteModal/SatelliteModal";
+import PromptDialog from "./helpers/PromptDialog";
 
 // @material-ui
 import { makeStyles } from "@material-ui/core";
@@ -18,36 +22,76 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import Close from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   satCard: {
     width: "100%",
   },
   image: {
-    minHeight: "170px",
-    maxHeight: "170px",
+    minHeight: "180px",
+    maxHeight: "180px",
   },
   description: {
     minHeight: "150px",
     maxHeight: "150px",
   },
-  link: {
-    textDecoration: "none",
-    color: theme.palette.text.primary,
-  },
 }));
 
 export const SatCard = ({ satellite }) => {
   const [showModal, setShowModal] = useState(false);
+  const [openPrompt, setOpenPrompt] = useState(false);
+  const [prompt, setPrompt] = useState({
+    title: "", //dialog title
+    text: "", //dialog body text
+    actions: "", //dialog actions
+  });
+
   const classes = useStyles();
 
-  function handleViewMore(e, satellite) {
+  function handleViewMore(e) {
     e.preventDefault();
     setShowModal(true);
   }
 
+  const handleVisualize = async (e, url) => {
+    e.preventDefault();
+    setPrompt({
+      title: (
+        <Typography>
+          Visualizing{" "}
+          <strong>{satellite.names[0].names || satellite.names[0].name}</strong>{" "}
+          in Space Cockpit by Saber Astronautics
+        </Typography>
+      ),
+      text: (
+        <iframe
+          src={url}
+          height="99%"
+          width="100%"
+          title="SpaceCockpit"
+          style={{ border: "none" }}
+        />
+      ),
+      actions: (
+        <Button
+          variant="contained"
+          color="default"
+          size="small"
+          style={{ marginBottom: 5 }}
+          onClick={() => setOpenPrompt(false)}
+        >
+          <Close />
+          Close
+        </Button>
+      ),
+    });
+    await setOpenPrompt(true);
+  };
+
   return (
     <>
+      <PromptDialog bodyPrompt={prompt} open={openPrompt} />
       <SatelliteModal
         show={showModal}
         initValues={satellite}
@@ -78,15 +122,16 @@ export const SatCard = ({ satellite }) => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small">
-            <a
-              href={`https://spacecockpit.saberastro.com/?SID=${satellite.noradID}&FS=${satellite.noradID}`}
-              target="_blank"
-              rel="noreferrer"
-              className={classes.link}
-            >
-              Visualize
-            </a>
+          <Button
+            size="small"
+            onClick={(e) =>
+              handleVisualize(
+                e,
+                `https://spacecockpit.saberastro.com/?SID=${satellite.noradID}&FS=${satellite.noradID}`
+              )
+            }
+          >
+            Visualize
           </Button>
           <Button size="small" onClick={(e) => handleViewMore(e, satellite)}>
             View more

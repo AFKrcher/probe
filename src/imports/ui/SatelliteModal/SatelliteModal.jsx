@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 // Imports
 import { useTracker } from "meteor/react-meteor-data";
-import { SchemaCollection } from "../../api/schema";
-import { SatelliteCollection } from "../../api/satellite";
+import { SchemaCollection } from "../../api/schemas";
+import { SatelliteCollection } from "../../api/satellites";
 import { satelliteValidator } from "../util/yupFuncs.js";
 import HelpersContext from "../helpers/HelpersContext.jsx";
 
@@ -57,7 +57,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
       setOpenSnack(false);
       setSnack(
         <span>
-          <strong>{initValues.names[0].names}</strong> satellite saved!
+          <strong>{values.names[0].name}</strong> saved!
         </span>
       );
       setOpenSnack(true);
@@ -67,7 +67,11 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
       setOpenSnack(false);
       setSnack(
         <span>
-          Changes on <strong>{initValues.names[0].names}</strong> saved!
+          Changes on{" "}
+          <strong>
+            {initValues.names[0].names || initValues.names[0].name}
+          </strong>{" "}
+          saved!
         </span>
       );
       setOpenSnack(true);
@@ -93,13 +97,20 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
     setAlert({
       title: (
         <span>
-          Delete <strong>{initValues.names[0].names}</strong> Schema?
+          Delete{" "}
+          <strong>
+            {initValues.names[0].names || initValues.names[0].name}
+          </strong>{" "}
+          Schema?
         </span>
       ),
       text: (
         <span>
           Are you sure you want to delete{" "}
-          <strong>{initValues.names[0].names}</strong> and all of its data?
+          <strong>
+            {initValues.names[0].names || initValues.names[0].name}
+          </strong>{" "}
+          and all of its data?
         </span>
       ),
       actions: (
@@ -120,20 +131,72 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
 
   const handleToggleEdit = (setValues) => {
     if (editing) setValues(initValues);
-    setEditing(!editing);
+    initValues.names ? setEditing(!editing) : handleClose();
+  };
+
+  const handleEdit = (setValues) => {
+    if (editing) {
+      setAlert({
+        title: initValues.names ? (
+          <span>
+            Delete changes on{" "}
+            <strong>
+              {initValues.names[0].names || initValues.names[0].name}
+            </strong>
+            ?
+          </span>
+        ) : (
+          <span>Delete changes on new satellite?</span>
+        ),
+        text: initValues.names ? (
+          <span>
+            Are you sure you want to cancel all changes made to{" "}
+            <strong>
+              {initValues.names[0].names || initValues.names[0].name}
+            </strong>{" "}
+            and its data?
+          </span>
+        ) : (
+          <span>
+            Are you sure you want to delete all the changes you've made to this
+            new satellite?
+          </span>
+        ),
+        actions: (
+          <Button
+            variant="contained"
+            size="small"
+            color="secondary"
+            disableElevation
+            onClick={() => {
+              setOpenAlert(false);
+              handleToggleEdit(setValues);
+            }}
+          >
+            Confirm
+          </Button>
+        ),
+        closeAction: "Cancel",
+      });
+      setOpenAlert(true);
+    } else {
+      handleToggleEdit(setValues);
+    }
   };
 
   return (
     <>
       <AlertDialog bodyAlert={alert} />
       <SnackBar bodySnackBar={snack} />
-      <Dialog open={show} scroll="paper" onClose={handleClose}>
+      <Dialog open={show} scroll="paper" onClose={handleClose} maxWidth="md">
         <div className={classes.modal}>
           <DialogTitle className={classes.title}>
             {newSat ? (
               <strong>Create a new satellite</strong>
             ) : (
-              <strong>{initValues.names[0].names}</strong>
+              <strong>
+                {initValues.names[0].names || initValues.names[0].name}
+              </strong>
             )}
           </DialogTitle>
           <Formik
@@ -150,51 +213,52 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
                     setValues={setValues}
                     setFieldValue={setFieldValue}
                     editing={editing}
+                    initValues={initValues}
+                    newSat={newSat}
                   />
                 </DialogContent>
                 <DialogActions>
-                  {!newSat && (
-                    <>
-                      {editing && (
-                        <Button
-                          type="submit"
-                          variant="contained"
-                          color="primary"
-                          disabled={!editing}
-                          startIcon={<Save />}
-                        >
-                          {isSubmitting ? (
-                            <CircularProgress size={24} />
-                          ) : (
-                            "Save"
-                          )}
-                        </Button>
-                      )}
-                      {editing ? (
-                        ""
-                      ) : (
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          onClick={handleDeleteDialog}
-                          startIcon={<Delete />}
-                        >
-                          Delete
-                        </Button>
-                      )}
+                  <>
+                    {editing && (
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        disabled={!editing}
+                        startIcon={<Save />}
+                      >
+                        {isSubmitting ? (
+                          <CircularProgress size={24} />
+                        ) : newSat ? (
+                          "Save"
+                        ) : (
+                          "Save Changes"
+                        )}
+                      </Button>
+                    )}
+                    {editing ? (
+                      ""
+                    ) : (
                       <Button
                         variant="contained"
-                        color={editing ? "secondary" : "primary"}
-                        onClick={() => handleToggleEdit(setValues)}
-                        startIcon={editing ? <Delete /> : <Edit />}
+                        color="secondary"
+                        onClick={handleDeleteDialog}
+                        startIcon={<Delete />}
                       >
-                        {editing ? "Cancel Changes" : "Edit"}
+                        Delete
                       </Button>
-                    </>
-                  )}
-                  {editing ? (
-                    ""
-                  ) : (
+                    )}
+                  </>
+
+                  <Button
+                    variant="contained"
+                    color={editing ? "secondary" : "primary"}
+                    onClick={() => handleEdit(setValues)}
+                    startIcon={editing ? <Delete /> : <Edit />}
+                  >
+                    {editing ? "Cancel" : "Edit"}
+                  </Button>
+                  {editing ? null : (
                     <Button
                       variant="contained"
                       onClick={handleClose}

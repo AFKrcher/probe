@@ -6,7 +6,7 @@ import HelpersContext from "../helpers/HelpersContext.jsx";
 
 // Components
 import { SchemaForm } from "./SchemaForm";
-import { SchemaCollection } from "../../api/schema";
+import { SchemaCollection } from "../../api/schemas";
 import AlertDialog from "../helpers/AlertDialog.jsx";
 import SnackBar from "../helpers/SnackBar.jsx";
 
@@ -48,30 +48,33 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
   }, [newSchema, show]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    if (newSchema) {
-      await SchemaCollection.insert(values);
-    } else {
-      await SchemaCollection.update({ _id: values._id }, values);
-    }
-    await setSubmitting(false);
-    await setEditing(false);
-    if (newSchema) {
-      setOpenSnack(false);
-      setSnack(
-        <span>
-          New <strong>{values.name}</strong> schema saved!
-        </span>
-      );
-      setOpenSnack(true);
-      await handleClose();
-    } else {
-      setOpenSnack(false);
-      setSnack(
-        <span>
-          Changes on <strong>{values.name}</strong> schema saved!
-        </span>
-      );
-      setOpenSnack(true);
+    console.log(values);
+    if (values) {
+      if (newSchema) {
+        SchemaCollection.insert(values);
+      } else {
+        SchemaCollection.update({ _id: values._id }, values);
+      }
+      setSubmitting(false);
+      setEditing(false);
+      if (newSchema) {
+        setOpenSnack(false);
+        setSnack(
+          <span>
+            New <strong>{values.name}</strong> schema saved!
+          </span>
+        );
+        setOpenSnack(true);
+        await handleClose();
+      } else {
+        setOpenSnack(false);
+        setSnack(
+          <span>
+            Changes on <strong>{values.name}</strong> schema saved!
+          </span>
+        );
+        setOpenSnack(true);
+      }
     }
   };
 
@@ -119,7 +122,8 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
 
   const handleToggleEdit = (setValues) => {
     if (editing) setValues(initValues);
-    setEditing(!editing);
+
+    newSchema ? handleClose() : setEditing(!editing);
   };
 
   const handleEdit = (setValues) => {
@@ -162,7 +166,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
     <>
       <AlertDialog bodyAlert={alert} />
       <SnackBar bodySnackBar={snack} />
-      <Dialog open={show} scroll="paper" onClose={handleClose}>
+      <Dialog open={show} scroll="paper" onClose={handleClose} maxWidth="md">
         <div className={classes.modal}>
           <DialogTitle className={classes.title}>
             <strong>{`${
@@ -204,16 +208,25 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
                       color="primary"
                       startIcon={<Save />}
                       disabled={
-                        errors.fields?.length > 0
+                        (!touched.name && !touched.description) ||
+                        errors.fields?.length > 0 ||
+                        errors.name ||
+                        errors.description
                           ? true
-                          : false || errors.name
-                          ? true
-                          : false || errors.description
-                          ? true
-                          : false || false
+                          : false
                       }
                     >
-                      {isSubmitting ? <CircularProgress size={24} /> : "Save"}
+                      {isSubmitting ? (
+                        <CircularProgress size={24} />
+                      ) : (
+                        "Save Changes"
+                      )}
+                      {console.log(
+                        touched,
+                        errors.fields,
+                        errors.name,
+                        errors.description
+                      )}
                     </Button>
                   )}
                   {!newSchema && (
@@ -229,17 +242,17 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
                           Delete
                         </Button>
                       )}
-                      <Button
-                        variant="contained"
-                        color={editing ? "secondary" : "primary"}
-                        disableElevation
-                        startIcon={editing ? <Delete /> : <Edit />}
-                        onClick={() => handleEdit(setValues)}
-                      >
-                        {editing ? "Cancel Changes" : "Edit"}
-                      </Button>
                     </>
                   )}
+                  <Button
+                    variant="contained"
+                    color={editing ? "secondary" : "primary"}
+                    disableElevation
+                    startIcon={editing ? <Delete /> : <Edit />}
+                    onClick={() => handleEdit(setValues)}
+                  >
+                    {editing ? "Cancel" : "Edit"}
+                  </Button>
                   {!editing && (
                     <Button
                       variant="contained"

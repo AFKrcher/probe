@@ -1,5 +1,5 @@
-import { SatelliteCollection } from "/imports/api/satellite";
-import { SchemaCollection } from "/imports/api/schema";
+import { SatelliteCollection } from "/imports/api/satellites";
+import { SchemaCollection } from "/imports/api/schemas";
 
 WebApp.connectHandlers.use("/api/satellite", async (req, res, next) => {
   async function getSats() {
@@ -7,15 +7,19 @@ WebApp.connectHandlers.use("/api/satellite", async (req, res, next) => {
     const sats = await SatelliteCollection.find({});
 
     if (req.query.limit) {
-      console.log(req.query.limit);
       const limiter = parseInt(req.query.limit);
       const page = parseInt(req.query.page);
-      // const skipper = page * limiter - limiter;
+      const skipper = limiter * page;
       try {
         const result = await SatelliteCollection.find(
+          // { "names.name": { $regex: `${req.query.name}*`, $options: "i" } },
           {},
-          { limit: limiter * page }
-          // { limit: limiter, skip: skipper }
+          {
+            limit: limiter,
+            skip: skipper,
+            // sort: { noradID: 0, names: 1 },
+            // sort: { names: -1 },
+          }
         ).fetch();
         if (result.length > 0) {
           res.writeHead(200);
@@ -37,7 +41,7 @@ WebApp.connectHandlers.use("/api/satellite", async (req, res, next) => {
       try {
         const noradID = req.query.noradID;
         const result = await SatelliteCollection.find({
-          noradID: noradID,
+          noradID: { $regex: noradID },
         }).fetch();
         if (result.length > 0) {
           res.writeHead(200);
@@ -59,10 +63,10 @@ WebApp.connectHandlers.use("/api/satellite", async (req, res, next) => {
       let result = null;
       try {
         const target = req.query.name;
-        const finder = sats.fetch().forEach((sat) => {
-          bool = sat.names.find((name) =>
-            name.names === target ? true : false
-          );
+        sats.fetch().forEach((sat) => {
+          let bool = sat.names.find((name) => {
+            return name.names || name.name === target ? true : false;
+          });
           if (bool) {
             result = sat;
           }

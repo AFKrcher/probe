@@ -44,7 +44,14 @@ export const SchemaForm = ({
   const onAddField = () => {
     const fields = [
       ...formValues.fields,
-      { name: "", type: "", allowedValues: [], required: false },
+      {
+        name: "",
+        type: "",
+        allowedValues: [],
+        required: false,
+        min: null,
+        max: null,
+      },
     ];
     setValues({ ...formValues, fields });
   };

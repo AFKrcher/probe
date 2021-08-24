@@ -38,7 +38,6 @@ export const SatelliteSchemaEntry = ({
 
   const onChange = (event) => {
     setFieldValue(event.target.name, event.target.value);
-    console.log();
   };
 
   handleEntryDelete = (schemaName, index) => {
@@ -59,7 +58,11 @@ export const SatelliteSchemaEntry = ({
                 InputLabelProps={{
                   shrink: true,
                 }}
-                value={entry[`${field.name}`]}
+                value={
+                  field.name === "name"
+                    ? entry.names || entry.name
+                    : entry[`${field.name}`]
+                }
                 onChange={onChange}
                 label={field.name}
                 margin="dense"

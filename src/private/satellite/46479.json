@@ -1,118 +1,118 @@
 {
-      "noradID" : "46479",
-      "bus": [
-        {
-          "reference": "Placeholder",
-          "bus": "Placeholder"
-        }
-      ],
-      "contractor" : [
-        {
-          "reference" : "Placeholder",
-          "contractor" : "DFH Satellite Co. Ltd of CAST"
-        }
-      ],
-      
-      "cosparID" : [
-        {
-          "reference" : "Placeholder",
-          "cosparID" :	"2020-067B"
-        }
-      ],
-      "descriptionLong" : [
-        {
-          "reference" : "Placeholder",
-          "descriptionLong" : "https://directory.eoportal.org/web/eoportal/satellite-missions/h/hj-1"
-        }
-      ],
-      "descriptionShort" : [
-        {
-          "reference" : "Placeholder",
-          "descriptionShort" : "HJ-2B (Huan Jing = Environment) satellites are the second generation of small chinese Earth observation satellites operated by the China Centre for Resources Satellite Data and Application (CRESDA). The satellite constellation is composed of a number of small satellites, the ground system, and the application system. It will provide all-weather (3 to 100 m meter) imagery. These are optical remote sensing satellites with high mobility, precision control and stability, and long lifespans. The satellites can provide 16-meter multispectral, 48-meter hyperspectral and infrared image data. They will support the monitoring of natural disasters and land utilization, regulation and protection of water resources, dynamic monitoring of crop areas and assessment of yield, as well as quake emergency rescue. They will form a co-orbital constellation with the Gaofen-1 and Gaofen-6 satellites."
-        }
-      ],
-      "dimensionDescription" : [
-        {
-          "reference" : "Placeholder",
-          "dimensionDescription" : "Placeholder",
-          "length" : "Placeholder",
-          "width" : "Placeholder",
-          "height" : "Placeholder"
-        }
-      ],
+  "noradID": "46479",
+  "bus": [
+    {
+      "reference": "Placeholder",
+      "bus": "Placeholder"
+    }
+  ],
+  "contractor": [
+    {
+      "reference": "Placeholder",
+      "contractor": "DFH Satellite Co. Ltd of CAST"
+    }
+  ],
 
-      "dimensionVolumeM3" : [
-        {
-          "reference" : "Placeholder",
-          "cubicMeters" : 1234
-        }
-      ],
+  "cosparID": [
+    {
+      "reference": "Placeholder",
+      "cosparID": "2020-067B"
+    }
+  ],
+  "descriptionLong": [
+    {
+      "reference": "Placeholder",
+      "descriptionLong": "https://directory.eoportal.org/web/eoportal/satellite-missions/h/hj-1"
+    }
+  ],
+  "descriptionShort": [
+    {
+      "reference": "Placeholder",
+      "descriptionShort": "HJ-2B (Huan Jing = Environment) satellites are the second generation of small chinese Earth observation satellites operated by the China Centre for Resources Satellite Data and Application (CRESDA). The satellite constellation is composed of a number of small satellites, the ground system, and the application system. It will provide all-weather (3 to 100 m meter) imagery. These are optical remote sensing satellites with high mobility, precision control and stability, and long lifespans. The satellites can provide 16-meter multispectral, 48-meter hyperspectral and infrared image data. They will support the monitoring of natural disasters and land utilization, regulation and protection of water resources, dynamic monitoring of crop areas and assessment of yield, as well as quake emergency rescue. They will form a co-orbital constellation with the Gaofen-1 and Gaofen-6 satellites."
+    }
+  ],
+  "dimensionDescription": [
+    {
+      "reference": "Placeholder",
+      "dimensionDescription": "Placeholder",
+      "length": "Placeholder",
+      "width": "Placeholder",
+      "height": "Placeholder"
+    }
+  ],
 
-      "launchMassKg" : [
-        {
-          "reference" : "Placeholder",
-          "launchMassKg" : 470
-        }
-      ],
+  "dimensionVolumeM3": [
+    {
+      "reference": "Placeholder",
+      "cubicMeters": 1234
+    }
+  ],
 
-      "launchSites" : [
-        {
-          "reference" : "Placeholder",
-          "name" : "China's Taiyuan space center",
-          "latitude" : -123,
-          "longitude" : 123
-        }
-      ],
+  "launchMassKg": [
+    {
+      "reference": "Placeholder",
+      "launchMassKg": 470
+    }
+  ],
 
-      "manufacturer" : [
-        {
-          "reference" : "Placeholder",
-          "name" : "Placeholder"
-        }
-      ],
+  "launchSites": [
+    {
+      "reference": "Placeholder",
+      "name": "China's Taiyuan space center",
+      "latitude": -123,
+      "longitude": 123
+    }
+  ],
 
-      "missionDuration" : [
-        {
-          "reference" : "Placeholder",
-          "start" : "27 September 2020",
-          "plannedMissionDuration" : "2025",
-          "actualMissionDuration" : "Placeholder"
-        }
-      ],
+  "manufacturer": [
+    {
+      "reference": "Placeholder",
+      "name": "Placeholder"
+    }
+  ],
 
-      "names": [      
-        {
-          "reference": "Placeholder",
-          "names": "HJ-2B"
-        },
-        {
-          "reference": "Placeholder",
-          "names": "Huan Jing 2B"
-        }
-      ],
+  "missionDuration": [
+    {
+      "reference": "Placeholder",
+      "start": "27 September 2020",
+      "plannedMissionDuration": "2025",
+      "actualMissionDuration": "Placeholder"
+    }
+  ],
 
-      "ownership" : [
-        {
-          "reference" : "Placeholder",
-          "country" : "China",
-          "company" : "CRESDA",
-          "endDate" : "Placeholder"
-        }
-      ],
+  "names": [
+    {
+      "reference": "Placeholder",
+      "name": "HJ-2B"
+    },
+    {
+      "reference": "Placeholder",
+      "name": "Huan Jing 2B"
+    }
+  ],
 
-      "radarCrossSection" : [
-        {
-          "reference" : "Placeholder",
-          "radarCrossSection" : 1234
-        }
-      ],
+  "ownership": [
+    {
+      "reference": "Placeholder",
+      "country": "China",
+      "company": "CRESDA",
+      "endDate": "Placeholder"
+    }
+  ],
 
-      "transponder": [
-        {
-          "reference": "Placeholder",
-          "band": "Placeholder",
-          "scale": "Placeholder",
-          "direction": "Placeholder"
-         }
-      ]
+  "radarCrossSection": [
+    {
+      "reference": "Placeholder",
+      "radarCrossSection": 1234
+    }
+  ],
+
+  "transponder": [
+    {
+      "reference": "Placeholder",
+      "band": "Placeholder",
+      "scale": "Placeholder",
+      "direction": "Placeholder"
+    }
+  ]
 }

@@ -27,6 +27,16 @@ const useStyles = makeStyles((theme) => ({
   accordioncount: {
     marginRight: "10px",
   },
+  accordianDetails: {
+    marginTop: -10,
+  },
+  description: {
+    margin: "5px 10px 5px 10px",
+  },
+  button: {
+    marginTop: 5,
+    marginLeft: 2.5,
+  },
 }));
 
 export const SatelliteSchemaAccordion = ({
@@ -34,6 +44,7 @@ export const SatelliteSchemaAccordion = ({
   entries,
   setFieldValue,
   editing,
+  newSat,
 }) => {
   const classes = useStyles();
 
@@ -50,6 +61,10 @@ export const SatelliteSchemaAccordion = ({
     setFieldValue(schema.name, newEntries);
   };
 
+  const onDeleteSchema = () => {
+    console.log(schema);
+  };
+
   const handleEntryDelete = (schemaName, index) => {
     const newEntries = entries;
     newEntries.splice(index, 1);
@@ -57,7 +72,10 @@ export const SatelliteSchemaAccordion = ({
   };
 
   return (
-    <Accordion className={classes.accordionbody}>
+    <Accordion
+      className={classes.accordionbody}
+      defaultExpanded={schema.name === "names" && newSat ? true : false}
+    >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         id={`${schema.name}-accord-header`}
@@ -68,14 +86,16 @@ export const SatelliteSchemaAccordion = ({
             size="small"
             label={entries?.length ? entries.length : "0"}
           />
-          <Typography variant="subtitle1">{schema.name}</Typography>
+          <Typography variant="body1">{schema.name}</Typography>
         </div>
       </AccordionSummary>
-      <AccordionDetails>
+      <AccordionDetails className={classes.accordianDetails}>
         <Grid container spacing={1} justifycontent="center">
-          <Grid item xs={12}>
-            <Typography>{schema.description}</Typography>
-          </Grid>
+          <Typography className={classes.description}>
+            {schema.description ||
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget."}
+          </Typography>
+
           {entries?.map((entry, index) => (
             <SatelliteSchemaEntry
               key={index}
@@ -89,7 +109,13 @@ export const SatelliteSchemaAccordion = ({
           ))}
           <Grid item xs={12}>
             {editing && (
-              <Button variant="outlined" color="primary" onClick={onAddField}>
+              <Button
+                variant="outlined"
+                size="small"
+                color="primary"
+                onClick={onAddField}
+                className={classes.button}
+              >
                 Add Schema Entry
               </Button>
             )}

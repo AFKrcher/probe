@@ -3,7 +3,7 @@ import React from "react";
 // Components
 import { SatCard } from "./SatCard.jsx";
 import { useTracker } from "meteor/react-meteor-data";
-import { SatelliteCollection } from "../api/satellite";
+import { SatelliteCollection } from "../api/satellites";
 
 // @material-ui
 import {

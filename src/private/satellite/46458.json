@@ -1,120 +1,120 @@
 {
-      "noradID" : "46458",
-      "bus": [
-        {
-          "reference": "Placeholder",
-          "bus": "Placeholder"
-        }
-      ],
-      "contractor" : [
-        {
-          "reference" : "Placeholder",
-          "contractor" : "Placeholder"
-        }
-      ],
-      
-      "cosparID" : [
-        {
-          "reference" : "https://www.n2yo.com/satellite/?s=46458#results",
-          "cosparID" : "2020-065E"
-        }
-      ],
-      "descriptionLong" : [
-        {
-          "reference" : "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2020-065E",
-          "descriptionLong" : "Jilin 1 satellites are a series of Chinese commercial remote sensing satellite for high definition video within the Jilin-1 constellation designed and owned by the Chang Guang Satellite Technology Co."
-        }
-      ],
-      "descriptionShort" : [
-        {
-          "reference" : "https://www.ucsusa.org/resources/satellite-database",
-          "descriptionShort" : "High Resolution Optical Imaging Satellite"
-        }
-      ],
-      "dimensionDescription" : [
-        {
-          "reference" : "Placeholder",
-          "dimensionDescription" : "Placeholder",
-          "length" : "Placeholder",
-          "width" : "Placeholder",
-          "height" : "Placeholder"
-        }
-      ],
+  "noradID": "46458",
+  "bus": [
+    {
+      "reference": "Placeholder",
+      "bus": "Placeholder"
+    }
+  ],
+  "contractor": [
+    {
+      "reference": "Placeholder",
+      "contractor": "Placeholder"
+    }
+  ],
 
-      "dimensionVolumeM3" : [
-        {
-          "reference" : "Placeholder",
-          "cubicMeters" : 1234
-        }
-      ],
+  "cosparID": [
+    {
+      "reference": "https://www.n2yo.com/satellite/?s=46458#results",
+      "cosparID": "2020-065E"
+    }
+  ],
+  "descriptionLong": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2020-065E",
+      "descriptionLong": "Jilin 1 satellites are a series of Chinese commercial remote sensing satellite for high definition video within the Jilin-1 constellation designed and owned by the Chang Guang Satellite Technology Co."
+    }
+  ],
+  "descriptionShort": [
+    {
+      "reference": "https://www.ucsusa.org/resources/satellite-database",
+      "descriptionShort": "High Resolution Optical Imaging Satellite"
+    }
+  ],
+  "dimensionDescription": [
+    {
+      "reference": "Placeholder",
+      "dimensionDescription": "Placeholder",
+      "length": "Placeholder",
+      "width": "Placeholder",
+      "height": "Placeholder"
+    }
+  ],
 
-      "launchMassKg" : [
-        {
-          "reference" : "https://spaceflightnow.com/2020/09/17/china-successfully-launches-satellites-from-ocean-going-platform/",
-          "launchMassKg" : 40
-        }
-      ],
+  "dimensionVolumeM3": [
+    {
+      "reference": "Placeholder",
+      "cubicMeters": 1234
+    }
+  ],
 
-      "launchSites" : [
-        {
-          "reference" : "https://www.n2yo.com/satellite/?s=46458#results",
-          "name" : "Yellow Sea Launch Area, China",
-          "latitude" : -123,
-          "longitude" : 123
-        },
-        {
-          "reference" : "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2020-065E",
-          "name" : "De Bo 3 Platform, Peoples Republic of China",
-          "latitude" : -123,
-          "longitude" : 123
-        }
-      ],
+  "launchMassKg": [
+    {
+      "reference": "https://spaceflightnow.com/2020/09/17/china-successfully-launches-satellites-from-ocean-going-platform/",
+      "launchMassKg": 40
+    }
+  ],
 
-      "manufacturer" : [
-        {
-          "reference" : "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2020-065E",
-          "name" : "Chang Guang Satellite Technology Co."
-        }
-      ],
+  "launchSites": [
+    {
+      "reference": "https://www.n2yo.com/satellite/?s=46458#results",
+      "name": "Yellow Sea Launch Area, China",
+      "latitude": -123,
+      "longitude": 123
+    },
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2020-065E",
+      "name": "De Bo 3 Platform, Peoples Republic of China",
+      "latitude": -123,
+      "longitude": 123
+    }
+  ],
 
-      "missionDuration" : [
-        {
-          "reference" : "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2020-065E",
-          "start" : "15/09/2020",
-          "plannedMissionDuration" : "Placeholder",
-          "actualMissionDuration" : "Placeholder"
-        }
-      ],
+  "manufacturer": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2020-065E",
+      "name": "Chang Guang Satellite Technology Co."
+    }
+  ],
 
-      "names": [      
-        {
-          "reference": "https://www.n2yo.com/satellite/?s=46458#results",
-          "names": "JILIN-01 GAOFEN 3F"
-        }
-      ],
+  "missionDuration": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2020-065E",
+      "start": "15/09/2020",
+      "plannedMissionDuration": "Placeholder",
+      "actualMissionDuration": "Placeholder"
+    }
+  ],
 
-      "ownership" : [
-        {
-          "reference" : "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2020-065E",
-          "country" : "Peoples Republic of China",
-          "company" : "Chang Guang Satellite Technology Co.",
-          "endDate" : "12/34/56"
-        }
-      ],
+  "names": [
+    {
+      "reference": "https://www.n2yo.com/satellite/?s=46458#results",
+      "name": "JILIN-01 GAOFEN 3F"
+    }
+  ],
 
-      "radarCrossSection" : [
-        {
-          "reference" : "Placeholder",
-          "radarCrossSection" : 1234
-        }
-      ],
+  "ownership": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2020-065E",
+      "country": "Peoples Republic of China",
+      "company": "Chang Guang Satellite Technology Co.",
+      "endDate": "12/34/56"
+    }
+  ],
 
-      "transponder": [
-        {
-          "reference": "Placeholder",
-          "band": "Placeholder",
-          "scale": "Placeholder",
-          "direction": "Placeholder"
-         }
-      ]
+  "radarCrossSection": [
+    {
+      "reference": "Placeholder",
+      "radarCrossSection": 1234
+    }
+  ],
+
+  "transponder": [
+    {
+      "reference": "Placeholder",
+      "band": "Placeholder",
+      "scale": "Placeholder",
+      "direction": "Placeholder"
+    }
+  ]
 }

@@ -1,118 +1,118 @@
 {
-      "noradID" : "39762",
-      "bus": [
-        {
-          "reference": "Placeholder",
-          "bus": "Placeholder"
-        }
-      ],
-      "contractor" : [
-        {
-          "reference" : "Placeholder",
-          "contractor" : "Placeholder"
-        }
-      ],
-      
-      "cosparID" : [
-        {
-          "reference" : "Placeholder",
-          "cosparID" : "2014-028B"
-        }
-      ],
-      "descriptionLong" : [
-        {
-          "reference" : "Placeholder",
-          "descriptionLong" : "Placeholder"
-        }
-      ],
-      "descriptionShort" : [
-        {
-          "reference" : "Placeholder",
-          "descriptionShort" : "Communication"
-        }
-      ],
-      "dimensionDescription" : [
-        {
-          "reference" : "Placeholder",
-          "dimensionDescription" : "Placeholder",
-          "length" : "Placeholder",
-          "width" : "Placeholder",
-          "height" : "Placeholder"
-        }
-      ],
+  "noradID": "39762",
+  "bus": [
+    {
+      "reference": "Placeholder",
+      "bus": "Placeholder"
+    }
+  ],
+  "contractor": [
+    {
+      "reference": "Placeholder",
+      "contractor": "Placeholder"
+    }
+  ],
 
-      "dimensionVolumeM3" : [
-        {
-          "reference" : "Placeholder",
-          "cubicMeters" : 1234
-        }
-      ],
+  "cosparID": [
+    {
+      "reference": "Placeholder",
+      "cosparID": "2014-028B"
+    }
+  ],
+  "descriptionLong": [
+    {
+      "reference": "Placeholder",
+      "descriptionLong": "Placeholder"
+    }
+  ],
+  "descriptionShort": [
+    {
+      "reference": "Placeholder",
+      "descriptionShort": "Communication"
+    }
+  ],
+  "dimensionDescription": [
+    {
+      "reference": "Placeholder",
+      "dimensionDescription": "Placeholder",
+      "length": "Placeholder",
+      "width": "Placeholder",
+      "height": "Placeholder"
+    }
+  ],
 
-      "launchMassKg" : [
-        {
-          "reference" : "Placeholder",
-          "launchMassKg" : 1234
-        }
-      ],
+  "dimensionVolumeM3": [
+    {
+      "reference": "Placeholder",
+      "cubicMeters": 1234
+    }
+  ],
 
-      "launchSites" : [
-        {
-          "reference" : "Placeholder",
-          "name" : "Plesetsk Missile and Space Complex, Russia",
-          "latitude" : -123,
-          "longitude" : 123
-        }
-      ],
+  "launchMassKg": [
+    {
+      "reference": "Placeholder",
+      "launchMassKg": 1234
+    }
+  ],
 
-      "manufacturer" : [
-        {
-          "reference" : "Placeholder",
-          "name" : "Placeholder"
-        }
-      ],
+  "launchSites": [
+    {
+      "reference": "Placeholder",
+      "name": "Plesetsk Missile and Space Complex, Russia",
+      "latitude": -123,
+      "longitude": 123
+    }
+  ],
 
-      "missionDuration" : [
-        {
-          "reference" : "Placeholder",
-          "start" : "23 May 2014",
-          "plannedMissionDuration" : "Placeholder",
-          "actualMissionDuration" : "Placeholder"
-        }
-      ],
+  "manufacturer": [
+    {
+      "reference": "Placeholder",
+      "name": "Placeholder"
+    }
+  ],
 
-      "names": [      
-        {
-          "reference": "Placeholder",
-          "names": "COSMOS 2497"
-        },
-        {
-          "reference": "Placeholder",
-          "names": "Placeholder"
-        }
-      ],
+  "missionDuration": [
+    {
+      "reference": "Placeholder",
+      "start": "23 May 2014",
+      "plannedMissionDuration": "Placeholder",
+      "actualMissionDuration": "Placeholder"
+    }
+  ],
 
-      "ownership" : [
-        {
-          "reference" : "Placeholder",
-          "country" : "Commonwealth of Independent States (former USSR)",
-          "company" : "Placeholder",
-          "endDate" : "12/34/56"
-        }
-      ],
+  "names": [
+    {
+      "reference": "Placeholder",
+      "name": "COSMOS 2497"
+    },
+    {
+      "reference": "Placeholder",
+      "name": "Placeholder"
+    }
+  ],
 
-      "radarCrossSection" : [
-        {
-          "reference" : "Placeholder",
-          "radarCrossSection" : 1234
-        }
-      ],
+  "ownership": [
+    {
+      "reference": "Placeholder",
+      "country": "Commonwealth of Independent States (former USSR)",
+      "company": "Placeholder",
+      "endDate": "12/34/56"
+    }
+  ],
 
-      "transponder": [
-        {
-          "reference": "Placeholder",
-          "band": "Placeholder",
-          "scale": "Placeholder",
-          "direction": "Placeholder"
-         }
-      ]
+  "radarCrossSection": [
+    {
+      "reference": "Placeholder",
+      "radarCrossSection": 1234
+    }
+  ],
+
+  "transponder": [
+    {
+      "reference": "Placeholder",
+      "band": "Placeholder",
+      "scale": "Placeholder",
+      "direction": "Placeholder"
+    }
+  ]
 }

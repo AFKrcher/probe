@@ -1,133 +1,136 @@
 {
-      "noradID" : "44485",
-      "bus": [
-        {
-          "reference": "Placeholder",
-          "bus": "Placeholder"
-        }
-      ],
-      "contractor" : [
-        {
-          "reference" : "https://space.skyrocket.de/doc_sdat/aerocube-10.htm",
-          "contractor" : "Aerospace Corporation"
-        }
-      ],
-      
-      "cosparID" : [
-        {
-          "reference" : "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2019-022D",
-          "cosparID" : "2019-022D"
-        }
-      ],
-      "descriptionLong" : [
-        {
-          "reference" : "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2019-022D",
-          "descriptionLong" : "The purpose of the mission is to demonstrate precision satellite-to-satellite pointing; deployment of atmospheric probes for in-situ measurement of air density; small-spacecraft proximity operations using propulsion from a steam thruster (no docking is planned); and solar cell performance degradation experiment that will correlate data from radiation sensors tuned to the energy levels suspected of causing damage to a drop in solar cell power output."
-        },
-        {
-          "reference" : "https://space.skyrocket.de/doc_sdat/aerocube-10.htm",
-          "descriptionLong" : "The AeroCube-10a spacecraft has two payloads. The first is a dispenser with a magazine of 29 identical atmospheric probes. Each probe weighs 16 grams and consist of three 98 mm diameter aluminum sheets at 90 degrees to each other, effectively forming a sphere. The intent is to be lightweight and have a constant cross section, independent of orientation to the velocity direction so that atmospheric drag can be measured in-situ. RF modeling predicts that the atmospheric probes will have a radar cross section equal to 1U CubeSats, which have been tracked on-orbit many times. The probes are dispensed individually upon command and it is predicted that each has a lifetime of 0.74 years when deployed from the highest altitude of 500 km. The second payload is an optical beacon. It is used to verify that the AeroCube-10a satellite is indeed pointing at the AeroCube-10b. It consists of a 4 W laser diode with a 1° full-width-half-max beam divergence."
-        }
-      ],
-      "descriptionShort" : [
-        {
-          "reference" : "https://space.skyrocket.de/doc_sdat/aerocube-10.htm",
-          "descriptionShort" : "Aerocube 10 (AC10) are a pair of 1.5U Cubesats developed by the Aerospace Corporation of El Segundo to demonstrate several technologies."
-        }
-      ],
-      "dimensionDescription" : [
-        {
-          "reference" : "https://space.skyrocket.de/doc_sdat/aerocube-10.htm",
-          "dimensionDescription" : "CubeSat (1.5U)",
-          "length" : "0.10",
-          "width" : "0.10",
-          "height" : "0.15"
-        }
-      ],
+  "noradID": "44485",
+  "bus": [
+    {
+      "reference": "Placeholder",
+      "bus": "Placeholder"
+    }
+  ],
+  "contractor": [
+    {
+      "reference": "https://space.skyrocket.de/doc_sdat/aerocube-10.htm",
+      "contractor": "Aerospace Corporation"
+    }
+  ],
 
-      "dimensionVolumeM3" : [
-        {
-          "reference" : "https://space.skyrocket.de/doc_sdat/aerocube-10.htm",
-          "cubicMeters" : 0.0015
-        }
-      ],
+  "cosparID": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2019-022D",
+      "cosparID": "2019-022D"
+    }
+  ],
+  "descriptionLong": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2019-022D",
+      "descriptionLong": "The purpose of the mission is to demonstrate precision satellite-to-satellite pointing; deployment of atmospheric probes for in-situ measurement of air density; small-spacecraft proximity operations using propulsion from a steam thruster (no docking is planned); and solar cell performance degradation experiment that will correlate data from radiation sensors tuned to the energy levels suspected of causing damage to a drop in solar cell power output."
+    },
+    {
+      "reference": "https://space.skyrocket.de/doc_sdat/aerocube-10.htm",
+      "descriptionLong": "The AeroCube-10a spacecraft has two payloads. The first is a dispenser with a magazine of 29 identical atmospheric probes. Each probe weighs 16 grams and consist of three 98 mm diameter aluminum sheets at 90 degrees to each other, effectively forming a sphere. The intent is to be lightweight and have a constant cross section, independent of orientation to the velocity direction so that atmospheric drag can be measured in-situ. RF modeling predicts that the atmospheric probes will have a radar cross section equal to 1U CubeSats, which have been tracked on-orbit many times. The probes are dispensed individually upon command and it is predicted that each has a lifetime of 0.74 years when deployed from the highest altitude of 500 km. The second payload is an optical beacon. It is used to verify that the AeroCube-10a satellite is indeed pointing at the AeroCube-10b. It consists of a 4 W laser diode with a 1° full-width-half-max beam divergence."
+    }
+  ],
+  "descriptionShort": [
+    {
+      "reference": "https://space.skyrocket.de/doc_sdat/aerocube-10.htm",
+      "descriptionShort": "Aerocube 10 (AC10) are a pair of 1.5U Cubesats developed by the Aerospace Corporation of El Segundo to demonstrate several technologies."
+    }
+  ],
+  "dimensionDescription": [
+    {
+      "reference": "https://space.skyrocket.de/doc_sdat/aerocube-10.htm",
+      "dimensionDescription": "CubeSat (1.5U)",
+      "length": "0.10",
+      "width": "0.10",
+      "height": "0.15"
+    }
+  ],
 
-      "launchMassKg" : [
-        {
-          "reference" : "https://directory.eoportal.org/web/eoportal/satellite-missions/a/aerocube-10",
-          "launchMassKg" : 2.1
-        }
-      ],
+  "dimensionVolumeM3": [
+    {
+      "reference": "https://space.skyrocket.de/doc_sdat/aerocube-10.htm",
+      "cubicMeters": 0.0015
+    }
+  ],
 
-      "launchSites" : [
-        {
-          "reference" : ["https://www.n2yo.com/satellite/?s=44485#results", "https://en.wikipedia.org/wiki/Wallops_Flight_Facility"],
-          "name" : "Wallops Island, United States",
-          "latitude" : 37.940,
-          "longitude" : -75.466
-        }
-      ],
+  "launchMassKg": [
+    {
+      "reference": "https://directory.eoportal.org/web/eoportal/satellite-missions/a/aerocube-10",
+      "launchMassKg": 2.1
+    }
+  ],
 
-      "manufacturer" : [
-        {
-          "reference" : "Placeholder",
-          "name" : "Placeholder"
-        }
+  "launchSites": [
+    {
+      "reference": [
+        "https://www.n2yo.com/satellite/?s=44485#results",
+        "https://en.wikipedia.org/wiki/Wallops_Flight_Facility"
       ],
+      "name": "Wallops Island, United States",
+      "latitude": 37.94,
+      "longitude": -75.466
+    }
+  ],
 
-      "missionDuration" : [
-        {
-          "reference" : "https://space.skyrocket.de/doc_sdat/aerocube-10.htm",
-          "start" : "08/08/2019",
-          "plannedMissionDuration" : "Placeholder",
-          "actualMissionDuration" : "Placeholder"
-        }
-      ],
+  "manufacturer": [
+    {
+      "reference": "Placeholder",
+      "name": "Placeholder"
+    }
+  ],
 
-      "names": [      
-        {
-          "reference": "https://www.n2yo.com/satellite/?s=44485#results",
-          "names": "AEROCUBE 10A"
-        },
-        {
-          "reference": "https://www.n2yo.com/satellite/?s=44485#results",
-          "names": "JIMSAT"
-        }
-      ],
+  "missionDuration": [
+    {
+      "reference": "https://space.skyrocket.de/doc_sdat/aerocube-10.htm",
+      "start": "08/08/2019",
+      "plannedMissionDuration": "Placeholder",
+      "actualMissionDuration": "Placeholder"
+    }
+  ],
 
-      "ownership" : [
-        {
-          "reference" : "https://space.skyrocket.de/doc_sdat/aerocube-10.htm",
-          "country" : "USA",
-          "company" : "Aerospace Corporation",
-          "endDate" : "12/34/56"
-        }
-      ],
+  "names": [
+    {
+      "reference": "https://www.n2yo.com/satellite/?s=44485#results",
+      "name": "AEROCUBE 10A"
+    },
+    {
+      "reference": "https://www.n2yo.com/satellite/?s=44485#results",
+      "name": "JIMSAT"
+    }
+  ],
 
-      "radarCrossSection" : [
-        {
-          "reference" : "Placeholder",
-          "radarCrossSection" : 1234
-        }
-      ],
+  "ownership": [
+    {
+      "reference": "https://space.skyrocket.de/doc_sdat/aerocube-10.htm",
+      "country": "USA",
+      "company": "Aerospace Corporation",
+      "endDate": "12/34/56"
+    }
+  ],
 
-      "transponder": [
-        {
-          "reference": "Placeholder",
-          "band": "Placeholder",
-          "scale": "Placeholder",
-          "direction": "Placeholder"
-         }
-      ],
+  "radarCrossSection": [
+    {
+      "reference": "Placeholder",
+      "radarCrossSection": 1234
+    }
+  ],
 
-      "images": [
-        {
-          "link": "https://dl.airtable.com/.attachments/bf350cd85a641b9c9c0bf7a58177f484/399d5e1d/AeroCube-10A_2.png",
-          "title": "AeroCube-10 CAD Model"
-        },
-        {
-          "link": "https://dl.airtable.com/.attachments/afea4ffd16e261320223a3b0b0295b4f/af56fedb/AeroCube-10_4.jpg",
-          "title": "AeroCube-10 A and B"
-        }
-      ]
+  "transponder": [
+    {
+      "reference": "Placeholder",
+      "band": "Placeholder",
+      "scale": "Placeholder",
+      "direction": "Placeholder"
+    }
+  ],
+
+  "images": [
+    {
+      "link": "https://dl.airtable.com/.attachments/bf350cd85a641b9c9c0bf7a58177f484/399d5e1d/AeroCube-10A_2.png",
+      "title": "AeroCube-10 CAD Model"
+    },
+    {
+      "link": "https://dl.airtable.com/.attachments/afea4ffd16e261320223a3b0b0295b4f/af56fedb/AeroCube-10_4.jpg",
+      "title": "AeroCube-10 A and B"
+    }
+  ]
 }

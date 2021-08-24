@@ -1,60 +1,56 @@
-import { Meteor } from 'meteor/meteor';
-import { SchemaCollection } from '/imports/api/schema';
-import { SatelliteCollection } from '/imports/api/satellite';
-import './routes'
-var fs = Npm.require('fs');
+import { Meteor } from "meteor/meteor";
+import { SchemaCollection } from "/imports/api/schemas";
+import { SatelliteCollection } from "/imports/api/satellites";
+import "./routes";
+var fs = Npm.require("fs");
 
 Meteor.startup(() => {
-
-  if (SchemaCollection.find().count() === 0 ){
+  if (SchemaCollection.find().count() === 0) {
     var jsonObj = new Array();
-  
-    files = fs.readdirSync('./assets/app/schema' );
-  
-    // create the large JSON array 
+
+    files = fs.readdirSync("./assets/app/schema");
+
+    // create the large JSON array
     files.forEach(function (file) {
-      data = fs.readFileSync('./assets/app/schema/' + file,'ascii');
+      data = fs.readFileSync("./assets/app/schema/" + file, "ascii");
       jsonObj.push(JSON.parse(data));
-    })
-  
+    });
+
     // Write to Mongo
     jsonObj.forEach(function (data) {
       SchemaCollection.insert(data);
-    })
-    
+    });
   }
 
   // Publish satellites collection
-  Meteor.publish('satellites', () => {
+  Meteor.publish("satellites", () => {
     return SatelliteCollection.find({});
-  })
+  });
   // Publish schemas collection
-  Meteor.publish('schemas', () => {
+  Meteor.publish("schemas", () => {
     return SchemaCollection.find({});
-  })
+  });
 
   // write example sat
-  if (SatelliteCollection.find().count() === 0 ){
-
+  if (SatelliteCollection.find().count() === 0) {
     // var jsonObj = new Array();
-  
+
     // files = fs.readdirSync('./assets/app/satellite' );
-  
-    // // create the large JSON array 
+
+    // // create the large JSON array
     // files.forEach(function (file) {
     //   data = fs.readFileSync('./assets/app/satellite/' + file,'ascii');
     //   jsonObj.push(JSON.parse(data));
     // })
-  
+
     // // Write to Mongo
     // jsonObj.forEach(function (data) {
     //   SatelliteCollection.insert(data);
     // })
 
-
-    // mission type 
-    // launch vehicle 
-    // organisation 
+    // mission type
+    // launch vehicle
+    // organisation
     // news
     // status
     // power
@@ -64,29 +60,28 @@ Meteor.startup(() => {
 
     // data = fs.readFileSync('./assets/app/exampleSatellite.json','ascii');
     // SatelliteCollection.insert(JSON.parse(data));
-    data = fs.readFileSync('./assets/app/satellite/28479.json','ascii');
+    data = fs.readFileSync("./assets/app/satellite/28479.json", "ascii");
     SatelliteCollection.insert(JSON.parse(data));
 
-    data = fs.readFileSync('./assets/app/satellite/33591.json','ascii');
+    data = fs.readFileSync("./assets/app/satellite/33591.json", "ascii");
     SatelliteCollection.insert(JSON.parse(data));
 
-    data = fs.readFileSync('./assets/app/satellite/39762.json','ascii');
+    data = fs.readFileSync("./assets/app/satellite/39762.json", "ascii");
     SatelliteCollection.insert(JSON.parse(data));
 
-    data = fs.readFileSync('./assets/app/satellite/39765.json','ascii');
+    data = fs.readFileSync("./assets/app/satellite/39765.json", "ascii");
     SatelliteCollection.insert(JSON.parse(data));
 
-    data = fs.readFileSync('./assets/app/satellite/44485.json','ascii');
+    data = fs.readFileSync("./assets/app/satellite/44485.json", "ascii");
     SatelliteCollection.insert(JSON.parse(data));
 
-    data = fs.readFileSync('./assets/app/satellite/45856.json','ascii');
-    SatelliteCollection.insert(JSON.parse(data));
-    
-    data = fs.readFileSync('./assets/app/satellite/46458.json','ascii');
+    data = fs.readFileSync("./assets/app/satellite/45856.json", "ascii");
     SatelliteCollection.insert(JSON.parse(data));
 
-    data = fs.readFileSync('./assets/app/satellite/46479.json','ascii');
+    data = fs.readFileSync("./assets/app/satellite/46458.json", "ascii");
+    SatelliteCollection.insert(JSON.parse(data));
+
+    data = fs.readFileSync("./assets/app/satellite/46479.json", "ascii");
     SatelliteCollection.insert(JSON.parse(data));
   }
-
 });
