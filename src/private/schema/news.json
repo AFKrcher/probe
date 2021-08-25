@@ -1,5 +1,5 @@
 {
-  "name": "ownership",
+  "name": "news",
   "description": "",
   "fields": [
     {
@@ -10,17 +10,7 @@
       "required": true
     },
     {
-      "name": "country",
-      "type": "string",
-      "allowedValues": []
-    },
-    {
-      "name": "company",
-      "type": "string",
-      "allowedValues": []
-    },
-    {
-      "name": "organization",
+      "name": "news",
       "type": "string",
       "allowedValues": []
     }

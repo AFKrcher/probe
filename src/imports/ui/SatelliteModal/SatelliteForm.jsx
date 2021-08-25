@@ -10,6 +10,7 @@ import {
   MenuItem,
   IconButton,
   Tooltip,
+  Paper,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { Field } from "formik";
@@ -25,9 +26,14 @@ const useStyles = makeStyles((theme) => ({
   addItem: {
     alignItems: "center",
   },
+  noradID: {
+    padding: theme.spacing(1),
+    backgroundColor: theme.palette.action.hover,
+  },
 }));
 
 export const SatelliteForm = ({
+  errors,
   formValues,
   schemas,
   setValues,
@@ -46,6 +52,7 @@ export const SatelliteForm = ({
     initValues[`${addSchema}`] = [];
     setAddSchema("");
     setFlag(!flag);
+    toggleAddSchema();
   };
 
   const handleDelete = (name) => {
@@ -93,16 +100,18 @@ export const SatelliteForm = ({
     <Grid container spacing={1}>
       <Grid container item>
         <Grid item xs={12}>
-          <Field
-            name="noradID"
-            label="NORAD ID"
-            margin="dense"
-            required
-            fullWidth
-            variant="outlined"
-            disabled={!editing}
-            component={TextField}
-          />
+          <Paper className={classes.noradID}>
+            <Field
+              name="noradID"
+              label="NORAD ID"
+              margin="dense"
+              required
+              fullWidth
+              variant="outlined"
+              disabled={!editing}
+              component={TextField}
+            />
+          </Paper>
         </Grid>
       </Grid>
       <Grid item xs={12}>
@@ -110,6 +119,7 @@ export const SatelliteForm = ({
           return schema.name === "names" ? (
             <span key={index} style={{ display: "flex" }}>
               <SatelliteSchemaAccordion
+                errors={errors}
                 key={index}
                 schema={schema}
                 entries={formValues[`${schema.name}`]}
@@ -212,7 +222,7 @@ export const SatelliteForm = ({
         {editing && !schemaAddition && (
           <Button
             variant="contained"
-            color="primary"
+            color="default"
             onClick={toggleAddSchema}
             className={classes.addField}
           >
@@ -222,11 +232,11 @@ export const SatelliteForm = ({
         {editing && schemaAddition && (
           <Button
             variant="contained"
-            color="secondary"
+            color="default"
             onClick={toggleAddSchema}
             className={classes.addField}
           >
-            Cancel Add Schema
+            Close Add Schema
           </Button>
         )}
       </Grid>

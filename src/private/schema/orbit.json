@@ -1,5 +1,5 @@
 {
-  "name": "ownership",
+  "name": "orbit",
   "description": "",
   "fields": [
     {
@@ -10,19 +10,9 @@
       "required": true
     },
     {
-      "name": "country",
+      "name": "orbit",
       "type": "string",
-      "allowedValues": []
-    },
-    {
-      "name": "company",
-      "type": "string",
-      "allowedValues": []
-    },
-    {
-      "name": "organization",
-      "type": "string",
-      "allowedValues": []
+      "allowedValues": ["GEO", "LEO", "HEO", "SSO", "Polar", "GTO"]
     }
   ]
 }

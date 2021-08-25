@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
+import * as Yup from "yup";
 // Imports
 import { useTracker } from "meteor/react-meteor-data";
 import { SchemaCollection } from "../../api/schemas";
 import { SatelliteCollection } from "../../api/satellites";
-import { satelliteValidator } from "../util/yupFuncs.js";
+
 import HelpersContext from "../helpers/HelpersContext.jsx";
+import { emptyDataRemover } from "../util/satelliteDataFuncs.js";
 
 // Components
 import { Formik, Form } from "formik";
@@ -21,16 +23,21 @@ import {
   Button,
   CircularProgress,
   makeStyles,
+  Typography,
 } from "@material-ui/core";
 import Delete from "@material-ui/icons/Delete";
 import Edit from "@material-ui/icons/Edit";
 import Save from "@material-ui/icons/Save";
 import Close from "@material-ui/icons/Close";
+import { fieldToSelect } from "formik-material-ui";
 
 const useStyles = makeStyles((theme) => ({
-  modal: {},
   title: {
     paddingBottom: "0px",
+    marginBottom: -5,
+  },
+  titleText: {
+    fontSize: "30px",
   },
 }));
 
@@ -52,6 +59,9 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
   }, [newSat, show]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
+    emptyDataRemover(values);
+    console.log(values);
+
     if (newSat) {
       SatelliteCollection.insert(values);
       setOpenSnack(false);
@@ -87,7 +97,9 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
     setOpenSnack(false);
     setSnack(
       <span>
-        Deleted <strong>{initValues.name}</strong>!
+        Deleted{" "}
+        <strong>{initValues.names[0].names || initValues.names[0].name}</strong>
+        !
       </span>
     );
     setOpenSnack(true);
@@ -184,6 +196,47 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
     }
   };
 
+  const schemaValidatorShaper = () => {
+    let obj = {}; // {schema.name: {field.name: {field.type: string/number/date, field.allowedValues: [], required: field.required, min: field.min, max: field.max}}}
+    schemas?.forEach((schema) => {
+      // Step 1: map over schemas and assign each schema name as a key in the object
+      obj[schema.name] = {};
+
+      // Step 2: map over each schema and assign an object containing all field names as keys in that object
+      return schema.fields.forEach((field) => {
+        obj[schema.name][field.name] = {};
+
+        // Step 3:  map over each field and assign an object containing all of the field's attributes (type, allowedValues, min, max, required)
+        for (let attribute in field) {
+          if (attribute !== "name" && attribute !== "description") {
+            // Step 3.5: Take each attribute's value and assign it to the attribute in the object
+            obj[schema.name][field.name][attribute] = field[attribute];
+          }
+        }
+      });
+    });
+
+    console.log("our objects ", obj);
+
+    // Yup.addMethod(Yup.array, "checkEachEntry", function (args) => {
+    //   const {message, predicate} = args
+    //   return this.test("checkEachEntry", message, function)
+    // })
+
+    let yupShape = {
+      // NORAD ID is always a part of the yup shape
+
+      noradID: Yup.string()
+        .required("Required")
+        .length(5, "Must be a positive, 5-digit number")
+        .matches(/^[0-9]+$/g, "Must be a positive, 5-digit number"),
+    }; // {schema.name: Yup.array().of(Yup.object().shape({field.name: Yup.(field.type).required(field.required).min(field.min).max(field.max).oneOf((field.allowedValues))}))}
+
+    return yupShape;
+  };
+
+  const satelliteValidator = Yup.object().shape(schemaValidatorShaper());
+
   return (
     <>
       <AlertDialog bodyAlert={alert} />
@@ -191,23 +244,28 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
       <Dialog open={show} scroll="paper" onClose={handleClose} maxWidth="md">
         <div className={classes.modal}>
           <DialogTitle className={classes.title}>
-            {newSat ? (
-              <strong>Create a new satellite</strong>
-            ) : (
-              <strong>
-                {initValues.names[0].names || initValues.names[0].name}
-              </strong>
-            )}
+            <Typography className={classes.titleText}>
+              {newSat ? (
+                <strong>Create a new satellite</strong>
+              ) : (
+                <strong>
+                  {initValues.names[0].names || initValues.names[0].name}
+                </strong>
+              )}
+            </Typography>
           </DialogTitle>
           <Formik
             initialValues={initValues}
             validationSchema={satelliteValidator}
             onSubmit={handleSubmit}
+            validateOnBlur={true}
+            validateOnChange={true}
           >
-            {({ isSubmitting, values, setValues, setFieldValue }) => (
+            {({ errors, isSubmitting, values, setValues, setFieldValue }) => (
               <Form>
                 <DialogContent>
                   <SatelliteForm
+                    errors={errors}
                     formValues={values}
                     schemas={schemas}
                     setValues={setValues}
@@ -226,6 +284,9 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
                         color="primary"
                         disabled={!editing}
                         startIcon={<Save />}
+                        disabled={
+                          Object.entries(errors).length > 0 ? true : false
+                        }
                       >
                         {isSubmitting ? (
                           <CircularProgress size={24} />

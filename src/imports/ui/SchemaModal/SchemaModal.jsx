@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
+import * as Yup from "yup";
 // Imports
 import { Formik, Form } from "formik";
-import { schemaValidator } from "../util/yupFuncs.js";
 import HelpersContext from "../helpers/HelpersContext.jsx";
 
 // Components
@@ -48,7 +48,6 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
   }, [newSchema, show]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    console.log(values);
     if (values) {
       if (newSchema) {
         SchemaCollection.insert(values);
@@ -77,6 +76,42 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
       }
     }
   };
+
+  // Refactor for modularity/ Import form yupFuncs. Currently, doesn't work asynchronously.
+  const schemas = SchemaCollection.find()
+    .fetch()
+    .map((schema) =>
+      editing
+        ? initValues.name !== schema.name
+          ? schema.name
+          : null
+        : schema.name
+    );
+
+  const schemaValidator = Yup.object().shape({
+    name: Yup.string()
+      .notOneOf(schemas, "Schema name already exists")
+      .required("Required"),
+    description: Yup.string().required("Required"),
+    fields: Yup.array().of(
+      Yup.object()
+        .shape({
+          name: Yup.string().required("Required"),
+          type: Yup.mixed()
+            .oneOf(["string", "number", "date"])
+            .required("Required"),
+          allowedValues: Yup.array().ensure(),
+          min: Yup.number().nullable().notRequired(),
+          max: Yup.number()
+            .nullable()
+            .when(["min"], (min, schema) => {
+              return schema.min(min);
+            }),
+          required: Yup.boolean(),
+        })
+        .notRequired()
+    ),
+  });
 
   const handleDelete = () => {
     SchemaCollection.remove(initValues._id);
@@ -178,6 +213,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
             validationSchema={schemaValidator}
             onSubmit={handleSubmit}
             validateOnBlur={true}
+            validateOnChange={true}
           >
             {({
               errors,
@@ -208,24 +244,13 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
                       color="primary"
                       startIcon={<Save />}
                       disabled={
-                        (!touched.name && !touched.description) ||
-                        errors.fields?.length > 0 ||
-                        errors.name ||
-                        errors.description
-                          ? true
-                          : false
+                        Object.entries(errors).length > 0 ? true : false
                       }
                     >
                       {isSubmitting ? (
                         <CircularProgress size={24} />
                       ) : (
                         "Save Changes"
-                      )}
-                      {console.log(
-                        touched,
-                        errors.fields,
-                        errors.name,
-                        errors.description
                       )}
                     </Button>
                   )}

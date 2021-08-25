@@ -16,9 +16,9 @@
       "allowedValues": []
     },
     {
-      "name": "scale",
+      "name": "bandScale",
       "type": "string",
-      "allowedValues": ["Mhz", "Khz", "Hz"]
+      "allowedValues": ["Ghz", "Mhz", "Khz", "Hz"]
     },
     {
       "name": "direction",

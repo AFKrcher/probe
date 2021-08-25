@@ -52,12 +52,10 @@ export const SchemaFormField = ({
 
   const onMinChange = (event) => {
     setFieldValue(event.target.name, event.target.value);
-    console.log(field);
   };
 
   const onMaxChange = (event) => {
     setFieldValue(event.target.name, event.target.value);
-    console.log(field);
   };
 
   const onTypeChange = (event) => {

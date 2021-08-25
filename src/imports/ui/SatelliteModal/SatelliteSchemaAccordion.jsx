@@ -20,6 +20,8 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 const useStyles = makeStyles((theme) => ({
   accordionbody: {
     backgroundColor: theme.palette.action.hover,
+    width: "1000px",
+    overflow: "hidden",
   },
   accordionheader: {
     display: "flex",
@@ -40,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const SatelliteSchemaAccordion = ({
+  errors,
   schema,
   entries,
   setFieldValue,
@@ -61,10 +64,6 @@ export const SatelliteSchemaAccordion = ({
     setFieldValue(schema.name, newEntries);
   };
 
-  const onDeleteSchema = () => {
-    console.log(schema);
-  };
-
   const handleEntryDelete = (schemaName, index) => {
     const newEntries = entries;
     newEntries.splice(index, 1);
@@ -74,7 +73,12 @@ export const SatelliteSchemaAccordion = ({
   return (
     <Accordion
       className={classes.accordionbody}
-      defaultExpanded={schema.name === "names" && newSat ? true : false}
+      defaultExpanded={
+        (schema.name === "names" && newSat) ||
+        Object.keys(errors || {}).includes(schema.name)
+          ? true
+          : false
+      }
     >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
@@ -95,9 +99,9 @@ export const SatelliteSchemaAccordion = ({
             {schema.description ||
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget."}
           </Typography>
-
           {entries?.map((entry, index) => (
             <SatelliteSchemaEntry
+              errors={errors}
               key={index}
               index={index}
               schema={schema}

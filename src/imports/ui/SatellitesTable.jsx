@@ -1,18 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 
 // Components
 import { SatelliteModal } from "./SatelliteModal/SatelliteModal";
 import { SatelliteCollection } from "../api/satellites";
-import { getSatID, getSatName } from "./util/satelliteDataFuncs";
-import { SatelliteSchemaAccordion } from "./SatelliteModal/SatelliteSchemaAccordion";
-
-// ag-grid
-import { AgGridColumn, AgGridReact } from "ag-grid-react";
-import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
 
 // @material-ui
 import {
@@ -21,14 +13,6 @@ import {
   Grid,
   makeStyles,
   Typography,
-  Table,
-  TableContainer,
-  Paper,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  CircularProgress,
   Tooltip,
 } from "@material-ui/core";
 import { DataGrid, GridToolbar } from "@material-ui/data-grid";
@@ -37,16 +21,9 @@ const useStyles = makeStyles((theme) => ({
   satelliteContainer: {
     marginTop: 40,
   },
-  tableHead: {
-    backgroundColor: theme.palette.grey[700],
-  },
-  tableNameCol: {
-    width: "25%",
-  },
-  tableRow: {
-    "&:hover": {
-      backgroundColor: theme.palette.action.hover,
-    },
+  dataGrid: {
+    resize: "both",
+    overflow: "auto",
   },
   spinner: {
     color: theme.palette.text.primary,
@@ -70,14 +47,22 @@ export const SatellitesTable = () => {
       headerAlign: "center",
       field: "id",
       headerName: "NORAD ID",
-      width: 150,
+      minWidth: 150,
     },
     {
       headerAlign: "center",
       field: "names",
       headerName: "NAME(S)",
-      width: 250,
+      minWidth: 300,
       editable: false,
+    },
+    {
+      headerAlign: "center",
+      field: "schemas",
+      headerName: "SCHEMA(S)",
+      minWidth: 300,
+      editable: false,
+      flex: 1,
     },
   ];
 
@@ -101,22 +86,29 @@ export const SatellitesTable = () => {
   const [sortNorad, setSortNorad] = useState(0);
   const [sortNames, setSortNames] = useState(0);
   const [selector, setSelector] = useState({});
-  const [rows, schemas, count, schemasIsLoading, loading] = useTracker(() => {
+
+  const [rows, sats, count, schemasIsLoading, loading] = useTracker(() => {
     const sub = Meteor.subscribe("satellites");
     const count = SatelliteCollection.find().count();
-    const schemas = SatelliteCollection.find(selector, {
+    const sats = SatelliteCollection.find(selector, {
       limit: limiter,
       skip: page * limiter,
       sort: sortNames ? { names: sortNames } : { noradID: sortNorad },
     }).fetch();
-    const rows = schemas.map((sat) => {
+    const rows = sats.map((sat) => {
       return {
         id: sat.noradID,
         names: sat.names.map((name) => name.names || name.name).join(", "),
+        schemas: Object.keys(sat)
+          .map((key) => {
+            return key !== "_id" ? key : null;
+          })
+          .filter((notFalsy) => notFalsy)
+          .join(", "),
       };
     });
     rows.getRows = count;
-    return [rows, schemas, count, !sub.ready(), !sub.ready()];
+    return [rows, sats, count, !sub.ready(), !sub.ready()];
   });
 
   const handleFilter = (e) => {
@@ -124,11 +116,11 @@ export const SatellitesTable = () => {
     if (filterBy && filterBy.value) {
       if (filterBy.columnField === "id") {
         setSelector({
-          noradID: { $regex: `/${filterBy.value}/` },
+          noradID: { $regex: `${filterBy.value}` },
         });
       } else {
         setSelector({
-          "names.name": { $regex: `${filterBy.value}*`, $options: "i" },
+          "names.name": { $regex: `${filterBy.value}`, $options: "i" },
         });
       }
     } else {
@@ -169,8 +161,8 @@ export const SatellitesTable = () => {
           up the schemas and data associated with the <strong>satellite</strong>
           .
         </Typography>
-
         <DataGrid
+          className={classes.dataGrid}
           components={{
             Toolbar: GridToolbar,
           }}
@@ -186,7 +178,7 @@ export const SatellitesTable = () => {
           onFilterModelChange={(e) => {
             handleFilter(e);
           }}
-          rowsPerPageOptions={[1, 2, 5, 10, 15, 20]}
+          rowsPerPageOptions={[1, 3, 5, 10, 15, 20]}
           onPageSizeChange={(newLimit) => setLimiter(newLimit)}
           onPageChange={(newPage) => setPage(newPage)}
           disableSelectionOnClick

@@ -1,0 +1,45 @@
+{
+  "name": "power",
+  "description": "",
+  "fields": [
+    {
+      "name": "reference",
+      "description": "Provide a source or rationale for the provided data",
+      "type": "string",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "source",
+      "type": "string",
+      "allowedValues": ["nuclear", "solar", "battery"]
+    },
+    {
+      "name": "sourceStatus",
+      "type": "string",
+      "description": "Provide the power source's degredation and/or remaining life",
+      "allowedValues": []
+    },
+    {
+      "name": "voltage",
+      "description": "in volts",
+      "type": "number",
+      "allowedValues": []
+    },
+    {
+      "name": "voltageScale",
+      "type": "string",
+      "allowedValues": ["volts", "millivolts"]
+    },
+    {
+      "name": "current",
+      "description": "in milliamps",
+      "type": "number"
+    },
+    {
+      "name": "currentScale",
+      "type": "string",
+      "allowedValues": ["amps", "milliamps"]
+    }
+  ]
+}

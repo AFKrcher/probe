@@ -1,7 +1,7 @@
 import { SatelliteCollection } from "/imports/api/satellites";
 import { SchemaCollection } from "/imports/api/schemas";
 
-WebApp.connectHandlers.use("/api/satellite", async (req, res, next) => {
+WebApp.connectHandlers.use("/api/satellites", async (req, res, next) => {
   async function getSats() {
     res.setHeader("Content-Type", "application/json");
     const sats = await SatelliteCollection.find({});
@@ -12,13 +12,11 @@ WebApp.connectHandlers.use("/api/satellite", async (req, res, next) => {
       const skipper = limiter * page;
       try {
         const result = await SatelliteCollection.find(
-          // { "names.name": { $regex: `${req.query.name}*`, $options: "i" } },
+          { "names.name": { $regex: `${req.query.name}*`, $options: "i" } },
           {},
           {
             limit: limiter,
             skip: skipper,
-            // sort: { noradID: 0, names: 1 },
-            // sort: { names: -1 },
           }
         ).fetch();
         if (result.length > 0) {
@@ -100,7 +98,7 @@ WebApp.connectHandlers.use("/api/satellite", async (req, res, next) => {
   getSats();
 });
 
-WebApp.connectHandlers.use("/api/schema", (req, res, next) => {
+WebApp.connectHandlers.use("/api/schemas", (req, res, next) => {
   async function getSchema() {
     res.setHeader("Content-Type", "application/json");
     try {

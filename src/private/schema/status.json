@@ -1,0 +1,25 @@
+{
+  "name": "status",
+  "description": "",
+  "fields": [
+    {
+      "name": "reference",
+      "description": "Provide a source or rationale for the provided data",
+      "type": "string",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "allowedValues": [
+        "operational",
+        "operational with limitations (or standby)",
+        "degraded",
+        "not operational",
+        "functional turned off",
+        "no status reported"
+      ]
+    }
+  ]
+}

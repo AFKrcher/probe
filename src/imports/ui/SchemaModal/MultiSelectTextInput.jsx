@@ -23,7 +23,6 @@ export const MultiSelectTextInput = ({
     const fieldValue = [...allowedValues, ...options]
       .map((x) => x.trim())
       .filter((x) => x);
-    console.log(event, newInputValue);
 
     if (options.length > 1) {
       handleChange(event, fieldValue);

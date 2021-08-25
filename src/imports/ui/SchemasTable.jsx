@@ -177,7 +177,8 @@ export const SchemasTable = () => {
                       {schema.name}
                     </TableCell>
                     <TableCell key={`schema-desc-${i}`}>
-                      {schema.description}
+                      {schema.description ||
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget."}
                     </TableCell>
                   </TableRow>
                 ))}
