@@ -215,22 +215,31 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
         }
       });
     });
+    console.log(obj.names["reference"]); // Justin was looking at using obj to build the yup checks object (named "temp") inside of the values.forEach. Reminder: "entry" is {reference: "", ...}
 
-    console.log("our objects ", obj);
-
-    // Yup.addMethod(Yup.array, "checkEachEntry", function (args) => {
-    //   const {message, predicate} = args
-    //   return this.test("checkEachEntry", message, function)
-    // })
+    // Yup.addMethod(Yup.array, "checkEachEntry", function (errorMessage) {
+    //   // test each entry in the array: Yup.object().shape({field.name: Yup.(field.type).required(field.required).min(field.min).max(field.max).oneOf((field.allowedValues))})
+    //   return this.test("checkEachEntry", errorMessage, function (value) {
+    //     const { path, createError } = this;
+    //     let temp = {}
+    //     value.forEach((entry) => {
+    //       for (let field in entry) {
+    //
+    //       }
+    //       let checker = Yup.object().shape({`${path}`: Yup.(field.type).required(field.required).min(field.min).max(field.max).oneOf((field.allowedValues))})
+    //       checker.isValid(entry)
+    //     });
+    //     return true || createError({ path, message: "Something went wrong" });
+    //   });
+    // });
 
     let yupShape = {
       // NORAD ID is always a part of the yup shape
-
       noradID: Yup.string()
         .required("Required")
         .length(5, "Must be a positive, 5-digit number")
         .matches(/^[0-9]+$/g, "Must be a positive, 5-digit number"),
-    }; // {schema.name: Yup.array().of(Yup.object().shape({field.name: Yup.(field.type).required(field.required).min(field.min).max(field.max).oneOf((field.allowedValues))}))}
+    }; // {schema.name: Yup.array().checkEachEntry()}
 
     return yupShape;
   };
