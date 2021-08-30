@@ -1,16 +1,14 @@
 import React from "react";
 
 // @material-ui
-import { makeStyles, Container } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  footer: {
-    position: "relative",
-    bottom: 0,
-    width: "100%",
-    height: "50px",
-    lineHeight: "60px",
+  root: {
     textAlign: "center",
+    width: "100%",
+    height: "25px",
+    lineHeight: "15px",
   },
   link: {
     color: theme.palette.text.primary,
@@ -24,7 +22,7 @@ export const Footer = () => {
   const classes = useStyles();
 
   return (
-    <footer className={classes.footer}>
+    <div className={classes.root}>
         2021 - OpenOrbit -{" "}
       <a href="" className={classes.link}>
         Terms
@@ -33,6 +31,6 @@ export const Footer = () => {
       <a href="" className={classes.link}>
         Privacy Policy
       </a>
-    </footer>
+    </div>
   );
 };

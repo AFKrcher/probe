@@ -12,12 +12,8 @@ import {
   Button,
   Typography,
   makeStyles,
-  IconButton,
   Tooltip,
 } from "@material-ui/core";
-import { themes } from "../css/Themes.jsx";
-import BrightnessHigh from "@material-ui/icons/BrightnessHigh";
-import Brightness4 from "@material-ui/icons/Brightness4";
 
 const useStyles = makeStyles((theme) => ({
   navbar: {
@@ -31,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     color: theme.palette.text.primary,
     textDecoration: "none",
+    marginRight: 10,
     "&:hover": {
       color: theme.palette.text.primary,
     },
@@ -53,17 +50,16 @@ const useStyles = makeStyles((theme) => ({
 
 export const Nav = ({ theme, toggleTheme }) => {
 
-
-  
   const { setOpenAlert, setOpenSnack } = useContext(HelpersContext);
   const classes = useStyles();
   return (
-    <AppBar className={classes.navbar} position="static">
+    <div className={classes.root}>
+    <AppBar className={classes.navbar} position="sticky">
       <Toolbar className={classes.toolbar}>
         <div className={classes.links}>
           <Tooltip title="To Home">
             <Typography
-              variant="h5"
+              variant="h4"
               className={classes.logo}
               component={Link}
               onClick={() => {
@@ -77,6 +73,7 @@ export const Nav = ({ theme, toggleTheme }) => {
           </Tooltip>
           <Button
             disableElevation
+            size="medium"
             className={classes.navBtn}
             component={Link}
             onClick={() => {
@@ -89,6 +86,7 @@ export const Nav = ({ theme, toggleTheme }) => {
           </Button>
           <Button
             disableElevation
+            size="medium"
             className={classes.navBtn}
             component={Link}
             onClick={() => {
@@ -101,6 +99,7 @@ export const Nav = ({ theme, toggleTheme }) => {
           </Button>
           <Button
             disableElevation
+            size="medium"
             className={classes.navBtn}
             component={Link}
             onClick={() => {
@@ -113,6 +112,7 @@ export const Nav = ({ theme, toggleTheme }) => {
           </Button>
           <Button
             disableElevation
+            size="medium"
             className={classes.navBtn}
             component={Link}
             onClick={() => {
@@ -123,20 +123,12 @@ export const Nav = ({ theme, toggleTheme }) => {
           >
             About
           </Button>
-          <div className={classes.navBtn}>
-            <DropDown />
-          </div>
         </div>
-        {theme === themes.dark ? (
-          <IconButton edge="end" aria-label="light theme" onClick={toggleTheme}>
-            <BrightnessHigh />
-          </IconButton>
-        ) : (
-          <IconButton edge="end" aria-label="dark theme" onClick={toggleTheme}>
-            <Brightness4 />
-          </IconButton>
-        )}
+          <div edge="end" className={classes.navBtn}>
+            <DropDown theme={theme} toggleTheme={toggleTheme} />
+          </div>
       </Toolbar>
     </AppBar>
+    </div>
   );
 };

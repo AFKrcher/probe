@@ -24,6 +24,9 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
+  accordian: {
+    display: "flex"
+  },
   addSchemaContainer: {
     textAlign: "center",
     margin: 10,
@@ -39,13 +42,14 @@ const useStyles = makeStyles((theme) => ({
 
 export const SatelliteForm = ({
   errors,
-  formValues,
+  values,
   schemas,
   setValues,
   setFieldValue,
   editing,
   initValues,
   newSat,
+  setShape
 }) => {
   const { setOpenAlert, alert, setAlert } = useContext(HelpersContext);
   const [schemaAddition, setSchemaAddition] = useState(false);
@@ -126,16 +130,18 @@ export const SatelliteForm = ({
       <Grid item xs={12}>
         {schemas.map((schema, index) => {
           return schema.name === "names" ? (
-            <span key={index} style={{ display: "flex" }}>
+            <span key={index} className={classes.accordian}>
               <SatelliteSchemaAccordion
                 errors={errors}
                 key={index}
                 schema={schema}
-                entries={formValues[`${schema.name}`]}
+                entries={values[`${schema.name}`]}
                 setFieldValue={setFieldValue}
                 editing={editing}
                 setValues={setValues}
                 newSat={newSat}
+                values={values}
+                setShape={setShape}
               />
               {editing && (
                 <Tooltip title={`Delete ${schema.name}`}>
@@ -154,11 +160,11 @@ export const SatelliteForm = ({
         })}
         {schemas.map((schema, index) => {
           return initValues[schema.name] && schema.name !== "names" ? (
-            <span key={index} style={{ display: "flex" }}>
+            <span key={index} className={classes.accordian}>
               <SatelliteSchemaAccordion
                 key={index}
                 schema={schema}
-                entries={formValues[`${schema.name}`]}
+                entries={values[`${schema.name}`]}
                 setFieldValue={setFieldValue}
                 editing={editing}
                 setValues={setValues}

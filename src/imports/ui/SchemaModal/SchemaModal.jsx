@@ -18,6 +18,7 @@ import {
   DialogActions,
   Button,
   CircularProgress,
+  Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import Close from "@material-ui/icons/Close";
@@ -35,6 +36,11 @@ const useStyles = makeStyles((theme) => ({
   actions: {
     marginTop: 10,
   },
+  description: {
+    marginTop: -10,
+    marginBottom: 15,
+    margin: 5
+  }
 }));
 
 export const SchemaModal = ({ show, newSchema, initValues, handleClose, dirty }) => {
@@ -157,8 +163,12 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, dirty })
 
   const handleToggleEdit = (setValues) => {
     if (editing) setValues(initValues);
-
-    newSchema ? handleClose() : setEditing(!editing);
+    if (newSchema) {
+      handleClose()
+    } else {
+      setValues(initValues)
+    }
+    setEditing(!editing)
   };
 
   const handleEdit = (setValues) => {
@@ -227,6 +237,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, dirty })
             }) => (
               <Form>
                 <DialogContent>
+                  <Typography className={classes.description}>Each schema is built to store sets of data that characterize a satellite. Data fields can be added, modified, or deleted below.</Typography>
                   <SchemaForm
                     touched={touched}
                     errors={errors}

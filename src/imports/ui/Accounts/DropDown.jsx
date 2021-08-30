@@ -3,15 +3,48 @@ import { useTracker } from "meteor/react-meteor-data";
 import { Link } from "react-router-dom";
 
 // @material-ui
-import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import { withStyles, makeStyles, IconButton, Menu, MenuItem, Button } from "@material-ui/core";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import SettingsIcon from "@material-ui/icons/Settings";
 import StarIcon from "@material-ui/icons/Star";
+import BrightnessHigh from "@material-ui/icons/BrightnessHigh";
+import Brightness2 from "@material-ui/icons/Brightness2";
+import { themes } from "../css/Themes.jsx";
+
+const useStyles = makeStyles((theme) => ({
+  navbar: {
+    backgroundColor: theme.palette.navigation.main,
+  },
+  toolbar: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+  logo: {
+    color: theme.palette.text.primary,
+    textDecoration: "none",
+    "&:hover": {
+      color: theme.palette.text.primary,
+    },
+  },
+  links: {
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "center",
+  },
+  navBtn: {
+    backgroundColor: theme.palette.navigation.main,
+    color: theme.palette.text.primary,
+    marginLeft: "20px",
+    "&:hover": {
+      backgroundColor: theme.palette.navigation.hover,
+      color: theme.palette.text.primary,
+    },
+  },
+}));
 const StyledMenu = withStyles({
   paper: {
     border: "1px solid #d3d4d5",
@@ -43,7 +76,7 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-export const DropDown = () => {
+export const DropDown = ({theme, toggleTheme}) => {
   let user = useTracker(() => Meteor.user()?.username, []);
   
   const userMgmt = () => {
@@ -58,7 +91,7 @@ export const DropDown = () => {
         }}
         to={user ? "/profile" : "/login"}
       >
-        Hi {user ? user : "Login"}
+        Hi {user ? "Options" : "Login"}
       </Button>
     );
     return userNav;
@@ -76,95 +109,56 @@ export const DropDown = () => {
 
   return (
     <div>
+      <Button onClick={handleClick}>
+        <SettingsIcon fontSize="large"/>
+      </Button>
+      <StyledMenu
+        id="customized-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <StyledMenuItem onClick={toggleTheme}>
+          <ListItemIcon>
+            {theme === themes.dark ? (
+              <Brightness2 aria-label="dark theme" fontSize="small" />
+          ) : (
+              <BrightnessHigh aria-label="light theme"/>
+          )}
+          </ListItemIcon>
+          <ListItemText primary="Toggle theme" fontSize="small" />
+        </StyledMenuItem>
       {user ? (
-        <>
-          <Button
-            aria-controls="customized-menu"
-            aria-haspopup="true"
-            variant="contained"
-            color="primary"
-            onClick={handleClick}
-          >
-            {user}
-          </Button>
-          <StyledMenu
-            id="customized-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <StyledMenuItem>
-              <ListItemIcon>
-                <StarIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Favorites" />
-            </StyledMenuItem>
-            <StyledMenuItem>
-              <ListItemIcon>
-                <SettingsIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Settings" />
-            </StyledMenuItem>
-            <StyledMenuItem>
-              <ListItemIcon>
-                <ExitToAppIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Logout" onClick={() => Meteor.logout()} />
-            </StyledMenuItem>
-          </StyledMenu>
-        </>
+        <div>
+          <StyledMenuItem>
+            <ListItemIcon>
+              <StarIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Favorites" />
+          </StyledMenuItem>
+          <StyledMenuItem>
+            <ListItemIcon>
+              <SettingsIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary={`${user}'s Settings`} />
+          </StyledMenuItem>
+          <StyledMenuItem>
+            <ListItemIcon>
+              <ExitToAppIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Logout" onClick={() => Meteor.logout()} />
+          </StyledMenuItem>
+        </div>
       ) : (
-        <>
-          <Button component={Link} to="/login">
-            Login
-          </Button>
-        </>
-        /* 
-        <>
-          <Button
-            aria-controls="customized-menu"
-            aria-haspopup="true"
-            variant="contained"
-            color="primary"
-            onClick={handleClick}
-          >
-            Login
-          </Button>
-          <StyledMenu
-            id="customized-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <form onSubmit={loginUser}>
-              <StyledMenuItem>
-                <ListItemIcon>
-                  <PersonIcon fontSize="small" />
-                </ListItemIcon>
-                <input type="text" ref={(input) => (username = input)} />
-                <ListItemText primary="Username" />
-              </StyledMenuItem>
-              <StyledMenuItem>
-                <ListItemIcon>
-                  <VpnKeyIcon fontSize="small" />
-                </ListItemIcon>
-                <input type="password" ref={(input) => (password = input)} />
-                <ListItemText primary="Password" />
-              </StyledMenuItem>
-              <StyledMenuItem>
-                <ListItemIcon>
-                  <ExitToAppIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Login" onClick={loginUser} />
-              </StyledMenuItem>
-              <Button type="submit">Login</Button>
-            </form>
-          </StyledMenu>
-        </>
-        */
+        <StyledMenuItem component={Link} to="/login">
+          <ListItemIcon>
+            <AccountCircleIcon/>
+          </ListItemIcon>
+          <ListItemText primary="Login" />
+        </StyledMenuItem>
       )}
+    </StyledMenu>
     </div>
   );
 };

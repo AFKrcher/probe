@@ -37,26 +37,41 @@ const useStyles = makeStyles((theme) => ({
   titleText: {
     fontSize: "30px",
   },
+  description: {
+    marginTop: -10,
+    marginBottom: 15,
+    margin: 5
+  }
 }));
 
 export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
   const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } =
     useContext(HelpersContext);
 
+  const [shape, setShape] = useState(false)
+
   const classes = useStyles();
 
-  const [schemas, isLoading] = useTracker(() => {
+  const [schemas, sats, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("schemas");
     const schemas = SchemaCollection.find().fetch();
-    return [schemas, !sub.ready()];
+    const sats = SatelliteCollection.find({} , {fields: {noradID: 1}}).fetch();
+    return [schemas, sats, !sub.ready()];
   });
-
+  
   const [editing, setEditing] = useState(newSat || false);
+  
+  const noradIDList = () => {
+    let list = []
+    for (let sat in sats) {
+      sats[sat].noradID === initValues.noradID ? null : list.push(sats[sat].noradID)
+    }
+    return list
+  }
 
   useEffect(() => {
     setEditing(newSat || false);
   }, [newSat, show]);
-
 
   const handleSubmit = async (values, { setSubmitting }) => {
     emptyDataRemover(values);
@@ -182,6 +197,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
             onClick={() => {
               setOpenAlert(false);
               handleToggleEdit(setValues);
+              handleClose()
             }}
           >
             Confirm
@@ -225,35 +241,64 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
           for (let schemaField in schema) {
             // "schema" are the schemas seen on the SchemasTable, and "schemaField" are the fields to be filled-in in each schema
             let fieldRequirements = schema[schemaField];
+            // the following switch statements must be modified whenever we decide to create:
+              // a new "type" (e.g. number, string, date) or 
+              // "type constraint" (e.g. max number, min number, max string length)
+            // this isn't the most elegant solution, but this was the only way we know how to implement dynamic yupJS validation shapes 
+              // yupJS does not like reading string literals in its shape (e.g. `Yup.${fieldRequirements.type}.required()` does not work)
             switch (fieldRequirements.type) {
               case "string":
                 switch (fieldRequirements.required) {
                   case true:
                     switch (fieldRequirements.allowedValues.length > 0) {
                       case true:
-                        fieldObj[schemaField] = Yup.string()
-                          .required("Required")
-                          .oneOf(
-                            fieldRequirements.allowedValues,
-                            `Must be one of the following: ${fieldRequirements.allowedValues.toString(
-                              ", "
-                            )}`
-                          );
+                        switch (typeof fieldRequirements.stringMax === "string") {
+                          case true:
+                            fieldObj[schemaField] = Yup.string()
+                              .required("Required")
+                              .max(parseInt(fieldRequirements.stringMax), `Must not exceed ${fieldRequirements.stringMax} characters.`)
+                              .oneOf(
+                                fieldRequirements.allowedValues,
+                                `Must be one of the following: ${fieldRequirements.allowedValues.toString(
+                                  ", "
+                                )}`
+                              );
+                            break;
+                          default:
+                            fieldObj[schemaField] = Yup.string()
+                              .required("Required")
+                              .oneOf(
+                                fieldRequirements.allowedValues,
+                                `Must be one of the following: ${fieldRequirements.allowedValues.toString(
+                                  ", "
+                                )}`
+                              );
+                        }
                         break;
                       default:
-                        fieldObj[schemaField] =
-                          Yup.string().required("Required");
+                         switch (schemaField === "reference") {
+                            case true:
+                              fieldObj[schemaField] = Yup.string().matches(
+                                  /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/,
+                                  "Must be a valid URL (e.g. https://en.wikipedia.org/wiki/Main_Page)."
+                                ).required();
+                              break;
+                            default:
+                              fieldObj[schemaField] = Yup.string().required("Required");
+                          }
                     }
                     break;
                   default:
-                    switch (fieldRequirements.allowedValues.length > 0) {
+                    switch (fieldRequirements.allowedValues.length === 0) {
                       case true:
-                        fieldObj[schemaField] = Yup.string().oneOf(
-                          fieldRequirements.allowedValues,
-                          `Must be one of the following: ${fieldRequirements.allowedValues.toString(
-                            ", "
-                          )}`
-                        );
+                        switch (typeof fieldRequirements.stringMax === "string") {
+                          case true:
+                            fieldObj[schemaField] = Yup.string()
+                              .max(parseInt(fieldRequirements.stringMax), `Must not exceed ${fieldRequirements.stringMax} characters.`)
+                            break;
+                          default:
+                            fieldObj[schemaField] = Yup.string()
+                        }
                         break;
                       default:
                         fieldObj[schemaField] = Yup.string();
@@ -272,17 +317,39 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
                         fieldObj[schemaField] = Yup.number()
                           .required("Required")
                           .min(
-                            fieldRequirements.min,
+                            parseInt(fieldRequirements.min),
                             `Must be between the values of ${fieldRequirements.min} and ${fieldRequirements.max}`
                           )
                           .max(
-                            fieldRequirements.max,
+                            parseInt(fieldRequirements.max),
                             `Must be between the values of ${fieldRequirements.min} and ${fieldRequirements.max}`
                           );
                         break;
                       default:
-                        fieldObj[schemaField] =
-                          Yup.number().required("Required");
+                        switch (typeof fieldRequirements.min === "string") {
+                          case true:
+                            fieldObj[schemaField] = Yup.number()
+                              .required("Required")
+                              .min(
+                                parseInt(fieldRequirements.min),
+                                `Must be equal or greater than ${fieldRequirements.min}`
+                              )
+                            break;
+                          default:
+                            switch (typeof fieldRequirements.max === "string") {
+                              case true:
+                                fieldObj[schemaField] = Yup.number()
+                                  .required("Required")
+                                  .max(
+                                    parseInt(fieldRequirements.max),
+                                    `Must be equal to or less than ${fieldRequirements.max}`
+                                  );
+                                break;
+                              default:
+                                fieldObj[schemaField] =
+                                  Yup.number().required("Required");
+                            }
+                        }
                     }
                     break;
                   default:
@@ -290,16 +357,37 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
                       case true:
                         fieldObj[schemaField] = Yup.number()
                           .min(
-                            fieldRequirements.min,
+                            parseInt(fieldRequirements.min),
                             `Must be between the values of ${fieldRequirements.min} and ${fieldRequirements.max}`
                           )
                           .max(
-                            fieldRequirements.max,
+                            parseInt(fieldRequirements.max),
                             `Must be between the values of ${fieldRequirements.min} and ${fieldRequirements.max}`
                           );
                         break;
                       default:
-                        fieldObj[schemaField] = Yup.number();
+                        switch (typeof fieldRequirements.min === "string") {
+                          case true:
+                            fieldObj[schemaField] = Yup.number()
+                              .min(
+                                parseInt(fieldRequirements.min),
+                                `Must be equal to or greater than ${fieldRequirements.min}`
+                              )
+                            break;
+                          default:
+                            switch (typeof fieldRequirements.max === "string") {
+                              case true:
+                                fieldObj[schemaField] = Yup.number()
+                                  .max(
+                                    parseInt(fieldRequirements.max),
+                                    `Must be equal to or less than ${fieldRequirements.max}`
+                                  );
+                                break;
+                              default:
+                                fieldObj[schemaField] =
+                                  Yup.number();
+                            }
+                        }
                     }
                 }
                 break;
@@ -320,8 +408,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
 
           fieldValidator
             .validate(entry)
-            .then((result) => {
-              console.log(result)
+            .then(() => {
               delete errObj[path]
             })
             .catch((err) => {
@@ -344,7 +431,8 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
       noradID: Yup.string()
         .required("Required")
         .length(5, "Must be a positive, 5-digit number")
-        .matches(/^[0-9]+$/g, "Must be a positive, 5-digit number"),
+        .matches(/^[0-9]+$/g, "Must be a positive, 5-digit number")
+        .notOneOf(noradIDList(), "A satellite with that noradID already exists in our records."),
     };
 
     if (JSON.stringify(schemaObj) !== "{}") {
@@ -352,10 +440,15 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
         yupShape[schema] = Yup.array().checkEachEntry();
       }
     }
+
     return yupShape
   };
-  
+
   let satelliteValidator = Yup.object().shape(schemaValidatorShaper());
+
+  useEffect(() => {
+
+  }, [shape])
 
   return (
     <>
@@ -382,13 +475,15 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
             validateOnChange={true}
             validateOnMount={true}
           >
-            {({ errors, isSubmitting, values, setValues, setFieldValue, dirty }) => (
+            {({ errors, isSubmitting, values, setValues, setFieldValue, dirty}) => (
               <Form>
-                {console.log(errors, dirty)}
+                {console.log(values, errors)}
                 <DialogContent>
+                  <Typography className={classes.description}>Each satellite in the catalogue contains a number of fields based on schemas. Schemas can be added, deleted, and modified below.</Typography>
                   <SatelliteForm
                     errors={errors}
-                    formValues={values}
+                    values={values}
+                    setShape={setShape}
                     schemas={schemas}
                     setValues={setValues}
                     setFieldValue={setFieldValue}

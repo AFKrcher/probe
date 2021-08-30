@@ -17,12 +17,20 @@ import {
 import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    height: "100%",
+  },
+  description: {
+    marginBottom: 25, 
+    marginTop: 10
+  },
   dataGrid: {
+    overflow: "hidden",
     resize: "both",
-    overflow: "auto",
-    height: "62.5vh", 
-    width: "100%",
-    marginBottom: "11.25vh"
+    "& .MuiDataGrid-cell": {
+      overflowX: "auto",
+      textOverflow: "clip",
+    },
   },
   spinner: {
     color: theme.palette.text.primary,
@@ -57,8 +65,8 @@ export const SatellitesTable = () => {
     },
     {
       headerAlign: "center",
-      field: "schemas",
-      headerName: "SCHEMA(S)",
+      field: "descriptions",
+      headerName: "DESCRIPTION",
       minWidth: 300,
       editable: false,
       flex: 1,
@@ -98,12 +106,7 @@ export const SatellitesTable = () => {
       return {
         id: sat.noradID,
         names: sat.names?.map((name) => name.names || name.name).join(", "),
-        schemas: Object.keys(sat)
-          .map((key) => {
-            return key !== "_id" ? key : null;
-          })
-          .filter((notFalsy) => notFalsy)
-          .join(", "),
+        descriptions: sat.descriptionShort ? sat.descriptionShort[0].descriptionShort : "N/A",
       };
     });
     rows.getRows = count;
@@ -128,7 +131,7 @@ export const SatellitesTable = () => {
   };
 
   return (
-      <>
+      <div className={classes.root}>
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item xs>
             <Typography variant="h3">Satellites</Typography>
@@ -146,7 +149,7 @@ export const SatellitesTable = () => {
         <Typography
           gutterBottom
           variant="body2"
-          style={{ marginBottom: 25, marginTop: 10 }}
+          className={classes.description}
         >
           Each <strong>satellite</strong> in the catalogue contains a number of
           fields based on schemas defined on the{" "}
@@ -159,50 +162,51 @@ export const SatellitesTable = () => {
           up the schemas and data associated with the <strong>satellite</strong>
           .
         </Typography>
-        <DataGrid
-          className={classes.dataGrid}
-          components={{
-            Toolbar: GridToolbar,
-          }}
-          columns={columns}
-          rows={rows}
-          rowCount={count}
-          pageSize={limiter}
-          loading={loading}
-          pagination
-          paginationMode="server"
-          filterMode="server"
-          onFilterModelChange={(e) => {
-            handleFilter(e);
-          }}
-          rowsPerPageOptions={[5, 10, 15, 20]}
-          onPageSizeChange={(newLimit) => setLimiter(newLimit)}
-          onPageChange={(newPage) => setPage(newPage)}
-          disableSelectionOnClick
-          onRowClick={(satellite) => {
-            handleRowClick(
-              SatelliteCollection.find({ noradID: satellite.id }).fetch()[0]
-            );
-          }}
-          onSortModelChange={(e) => {
-            if (e[0]) {
-              if (e[0].field === "id") {
-                e[0].sort === "asc" ? setSortNorad(1) : setSortNorad(-1);
+          <DataGrid
+            className={classes.dataGrid}
+            components={{
+              Toolbar: GridToolbar,
+            }}
+            columns={columns}
+            rows={rows}
+            rowCount={count}
+            pageSize={limiter}
+            loading={loading}
+            autoHeight={true}
+            pagination
+            paginationMode="server"
+            filterMode="server"
+            onFilterModelChange={(e) => {
+              handleFilter(e);
+            }}
+            rowsPerPageOptions={[5, 10, 15, 20]}
+            onPageSizeChange={(newLimit) => setLimiter(newLimit)}
+            onPageChange={(newPage) => setPage(newPage)}
+            disableSelectionOnClick
+            onRowClick={(satellite) => {
+              handleRowClick(
+                SatelliteCollection.find({ noradID: satellite.id }).fetch()[0]
+              );
+            }}
+            onSortModelChange={(e) => {
+              if (e[0]) {
+                if (e[0].field === "id") {
+                  e[0].sort === "asc" ? setSortNorad(1) : setSortNorad(-1);
+                } else {
+                  e[0].sort === "asc" ? setSortNames(-1) : setSortNames(1);
+                }
               } else {
-                e[0].sort === "asc" ? setSortNames(-1) : setSortNames(1);
+                setSortNorad(0);
+                setSortNames(0);
               }
-            } else {
-              setSortNorad(0);
-              setSortNames(0);
-            }
-          }}
-        />
+            }}
+          />
         <SatelliteModal
           show={showModal}
           newSat={newSat}
           initValues={initialSatValues}
           handleClose={() => setShowModal(false)}
         />
-      </>
+      </div>
   );
 };

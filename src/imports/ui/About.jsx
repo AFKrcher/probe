@@ -4,6 +4,9 @@ import React from "react";
 import { Grid, makeStyles, Typography, Container } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    height: "100%",
+  },
   avatars: {
     maxWidth: "100%",
     display: "grid",
@@ -112,7 +115,7 @@ let TeamMembers = [
 export const About = () => {
   const classes = useStyles();
   return (
-    <>
+    <div className={classes.root}>
         <Typography variant="h3">
           About <strong>OpenOrbit</strong>
         </Typography>
@@ -169,6 +172,6 @@ export const About = () => {
             })}
           </Grid>
         </Container>
-    </>
+    </div>
   );
 };

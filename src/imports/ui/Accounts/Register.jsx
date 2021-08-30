@@ -1,24 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { Accounts } from "meteor/accounts-base";
-import { useTracker } from "meteor/react-meteor-data";
 
 export const Register = () => {
   const registerUser = (e) => {
     e.preventDefault();
-    console.log("register: ", username.value, password.value);
-    fetch('http://localhost:3000/api/accounts', {
-      method: 'POST',
-      body: [username.value, password.value]
-    })
-    // Accounts.createUser(
-    //   {
-    //     username: username.value,
-    //     password: password.value,
-    //   },
-    //   (error) => {
-    //     console.log(error);
-    //   }
-    // );
+    // In server>main.js, Accounts.onCreateUser is called & user is assigned a role.
+    Accounts.createUser(
+      {
+        username: username.value,
+        password: password.value,
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   };
 
   return (

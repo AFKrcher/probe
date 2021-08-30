@@ -8,7 +8,6 @@ import { SchemaModal } from "../SchemaModal/SchemaModal.jsx";
 
 // @material-ui
 import {
-  Container,
   Button,
   Grid,
   makeStyles,
@@ -25,13 +24,16 @@ import {
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    height: "100%",
+  },
+  description: {
+    marginBottom: 25, 
+    marginTop: 10
+  },
   table: {
     overflow: "auto",
-    maxHeight: "100%",
-    marginBottom: "6vh"
-  },
-  tableHead: {
-    backgroundColor: theme.palette.grey[700],
+    height: "100%",
   },
   tableNameCol: {
     width: "25%",
@@ -39,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
   tableRow: {
     "&:hover": {
       backgroundColor: theme.palette.action.hover,
+      cursor: "pointer"
     },
   },
   spinner: {
@@ -96,7 +99,7 @@ export const SchemasTable = () => {
 
   return (
 
-      <>
+      <div className={classes.root}>
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item xs>
             <Typography variant="h3">Schemas</Typography>
@@ -111,19 +114,18 @@ export const SchemasTable = () => {
             </Button>
           </Grid>
         </Grid>
-        <Typography gutterBottom variant="body2" style={{ marginTop: 10, marginBottom: 25 }}>
-          Each piece of data you want to store has its own{" "}
-          <strong>schema</strong>. You can characterize a given satellite using
-          any number of schemas. Please see the satellites on the{" "}
+        <Typography gutterBottom variant="body2" className={classes.description}>
+          Each <strong>schema</strong> is built to store sets of data that characterize a satellite. 
+          Please see the satellites on the{" "} 
           <Tooltip title="Bring me to the schemas page">
             <Link to="/satellites" className={classes.link}>
               previous page
             </Link>
           </Tooltip>{" "}
           for usage examples.
-          Each <strong>schema</strong> has a reference (where the data was
-          found), a description (describing what the data is), and a number of
-          data fields (that contain the actual information).
+          Each <strong>schema</strong> has a reference for where the data was
+          found, a description describing what the data is, and a number of
+          data fields that contain the actual information.
           Click on a desired <strong>schema</strong> below to view its details
           and edit the entry fields.
         </Typography>
@@ -178,6 +180,6 @@ export const SchemasTable = () => {
           initValues={initialSchemaValues}
           handleClose={() => setShowModal(false)}
         />
-      </>
+      </div>
   );
 };

@@ -1,16 +1,6 @@
 import { Roles } from "meteor/alanning:roles";
-
-Roles.createRole("user", {unlessExists: true});
-Roles.createRole("admin", {unlessExists: true});
-
-WebApp.connectHandlers.use("/api/accounts", async (req, res, next) => {
-    Accounts.createUser(
-        {
-        username: req.username.value,
-        password: req.password.value,
-        },
-        (error) => {
-        console.log(error);
-        }
-    )
+import { Accounts } from "meteor/accounts-base";
+Accounts.onCreateUser((options, user) =>{
+  console.log("user2: ", user)
+  console.log('options2:', options)
 })

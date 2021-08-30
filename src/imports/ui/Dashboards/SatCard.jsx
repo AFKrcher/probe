@@ -21,17 +21,32 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Close from "@material-ui/icons/Close";
 
+const cardHeight = 30
+
 const useStyles = makeStyles((theme) => ({
   satCard: {
     width: "100%",
+    height: "100%",
+    overflowWrap: "hidden",
   },
   image: {
-    minHeight: "170px",
-    maxHeight: "170px",
+    minHeight: "180px",
+    maxHeight: "180px",
   },
   description: {
-    minHeight: "130px",
-    maxHeight: "130px",
+    minHeight: `${cardHeight}vh`,
+    maxHeight: `${cardHeight}vh`,
+  },
+  cardButtons: {
+    position: "relative",
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  iframe: {
+    border: "none"
+  },
+  modalButton: {
+    marginBottom: 5
   },
 }));
 
@@ -67,7 +82,7 @@ export const SatCard = ({ satellite }) => {
           height="99%"
           width="100%"
           title="SpaceCockpit"
-          style={{ border: "none" }}
+          className={classes.iframe}
         />
       ),
       actions: (
@@ -75,7 +90,7 @@ export const SatCard = ({ satellite }) => {
           variant="contained"
           color="default"
           size="small"
-          style={{ marginBottom: 5 }}
+          className={classes.modalButton}
           onClick={() => setOpenPrompt(false)}
         >
           <Close />
@@ -95,32 +110,30 @@ export const SatCard = ({ satellite }) => {
         newSat={false}
         handleClose={() => setShowModal(false)}
       />
-      <Card className={classes.satCard}>
+      <Card className={classes.satCard} variant="outlined">
         <CardMedia
           className={classes.image}
           image={getSatImage(satellite)}
           title="Satellite image"
         />
-        <CardContent>
+        <CardContent className={classes.description}>
           <Typography variant="h5" component="h2">
-            {getSatName(satellite)}
+            <strong>{getSatName(satellite)}</strong>
           </Typography>
-          <Typography gutterBottom variant="button" component="p">
-            {getSatID(satellite)}
+          <Typography gutterBottom variant="body1">
+            NORAD ID: {getSatID(satellite)}
           </Typography>
           <Typography
-            className={classes.description}
-            variant="body2"
             color="textSecondary"
-            component="p"
-            className={classes.description}
+            variant="body2"
           >
-            <Clamp lines={7}>{getSatDesc(satellite)}</Clamp>
+            <Clamp lines={cardHeight / 4}>{getSatDesc(satellite)}</Clamp>
           </Typography>
         </CardContent>
-        <CardActions>
+        <CardActions className={classes.cardButtons}>
           <Button
-            size="small"
+            size="medium"
+            variant="outlined" 
             onClick={(e) =>
               handleVisualize(
                 e,
@@ -128,10 +141,10 @@ export const SatCard = ({ satellite }) => {
               )
             }
           >
-            Visualize
+            <strong>Visualize</strong>
           </Button>
-          <Button size="small" onClick={(e) => handleViewMore(e, satellite)}>
-            View more
+          <Button size="medium" variant="outlined" onClick={(e) => handleViewMore(e, satellite)}>
+            <strong>Details</strong>
           </Button>
         </CardActions>
       </Card>

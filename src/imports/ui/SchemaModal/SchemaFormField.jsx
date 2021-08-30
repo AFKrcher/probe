@@ -18,14 +18,18 @@ import {
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
+  field: {
+    display: "flex", 
+    alignItems: "center"
+  },
   helpers: {
     marginLeft: 14,
-    marginTop: -5,
+    marginTop: 0,
     marginBottom: 4,
   },
   helpersError: {
     marginLeft: 14,
-    marginTop: -5,
+    marginTop: 0,
     marginBottom: 4,
     color: theme.palette.error.main,
   },
@@ -147,7 +151,7 @@ export const SchemaFormField = ({
                     name: `fields.${index}.min`,
                   }}
                   onChange={onMinChange}
-                  label="Minimum"
+                  label="Minimum Value"
                   margin="dense"
                   defaultValue={field.min}
                   fullWidth
@@ -165,7 +169,7 @@ export const SchemaFormField = ({
                   }}
                   onChange={onMaxChange}
                   defaultValue={field.max}
-                  label="Maximum"
+                  label="Maximum Value"
                   margin="dense"
                   fullWidth
                   type="number"
@@ -182,15 +186,41 @@ export const SchemaFormField = ({
           </>
         ) : (
           <>
-            <MultiSelectTextInput
-              index={index}
-              allowedValues={field.allowedValues}
-              disabled={!editing}
-              setFieldValue={setFieldValue}
-            />
+            <Grid container item spacing={2}>
+              <Grid item xs>
+                <Field
+                  inputProps={{
+                    name: `fields.${index}.stringMax`,
+                    min: "1"
+                  }}
+                  onChange={onMaxChange}
+                  defaultValue={field.stringMax}
+                  label="Maximum Length"
+                  margin="dense"
+                  fullWidth
+                  type="number"
+                  step="any"
+                  variant="outlined"
+                  disabled={!editing}
+                  component={TextField}
+                />
+              <FormHelperText className={classes.helpers}>
+                OPTIONAL: Provide a maximum string length
+                {/* Example: Please note that the DataGrid's descriptionShort column can fit ~85 characters (on a 1920 x 1080 screen) before overflow happens */}
+              </FormHelperText>
+              </Grid>
+              <Grid item xs>
+                <MultiSelectTextInput
+                  index={index}
+                  allowedValues={field.allowedValues}
+                  disabled={!editing}
+                  setFieldValue={setFieldValue}
+                />
+              </Grid>
+            </Grid>
           </>
         )}
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div className={classes.field}>
           <Field
             inputProps={{
               id: `schema-field-${index}-required-label`,

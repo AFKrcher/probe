@@ -4,8 +4,8 @@ import HelpersContext from "./helpers/HelpersContext.jsx";
 
 // Components
 import { Nav } from "./Navigation/Nav.jsx";
-import { SatellitesTable } from "./DataDisplays/SatellitesTable.jsx";
-import { SchemasTable } from "./DataDisplays/SchemasTable.jsx";
+import { SatellitesTable } from "./Dashboards/SatellitesTable.jsx";
+import { SchemasTable } from "./Dashboards/SchemasTable.jsx";
 import { Home } from "./Home.jsx";
 import { About } from "./About.jsx";
 import { Footer } from "./Navigation/Footer.jsx";
@@ -19,9 +19,17 @@ import { themes } from "./css/Themes.jsx";
 import { CssBaseline, Container, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  content: {
+  main: {
+    position: "relative",
     marginTop: 30,
+    marginBottom: 40,
+    minHeight: "85vh",
   },
+  footer: {
+    position: "relative",
+    bottom: 0,
+    height: 0,
+  }
 }));
 
 export const App = () => {
@@ -59,36 +67,40 @@ export const App = () => {
         <CssBaseline />
         <Router>
           <Nav theme={theme} toggleTheme={toggleTheme} />
-          <Container maxWidth="lg" className={classes.content}>
-            <Switch>
-              <Route exact={true} path="/satellites">
-                <SatellitesTable />
-              </Route>
-              <Route exact={true} path="/register">
-                <Register />
-              </Route>
-              <Route exact={true} path="/login">
-                <Login />
-              </Route>
-              <Route exact={true} path="/menu">
-                <DropDown />
-              </Route>
-              <Route exact={true} path="/schemas">
-                <SchemasTable />
-              </Route>
-              <Route exact={true} path="/about">
-                <About />
-              </Route>
-              <Route exact={true} path="/">
-                <Home />
-              </Route>
-              <Route path="*">
-                <Home />
-              </Route>
-            </Switch>
+          <Container maxWidth="lg">
+            <main className={classes.main}>
+              <Switch>
+                <Route exact={true} path="/satellites">
+                  <SatellitesTable />
+                </Route>
+                <Route exact={true} path="/register">
+                  <Register />
+                </Route>
+                <Route exact={true} path="/login">
+                  <Login />
+                </Route>
+                <Route exact={true} path="/menu">
+                  <DropDown />
+                </Route>
+                <Route exact={true} path="/schemas">
+                  <SchemasTable />
+                </Route>
+                <Route exact={true} path="/about">
+                  <About />
+                </Route>
+                <Route exact={true} path="/">
+                  <Home />
+                </Route>
+                <Route path="*">
+                  <Home />
+                </Route>
+              </Switch>
+            </main>
+            <footer className={classes.footer}>
+              <Footer />
+            </footer>
           </Container>
         </Router>
-          <Footer />
       </ThemeProvider>
     </HelpersContext.Provider>
   );

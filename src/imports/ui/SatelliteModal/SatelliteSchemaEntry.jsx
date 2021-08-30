@@ -28,11 +28,13 @@ export const SatelliteSchemaEntry = ({
   deleteEntry,
   setFieldValue,
   editing,
+  setShape
 }) => {
   const classes = useStyles();
 
   const onChange = (event) => {
     setFieldValue(event.target.name, event.target.value);
+    setTimeout(() => setFieldValue(event.target.name, event.target.value));
   };
 
   handleEntryDelete = (schemaName, index) => {

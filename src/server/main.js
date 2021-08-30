@@ -5,14 +5,25 @@ import "./routes";
 import { Roles } from "meteor/alanning:roles";
 
 var fs = Npm.require("fs");
-
+import { Accounts } from "meteor/accounts-base";
 Meteor.startup(() => {
+  Accounts.onCreateUser((options, user) =>{
+    Roles.addUsersToRoles(user, 'user')
+    console.log("id ", user._id)
+    return user
+  })
   Roles.createRole("user", {unlessExists: true});
   Roles.createRole("admin", {unlessExists: true});
+  Roles.createRole("moderator", {unlessExists: true})
   Roles.createRole("dummies", {unlessExists: true});
-  Roles.addUsersToRoles('WWevwpnqkWX4PFu8i', 'user')
-  console.log('users: ', Meteor.users.find({}).fetch())
+  // Roles.addUsersToRoles("9wTy6NJYiDTMDAYgH", 'user')
+  console.log('is he there?', Roles.getUsersInRole('user').fetch())
+  // console.log('users: ', Meteor.users.find({}).fetch())
   // console.log('hi', Roles.getAllRoles().fetch())
+
+
+
+
   if (SchemaCollection.find().count() === 0) {
     var jsonObj = new Array();
 

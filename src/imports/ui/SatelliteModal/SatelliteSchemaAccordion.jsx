@@ -49,6 +49,9 @@ export const SatelliteSchemaAccordion = ({
   entries,
   setFieldValue,
   editing,
+  setValues,
+  values,
+  setShape
 }) => {
   const { setOpenAlert, alert, setAlert } = useContext(HelpersContext);
 
@@ -87,8 +90,8 @@ export const SatelliteSchemaAccordion = ({
           color="secondary"
           disableElevation
           onClick={() => {
-            entries.splice(index, 1)
-            setFieldValue(schemaName, entries);
+            let newEntries = entries.splice(index, 1)
+            setFieldValue(schemaName, newEntries);
             setOpenAlert(false);
           }}
         >
@@ -133,6 +136,7 @@ export const SatelliteSchemaAccordion = ({
                 deleteEntry={handleEntryDelete}
                 setFieldValue={setFieldValue}
                 editing={editing}
+                setShape={setShape}
               />
             ))}
             <Grid item xs={12}>

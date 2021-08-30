@@ -16,9 +16,6 @@ const darkTheme = createTheme({
 const lightTheme = createTheme({
   palette: {
     type: "light",
-    // primary: {
-    //   main: '#64B5F6',
-    // },
     navigation: {
       main: "#EEEEEE",
       hover: "#DDDDDD",
