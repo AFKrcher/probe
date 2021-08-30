@@ -1,16 +1,13 @@
-// dependencies
 import React, { useState } from "react";
-import HelpersContext from "./HelpersContext.jsx";
 
-// components
-import Button from "@material-ui/core/Button";
+// @material-ui
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 export default function PromptDialog({ bodyPrompt, open }) {
-  const [openPrompt, setOpenPrompt] = useState(true);
+  const [setOpenPrompt] = useState(true);
 
   const handleCancelAlert = async () => {
     await setOpenPrompt(false);

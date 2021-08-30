@@ -1,22 +1,19 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Clamp from "react-multiline-clamp";
 
-// Imports
-import HelpersContext from "./helpers/HelpersContext.jsx";
-
 // Components
-import { SatelliteModal } from "./SatelliteModal/SatelliteModal";
-import PromptDialog from "./helpers/PromptDialog";
-
-// @material-ui
-import { makeStyles } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
+import { SatelliteModal } from "../SatelliteModal/SatelliteModal";
+import PromptDialog from "../helpers/PromptDialog";
 import {
   getSatID,
   getSatName,
   getSatDesc,
   getSatImage,
-} from "./util/satelliteDataFuncs";
+} from "../utils/satelliteDataFuncs";
+
+// @material-ui
+import { makeStyles } from "@material-ui/core";
+import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -29,12 +26,12 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   image: {
-    minHeight: "180px",
-    maxHeight: "180px",
+    minHeight: "170px",
+    maxHeight: "170px",
   },
   description: {
-    minHeight: "150px",
-    maxHeight: "150px",
+    minHeight: "130px",
+    maxHeight: "130px",
   },
 }));
 
@@ -54,7 +51,7 @@ export const SatCard = ({ satellite }) => {
     setShowModal(true);
   }
 
-  const handleVisualize = async (e, url) => {
+  const handleVisualize = (e, url) => {
     e.preventDefault();
     setPrompt({
       title: (
@@ -86,7 +83,7 @@ export const SatCard = ({ satellite }) => {
         </Button>
       ),
     });
-    await setOpenPrompt(true);
+    setOpenPrompt(true);
   };
 
   return (

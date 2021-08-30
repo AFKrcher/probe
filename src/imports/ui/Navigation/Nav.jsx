@@ -1,6 +1,9 @@
-import React, { useContext } from "react";
+import React, {useContext} from "react";
+
+// Imports
 import { Link } from "react-router-dom";
-import HelpersContext from "./helpers/HelpersContext.jsx";
+import HelpersContext from "../helpers/HelpersContext.jsx";
+import { DropDown } from "../Accounts/DropDown";
 
 // @material-ui
 import {
@@ -12,7 +15,7 @@ import {
   IconButton,
   Tooltip,
 } from "@material-ui/core";
-import { themes } from "./Themes.jsx";
+import { themes } from "../css/Themes.jsx";
 import BrightnessHigh from "@material-ui/icons/BrightnessHigh";
 import Brightness4 from "@material-ui/icons/Brightness4";
 
@@ -49,8 +52,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Nav = ({ theme, toggleTheme }) => {
-  const { setOpenAlert, setOpenSnack } = useContext(HelpersContext);
 
+
+  
+  const { setOpenAlert, setOpenSnack } = useContext(HelpersContext);
   const classes = useStyles();
   return (
     <AppBar className={classes.navbar} position="static">
@@ -118,6 +123,9 @@ export const Nav = ({ theme, toggleTheme }) => {
           >
             About
           </Button>
+          <div className={classes.navBtn}>
+            <DropDown />
+          </div>
         </div>
         {theme === themes.dark ? (
           <IconButton edge="end" aria-label="light theme" onClick={toggleTheme}>

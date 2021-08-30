@@ -37,5 +37,6 @@ export const emptyDataRemover = (values) => {
   }
 
   deleteEmptyArr.forEach((emptyEntry) => delete values[emptyEntry]);
+  values.names?.length > 0 ? null : values.names = [{reference: "Placeholder", name: "N/A"}] 
   return values;
 };

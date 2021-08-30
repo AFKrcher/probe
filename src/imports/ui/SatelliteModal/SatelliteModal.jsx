@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
-import * as Yup from "yup";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 // Imports
+import * as Yup from "yup";
 import { useTracker } from "meteor/react-meteor-data";
 import { SchemaCollection } from "../../api/schemas";
 import { SatelliteCollection } from "../../api/satellites";
-
 import HelpersContext from "../helpers/HelpersContext.jsx";
-import { emptyDataRemover } from "../util/satelliteDataFuncs.js";
+import { emptyDataRemover } from "../utils/satelliteDataFuncs.js";
 
 // Components
 import { Formik, Form } from "formik";
@@ -29,7 +28,6 @@ import Delete from "@material-ui/icons/Delete";
 import Edit from "@material-ui/icons/Edit";
 import Save from "@material-ui/icons/Save";
 import Close from "@material-ui/icons/Close";
-import { fieldToSelect } from "formik-material-ui";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -44,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
   const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } =
     useContext(HelpersContext);
+
   const classes = useStyles();
 
   const [schemas, isLoading] = useTracker(() => {
@@ -58,10 +57,10 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
     setEditing(newSat || false);
   }, [newSat, show]);
 
+
   const handleSubmit = async (values, { setSubmitting }) => {
     emptyDataRemover(values);
-    console.log(values);
-
+ 
     if (newSat) {
       SatelliteCollection.insert(values);
       setOpenSnack(false);
@@ -75,11 +74,11 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
     } else {
       SatelliteCollection.update({ _id: values._id }, values);
       setOpenSnack(false);
-      setSnack(
+      setSnack( // initValues.names[0].names is a depracated structure but necessary for old seed files to run during development. initValues.names[0].name is correct.
         <span>
           Changes on{" "}
           <strong>
-            {initValues.names[0].names || initValues.names[0].name}
+            {initValues.name ? initValues.names[0].names || initValues.names[0].name : "N/A"} 
           </strong>{" "}
           saved!
         </span>
@@ -98,7 +97,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
     setSnack(
       <span>
         Deleted{" "}
-        <strong>{initValues.names[0].names || initValues.names[0].name}</strong>
+        <strong>{initValues.name ? initValues.names[0].names || initValues.names[0].name : "N/A"}</strong>
         !
       </span>
     );
@@ -111,7 +110,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
         <span>
           Delete{" "}
           <strong>
-            {initValues.names[0].names || initValues.names[0].name}
+            {initValues.name ? initValues.names[0].names || initValues.names[0].name : "N/A"}
           </strong>{" "}
           Schema?
         </span>
@@ -120,7 +119,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
         <span>
           Are you sure you want to delete{" "}
           <strong>
-            {initValues.names[0].names || initValues.names[0].name}
+            {initValues.name ? initValues.names[0].names || initValues.names[0].name : "N/A"}
           </strong>{" "}
           and all of its data?
         </span>
@@ -153,7 +152,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
           <span>
             Delete changes on{" "}
             <strong>
-              {initValues.names[0].names || initValues.names[0].name}
+              {initValues.name ? initValues.names[0].names || initValues.names[0].name : "N/A"}
             </strong>
             ?
           </span>
@@ -164,7 +163,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
           <span>
             Are you sure you want to cancel all changes made to{" "}
             <strong>
-              {initValues.names[0].names || initValues.names[0].name}
+              {initValues.name ? initValues.names[0].names || initValues.names[0].name : "N/A"}
             </strong>{" "}
             and its data?
           </span>
@@ -197,41 +196,148 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
   };
 
   const schemaValidatorShaper = () => {
-    let obj = {}; // {schema.name: {field.name: {field.type: string/number/date, field.allowedValues: [], required: field.required, min: field.min, max: field.max}}}
+    let schemaObj = {}; // {schema.name: {field.name: {field.type: string/number/date, field.allowedValues: [], required: field.required, min: field.min, max: field.max}}}
     schemas?.forEach((schema) => {
       // Step 1: map over schemas and assign each schema name as a key in the object
-      obj[schema.name] = {};
-
+      schemaObj[schema.name] = {};
       // Step 2: map over each schema and assign an object containing all field names as keys in that object
       return schema.fields.forEach((field) => {
-        obj[schema.name][field.name] = {};
-
+        schemaObj[schema.name][field.name] = {};
         // Step 3:  map over each field and assign an object containing all of the field's attributes (type, allowedValues, min, max, required)
         for (let attribute in field) {
           if (attribute !== "name" && attribute !== "description") {
             // Step 3.5: Take each attribute's value and assign it to the attribute in the object
-            obj[schema.name][field.name][attribute] = field[attribute];
+            schemaObj[schema.name][field.name][attribute] = field[attribute];
           }
         }
       });
     });
-    console.log(obj.names["reference"]); // Justin was looking at using obj to build the yup checks object (named "temp") inside of the values.forEach. Reminder: "entry" is {reference: "", ...}
+    
+    Yup.addMethod(Yup.array, "checkEachEntry", function (message) {
+      let errObj = {}
+      // test each entry in the array: Yup.object().shape({field.name: Yup.(field.type).required(field.required).min(field.min).max(field.max).oneOf((field.allowedValues))})
+      return this.test("checkEachEntry", message, function (value) {
+        const { path, createError } = this;
+        value?.forEach((entry) => {
+          // "entry" is composed of multiple "fields", and is part of the submitted array, aka "value"
+          let fieldObj = {};
+          let schema = schemaObj[path];
+          for (let schemaField in schema) {
+            // "schema" are the schemas seen on the SchemasTable, and "schemaField" are the fields to be filled-in in each schema
+            let fieldRequirements = schema[schemaField];
+            switch (fieldRequirements.type) {
+              case "string":
+                switch (fieldRequirements.required) {
+                  case true:
+                    switch (fieldRequirements.allowedValues.length > 0) {
+                      case true:
+                        fieldObj[schemaField] = Yup.string()
+                          .required("Required")
+                          .oneOf(
+                            fieldRequirements.allowedValues,
+                            `Must be one of the following: ${fieldRequirements.allowedValues.toString(
+                              ", "
+                            )}`
+                          );
+                        break;
+                      default:
+                        fieldObj[schemaField] =
+                          Yup.string().required("Required");
+                    }
+                    break;
+                  default:
+                    switch (fieldRequirements.allowedValues.length > 0) {
+                      case true:
+                        fieldObj[schemaField] = Yup.string().oneOf(
+                          fieldRequirements.allowedValues,
+                          `Must be one of the following: ${fieldRequirements.allowedValues.toString(
+                            ", "
+                          )}`
+                        );
+                        break;
+                      default:
+                        fieldObj[schemaField] = Yup.string();
+                    }
+                }
+                break;
+              case "number":
+                switch (fieldRequirements.required) {
+                  case true:
+                    switch (
+                      fieldRequirements.min && fieldRequirements.max
+                        ? true
+                        : false
+                    ) {
+                      case true:
+                        fieldObj[schemaField] = Yup.number()
+                          .required("Required")
+                          .min(
+                            fieldRequirements.min,
+                            `Must be between the values of ${fieldRequirements.min} and ${fieldRequirements.max}`
+                          )
+                          .max(
+                            fieldRequirements.max,
+                            `Must be between the values of ${fieldRequirements.min} and ${fieldRequirements.max}`
+                          );
+                        break;
+                      default:
+                        fieldObj[schemaField] =
+                          Yup.number().required("Required");
+                    }
+                    break;
+                  default:
+                    switch (fieldRequirements.min && fieldRequirements.max) {
+                      case true:
+                        fieldObj[schemaField] = Yup.number()
+                          .min(
+                            fieldRequirements.min,
+                            `Must be between the values of ${fieldRequirements.min} and ${fieldRequirements.max}`
+                          )
+                          .max(
+                            fieldRequirements.max,
+                            `Must be between the values of ${fieldRequirements.min} and ${fieldRequirements.max}`
+                          );
+                        break;
+                      default:
+                        fieldObj[schemaField] = Yup.number();
+                    }
+                }
+                break;
+              case "date":
+                switch (fieldRequirements.required) {
+                  case true:
+                    fieldObj[schemaField] = Yup.date().required("Required");
+                    break;
+                  default:
+                    fieldObj[schemaField] = Yup.date();
+                }
+                break;
+              default:
+                console.error("Unknown field type");
+            }
+          }
+          let fieldValidator = Yup.object().shape(fieldObj);
 
-    // Yup.addMethod(Yup.array, "checkEachEntry", function (errorMessage) {
-    //   // test each entry in the array: Yup.object().shape({field.name: Yup.(field.type).required(field.required).min(field.min).max(field.max).oneOf((field.allowedValues))})
-    //   return this.test("checkEachEntry", errorMessage, function (value) {
-    //     const { path, createError } = this;
-    //     let temp = {}
-    //     value.forEach((entry) => {
-    //       for (let field in entry) {
-    //
-    //       }
-    //       let checker = Yup.object().shape({`${path}`: Yup.(field.type).required(field.required).min(field.min).max(field.max).oneOf((field.allowedValues))})
-    //       checker.isValid(entry)
-    //     });
-    //     return true || createError({ path, message: "Something went wrong" });
-    //   });
-    // });
+          fieldValidator
+            .validate(entry)
+            .then((result) => {
+              console.log(result)
+              delete errObj[path]
+            })
+            .catch((err) => {
+              err.path === undefined ? err.message = "err is not defined" : null
+              return err.message !== "err is not defined" ? errObj[path] = err.message : null
+            });
+        });
+        if (JSON.stringify(errObj) === "{}") {
+          return true
+        } else {
+          for (let errPath in errObj) {
+            return errPath ? createError({errPath, message: errObj[errPath]}) : true
+          }
+        }
+      });
+    });
 
     let yupShape = {
       // NORAD ID is always a part of the yup shape
@@ -239,12 +345,17 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
         .required("Required")
         .length(5, "Must be a positive, 5-digit number")
         .matches(/^[0-9]+$/g, "Must be a positive, 5-digit number"),
-    }; // {schema.name: Yup.array().checkEachEntry()}
+    };
 
-    return yupShape;
+    if (JSON.stringify(schemaObj) !== "{}") {
+      for (let schema in schemaObj) {
+        yupShape[schema] = Yup.array().checkEachEntry();
+      }
+    }
+    return yupShape
   };
-
-  const satelliteValidator = Yup.object().shape(schemaValidatorShaper());
+  
+  let satelliteValidator = Yup.object().shape(schemaValidatorShaper());
 
   return (
     <>
@@ -258,7 +369,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
                 <strong>Create a new satellite</strong>
               ) : (
                 <strong>
-                  {initValues.names[0].names || initValues.names[0].name}
+                  {initValues.name ? initValues.names[0].names || initValues.names[0].name : "N/A"}
                 </strong>
               )}
             </Typography>
@@ -269,9 +380,11 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
             onSubmit={handleSubmit}
             validateOnBlur={true}
             validateOnChange={true}
+            validateOnMount={true}
           >
-            {({ errors, isSubmitting, values, setValues, setFieldValue }) => (
+            {({ errors, isSubmitting, values, setValues, setFieldValue, dirty }) => (
               <Form>
+                {console.log(errors, dirty)}
                 <DialogContent>
                   <SatelliteForm
                     errors={errors}
@@ -294,7 +407,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
                         disabled={!editing}
                         startIcon={<Save />}
                         disabled={
-                          Object.entries(errors).length > 0 ? true : false
+                          Object.entries(errors).length > 0 || !dirty ? true : false
                         }
                       >
                         {isSubmitting ? (

@@ -1,31 +1,22 @@
 import React from "react";
 
 // Components
-import { SatCard } from "./SatCard.jsx";
+import { SatCard } from "./DataDisplays/SatCard.jsx";
 import { useTracker } from "meteor/react-meteor-data";
 import { SatelliteCollection } from "../api/satellites";
 
 // @material-ui
-import {
-  Container,
-  TextField,
-  Grid,
-  Typography,
-  makeStyles,
-} from "@material-ui/core";
+import { Container, Grid, Typography, makeStyles } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
 
 const useStyles = makeStyles((theme) => ({
-  jumbo: {
-    marginTop: 40,
-  },
   showcase: {
     marginTop: 30,
-    marginBottom: 70,
   },
 }));
 
 const skeletonHeight = 420;
+const spacing = 3
 
 export const Home = () => {
   const classes = useStyles();
@@ -37,8 +28,8 @@ export const Home = () => {
   });
 
   return (
-    <React.Fragment>
-      <Container className={classes.jumbo} maxWidth="md">
+    <>
+      <Container>
         <Typography variant="h3">
           Welcome to <strong>OpenOrbit!</strong>
         </Typography>
@@ -50,50 +41,50 @@ export const Home = () => {
           100% Open Source, 100% Machine Readable.
         </Typography>
       </Container>
-      <Container className={classes.showcase} maxWidth="md">
+      <Container className={classes.showcase}>
         <Typography variant="h4" gutterBottom>
           Satellite Data Cards
         </Typography>
-        <Grid container justify="flex-start" spacing={2}>
+        <Grid container justifyContent="flex-start" spacing={3}>
           {!isLoading &&
             demoSats.map((sat, index) => (
-              <Grid item xs={4} key={index}>
-                <SatCard satellite={sat} key={index} />
+              <Grid item xs={spacing} key={index}>
+                <SatCard satellite={sat} key={index}/>
               </Grid>
             ))}
           {isLoading && (
             <React.Fragment>
-              <Grid item xs={4}>
+              <Grid item xs={spacing}>
                 <Skeleton variant="rect" height={skeletonHeight} />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={spacing}>
                 <Skeleton variant="rect" height={skeletonHeight} />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={spacing}>
                 <Skeleton variant="rect" height={skeletonHeight} />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={spacing}>
                 <Skeleton variant="rect" height={skeletonHeight} />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={spacing}>
                 <Skeleton variant="rect" height={skeletonHeight} />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={spacing}>
                 <Skeleton variant="rect" height={skeletonHeight} />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={spacing}>
                 <Skeleton variant="rect" height={skeletonHeight} />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={spacing}>
                 <Skeleton variant="rect" height={skeletonHeight} />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={spacing}>
                 <Skeleton variant="rect" height={skeletonHeight} />
               </Grid>
             </React.Fragment>
           )}
         </Grid>
       </Container>
-    </React.Fragment>
+    </>
   );
 };

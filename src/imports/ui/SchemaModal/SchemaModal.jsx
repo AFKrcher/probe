@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
+export const SchemaModal = ({ show, newSchema, initValues, handleClose, dirty }) => {
   const classes = useStyles();
   const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } =
     useContext(HelpersContext);
@@ -223,6 +223,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
               setValues,
               setFieldValue,
               initValues,
+              dirty
             }) => (
               <Form>
                 <DialogContent>
@@ -244,7 +245,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
                       color="primary"
                       startIcon={<Save />}
                       disabled={
-                        Object.entries(errors).length > 0 ? true : false
+                        Object.entries(errors).length > 0 || !dirty ? true : false
                       }
                     >
                       {isSubmitting ? (

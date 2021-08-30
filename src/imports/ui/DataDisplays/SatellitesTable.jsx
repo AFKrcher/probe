@@ -3,12 +3,11 @@ import { Link } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 
 // Components
-import { SatelliteModal } from "./SatelliteModal/SatelliteModal";
-import { SatelliteCollection } from "../api/satellites";
+import { SatelliteModal } from "../SatelliteModal/SatelliteModal";
+import { SatelliteCollection } from "../../api/satellites";
 
 // @material-ui
 import {
-  Container,
   Button,
   Grid,
   makeStyles,
@@ -18,12 +17,12 @@ import {
 import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 
 const useStyles = makeStyles((theme) => ({
-  satelliteContainer: {
-    marginTop: 40,
-  },
   dataGrid: {
     resize: "both",
     overflow: "auto",
+    height: "62.5vh", 
+    width: "100%",
+    marginBottom: "11.25vh"
   },
   spinner: {
     color: theme.palette.text.primary,
@@ -98,7 +97,7 @@ export const SatellitesTable = () => {
     const rows = sats.map((sat) => {
       return {
         id: sat.noradID,
-        names: sat.names.map((name) => name.names || name.name).join(", "),
+        names: sat.names?.map((name) => name.names || name.name).join(", "),
         schemas: Object.keys(sat)
           .map((key) => {
             return key !== "_id" ? key : null;
@@ -129,13 +128,12 @@ export const SatellitesTable = () => {
   };
 
   return (
-    <div style={{ paddingBottom: 40 }}>
-      <Container className={classes.satelliteContainer} maxWidth="md">
-        <Grid container justify="space-between" alignItems="center">
+      <>
+        <Grid container justifyContent="space-between" alignItems="center">
           <Grid item xs>
             <Typography variant="h3">Satellites</Typography>
           </Grid>
-          <Grid container item xs justify="flex-end">
+          <Grid container item xs justifyContent="flex-end">
             <Button
               variant="contained"
               color="primary"
@@ -171,14 +169,13 @@ export const SatellitesTable = () => {
           rowCount={count}
           pageSize={limiter}
           loading={loading}
-          style={{ height: "60vh", width: "100%" }}
           pagination
           paginationMode="server"
           filterMode="server"
           onFilterModelChange={(e) => {
             handleFilter(e);
           }}
-          rowsPerPageOptions={[1, 3, 5, 10, 15, 20]}
+          rowsPerPageOptions={[5, 10, 15, 20]}
           onPageSizeChange={(newLimit) => setLimiter(newLimit)}
           onPageChange={(newPage) => setPage(newPage)}
           disableSelectionOnClick
@@ -200,13 +197,12 @@ export const SatellitesTable = () => {
             }
           }}
         />
-      </Container>
-      <SatelliteModal
-        show={showModal}
-        newSat={newSat}
-        initValues={initialSatValues}
-        handleClose={() => setShowModal(false)}
-      />
-    </div>
+        <SatelliteModal
+          show={showModal}
+          newSat={newSat}
+          initValues={initialSatValues}
+          handleClose={() => setShowModal(false)}
+        />
+      </>
   );
 };

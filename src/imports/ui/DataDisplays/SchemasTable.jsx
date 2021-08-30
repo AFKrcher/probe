@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 
 // Components
-import { SchemaCollection } from "../api/schemas";
-import { SchemaModal } from "./SchemaModal/SchemaModal.jsx";
+import { SchemaCollection } from "../../api/schemas";
+import { SchemaModal } from "../SchemaModal/SchemaModal.jsx";
 
 // @material-ui
 import {
@@ -23,20 +23,12 @@ import {
   CircularProgress,
   Tooltip,
 } from "@material-ui/core";
-// import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 
 const useStyles = makeStyles((theme) => ({
-  schemaContainer: {
-    marginTop: 40,
-    marginBottom: 10,
-  },
   table: {
     overflow: "auto",
-    maxHeight: "70vh",
-  },
-  dataGrid: {
-    display: "flex",
-    height: "100%",
+    maxHeight: "100%",
+    marginBottom: "6vh"
   },
   tableHead: {
     backgroundColor: theme.palette.grey[700],
@@ -103,13 +95,13 @@ export const SchemasTable = () => {
   };
 
   return (
-    <div style={{ paddingBottom: 50 }}>
-      <Container className={classes.schemaContainer} maxWidth="md">
-        <Grid container justify="space-between" alignItems="center">
+
+      <>
+        <Grid container justifyContent="space-between" alignItems="center">
           <Grid item xs>
             <Typography variant="h3">Schemas</Typography>
           </Grid>
-          <Grid container item xs justify="flex-end">
+          <Grid container item xs justifyContent="flex-end">
             <Button
               variant="contained"
               color="primary"
@@ -119,7 +111,7 @@ export const SchemasTable = () => {
             </Button>
           </Grid>
         </Grid>
-        <Typography gutterBottom variant="body2" style={{ marginTop: 10 }}>
+        <Typography gutterBottom variant="body2" style={{ marginTop: 10, marginBottom: 25 }}>
           Each piece of data you want to store has its own{" "}
           <strong>schema</strong>. You can characterize a given satellite using
           any number of schemas. Please see the satellites on the{" "}
@@ -129,21 +121,16 @@ export const SchemasTable = () => {
             </Link>
           </Tooltip>{" "}
           for usage examples.
-        </Typography>
-        <Typography gutterBottom variant="body2">
           Each <strong>schema</strong> has a reference (where the data was
           found), a description (describing what the data is), and a number of
           data fields (that contain the actual information).
-        </Typography>
-        <Typography gutterBottom variant="body2" style={{ marginBottom: 25 }}>
           Click on a desired <strong>schema</strong> below to view its details
           and edit the entry fields.
         </Typography>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} className={classes.table}>
           <Table
             size="small"
             aria-label="Schema table"
-            className={classes.table}
           >
             <TableHead>
               <TableRow color="secondary">
@@ -185,13 +172,12 @@ export const SchemasTable = () => {
             </TableBody>
           </Table>
         </TableContainer>
-      </Container>
-      <SchemaModal
-        show={showModal}
-        newSchema={newSchema}
-        initValues={initialSchemaValues}
-        handleClose={() => setShowModal(false)}
-      />
-    </div>
+        <SchemaModal
+          show={showModal}
+          newSchema={newSchema}
+          initValues={initialSchemaValues}
+          handleClose={() => setShowModal(false)}
+        />
+      </>
   );
 };

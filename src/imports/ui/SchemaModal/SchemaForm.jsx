@@ -127,7 +127,7 @@ export const SchemaForm = ({
                       aria-label="delete field"
                       onClick={() => handleFieldDelete(i)}
                     >
-                      <DeleteIcon fontSize="default" />
+                      <DeleteIcon fontSize="medium" />
                     </IconButton>
                   </Grid>
                 )}

@@ -1,4 +1,8 @@
 import React from "react";
+// Imports
+import { Field } from "formik";
+
+// @material-ui
 import {
   Grid,
   makeStyles,
@@ -7,7 +11,6 @@ import {
   TextField,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Field } from "formik";
 
 const useStyles = makeStyles((theme) => ({
   entrypaper: {
@@ -54,7 +57,7 @@ export const SatelliteSchemaEntry = ({
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  value={
+                  defaultValue={
                     field.name === "name"
                       ? entry.names || entry.name
                       : entry[`${field.name}`]
@@ -78,7 +81,7 @@ export const SatelliteSchemaEntry = ({
                 aria-label="delete field"
                 onClick={() => handleEntryDelete(schema.name, index)}
               >
-                <DeleteIcon fontSize="default" />
+                <DeleteIcon fontSize="medium" />
               </IconButton>
             </Grid>
           )}

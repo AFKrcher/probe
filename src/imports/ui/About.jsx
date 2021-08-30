@@ -1,26 +1,26 @@
 import React from "react";
 
 // @material-ui
-import Container from "react-bootstrap/container";
-import { Grid, makeStyles, Typography } from "@material-ui/core";
-import Figure from "react-bootstrap/figure";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Grid, makeStyles, Typography, Container } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  container: {
+  avatars: {
     maxWidth: "100%",
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, 280px)",
-    justifyContent: "space-around",
-    gridGap: 30,
+    gridTemplateColumns: "repeat(auto-fill, 250px)",
+    justifyContent: "space-between",
+    gridGap: 40,
   },
   link: {
     color: theme.palette.text.primary,
     textDecoration: "none",
   },
+  meetTheTeam: {
+    marginTop: 30,
+    marginBottom: 40,
+  },
   image: {
-    border: "1px solid",
+    border: "2px solid",
     borderRadius: 5,
     "&:hover": {
       border: "2px solid",
@@ -28,12 +28,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   caption: {
-    textAlign: "center",
+    textAlign: "justify",
+    marginTop: 5,
   },
   name: {
     fontWeight: 600,
-    marginTop: 0,
-    marginBottom: -15,
   },
 }));
 
@@ -114,69 +113,62 @@ export const About = () => {
   const classes = useStyles();
   return (
     <>
-      <Container className="pt-4" style={{ margin: "40px 4vw 40px 4vw" }}>
-        <Row>
-          <Col>
-            <Typography variant="h3">
-              About <strong>OpenOrbit</strong>
-            </Typography>
-            <p>
-              This web application was created by an incredible team of space
-              enthusiasts who got together and gave up their weekend to complete
-              this work during a Hackathon which took place over the 8th - 9th
-              May 2021.
-            </p>
-            <p>
-              Fueled by Pizza and Lofi, we had a lot of fun and hope you find
-              this website helpful and useful! Now it is up to all of us to
-              maintain and populate it!
-            </p>
-            <p>
-              After the Hackathon, a pair of developers, Justin and Archer,
-              continued the development of the application from August into
-              November of 2021. Features were added to provide better data entry
-              UX/UI and integration into Saber Astronautics' Space Cockpit for
-              data visualization and analysis.
-            </p>
-          </Col>
-        </Row>
-
-        <Typography variant="h4" style={{ marginTop: 30 }}>
-          Meet the Team
+        <Typography variant="h3">
+          About <strong>OpenOrbit</strong>
         </Typography>
-        <p>Click on our profile pictures or names to connect with us!</p>
+        <p>
+          This web application was created by an incredible team of space
+          enthusiasts who got together and gave up their weekend to complete
+          this work during a Hackathon which took place over the 8th - 9th May
+          2021.
+        </p>
+        <p>
+          Fueled by Pizza and Lofi, we had a lot of fun and hope you find this
+          website helpful and useful! Now it is up to all of us to maintain and
+          populate it!
+        </p>
+        <p>
+          After the Hackathon, a pair of developers, Justin and Archer,
+          continued the development of the application from August into November
+          of 2021. Features were added to provide better data entry UX/UI and
+          integration into Saber Astronautics' Space Cockpit for data
+          visualization and analysis.
+        </p>
+        <div className={classes.meetTheTeam}>
+          <Typography variant="h4">Meet the Team</Typography>
+          <p>Click on our profile pictures or names to connect with us!</p>
+        </div>
         <Container>
-          <Grid container spacing={0} className={classes.container}>
+          <Grid container spacing={0} className={classes.avatars}>
             {TeamMembers.map((member, index) => {
               return (
-                <Grid item key={index}>
-                  <Figure className="p-1">
+                <Grid item xs key={index}>
+                  <Container>
                     <a
                       href={member.Link}
                       target="_blank"
                       key={index}
                       className={classes.link}
                     >
-                      <Figure.Image
+                      <img
                         width={200}
                         height={200}
                         src={member.Img}
                         className={classes.image}
                         alt={""}
                       />
-                      <Figure.Caption className={classes.caption}>
-                        <p className={classes.name}>{member.Name}</p>
-                        <p>{member.Role}</p>
-                      </Figure.Caption>
+                      <Typography variant="body2" className={classes.caption}>
+                        <span className={classes.name}>{member.Name}</span>
+                        <br />
+                        <span>{member.Role}</span>
+                      </Typography>
                     </a>
-                  </Figure>
+                  </Container>
                 </Grid>
               );
             })}
           </Grid>
         </Container>
-      </Container>
-      <br />
     </>
   );
 };

@@ -1,8 +1,8 @@
-// dependencies
 import React, { useContext, useState } from "react";
+// Imports
 import HelpersContext from "./HelpersContext.jsx";
 
-// components
+// @material-ui
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";

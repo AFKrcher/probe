@@ -1,20 +1,28 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 import HelpersContext from "./helpers/HelpersContext.jsx";
 
 // Components
-import { Nav } from "./Nav.jsx";
-import { SatellitesTable } from "./SatellitesTable.jsx";
-import { SchemasTable } from "./SchemasTable.jsx";
+import { Nav } from "./Navigation/Nav.jsx";
+import { SatellitesTable } from "./DataDisplays/SatellitesTable.jsx";
+import { SchemasTable } from "./DataDisplays/SchemasTable.jsx";
 import { Home } from "./Home.jsx";
 import { About } from "./About.jsx";
-import { DataSourcesTable } from "./DataSourcesTable";
-import { Footer } from "./Footer.jsx";
+import { Footer } from "./Navigation/Footer.jsx";
+import { Register } from "./Accounts/Register";
+import { Login } from "./Accounts/Login";
+import { DropDown } from "./Accounts/DropDown";
 
 // @material-ui
 import { ThemeProvider } from "@material-ui/core/styles";
-import { themes } from "./Themes.jsx";
-import { CssBaseline } from "@material-ui/core";
+import { themes } from "./css/Themes.jsx"; 
+import { CssBaseline, Container, makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  content: {
+    marginTop: 30,
+  },
+}));
 
 export const App = () => {
   const [theme, setTheme] = useState(themes.dark);
@@ -26,7 +34,9 @@ export const App = () => {
     actions: "", //components for user input
     closeAction: "", //name of closing action button, e.g. "Cancel"
   });
-  const [snack, setSnack] = useState(""); //body of the snackbar pop-up
+  const [snack, setSnack] = useState(""); //snackbar body text
+
+  const classes = useStyles();
 
   const toggleTheme = () => {
     setTheme((theme) => (theme === themes.dark ? themes.light : themes.dark));
@@ -35,12 +45,10 @@ export const App = () => {
   return (
     <HelpersContext.Provider
       value={{
-        // helper content states
         snack,
         setSnack,
         alert,
         setAlert,
-        // helper open/close states
         openAlert,
         setOpenAlert,
         openSnack,
@@ -50,11 +58,20 @@ export const App = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Router>
-          <div>
-            <Nav theme={theme} toggleTheme={toggleTheme} />
+          <Nav theme={theme} toggleTheme={toggleTheme} />
+          <Container maxWidth="lg" className={classes.content}>
             <Switch>
               <Route exact={true} path="/satellites">
                 <SatellitesTable />
+              </Route>
+              <Route exact={true} path="/register">
+                <Register />
+              </Route>
+              <Route exact={true} path="/login">
+                <Login />
+              </Route>
+              <Route exact={true} path="/menu">
+                <DropDown />
               </Route>
               <Route exact={true} path="/schemas">
                 <SchemasTable />
@@ -62,16 +79,16 @@ export const App = () => {
               <Route exact={true} path="/about">
                 <About />
               </Route>
-              {/* <Route path="/sources">
-              <DataSourcesTable />
-            </Route> */}
               <Route exact={true} path="/">
                 <Home />
               </Route>
+              <Route path="*">
+                <Home />
+              </Route>
             </Switch>
-            <Footer />
-          </div>
+          </Container>
         </Router>
+          <Footer />
       </ThemeProvider>
     </HelpersContext.Provider>
   );

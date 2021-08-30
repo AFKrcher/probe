@@ -1,5 +1,14 @@
 import React, { useState, useContext } from "react";
+// Imports
+import HelpersContext from "../helpers/HelpersContext.jsx";
+
+// Components
+import AlertDialog from "../helpers/AlertDialog.jsx";
+import { Field } from "formik";
 import { SatelliteSchemaAccordion } from "./SatelliteSchemaAccordion";
+
+// @material-ui
+import { TextField } from "formik-material-ui";
 import {
   Grid,
   Button,
@@ -13,10 +22,6 @@ import {
   Paper,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Field } from "formik";
-import HelpersContext from "../helpers/HelpersContext.jsx";
-import AlertDialog from "../helpers/AlertDialog.jsx";
-import { TextField } from "formik-material-ui";
 
 const useStyles = makeStyles((theme) => ({
   addSchemaContainer: {
@@ -56,6 +61,13 @@ export const SatelliteForm = ({
   };
 
   const handleDelete = (name) => {
+    setFieldValue(name, []);
+    delete initValues[`${name}`];
+    setFlag(!flag);
+    setOpenAlert(false);
+  }
+
+  const handleDeleteDialog = (name) => {
     setAlert({
       title: (
         <span>
@@ -74,11 +86,7 @@ export const SatelliteForm = ({
           size="small"
           color="secondary"
           disableElevation
-          onClick={() => {
-            delete initValues[`${name}`];
-            setFlag(!flag);
-            setOpenAlert(false);
-          }}
+          onClick={() => handleDelete(name)}
         >
           Confirm
         </Button>
@@ -98,6 +106,7 @@ export const SatelliteForm = ({
 
   return (
     <Grid container spacing={1}>
+      <AlertDialog bodyAlert={alert} />
       <Grid container item>
         <Grid item xs={12}>
           <Paper className={classes.noradID}>
@@ -132,7 +141,7 @@ export const SatelliteForm = ({
                 <Tooltip title={`Delete ${schema.name}`}>
                   <IconButton
                     style={{ alignSelf: "flex-start" }}
-                    onClick={() => handleDelete(schema.name)}
+                    onClick={() => handleDeleteDialog(schema.name)}
                   >
                     <DeleteIcon />
                   </IconButton>
@@ -158,7 +167,7 @@ export const SatelliteForm = ({
                 <Tooltip title={`Delete ${schema.name}`}>
                   <IconButton
                     style={{ alignSelf: "flex-start" }}
-                    onClick={() => handleDelete(schema.name)}
+                    onClick={() => handleDeleteDialog(schema.name)}
                   >
                     <DeleteIcon />
                   </IconButton>
@@ -175,9 +184,11 @@ export const SatelliteForm = ({
         <Grid item container xs={12} className={classes.addItem}>
           <Grid item xs={10}>
             <FormControl variant="outlined" margin="dense" fullWidth>
-              <InputLabel htmlFor={`satellite-field`}>Data type</InputLabel>
+              <InputLabel htmlFor={`satellite-field`}>
+                Available Schemas
+              </InputLabel>
               <Field
-                label="Data Type"
+                label="Available Schemas"
                 inputProps={{
                   id: `satellite-field`,
                   name: `satellite-field`,

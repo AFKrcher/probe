@@ -2,15 +2,23 @@ import { Meteor } from "meteor/meteor";
 import { SchemaCollection } from "/imports/api/schemas";
 import { SatelliteCollection } from "/imports/api/satellites";
 import "./routes";
+import { Roles } from "meteor/alanning:roles";
+
 var fs = Npm.require("fs");
 
 Meteor.startup(() => {
+  Roles.createRole("user", {unlessExists: true});
+  Roles.createRole("admin", {unlessExists: true});
+  Roles.createRole("dummies", {unlessExists: true});
+  Roles.addUsersToRoles('WWevwpnqkWX4PFu8i', 'user')
+  console.log('users: ', Meteor.users.find({}).fetch())
+  // console.log('hi', Roles.getAllRoles().fetch())
   if (SchemaCollection.find().count() === 0) {
     var jsonObj = new Array();
 
     files = fs.readdirSync("./assets/app/schema");
 
-    // create the large JSON array
+    // Insert seed schema data
     files.forEach(function (file) {
       data = fs.readFileSync("./assets/app/schema/" + file, "ascii");
       jsonObj.push(JSON.parse(data));
@@ -31,35 +39,9 @@ Meteor.startup(() => {
     return SchemaCollection.find({});
   });
 
-  // write example sat
+ // Insert seed satellite data
   if (SatelliteCollection.find().count() === 0) {
-    // var jsonObj = new Array();
 
-    // files = fs.readdirSync('./assets/app/satellite' );
-
-    // // create the large JSON array
-    // files.forEach(function (file) {
-    //   data = fs.readFileSync('./assets/app/satellite/' + file,'ascii');
-    //   jsonObj.push(JSON.parse(data));
-    // })
-
-    // // Write to Mongo
-    // jsonObj.forEach(function (data) {
-    //   SatelliteCollection.insert(data);
-    // })
-
-    // mission type
-    // launch vehicle
-    // organisation
-    // news
-    // status
-    // power
-    // payload
-    // prop
-    // images
-
-    // data = fs.readFileSync('./assets/app/exampleSatellite.json','ascii');
-    // SatelliteCollection.insert(JSON.parse(data));
     data = fs.readFileSync("./assets/app/satellite/28479.json", "ascii");
     SatelliteCollection.insert(JSON.parse(data));
 

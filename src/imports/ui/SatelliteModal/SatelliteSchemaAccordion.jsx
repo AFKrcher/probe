@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 // Imports
+import HelpersContext from "../helpers/HelpersContext.jsx";
 
 // Components
 import { SatelliteSchemaEntry } from "./SatelliteSchemaEntry";
+import AlertDialog from "../helpers/AlertDialog.jsx";
 
 // @material-ui
 import {
@@ -30,10 +32,10 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "10px",
   },
   accordianDetails: {
-    marginTop: -10,
+    marginTop: -15,
   },
   description: {
-    margin: "5px 10px 5px 10px",
+    margin: "5px 10px 10px 10px",
   },
   button: {
     marginTop: 5,
@@ -47,85 +49,108 @@ export const SatelliteSchemaAccordion = ({
   entries,
   setFieldValue,
   editing,
-  newSat,
 }) => {
+  const { setOpenAlert, alert, setAlert } = useContext(HelpersContext);
+
   const classes = useStyles();
 
   useEffect(() => {
     if (!entries) setFieldValue(schema.name, []);
   }, [entries]);
 
-  const onAddField = () => {
+  const onAddField = async () => {
     const schemaFields = schema.fields.reduce(
       (acc, cur) => ({ ...acc, [cur.name]: "" }),
       {}
     );
     const newEntries = [...entries, schemaFields];
-    setFieldValue(schema.name, newEntries);
+    await setFieldValue(schema.name, newEntries);
   };
 
   const handleEntryDelete = (schemaName, index) => {
-    const newEntries = entries;
-    newEntries.splice(index, 1);
-    setFieldValue(schemaName, newEntries);
+    setAlert({
+      title: (
+        <span>
+          Delete <strong>{schemaName}</strong> Schema?
+        </span>
+      ),
+      text: (
+        <span>
+          Are you sure you want to delete <strong>{schemaName}</strong> and all
+          of its data?
+        </span>
+      ),
+      actions: (
+        <Button
+          variant="contained"
+          size="small"
+          color="secondary"
+          disableElevation
+          onClick={() => {
+            entries.splice(index, 1)
+            setFieldValue(schemaName, entries);
+            setOpenAlert(false);
+          }}
+        >
+          Confirm
+        </Button>
+      ),
+      closeAction: "Cancel",
+    });
+    setOpenAlert(true);
   };
 
   return (
-    <Accordion
-      className={classes.accordionbody}
-      defaultExpanded={
-        (schema.name === "names" && newSat) ||
-        Object.keys(errors || {}).includes(schema.name)
-          ? true
-          : false
-      }
-    >
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        id={`${schema.name}-accord-header`}
-      >
-        <div className={classes.accordionheader}>
-          <Chip
-            className={classes.accordioncount}
-            size="small"
-            label={entries?.length ? entries.length : "0"}
-          />
-          <Typography variant="body1">{schema.name}</Typography>
-        </div>
-      </AccordionSummary>
-      <AccordionDetails className={classes.accordianDetails}>
-        <Grid container spacing={1} justifycontent="center">
-          <Typography className={classes.description}>
-            {schema.description ||
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget."}
-          </Typography>
-          {entries?.map((entry, index) => (
-            <SatelliteSchemaEntry
-              errors={errors}
-              key={index}
-              index={index}
-              schema={schema}
-              entry={entry}
-              deleteEntry={handleEntryDelete}
-              setFieldValue={setFieldValue}
-              editing={editing}
+    <>
+      <AlertDialog bodyAlert={alert} />
+      <Accordion className={classes.accordionbody}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          id={`${schema.name}-accord-header`}
+        >
+          <div className={classes.accordionheader}>
+            <Chip
+              className={classes.accordioncount}
+              size="small"
+              label={entries?.length ? entries.length : "0"}
             />
-          ))}
-          <Grid item xs={12}>
-            {editing && (
-              <Button
-                variant="outlined"
-                size="small"
-                color="primary"
-                onClick={onAddField}
-                className={classes.button}
-              >
-                Add Schema Entry
-              </Button>
-            )}
+            <Typography variant="body1">{schema.name}</Typography>
+          </div>
+        </AccordionSummary>
+        <AccordionDetails className={classes.accordianDetails}>
+          <Grid container spacing={1}>
+            <Typography className={classes.description}>
+              {schema.description ||
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget."}
+            </Typography>
+            {entries?.map((entry, index) => (
+              <SatelliteSchemaEntry
+                errors={errors}
+                key={index}
+                index={index}
+                schema={schema}
+                entry={entry}
+                deleteEntry={handleEntryDelete}
+                setFieldValue={setFieldValue}
+                editing={editing}
+              />
+            ))}
+            <Grid item xs={12}>
+              {editing && (
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="primary"
+                  onClick={onAddField}
+                  className={classes.button}
+                >
+                  Add Schema Entry
+                </Button>
+              )}
+            </Grid>
           </Grid>
-        </Grid>
-      </AccordionDetails>
-    </Accordion>
+        </AccordionDetails>
+      </Accordion>
+    </>
   );
 };
