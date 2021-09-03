@@ -14,7 +14,7 @@ import {
 import { TextField } from "formik-material-ui";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   alert: {
     width: "100%",
   },
@@ -140,7 +140,6 @@ export const SchemaForm = ({
         {editing && (
           <Button
             variant="contained"
-            color="primary"
             onClick={onAddField}
             className={classes.addField}
           >

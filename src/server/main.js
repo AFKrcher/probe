@@ -15,14 +15,22 @@ Meteor.startup(() => {
   Roles.createRole("user", {unlessExists: true});
   Roles.createRole("admin", {unlessExists: true});
   Roles.createRole("moderator", {unlessExists: true})
-  Roles.createRole("dummies", {unlessExists: true});
-  // Roles.addUsersToRoles("9wTy6NJYiDTMDAYgH", 'user')
-  console.log('is he there?', Roles.getUsersInRole('user').fetch())
-  // console.log('users: ', Meteor.users.find({}).fetch())
-  // console.log('hi', Roles.getAllRoles().fetch())
+  Roles.createRole("dummies", {unlessExists: true})
 
-
-
+  Meteor.methods({
+    'userExists': (username) =>{
+      if(Accounts.findUserByUsername(username)){
+        return 'Username already exists.'
+    }
+  }
+})
+Meteor.methods({
+  'emailExists': (email) =>{
+    if(Accounts.findUserByEmail(email)){
+      return 'Email already in use.'
+  }
+}
+})
 
   if (SchemaCollection.find().count() === 0) {
     var jsonObj = new Array();

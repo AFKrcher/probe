@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import * as Yup from "yup";
 // Imports
 import { Formik, Form } from "formik";
 import HelpersContext from "../helpers/HelpersContext.jsx";
+import { schemaValidatorShaper } from "../utils/schemaDataFuncs.js";
 
 // Components
 import { SchemaForm } from "./SchemaForm";
@@ -18,7 +18,7 @@ import {
   DialogActions,
   Button,
   CircularProgress,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import Close from "@material-ui/icons/Close";
@@ -33,17 +33,19 @@ const useStyles = makeStyles((theme) => ({
   title: {
     paddingBottom: "0px",
   },
-  actions: {
-    marginTop: 10,
-  },
   description: {
     marginTop: -10,
     marginBottom: 15,
-    margin: 5
-  }
+    margin: 5,
+  },
+  actions: {
+    display: "flex",
+    justifyContent: "space-between",
+    margin: "10px 20px 5px 20px",
+  },
 }));
 
-export const SchemaModal = ({ show, newSchema, initValues, handleClose, dirty }) => {
+export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
   const classes = useStyles();
   const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } =
     useContext(HelpersContext);
@@ -94,31 +96,6 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, dirty })
         : schema.name
     );
 
-  const schemaValidator = Yup.object().shape({
-    name: Yup.string()
-      .notOneOf(schemas, "Schema name already exists")
-      .required("Required"),
-    description: Yup.string().required("Required"),
-    fields: Yup.array().of(
-      Yup.object()
-        .shape({
-          name: Yup.string().required("Required"),
-          type: Yup.mixed()
-            .oneOf(["string", "number", "date"])
-            .required("Required"),
-          allowedValues: Yup.array().ensure(),
-          min: Yup.number().nullable().notRequired(),
-          max: Yup.number()
-            .nullable()
-            .when(["min"], (min, schema) => {
-              return schema.min(min);
-            }),
-          required: Yup.boolean(),
-        })
-        .notRequired()
-    ),
-  });
-
   const handleDelete = () => {
     SchemaCollection.remove(initValues._id);
     setOpenAlert(false);
@@ -164,11 +141,9 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, dirty })
   const handleToggleEdit = (setValues) => {
     if (editing) setValues(initValues);
     if (newSchema) {
-      handleClose()
-    } else {
-      setValues(initValues)
+      handleClose();
     }
-    setEditing(!editing)
+    setEditing(!editing);
   };
 
   const handleEdit = (setValues) => {
@@ -194,6 +169,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, dirty })
             onClick={() => {
               setOpenAlert(false);
               handleToggleEdit(setValues);
+              handleClose();
             }}
           >
             Confirm
@@ -211,7 +187,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, dirty })
     <>
       <AlertDialog bodyAlert={alert} />
       <SnackBar bodySnackBar={snack} />
-      <Dialog open={show} scroll="paper" onClose={handleClose} maxWidth="md">
+      <Dialog open={show} scroll="paper" maxWidth="md">
         <div className={classes.modal}>
           <DialogTitle className={classes.title}>
             <strong>{`${
@@ -220,7 +196,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, dirty })
           </DialogTitle>
           <Formik
             initialValues={initValues}
-            validationSchema={schemaValidator}
+            validationSchema={schemaValidatorShaper(schemas)}
             onSubmit={handleSubmit}
             validateOnBlur={true}
             validateOnChange={true}
@@ -233,11 +209,15 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, dirty })
               setValues,
               setFieldValue,
               initValues,
-              dirty
+              dirty,
             }) => (
               <Form>
                 <DialogContent>
-                  <Typography className={classes.description}>Each schema is built to store sets of data that characterize a satellite. Data fields can be added, modified, or deleted below.</Typography>
+                  <Typography className={classes.description}>
+                    Each schema is built to store sets of data that characterize
+                    a satellite. Data fields can be added, modified, or deleted
+                    below.
+                  </Typography>
                   <SchemaForm
                     touched={touched}
                     errors={errors}
@@ -249,30 +229,12 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, dirty })
                   />
                 </DialogContent>
                 <DialogActions className={classes.actions}>
-                  {editing && (
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      startIcon={<Save />}
-                      disabled={
-                        Object.entries(errors).length > 0 || !dirty ? true : false
-                      }
-                    >
-                      {isSubmitting ? (
-                        <CircularProgress size={24} />
-                      ) : (
-                        "Save Changes"
-                      )}
-                    </Button>
-                  )}
                   {!newSchema && (
                     <>
                       {!editing && (
                         <Button
                           variant="contained"
                           color="secondary"
-                          disableElevation
                           startIcon={<Delete />}
                           onClick={handleDeleteDialog}
                         >
@@ -283,8 +245,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, dirty })
                   )}
                   <Button
                     variant="contained"
-                    color={editing ? "secondary" : "primary"}
-                    disableElevation
+                    color={editing ? "secondary" : "default"}
                     startIcon={editing ? <Delete /> : <Edit />}
                     onClick={() => handleEdit(setValues)}
                   >
@@ -297,6 +258,27 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, dirty })
                       startIcon={<Close />}
                     >
                       Close
+                    </Button>
+                  )}
+                  {editing && (
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      startIcon={<Save />}
+                      disabled={
+                        Object.entries(errors).length > 0 || !dirty
+                          ? true
+                          : false
+                      }
+                    >
+                      {isSubmitting ? (
+                        <CircularProgress size={24} />
+                      ) : newSchema ? (
+                        "Save"
+                      ) : (
+                        "Save Changes"
+                      )}
                     </Button>
                   )}
                 </DialogActions>

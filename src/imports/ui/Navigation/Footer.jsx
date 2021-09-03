@@ -7,8 +7,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     textAlign: "center",
     width: "100%",
-    height: "25px",
-    lineHeight: "15px",
+    height: "20px",
+    lineHeight: "10px",
   },
   link: {
     color: theme.palette.text.primary,

@@ -3,7 +3,7 @@ import React from "react";
 import useWindowSize from "./utils/useWindowSize.jsx"
 
 // Components
-import { SatCard } from "./Dashboards/SatCard.jsx";
+import { SatCard } from "./DataDisplays/SatCard.jsx";
 import { useTracker } from "meteor/react-meteor-data";
 import { SatelliteCollection } from "../api/satellites";
 
@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
   showcase: {
     marginTop: 30,
   },
+  card : {
+    marginTop: -10
+  },
   spinner: {
     color: theme.palette.text.primary,
   },
@@ -33,12 +36,12 @@ export const Home = () => {
   
   const [demoSats, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("satellites");
-    const sats = SatelliteCollection.find({}, { limit: Math.round(width / 200) > 8 ? 8 : Math.round(width / 200)}).fetch();
+    const sats = SatelliteCollection.find({}, { limit: Math.round(width / 200) > 8 || Math.round(width / 200) <= 4 ? 8 : Math.round(width / 200)}).fetch();
     return [sats,!sub.ready()];
   });
   
-  const skeletonHeight = Math.round(height / 1.75);
-  const space = Math.round(height / (width / 6))
+  const skeletonHeight = Math.round(height / 2);
+  const space = Math.round(height / (width / 5)) > 10 ? 10 : Math.round(height / (width / 5))
   
   return (
     <div className={classes.root}>
@@ -59,11 +62,11 @@ export const Home = () => {
           Satellite Data Cards
         </Typography>
         {space ? 
-          (<Grid container justifyContent="space-around" spacing={space}>
+          (<Grid container justifyContent="space-around" spacing={space} className={classes.card}>
             {!isLoading &&
               demoSats.map((sat, index) => (
                 <Grid item xs={space} key={index}>
-                  <SatCard satellite={sat} key={index}/>
+                  <SatCard satellite={sat} key={index} width={width} height={height}/>
                 </Grid>
               ))}
             {isLoading && (

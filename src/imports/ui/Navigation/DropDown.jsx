@@ -1,13 +1,21 @@
 import React, { useState } from "react";
+// Imports
 import { useTracker } from "meteor/react-meteor-data";
 import { Link } from "react-router-dom";
 
 // @material-ui
-import { withStyles, makeStyles, IconButton, Menu, MenuItem, Button } from "@material-ui/core";
+import {
+  withStyles,
+  makeStyles,
+  IconButton,
+  Menu,
+  MenuItem,
+  Button,
+} from "@material-ui/core";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import SettingsIcon from "@material-ui/icons/Settings";
 import StarIcon from "@material-ui/icons/Star";
 import BrightnessHigh from "@material-ui/icons/BrightnessHigh";
@@ -76,9 +84,9 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-export const DropDown = ({theme, toggleTheme}) => {
+export const DropDown = ({ theme, toggleTheme }) => {
   let user = useTracker(() => Meteor.user()?.username, []);
-  
+
   const userMgmt = () => {
     let userNav = (
       <Button
@@ -109,8 +117,8 @@ export const DropDown = ({theme, toggleTheme}) => {
 
   return (
     <div>
-      <Button onClick={handleClick}>
-        <SettingsIcon fontSize="large"/>
+      <Button onClick={handleClick} disableElevation>
+        <SettingsIcon fontSize="medium" />
       </Button>
       <StyledMenu
         id="customized-menu"
@@ -123,42 +131,51 @@ export const DropDown = ({theme, toggleTheme}) => {
           <ListItemIcon>
             {theme === themes.dark ? (
               <Brightness2 aria-label="dark theme" fontSize="small" />
-          ) : (
-              <BrightnessHigh aria-label="light theme"/>
-          )}
+            ) : (
+              <BrightnessHigh aria-label="light theme" />
+            )}
           </ListItemIcon>
-          <ListItemText primary="Toggle theme" fontSize="small" />
+          <ListItemText primary="Toggle Theme" fontSize="small" />
         </StyledMenuItem>
-      {user ? (
-        <div>
-          <StyledMenuItem>
+        {user ? (
+          <div>
+            <StyledMenuItem>
+              <ListItemIcon>
+                <StarIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Favorites" />
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <ListItemIcon>
+                <SettingsIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary={`${user}'s Settings`} />
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <ListItemIcon>
+                <ExitToAppIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Logout" onClick={() => Meteor.logout()} />
+            </StyledMenuItem>
+          </div>
+        ) : (
+          <div>
+
+          <StyledMenuItem component={Link} to="/login">
             <ListItemIcon>
-              <StarIcon fontSize="small" />
+              <AccountCircleIcon />
             </ListItemIcon>
-            <ListItemText primary="Favorites" />
+            <ListItemText primary="Login" />
           </StyledMenuItem>
-          <StyledMenuItem>
-            <ListItemIcon>
-              <SettingsIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText primary={`${user}'s Settings`} />
-          </StyledMenuItem>
-          <StyledMenuItem>
-            <ListItemIcon>
-              <ExitToAppIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText primary="Logout" onClick={() => Meteor.logout()} />
-          </StyledMenuItem>
-        </div>
-      ) : (
-        <StyledMenuItem component={Link} to="/login">
+          <StyledMenuItem component={Link} to="/register">
           <ListItemIcon>
-            <AccountCircleIcon/>
+            <AccountCircleIcon />
           </ListItemIcon>
-          <ListItemText primary="Login" />
+          <ListItemText primary="Register" />
         </StyledMenuItem>
-      )}
-    </StyledMenu>
+        </div>
+        )}
+      </StyledMenu>
     </div>
-  );
+    );
 };

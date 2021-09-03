@@ -5,8 +5,16 @@ import { Field } from "formik";
 
 // @material-ui
 import { Autocomplete } from "@material-ui/lab";
-import { Chip, TextField } from "@material-ui/core";
+import { Chip, TextField, FormHelperText, makeStyles } from "@material-ui/core";
 import Close from "@material-ui/icons/Close";
+
+const useStyles = makeStyles((theme) => ({
+  helpers: {
+    marginLeft: 14,
+    marginTop: 0,
+    marginBottom: 4,
+  },
+}));
 
 export const MultiSelectTextInput = ({
   index,
@@ -14,9 +22,11 @@ export const MultiSelectTextInput = ({
   disabled,
   setFieldValue,
 }) => {
-  const fieldName = `fields.${index}.allowedValues`;
+  const classes = useStyles();
   const [inputText, setInputText] = useState("");
 
+  const fieldName = `fields.${index}.allowedValues`;
+  
   const handleChange = (event, values) => {
     setFieldValue(fieldName, values);
   };
@@ -35,42 +45,41 @@ export const MultiSelectTextInput = ({
   };
 
   return (
-    <Field
-      multiple
-      disableClearable
-      options={[]}
-      freeSolo
-      renderTags={(options, getTagProps) =>
-        options.map((option, index) => (
-          <Chip
-            deleteIcon={<Close />}
-            size="small"
-            label={option}
-            {...getTagProps({ index })}
+    <>
+      <Field
+        multiple
+        disableClearable
+        options={[]}
+        freeSolo
+        renderTags={(options, getTagProps) =>
+          options.map((option, index) => (
+            <Chip
+              deleteIcon={<Close />}
+              size="small"
+              label={option}
+              {...getTagProps({ index })}
+            />
+          ))
+        }
+        value={allowedValues}
+        inputValue={inputText}
+        onChange={handleChange}
+        onInputChange={handleInputChange}
+        disabled={disabled}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Allowed Strings"
+            variant="outlined"
+            fullWidth
+            margin="dense"
           />
-        ))
-      }
-      value={allowedValues}
-      inputValue={inputText}
-      onChange={handleChange}
-      onInputChange={handleInputChange}
-      disabled={disabled}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Allowed Strings"
-          variant="outlined"
-          fullWidth
-          margin="dense"
-          helperText={
-            <>
-              OPTIONAL: separate each string constraint with a comma (e.g.{" "}
-              <strong>foo, bar, baz</strong>)
-            </>
-          }
-        />
-      )}
-      component={Autocomplete}
-    />
+        )}
+        component={Autocomplete}
+      />
+      <FormHelperText className={classes.helpers}>
+        OPTIONAL: Provide a minimum and/or maximum value for the number
+      </FormHelperText>
+    </>
   );
 };

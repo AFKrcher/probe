@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
   table: {
     overflow: "auto",
     height: "100%",
+    backgroundColor: theme.palette.grid.background
   },
   tableNameCol: {
     width: "25%",
@@ -62,7 +63,7 @@ const newSchemaValues = {
     {
       name: "reference",
       description: "",
-      type: "string",
+      type: "url",
       allowedValues: [],
       min: null,
       max: null,
@@ -167,7 +168,7 @@ export const SchemasTable = () => {
                     </TableCell>
                     <TableCell key={`schema-desc-${i}`}>
                       {schema.description ||
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget."}
+                        "N/A"}
                     </TableCell>
                   </TableRow>
                 ))}

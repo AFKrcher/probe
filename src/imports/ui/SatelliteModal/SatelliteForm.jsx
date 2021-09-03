@@ -25,7 +25,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
   accordian: {
-    display: "flex"
+    display: "flex",
   },
   addSchemaContainer: {
     textAlign: "center",
@@ -49,7 +49,6 @@ export const SatelliteForm = ({
   editing,
   initValues,
   newSat,
-  setShape
 }) => {
   const { setOpenAlert, alert, setAlert } = useContext(HelpersContext);
   const [schemaAddition, setSchemaAddition] = useState(false);
@@ -69,7 +68,7 @@ export const SatelliteForm = ({
     delete initValues[`${name}`];
     setFlag(!flag);
     setOpenAlert(false);
-  }
+  };
 
   const handleDeleteDialog = (name) => {
     setAlert({
@@ -129,6 +128,8 @@ export const SatelliteForm = ({
       </Grid>
       <Grid item xs={12}>
         {schemas.map((schema, index) => {
+          // this first map forces "names" schema to always be on top
+          // the second map below this one renders the rest of the schemas in randomized order
           return schema.name === "names" ? (
             <span key={index} className={classes.accordian}>
               <SatelliteSchemaAccordion
@@ -140,12 +141,11 @@ export const SatelliteForm = ({
                 editing={editing}
                 setValues={setValues}
                 newSat={newSat}
-                values={values}
-                setShape={setShape}
               />
               {editing && (
                 <Tooltip title={`Delete ${schema.name}`}>
                   <IconButton
+                    color="default"
                     style={{ alignSelf: "flex-start" }}
                     onClick={() => handleDeleteDialog(schema.name)}
                   >
@@ -162,7 +162,7 @@ export const SatelliteForm = ({
           return initValues[schema.name] && schema.name !== "names" ? (
             <span key={index} className={classes.accordian}>
               <SatelliteSchemaAccordion
-                key={index}
+                errors={errors}
                 schema={schema}
                 entries={values[`${schema.name}`]}
                 setFieldValue={setFieldValue}
@@ -172,6 +172,7 @@ export const SatelliteForm = ({
               {editing && (
                 <Tooltip title={`Delete ${schema.name}`}>
                   <IconButton
+                    color="default"
                     style={{ alignSelf: "flex-start" }}
                     onClick={() => handleDeleteDialog(schema.name)}
                   >
@@ -185,7 +186,6 @@ export const SatelliteForm = ({
           );
         })}
       </Grid>
-
       {editing && schemaAddition && (
         <Grid item container xs={12} className={classes.addItem}>
           <Grid item xs={10}>

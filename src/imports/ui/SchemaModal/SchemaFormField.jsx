@@ -19,8 +19,8 @@ import {
 
 const useStyles = makeStyles((theme) => ({
   field: {
-    display: "flex", 
-    alignItems: "center"
+    display: "flex",
+    alignItems: "center",
   },
   helpers: {
     marginLeft: 14,
@@ -130,6 +130,7 @@ export const SchemaFormField = ({
               <MenuItem value="string">String</MenuItem>
               <MenuItem value="number">Number</MenuItem>
               <MenuItem value="date">Date</MenuItem>
+              <MenuItem value="url">URL</MenuItem>
             </Field>
           </FormControl>
           {typeErrors === "Required" && touched ? (
@@ -140,9 +141,10 @@ export const SchemaFormField = ({
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        {field.type === "date" || !field.type ? (
-          ""
-        ) : field.type === "number" ? (
+        {field.type === "date" || field.type === "url" || !field.type
+          ? null
+          : null}
+        {field.type === "number" ? (
           <>
             <Grid container item spacing={2}>
               <Grid item xs>
@@ -181,17 +183,26 @@ export const SchemaFormField = ({
               </Grid>
             </Grid>
             <FormHelperText className={classes.helpers}>
-              OPTIONAL: Provide a minimum and maximum value for the number
+              OPTIONAL: Provide a minimum and/or maximum value for the number
             </FormHelperText>
           </>
-        ) : (
+        ) : null}
+        {field.type === "string" ? (
           <>
             <Grid container item spacing={2}>
+            <Grid item xs>
+                <MultiSelectTextInput
+                  index={index}
+                  allowedValues={field.allowedValues}
+                  disabled={!editing}
+                  setFieldValue={setFieldValue}
+                />
+              </Grid>
               <Grid item xs>
                 <Field
                   inputProps={{
                     name: `fields.${index}.stringMax`,
-                    min: "1"
+                    min: "1",
                   }}
                   onChange={onMaxChange}
                   defaultValue={field.stringMax}
@@ -204,22 +215,15 @@ export const SchemaFormField = ({
                   disabled={!editing}
                   component={TextField}
                 />
-              <FormHelperText className={classes.helpers}>
-                OPTIONAL: Provide a maximum string length
-                {/* Example: Please note that the DataGrid's descriptionShort column can fit ~85 characters (on a 1920 x 1080 screen) before overflow happens */}
-              </FormHelperText>
+                <FormHelperText className={classes.helpers}>
+                  OPTIONAL: Provide a maximum string length
+                  {/* Example: Please note that the DataGrid's descriptionShort column can fit ~85 characters (on a 1920 x 1200 screen) before overflow happens */}
+                </FormHelperText>
               </Grid>
-              <Grid item xs>
-                <MultiSelectTextInput
-                  index={index}
-                  allowedValues={field.allowedValues}
-                  disabled={!editing}
-                  setFieldValue={setFieldValue}
-                />
-              </Grid>
+
             </Grid>
           </>
-        )}
+        ) : null}
         <div className={classes.field}>
           <Field
             inputProps={{

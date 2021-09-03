@@ -1,10 +1,7 @@
-import React, { useEffect, useContext } from "react";
-// Imports
-import HelpersContext from "../helpers/HelpersContext.jsx";
+import React, { useEffect } from "react";
 
 // Components
 import { SatelliteSchemaEntry } from "./SatelliteSchemaEntry";
-import AlertDialog from "../helpers/AlertDialog.jsx";
 
 // @material-ui
 import {
@@ -37,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
   description: {
     margin: "5px 10px 10px 10px",
   },
+  buttonContainer: {
+    display: "flex",
+    justifyContent: "center"
+  },
   button: {
     marginTop: 5,
     marginLeft: 2.5,
@@ -49,11 +50,7 @@ export const SatelliteSchemaAccordion = ({
   entries,
   setFieldValue,
   editing,
-  setValues,
-  values,
-  setShape
 }) => {
-  const { setOpenAlert, alert, setAlert } = useContext(HelpersContext);
 
   const classes = useStyles();
 
@@ -71,41 +68,13 @@ export const SatelliteSchemaAccordion = ({
   };
 
   const handleEntryDelete = (schemaName, index) => {
-    setAlert({
-      title: (
-        <span>
-          Delete <strong>{schemaName}</strong> Schema?
-        </span>
-      ),
-      text: (
-        <span>
-          Are you sure you want to delete <strong>{schemaName}</strong> and all
-          of its data?
-        </span>
-      ),
-      actions: (
-        <Button
-          variant="contained"
-          size="small"
-          color="secondary"
-          disableElevation
-          onClick={() => {
-            let newEntries = entries.splice(index, 1)
-            setFieldValue(schemaName, newEntries);
-            setOpenAlert(false);
-          }}
-        >
-          Confirm
-        </Button>
-      ),
-      closeAction: "Cancel",
-    });
-    setOpenAlert(true);
+    let newEntries = entries.map((entry) => entry);
+    newEntries.splice(index, 1);
+    setFieldValue(schemaName, newEntries);
   };
 
   return (
     <>
-      <AlertDialog bodyAlert={alert} />
       <Accordion className={classes.accordionbody}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -123,8 +92,7 @@ export const SatelliteSchemaAccordion = ({
         <AccordionDetails className={classes.accordianDetails}>
           <Grid container spacing={1}>
             <Typography className={classes.description}>
-              {schema.description ||
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget."}
+              {schema.description || "N/A"}
             </Typography>
             {entries?.map((entry, index) => (
               <SatelliteSchemaEntry
@@ -136,19 +104,18 @@ export const SatelliteSchemaAccordion = ({
                 deleteEntry={handleEntryDelete}
                 setFieldValue={setFieldValue}
                 editing={editing}
-                setShape={setShape}
               />
             ))}
-            <Grid item xs={12}>
+            <Grid item xs={12} className={classes.buttonContainer}>
               {editing && (
                 <Button
-                  variant="outlined"
-                  size="small"
-                  color="primary"
+                  variant="contained"
+                  size="medium"
+                  color="default"
                   onClick={onAddField}
                   className={classes.button}
                 >
-                  Add Schema Entry
+                  + Add Entry
                 </Button>
               )}
             </Grid>

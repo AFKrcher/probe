@@ -23,16 +23,12 @@ export default function PromptDialog({ bodyPrompt, open }) {
     >
       <DialogTitle
         id="alert-dialog-title"
-        style={{ marginTop: 0, marginBottom: -10 }}
       >
         {bodyPrompt ? bodyPrompt.title : "empty title"}
       </DialogTitle>
       <DialogContent>
         {bodyPrompt ? bodyPrompt.text : "empty text"}
       </DialogContent>
-      <DialogActions>
-        {bodyPrompt ? bodyPrompt.actions : "empty actions"}
-      </DialogActions>
     </Dialog>
   );
 }

@@ -1,5 +1,5 @@
 {
-  "name": "psra",
+  "name": "openorbit",
   "private": true,
   "scripts": {
     "start": "meteor run",
@@ -16,6 +16,8 @@
     "formik": "^2.2.9",
     "formik-material-ui": "^3.0.1",
     "formik-material-ui-lab": "0.0.8",
+    "jquery": "^3.6.0",
+    "meteor": "^2.3.6",
     "meteor-node-stubs": "^1.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

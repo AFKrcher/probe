@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "100%",
     display: "grid",
     gridTemplateColumns: "repeat(auto-fill, 250px)",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     gridGap: 40,
   },
   link: {
@@ -22,13 +22,23 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 30,
     marginBottom: 40,
   },
-  image: {
+  imgContainer: {
+    width: "auto",
+    height: "auto",
     border: "2px solid",
-    borderRadius: 5,
+    borderColor: theme.palette.primary,
+    borderRadius: 4,
     "&:hover": {
       border: "2px solid",
-      borderColor: theme.palette.info.light,
+      borderColor: theme.palette.info.main,
     },
+  },
+  image: {
+    display: "block",
+    borderRadius: 1.5,
+    verticalAlign: "middle",
+    marginLeft: "auto",
+    marginRight: "auto"
   },
   caption: {
     textAlign: "justify",
@@ -116,62 +126,63 @@ export const About = () => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-        <Typography variant="h3">
-          About <strong>OpenOrbit</strong>
-        </Typography>
-        <p>
-          This web application was created by an incredible team of space
-          enthusiasts who got together and gave up their weekend to complete
-          this work during a Hackathon which took place over the 8th - 9th May
-          2021.
-        </p>
-        <p>
-          Fueled by Pizza and Lofi, we had a lot of fun and hope you find this
-          website helpful and useful! Now it is up to all of us to maintain and
-          populate it!
-        </p>
-        <p>
-          After the Hackathon, a pair of developers, Justin and Archer,
-          continued the development of the application from August into November
-          of 2021. Features were added to provide better data entry UX/UI and
-          integration into Saber Astronautics' Space Cockpit for data
-          visualization and analysis.
-        </p>
-        <div className={classes.meetTheTeam}>
-          <Typography variant="h4">Meet the Team</Typography>
-          <p>Click on our profile pictures or names to connect with us!</p>
-        </div>
-        <Container>
-          <Grid container spacing={0} className={classes.avatars}>
-            {TeamMembers.map((member, index) => {
-              return (
-                <Grid item xs key={index}>
-                  <Container>
-                    <a
-                      href={member.Link}
-                      target="_blank"
-                      key={index}
-                      className={classes.link}
-                    >
-                      <img
-                        width={200}
-                        height={200}
-                        src={member.Img}
-                        className={classes.image}
-                        alt={""}
-                      />
-                      <Typography variant="body2" className={classes.caption}>
-                        <span className={classes.name}>{member.Name}</span>
-                        <br />
-                        <span>{member.Role}</span>
-                      </Typography>
-                    </a>
-                  </Container>
-                </Grid>
-              );
-            })}
-          </Grid>
-        </Container>
+      <Typography variant="h3">
+        About <strong>OpenOrbit</strong>
+      </Typography>
+      <p>
+        This web application was created by an incredible team of space
+        enthusiasts who got together and gave up their weekend to complete this
+        work during a Hackathon which took place over the 8th - 9th May 2021.
+      </p>
+      <p>
+        Fueled by Pizza and Lofi, we had a lot of fun and hope you find this
+        website helpful and useful! Now it is up to all of us to maintain and
+        populate it!
+      </p>
+      <p>
+        After the Hackathon, a pair of developers, Justin and Archer, continued
+        the development of the application from August into November of 2021.
+        Features were added to provide better data entry UX/UI and integration
+        into Saber Astronautics' Space Cockpit for data visualization and
+        analysis.
+      </p>
+      <div className={classes.meetTheTeam}>
+        <Typography variant="h4">Meet the Team</Typography>
+        <p>Click on our profile pictures or names to connect with us!</p>
+      </div>
+      <Container>
+        <Grid container spacing={0} className={classes.avatars}>
+          {TeamMembers.map((member, index) => {
+            return (
+              <Grid item xs key={index}>
+                <Container>
+                  <a
+                    href={member.Link}
+                    target="_blank"
+                    key={index}
+                    className={classes.link}
+                  >
+                  <div className={classes.imgContainer}>
+                    <img
+                      width="100%"
+                      height="100%"
+                      src={member.Img}
+                      className={classes.image}
+                      alt={""}
+                    />
+                  </div>
+                    <Typography variant="body2" className={classes.caption}>
+                      <span className={classes.name}>{member.Name}</span>
+                      <br />
+                      <span>{member.Role}</span>
+                    </Typography>
+                  </a>
+                </Container>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Container>
     </div>
   );
 };

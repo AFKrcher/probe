@@ -4,14 +4,15 @@ import HelpersContext from "./helpers/HelpersContext.jsx";
 
 // Components
 import { Nav } from "./Navigation/Nav.jsx";
-import { SatellitesTable } from "./Dashboards/SatellitesTable.jsx";
-import { SchemasTable } from "./Dashboards/SchemasTable.jsx";
+import { SatellitesTable } from "./DataDisplays/SatellitesTable.jsx";
+import { SchemasTable } from "./DataDisplays/SchemasTable.jsx";
 import { Home } from "./Home.jsx";
 import { About } from "./About.jsx";
 import { Footer } from "./Navigation/Footer.jsx";
-import { Register } from "./Accounts/Register";
 import { Login } from "./Accounts/Login";
-import { DropDown } from "./Accounts/DropDown";
+import { Register } from "./Accounts/Register";
+import { DropDown } from "./Navigation/DropDown";
+import {Settings } from './Accounts/Settings'
 
 // @material-ui
 import { ThemeProvider } from "@material-ui/core/styles";
@@ -73,11 +74,14 @@ export const App = () => {
                 <Route exact={true} path="/satellites">
                   <SatellitesTable />
                 </Route>
+                <Route exact={true} path="/login">
+                  <Login />
+                </Route>
                 <Route exact={true} path="/register">
                   <Register />
                 </Route>
-                <Route exact={true} path="/login">
-                  <Login />
+                <Route exact={true} path="/settings">
+                  <Settings />
                 </Route>
                 <Route exact={true} path="/menu">
                   <DropDown />

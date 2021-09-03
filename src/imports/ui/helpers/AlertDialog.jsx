@@ -37,7 +37,6 @@ export default function AlertDialog({ bodyAlert }) {
           {bodyAlert ? bodyAlert.actions : "empty actions"}
           <Button
             variant="contained"
-            color="primary"
             size="small"
             onClick={handleCancelAlert}
           >
