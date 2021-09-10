@@ -1,18 +1,19 @@
 {
   "name": "dimensionVolumeM3",
-  "description": "",
+  "description": "Volume of the entire satellite in cubic meters.",
   "fields": [
     {
       "name": "reference",
       "description": "Provide a source or rationale for the provided data",
-      "type": "string",
+      "type": "url",
       "allowedValues": [],
       "required": true
     },
     {
       "name": "cubicMeters",
       "type": "number",
-      "allowedValues": []
+      "allowedValues": [],
+      "required": true
     }
   ]
 }

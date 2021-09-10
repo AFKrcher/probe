@@ -1,18 +1,19 @@
 {
   "name": "names",
-  "description": "",
+  "description": "Satellite's names or callsigns.",
   "fields": [
     {
       "name": "reference",
       "description": "Provide a source or rationale for the provided data",
-      "type": "string",
+      "type": "url",
       "allowedValues": [],
       "required": true
     },
     {
       "name": "name",
       "type": "string",
-      "allowedValues": []
+      "allowedValues": [],
+      "required": true
     }
   ]
 }

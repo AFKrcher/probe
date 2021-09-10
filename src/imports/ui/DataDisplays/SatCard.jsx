@@ -98,6 +98,7 @@ export const SatCard = ({ width, height, satellite }) => {
           <IconButton
             size="small"
             className={classes.modalButton}
+            id="exitVisualize"
             onClick={() => {
               setOpenPrompt(false);
               setPrompt({
@@ -198,7 +199,7 @@ export const SatCard = ({ width, height, satellite }) => {
                 fontSize: width < 500 ? (width < 400 ? "8px" : "10px") : "12px",
               }}
             >
-              Modify
+              Data
             </strong>
           </Button>
         </CardActions>

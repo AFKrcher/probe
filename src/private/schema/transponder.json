@@ -1,29 +1,54 @@
 {
+  "_id": "CaSD2dkm5SqaQ3pd2",
   "name": "transponder",
-  "description": "",
+  "description": "Satellite transponder description and capabilities.",
   "fields": [
     {
       "name": "reference",
       "description": "Provide a source or rationale for the provided data",
-      "type": "string",
+      "type": "url",
       "allowedValues": [],
       "required": true
     },
-
     {
-      "name": "band",
+      "name": "description",
       "type": "string",
-      "allowedValues": []
+      "allowedValues": [],
+      "required": false,
+      "min": null,
+      "max": null
+    },
+    {
+      "name": "minBand",
+      "type": "number",
+      "allowedValues": [],
+      "required": false,
+      "min": null,
+      "max": null
+    },
+    {
+      "name": "maxBand",
+      "type": "number",
+      "allowedValues": ["Ghz", "Mhz", "Khz", "Hz"],
+      "required": false,
+      "min": null,
+      "max": null
     },
     {
       "name": "bandScale",
       "type": "string",
-      "allowedValues": ["Ghz", "Mhz", "Khz", "Hz"]
+      "allowedValues": ["Ghz", "Mhz", "Khz", "Hz"],
+      "required": false,
+      "min": null,
+      "max": null
     },
     {
       "name": "direction",
       "type": "string",
-      "allowedValues": ["up", "down", "both"]
+      "allowedValues": ["uplink", "downlink", "crosslink", "multilink"],
+      "required": false,
+      "min": null,
+      "max": null
     }
   ]
 }

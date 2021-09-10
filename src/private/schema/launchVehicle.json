@@ -1,11 +1,11 @@
 {
   "name": "launchVehicle",
-  "description": "",
+  "description": "Name and/or description of the launch vehicle used by the satellite and/or its parts.",
   "fields": [
     {
       "name": "reference",
       "description": "Provide a source or rationale for the provided data",
-      "type": "string",
+      "type": "url",
       "allowedValues": [],
       "required": true
     },

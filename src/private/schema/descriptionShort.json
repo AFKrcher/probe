@@ -1,10 +1,10 @@
 {
   "name": "descriptionShort",
-  "description": "",
+  "description": "Paraphrased description of the satellite's origin and purpose.",
   "fields": [
     {
       "name": "reference",
-      "type": "string",
+      "type": "url",
       "description": "Provide a source or rationale for the provided data",
       "allowedValues": [],
       "required": true
@@ -12,7 +12,8 @@
     {
       "name": "descriptionShort",
       "type": "string",
-      "allowedValues": []
+      "allowedValues": [],
+      "required": true
     }
   ]
 }

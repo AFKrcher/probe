@@ -23,8 +23,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 40,
   },
   imgContainer: {
-    width: "auto",
-    height: "auto",
+    width: "225px",
+    height: "225px",
     border: "2px solid",
     borderColor: theme.palette.primary,
     borderRadius: 4,
@@ -35,10 +35,11 @@ const useStyles = makeStyles((theme) => ({
   },
   image: {
     display: "block",
+    objectFit: "cover",
     borderRadius: 1.5,
     verticalAlign: "middle",
     marginLeft: "auto",
-    marginRight: "auto"
+    marginRight: "auto",
   },
   caption: {
     textAlign: "justify",
@@ -118,7 +119,7 @@ let TeamMembers = [
     Role: "Developer",
     // Img: "https://static.wikia.nocookie.net/archer/images/7/7b/BeardedArcher.png",
     Img: "/team/zach-archer.png",
-    Link: "",
+    Link: "https://github.com/AFKrcher",
   },
 ];
 
@@ -158,19 +159,20 @@ export const About = () => {
                 <Container>
                   <a
                     href={member.Link}
+                    id={`image-${index}`}
                     target="_blank"
                     key={index}
                     className={classes.link}
                   >
-                  <div className={classes.imgContainer}>
-                    <img
-                      width="100%"
-                      height="100%"
-                      src={member.Img}
-                      className={classes.image}
-                      alt={""}
-                    />
-                  </div>
+                    <div className={classes.imgContainer}>
+                      <img
+                        width="100%"
+                        height="100%"
+                        src={member.Img}
+                        className={classes.image}
+                        alt={""}
+                      />
+                    </div>
                     <Typography variant="body2" className={classes.caption}>
                       <span className={classes.name}>{member.Name}</span>
                       <br />

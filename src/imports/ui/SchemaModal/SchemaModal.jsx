@@ -26,12 +26,17 @@ import Delete from "@material-ui/icons/Delete";
 import Edit from "@material-ui/icons/Edit";
 import Save from "@material-ui/icons/Save";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   modal: {
     width: "auto",
+    height: "100vh",
   },
-  title: {
-    paddingBottom: "0px",
+  titleText: {
+    fontSize: "25px",
+  },
+  content: {
+    maxHeight: "75vh",
+    overflowY: "auto",
   },
   description: {
     marginTop: -10,
@@ -41,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   actions: {
     display: "flex",
     justifyContent: "space-between",
-    margin: "10px 20px 5px 20px",
+    margin: "5px 20px 5px 20px",
   },
 }));
 
@@ -56,6 +61,8 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
   }, [newSchema, show]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
+    window.sessionStorage.clear();
+
     if (values) {
       if (newSchema) {
         SchemaCollection.insert(values);
@@ -97,6 +104,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
     );
 
   const handleDelete = () => {
+    window.sessionStorage.clear();
     SchemaCollection.remove(initValues._id);
     setOpenAlert(false);
     handleClose();
@@ -146,12 +154,13 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
     setEditing(!editing);
   };
 
-  const handleEdit = (setValues) => {
-    if (editing) {
+  const handleEdit = (setValues, dirty) => {
+    if (editing && dirty) {
       setAlert({
         title: (
           <span>
-            Delete Changes on <strong>{initValues.name}</strong>?
+            Delete changes on <strong>{initValues.name || "new schema"}</strong>
+            ?
           </span>
         ),
         text: (
@@ -189,8 +198,8 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
       <SnackBar bodySnackBar={snack} />
       <Dialog open={show} scroll="paper" maxWidth="md">
         <div className={classes.modal}>
-          <DialogTitle className={classes.title}>
-            <strong>{`${
+          <DialogTitle>
+            <strong className={classes.titleText}>{`${
               newSchema ? "Create New Schema" : "Edit Exisiting Schema"
             }`}</strong>
           </DialogTitle>
@@ -198,8 +207,6 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
             initialValues={initValues}
             validationSchema={schemaValidatorShaper(schemas)}
             onSubmit={handleSubmit}
-            validateOnBlur={true}
-            validateOnChange={true}
           >
             {({
               errors,
@@ -212,7 +219,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
               dirty,
             }) => (
               <Form>
-                <DialogContent>
+                <DialogContent className={classes.content}>
                   <Typography className={classes.description}>
                     Each schema is built to store sets of data that characterize
                     a satellite. Data fields can be added, modified, or deleted
@@ -247,7 +254,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
                     variant="contained"
                     color={editing ? "secondary" : "default"}
                     startIcon={editing ? <Delete /> : <Edit />}
-                    onClick={() => handleEdit(setValues)}
+                    onClick={() => handleEdit(setValues, dirty)}
                   >
                     {editing ? "Cancel" : "Edit"}
                   </Button>

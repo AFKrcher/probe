@@ -10,10 +10,6 @@ import CloseIcon from "@material-ui/icons/Close";
 export default function SimpleSnackbar({ bodySnackBar }) {
   const { openSnack, setOpenSnack } = useContext(HelpersContext);
 
-  const handleClick = () => {
-    setOpenSnack(true);
-  };
-
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;

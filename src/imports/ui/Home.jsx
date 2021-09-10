@@ -66,7 +66,7 @@ export const Home = () => {
             {!isLoading &&
               demoSats.map((sat, index) => (
                 <Grid item xs={space} key={index}>
-                  <SatCard satellite={sat} key={index} width={width} height={height}/>
+                  <SatCard satellite={sat} width={width} height={height} id={`SatCard-${index}`}/>
                 </Grid>
               ))}
             {isLoading && (

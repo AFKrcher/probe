@@ -117,7 +117,7 @@ export const DropDown = ({ theme, toggleTheme }) => {
 
   return (
     <div>
-      <Button onClick={handleClick} disableElevation>
+      <Button onClick={handleClick} id="drop-down" disableElevation>
         <SettingsIcon fontSize="medium" />
       </Button>
       <StyledMenu
@@ -139,35 +139,35 @@ export const DropDown = ({ theme, toggleTheme }) => {
         </StyledMenuItem>
         {user ? (
           <div>
-            <StyledMenuItem>
+            <StyledMenuItem id="favorites">
               <ListItemIcon>
                 <StarIcon fontSize="small" />
               </ListItemIcon>
               <ListItemText primary="Favorites" />
             </StyledMenuItem>
-            <StyledMenuItem>
+            <StyledMenuItem id="settings" component={Link} to="/settings" >
               <ListItemIcon>
                 <SettingsIcon fontSize="small" />
               </ListItemIcon>
-              <ListItemText primary={`${user}'s Settings`} />
+              <ListItemText primary={`${user}'s Settings`}/>
             </StyledMenuItem>
             <StyledMenuItem>
               <ListItemIcon>
                 <ExitToAppIcon fontSize="small" />
               </ListItemIcon>
-              <ListItemText primary="Logout" onClick={() => Meteor.logout()} />
+              <ListItemText id="logout" primary="Logout" onClick={() => Meteor.logout()} />
             </StyledMenuItem>
           </div>
         ) : (
           <div>
 
-          <StyledMenuItem component={Link} to="/login">
+          <StyledMenuItem id="login" component={Link} to="/login">
             <ListItemIcon>
               <AccountCircleIcon />
             </ListItemIcon>
             <ListItemText primary="Login" />
           </StyledMenuItem>
-          <StyledMenuItem component={Link} to="/register">
+          <StyledMenuItem id="register" component={Link} to="/register">
           <ListItemIcon>
             <AccountCircleIcon />
           </ListItemIcon>

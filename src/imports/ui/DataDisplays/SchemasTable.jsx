@@ -99,7 +99,6 @@ export const SchemasTable = () => {
   };
 
   return (
-
       <div className={classes.root}>
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item xs>

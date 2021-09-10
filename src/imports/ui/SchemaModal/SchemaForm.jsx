@@ -69,6 +69,7 @@ export const SchemaForm = ({
           <Field
             name="name"
             label="Schema Name"
+            placeholder="camelCase"
             margin="dense"
             required
             fullWidth
@@ -81,6 +82,7 @@ export const SchemaForm = ({
           <Field
             name="description"
             label="Schema Description"
+            placeholder="Use this field to describe why this schema is important and how a user should enter data into the fields that are defined in this schema."
             margin="dense"
             required
             fullWidth
@@ -97,8 +99,6 @@ export const SchemaForm = ({
         name="fields"
         render={() =>
           formValues.fields.map((field, i) => {
-            if (field.name === "reference") return;
-
             return (
               <React.Fragment key={`fragment-${i}`}>
                 <Grid

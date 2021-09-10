@@ -1,18 +1,19 @@
 {
   "name": "power",
-  "description": "",
+  "description": "Description and technical details of the satellite's power system(s).",
   "fields": [
     {
       "name": "reference",
       "description": "Provide a source or rationale for the provided data",
-      "type": "string",
+      "type": "url",
       "allowedValues": [],
       "required": true
     },
     {
       "name": "source",
       "type": "string",
-      "allowedValues": ["nuclear", "solar", "battery"]
+      "allowedValues": ["nuclear", "solar", "battery", "other"],
+      "required": true
     },
     {
       "name": "sourceStatus",
@@ -34,12 +35,18 @@
     {
       "name": "current",
       "description": "in milliamps",
-      "type": "number"
+      "type": "number",
+      "allowedValues": []
     },
     {
       "name": "currentScale",
       "type": "string",
       "allowedValues": ["amps", "milliamps"]
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "allowedValues": []
     }
   ]
 }

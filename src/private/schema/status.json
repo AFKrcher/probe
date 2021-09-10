@@ -1,11 +1,11 @@
 {
   "name": "status",
-  "description": "",
+  "description": "Operational status of the satellite.",
   "fields": [
     {
       "name": "reference",
       "description": "Provide a source or rationale for the provided data",
-      "type": "string",
+      "type": "url",
       "allowedValues": [],
       "required": true
     },
@@ -19,7 +19,8 @@
         "not operational",
         "functional turned off",
         "no status reported"
-      ]
+      ],
+      "required": true
     }
   ]
 }

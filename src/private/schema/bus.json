@@ -1,18 +1,19 @@
 {
   "name": "bus",
-  "description": "",
+  "description": "Bus that provides infrastructure to the spacecraft, usually providing locations for the payload.",
   "fields": [
     {
       "name": "reference",
       "description": "Provide a source or rationale for the provided data",
-      "type": "string",
+      "type": "url",
       "allowedValues": [],
       "required": true
     },
     {
       "name": "bus",
       "type": "string",
-      "allowedValues": []
+      "allowedValues": [],
+      "required": true
     }
   ]
 }

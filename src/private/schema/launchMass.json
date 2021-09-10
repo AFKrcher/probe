@@ -1,18 +1,19 @@
 {
   "name": "launchMassKg",
-  "description": "",
+  "description": "Launch-ready satellite mass in kilograms.",
   "fields": [
     {
       "name": "reference",
       "description": "Provide a source or rationale for the provided data",
-      "type": "string",
+      "type": "url",
       "allowedValues": [],
       "required": true
     },
     {
       "name": "launchMassKg",
       "type": "number",
-      "allowedValues": []
+      "allowedValues": [],
+      "required": true
     }
   ]
 }

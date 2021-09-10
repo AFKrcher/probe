@@ -70,6 +70,10 @@ export const SchemaFormField = ({
     setFieldValue(event.target.name, event.target.checked);
   };
 
+  const onIsUniqueChange = (event) => {
+    setFieldValue(event.target.name, event.target.checked);
+  };
+
   const handleBlur = () => {
     setTouched(true);
   };
@@ -85,6 +89,7 @@ export const SchemaFormField = ({
             value={field.name}
             onChange={onNameChange}
             label="Field Name or Units"
+            placeholder="camelCase"
             margin="dense"
             required
             fullWidth
@@ -190,7 +195,7 @@ export const SchemaFormField = ({
         {field.type === "string" ? (
           <>
             <Grid container item spacing={2}>
-            <Grid item xs>
+              <Grid item xs>
                 <MultiSelectTextInput
                   index={index}
                   allowedValues={field.allowedValues}
@@ -217,11 +222,26 @@ export const SchemaFormField = ({
                 />
                 <FormHelperText className={classes.helpers}>
                   OPTIONAL: Provide a maximum string length
-                  {/* Example: Please note that the DataGrid's descriptionShort column can fit ~85 characters (on a 1920 x 1200 screen) before overflow happens */}
                 </FormHelperText>
               </Grid>
-
             </Grid>
+            <div className={classes.field}>
+              <Field
+                inputProps={{
+                  id: `schema-field-${index}-isUnique-label`,
+                  name: `fields.${index}.isUnique`,
+                }}
+                checked={field.isUnique || false || false}
+                onChange={onIsUniqueChange}
+                margin="dense"
+                disabled={!editing}
+                component={Checkbox}
+                type="checkbox"
+              />
+              <InputLabel htmlFor={`schema-field-${index}-isUnique-label`}>
+                Unique Identifier (UUID)?
+              </InputLabel>
+            </div>
           </>
         ) : null}
         <div className={classes.field}>
@@ -230,7 +250,7 @@ export const SchemaFormField = ({
               id: `schema-field-${index}-required-label`,
               name: `fields.${index}.required`,
             }}
-            checked={field.required}
+            checked={field.required || false}
             onChange={onRequiredChange}
             margin="dense"
             disabled={!editing}

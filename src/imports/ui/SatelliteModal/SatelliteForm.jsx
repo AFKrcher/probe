@@ -24,7 +24,7 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
-  accordian: {
+  accordion: {
     display: "flex",
   },
   addSchemaContainer: {
@@ -127,14 +127,14 @@ export const SatelliteForm = ({
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        {schemas.map((schema, index) => {
+        {schemas.map((schema, schemaIndex) => {
           // this first map forces "names" schema to always be on top
           // the second map below this one renders the rest of the schemas in randomized order
           return schema.name === "names" ? (
-            <span key={index} className={classes.accordian}>
+            <span key={schemaIndex} className={classes.accordion}>
               <SatelliteSchemaAccordion
                 errors={errors}
-                key={index}
+                key={schemaIndex}
                 schema={schema}
                 entries={values[`${schema.name}`]}
                 setFieldValue={setFieldValue}
@@ -158,9 +158,9 @@ export const SatelliteForm = ({
             []
           );
         })}
-        {schemas.map((schema, index) => {
+        {schemas.map((schema, schemaIndex) => {
           return initValues[schema.name] && schema.name !== "names" ? (
-            <span key={index} className={classes.accordian}>
+            <span key={schemaIndex} className={classes.accordion}>
               <SatelliteSchemaAccordion
                 errors={errors}
                 schema={schema}
@@ -206,13 +206,17 @@ export const SatelliteForm = ({
                 <MenuItem disabled value={""}>
                   <em>Available Schemas</em>
                 </MenuItem>
-                {schemas.map((schema, index) => {
+                {schemas.map((schema, schemaIndex) => {
                   if (
                     schema.name !== "name" &&
                     (initValues[`${schema.name}`] ? false : true)
                   ) {
                     return (
-                      <MenuItem key={index} dense value={`${schema.name}`}>
+                      <MenuItem
+                        key={schemaIndex}
+                        dense
+                        value={`${schema.name}`}
+                      >
                         {schema.name}
                       </MenuItem>
                     );
@@ -223,6 +227,7 @@ export const SatelliteForm = ({
           </Grid>
           <Grid item xs style={{ marginLeft: 10, marginTop: 5 }}>
             <Button
+              id="add-schema"
               variant="contained"
               color="primary"
               onClick={handleNewSchema}

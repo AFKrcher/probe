@@ -1,16 +1,22 @@
 {
   "name": "organization",
-  "description": "",
+  "description": "Entity involved in any portion of the satellite's acquisition process and operation, as well as a description of the organization's responsibilities.",
   "fields": [
     {
       "name": "reference",
       "description": "Provide a source or rationale for the provided data",
-      "type": "string",
+      "type": "url",
       "allowedValues": [],
       "required": true
     },
     {
       "name": "organization",
+      "type": "string",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "responsibility",
       "type": "string",
       "allowedValues": []
     }

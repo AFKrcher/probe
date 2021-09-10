@@ -1,18 +1,19 @@
 {
   "name": "type",
-  "description": "",
+  "description": "General type of the satellite being observed (natural, man-made, unknown).",
   "fields": [
     {
       "name": "reference",
       "description": "Provide a source or rationale for the provided data",
-      "type": "string",
+      "type": "url",
       "allowedValues": [],
       "required": true
     },
     {
       "name": "type",
       "type": "string",
-      "allowedValues": ["natural", "manMade"]
+      "allowedValues": ["natural", "manMade", "unknown"],
+      "required": true
     }
   ]
 }

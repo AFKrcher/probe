@@ -1,87 +1,194 @@
 import React, { useState } from "react";
 // Imports
+import { useHistory } from "react-router";
+import { useTracker } from "meteor/react-meteor-data";
 import { Accounts } from "meteor/accounts-base";
-import { Formik, Form } from "formik";
+import { Meteor } from "meteor/meteor";
 
 // @material-ui
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Button } from "@material-ui/core";
-import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
-import { Meteor } from "meteor/meteor";
+import {
+  Grid,
+  Button,
+  makeStyles,
+  FormControl,
+  TextField,
+  Tooltip,
+} from "@material-ui/core";
+
 const useStyles = makeStyles((theme) => ({
   margin: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(4),
+    width: "300px",
+  },
+  formContainer: {
+    display: "flex",
+    flexFlow: "column wrap",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  textField: {
+    marginBottom: 10,
+  },
+  loginButton: {
+    marginTop: 20,
+  },
+  registerButton: {
+    marginTop: 20,
   },
 }));
 
 export const Login = () => {
   const classes = useStyles();
+  const history = useHistory();
+  const [err, setErr] = useState(false);
+  const [errHelper, setErrHelper] = useState("");
+  let user = useTracker(() => Meteor.user()?.username, []);
+  let regex = /[~`!@.#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g;
   const redirect = () => {
-    window.location.href = "/";
+    history.push("/");
+  };
+
+  const [disabled, setDisabled] = useState(true);
+  const handleDisable = () => {
+    let username = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+    if (username && pass) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  };
+
+  const handleError = (error) => {
+    if (error) {
+      if (
+        error.message === "User not found [403]" ||
+        error.message === "Incorrect password [403]"
+      ) {
+        setErr(true);
+        setErrHelper("Incorrect username or password");
+      } else {
+        setErrHelper(
+          "We are having difficulties logging you in. Please, wait and try again."
+        );
+      }
+    }
   };
 
   const loginUser = (e) => {
     e.preventDefault();
-    let user = e.target.username.value;
+    let username = e.target.username.value;
     let password = e.target.password.value;
-    if (/[~`!@.#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(user)) {
-      console.log("email");
+    setErr(false);
+    setErrHelper("");
+    if (regex.test(username)) {
       Meteor.loginWithPassword(
         {
-          email: user,
+          email: username,
         },
-
-        e.target.password.value,
+        password,
         (error) => {
-          console.log(error);
+          handleError(error);
         }
       );
     } else {
       Meteor.loginWithPassword(
         {
-          username: user,
+          username: username,
         },
-
-        e.target.password.value,
+        password,
         (error) => {
-          console.log(error);
+          handleError(error);
         }
       );
     }
   };
 
-  const registerUser = (e) => {
-    e.preventDefault();
-    window.location.href = "/register";
+  const registerUser = () => {
+    history.push("/register");
   };
+
+  const forgotPassword = () => {
+    let options = {};
+    let username = document.getElementById("username").value;
+    if (regex.test(username)) {
+      options.email = username;
+      setErr(false);
+      Accounts.forgotPassword(options, (res) => {
+        alert(
+          res || "An email has been sent with a link to reset your password."
+        );
+      });
+    } else {
+      setErr(true);
+      setErrHelper("Please provide a valid email.");
+    }
+  };
+
   return (
     <Grid container justifyContent="center" alignItems="center">
-      {Meteor.loggingIn() || Meteor.user()?._id ? (
-        redirect(<div>You are already logged in.</div>)
+      {user ? (
+        redirect(
+          <div style={{ textAlign: "center" }}>You are already logged in.</div>
+        )
       ) : (
         <FormControl className={classes.margin}>
-          <form onSubmit={loginUser}>
+          <form onSubmit={loginUser} className={classes.formContainer}>
             <TextField
               id="username"
+              error={
+                errHelper.includes("email") || errHelper.includes("user")
+                  ? true
+                  : false
+              }
+              helperText={
+                errHelper.includes("email") || errHelper.includes("user")
+                  ? errHelper
+                  : null
+              }
               label="Username or Email"
+              onChange={handleDisable}
               ref={(input) => (username = input)}
+              className={classes.textField}
+              fullWidth
             />
-            <br />
             <TextField
               id="password"
               label="Password"
               type="password"
+              error={errHelper.includes("password") ? true : false}
+              helperText={errHelper.includes("password") ? errHelper : null}
+              onChange={handleDisable}
               ref={(input) => (password = input)}
+              className={classes.textField}
+              fullWidth
             />
-            <br />
-            <Button variant="outlined" color="primary" type="submit">
+            <Button
+              id="login-button"
+              variant="outlined"
+              className={classes.loginButton}
+              color="primary"
+              type="submit"
+              disabled={disabled}
+              fullWidth
+            >
               Login
             </Button>
-            <br />
-            <Button variant="outlined" color="secondary" onClick={registerUser}>
-              Register New
-            </Button>
+            <Tooltip title="Redirect to the account registration page" placement="right">
+              <Button
+                id="register-instead"
+                className={classes.registerButton}
+                onClick={registerUser}
+                fullWidth
+              >
+                Register New
+              </Button>
+            </Tooltip>
+            <Tooltip title="Enter a registered email above" placement="right">
+              <Button id="forgot-password" onClick={forgotPassword} fullWidth>
+                Forgot Password?
+              </Button>
+            </Tooltip>
           </form>
         </FormControl>
       )}

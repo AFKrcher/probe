@@ -1,28 +1,103 @@
 {
+  "_id": "jzjBcN8sbmXpN65gC",
   "name": "propulsion",
-  "description": "",
+  "description": "Method(s) of providing thrust to the satellite and/or its parts.",
   "fields": [
     {
       "name": "reference",
       "description": "Provide a source or rationale for the provided data",
-      "type": "string",
+      "type": "url",
       "allowedValues": [],
       "required": true
     },
     {
-      "name": "type",
+      "name": "description",
       "type": "string",
-      "allowedValues": []
+      "allowedValues": [],
+      "required": false
     },
     {
-      "name": "thrust",
-      "type": "number",
-      "allowedValues": []
+      "name": "type",
+      "type": "string",
+      "allowedValues": ["chemical", "electrical", "other"],
+      "required": false
     },
+    { "name": "thrust", "type": "number", "allowedValues": [] },
     {
       "name": "thrustScale",
       "type": "number",
       "allowedValues": ["newtons", "millinewtons"]
+    },
+    {
+      "name": "effectiveExhaustThrust",
+      "type": "number",
+      "allowedValues": [],
+      "required": false,
+      "min": null,
+      "max": null
+    },
+    {
+      "name": "effectiveExhaustThrustScale",
+      "type": "string",
+      "allowedValues": [],
+      "required": false
+    },
+    {
+      "name": "maxDeltaVelocity",
+      "type": "number",
+      "allowedValues": [],
+      "required": false,
+      "min": null,
+      "max": null
+    },
+    {
+      "name": "maxDeltaVelocityScale",
+      "type": "string",
+      "allowedValues": [],
+      "required": false
+    },
+    {
+      "name": "minDeltaVelocity",
+      "type": "number",
+      "allowedValues": [],
+      "required": false,
+      "min": null,
+      "max": null
+    },
+    {
+      "name": "minDeltaVelocityScale",
+      "type": "string",
+      "allowedValues": [],
+      "required": false
+    },
+    {
+      "name": "degreesOfMovement",
+      "type": "string",
+      "allowedValues": [],
+      "required": false
+    },
+    {
+      "name": "rangeType",
+      "type": "string",
+      "allowedValues": [
+        "stationKeeping",
+        "orbital",
+        "interplanatary",
+        "interstellar"
+      ],
+      "required": false
+    },
+    {
+      "name": "firingDuration",
+      "type": "number",
+      "allowedValues": [],
+      "required": false
+    },
+    {
+      "name": "firingDurationScale",
+      "type": "string",
+      "allowedValues": ["seconds", "minutes", "hours", "days"],
+      "required": false
     }
   ]
 }

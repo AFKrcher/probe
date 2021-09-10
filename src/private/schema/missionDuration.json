@@ -1,28 +1,36 @@
 {
   "name": "missionDuration",
-  "description": "",
+  "description": "Satellite's mission start date, the planned and actual mission duration.",
   "fields": [
     {
       "name": "reference",
       "description": "Provide a source or rationale for the provided data",
-      "type": "string",
+      "type": "url",
       "allowedValues": [],
       "required": true
     },
     {
       "name": "start",
-      "type": "string",
-      "allowedValues": []
+      "type": "date",
+      "allowedValues": [],
+      "required": true
     },
     {
       "name": "plannedMissionDuration",
-      "type": "string",
+      "type": "number",
+      "min": 0,
       "allowedValues": []
     },
     {
       "name": "actualMissionDuration",
-      "type": "string",
+      "type": "number",
+      "min": 0,
       "allowedValues": []
+    },
+    {
+      "name": "durationScale",
+      "type": "string",
+      "allowedValues": ["hours", "days", "months", "years"]
     }
   ]
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 import HelpersContext from "./helpers/HelpersContext.jsx";
-
+import { Accounts } from "meteor/accounts-base";
 // Components
 import { Nav } from "./Navigation/Nav.jsx";
 import { SatellitesTable } from "./DataDisplays/SatellitesTable.jsx";
@@ -11,6 +11,7 @@ import { About } from "./About.jsx";
 import { Footer } from "./Navigation/Footer.jsx";
 import { Login } from "./Accounts/Login";
 import { Register } from "./Accounts/Register";
+import {ResetPassword} from "./Accounts/ResetPassword"
 import { DropDown } from "./Navigation/DropDown";
 import {Settings } from './Accounts/Settings'
 
@@ -51,6 +52,10 @@ export const App = () => {
     setTheme((theme) => (theme === themes.dark ? themes.light : themes.dark));
   };
 
+  Accounts.onResetPasswordLink((token, done) =>{
+    console.log('resetpassword')
+  })
+
   return (
     <HelpersContext.Provider
       value={{
@@ -79,6 +84,9 @@ export const App = () => {
                 </Route>
                 <Route exact={true} path="/register">
                   <Register />
+                </Route>
+                <Route path="/reset">
+                  <ResetPassword/>
                 </Route>
                 <Route exact={true} path="/settings">
                   <Settings />

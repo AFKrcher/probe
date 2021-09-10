@@ -31,23 +31,36 @@ import Edit from "@material-ui/icons/Edit";
 import Save from "@material-ui/icons/Save";
 import Close from "@material-ui/icons/Close";
 
-const useStyles = makeStyles((theme) => ({
-  title: {
-    paddingBottom: "0px",
-    marginBottom: -5,
+const useStyles = makeStyles(() => ({
+  modal: {
+    width: "auto",
+    height: "auto"
   },
   titleText: {
-    fontSize: "30px",
+    fontSize: "25px",
+  },
+  content: {
+    height: "75vh",
+    overflowY: "auto"
   },
   description: {
     marginTop: -10,
     marginBottom: 15,
     margin: 5,
   },
+  loadingDialog: {
+    textAlign: "center",
+    margin: 50,
+    overflow: "hidden",
+  },
   actions: {
     display: "flex",
     justifyContent: "space-between",
-    margin: "0px 20px 5px 20px",
+    margin: "5px 20px 5px 20px",
+  },
+  loadingSave: {
+    textAlign: "center",
+    overflow: "hidden",
   },
 }));
 
@@ -60,21 +73,30 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
   const [schemas, sats, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("schemas");
     const schemas = SchemaCollection.find().fetch();
-    const sats = SatelliteCollection.find(
-      {},
-      { fields: { noradID: 1 } }
-    ).fetch();
+    const sats = SatelliteCollection.find().fetch();
     return [schemas, sats, !sub.ready()];
   });
 
   const [editing, setEditing] = useState(newSat || false);
 
-  const noradIDList = () => {
+  const isUniqueList = (path, field) => {
     let list = [];
-    for (let sat in sats) {
-      sats[sat].noradID === initValues.noradID
-        ? null
-        : list.push(sats[sat].noradID);
+    if (!path) {
+      for (let sat in sats) {
+        sats[sat][field] === initValues[field]
+          ? null
+          : list.push(sats[sat][field]);
+      }
+    } else {
+      for (let sat in sats) {
+        let satEntries = sats[sat][path];
+        for (let entry in satEntries) {
+          satEntries[entry][field] ===
+          (initValues[path].length > 0 ? initValues[path][entry][field] : null)
+            ? null
+            : list.push(satEntries[entry][field]);
+        }
+      }
     }
     return list;
   };
@@ -85,6 +107,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     emptyDataRemover(values);
+    window.sessionStorage.clear();
 
     if (newSat) {
       SatelliteCollection.insert(values);
@@ -259,14 +282,9 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
           </DialogTitle>
           <Formik
             initialValues={initValues}
-            validationSchema={satelliteValidatorShaper(
-              schemas,
-              noradIDList,
-            )}
+            validationSchema={satelliteValidatorShaper(schemas, isUniqueList)}
             onSubmit={handleSubmit}
-            validateOnBlur={true}
             validateOnChange={true}
-            validateOnMount={true}
           >
             {({
               errors,
@@ -277,23 +295,29 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
               dirty,
             }) => (
               <Form>
-                <DialogContent>
-                  <Typography className={classes.description}>
-                    Each satellite in the catalogue contains a number of fields
-                    based on schemas. Schemas can be added, deleted, and
-                    modified below.
-                  </Typography>
-                  <SatelliteForm
-                    errors={errors}
-                    values={values}
-                    schemas={schemas}
-                    setValues={setValues}
-                    setFieldValue={setFieldValue}
-                    editing={editing}
-                    initValues={initValues}
-                    newSat={newSat}
-                  />
-                </DialogContent>
+                {isLoading ? (
+                  <DialogContent className={classes.loadingDialog}>
+                    <CircularProgress size={75} />
+                  </DialogContent>
+                ) : (
+                  <DialogContent className={classes.content}>
+                    <Typography className={classes.description}>
+                      Each satellite in the catalogue contains a number of
+                      fields based on schemas. Schemas can be added, deleted,
+                      and modified below.
+                    </Typography>
+                    <SatelliteForm
+                      errors={errors}
+                      values={values}
+                      schemas={schemas}
+                      setValues={setValues}
+                      setFieldValue={setFieldValue}
+                      editing={editing}
+                      initValues={initValues}
+                      newSat={newSat}
+                    />
+                  </DialogContent>
+                )}
                 <DialogActions className={classes.actions}>
                   {editing ? (
                     ""
@@ -310,7 +334,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
 
                   <Button
                     variant="contained"
-                    color={editing ? "secondary" : "default"}
+                    color={editing ? "secondary" : ""}
                     onClick={() => handleEdit(setValues, dirty)}
                     startIcon={editing ? <Delete /> : <Edit />}
                   >
@@ -339,7 +363,10 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
                       }
                     >
                       {isSubmitting ? (
-                        <CircularProgress size={24} />
+                        <CircularProgress
+                          size={25}
+                          className={classes.loadingSave}
+                        />
                       ) : newSat ? (
                         "Save"
                       ) : (

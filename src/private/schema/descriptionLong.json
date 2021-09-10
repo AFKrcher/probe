@@ -1,18 +1,19 @@
 {
   "name": "descriptionLong",
-  "description": "",
+  "description": "Extended description of the history, origin, mission, and technical details of the satellite.",
   "fields": [
     {
       "name": "reference",
       "description": "Provide a source or rationale for the provided data",
-      "type": "string",
+      "type": "url",
       "allowedValues": [],
       "required": true
     },
     {
       "name": "descriptionLong",
       "type": "string",
-      "allowedValues": []
+      "allowedValues": [],
+      "required": true
     }
   ]
 }

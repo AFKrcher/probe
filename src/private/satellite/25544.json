@@ -1,0 +1,229 @@
+{
+  "_id": "fTTviYiQRoMLdRC26",
+  "noradID": "25544",
+  "names": [
+    {
+      "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
+      "name": "International Space Station"
+    },
+    {
+      "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
+      "name": "ISS"
+    }
+  ],
+  "descriptionShort": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/International_Space_Station",
+      "descriptionShort": "A modular space station (habitable artificial satellite) in low Earth orbit."
+    }
+  ],
+  "images": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/File:International_Space_Station_after_undocking_of_STS-132.jpg",
+      "description": "The International Space Station is featured in this image including the six iROSA solar arrays in the planned configuration that will augment the power drawn from the existing arrays on the Station. the first of the six iROSA was attached to the station around 9 am UTC on 20 June 2021 which were brought to ISS by Cargo Dragon C209 in its unpressurized trunk during its SpaceX CRS-22 mission, with the others arriving in mid and last quarter of 2021.",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/0/04/International_Space_Station_after_undocking_of_STS-132.jpg",
+      "entireSatellite": "true"
+    }
+  ],
+  "cosparID": [
+    {
+      "reference": "https://en.wikipedia.org/",
+      "description": "The International Space Station is featured in this image including the six iROSA solar arrays in the planned configuration that will augment the power drawn from the existing arrays on the Station. the first of the six iROSA was attached to the station around 9 am UTC on 20 June 2021 which were brought to ISS by Cargo Dragon C209 in its unpressurized trunk during its SpaceX CRS-22 mission, with the others arriving in mid and last quarter of 2021.",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/0/04/International_Space_Station_after_undocking_of_STS-132.jpg",
+      "entireSatellite": "true",
+      "cosparID": "1998-067"
+    }
+  ],
+  "propulsion": [
+    {
+      "reference": "https://www.nasa.gov/vision/space/travelinginspace/future_propulsion.html#:~:text=In%20the%20less-distant%20future%2C%20VASIMR%20could%20even%20help,source%20is%20used%20to%20ionize%20fuel%20into%20plasma.",
+      "type": "Chemical",
+      "thrust": "",
+      "thrustScale": "",
+      "rangeType": "stationKeeping"
+    }
+  ],
+  "orbit": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Low_Earth_orbit",
+      "orbit": "LEO"
+    }
+  ],
+  "launchSites": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Baikonur_Cosmodrome",
+      "name": "Baikonur Cosmodrome",
+      "latitude": "45.965",
+      "longitude": "63.305"
+    }
+  ],
+  "type": [{ "reference": "https://en.wikipedia.org/", "type": "manMade" }],
+  "mission": [
+    {
+      "reference": "https://www.pbs.org/spacestation/station/purpose.htm",
+      "description": "To enable long-term exploration of space and provide benefits to people on Earth. "
+    }
+  ],
+  "ownership": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/International_Space_Station#:~:text=Although%20it%20was%20built%20by,owned%20by%20the%20United%20States.",
+      "country": "United States",
+      "company": "",
+      "organization": "NASA",
+      "type": "organization",
+      "name": "International"
+    }
+  ],
+  "manufacturer": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Manufacturing_of_the_International_Space_Station",
+      "manufacturers": "NASA, European Space Agency, Roscosmos, JAXA, Boeing, Canadian Space Agency, Nanoracks, Thales Alenia Space, Khartron",
+      "name": "NASA"
+    },
+    {
+      "reference": "https://en.wikipedia.org/wiki/Manufacturing_of_the_International_Space_Station",
+      "name": "JAXA",
+      "responsibility": ""
+    },
+    {
+      "reference": "https://en.wikipedia.org/wiki/Manufacturing_of_the_International_Space_Station",
+      "name": "ESA",
+      "responsibility": ""
+    },
+    {
+      "reference": "https://en.wikipedia.org/wiki/Manufacturing_of_the_International_Space_Station",
+      "name": "Roscosmos",
+      "responsibility": ""
+    },
+    {
+      "reference": "https://en.wikipedia.org/wiki/Manufacturing_of_the_International_Space_Station",
+      "name": "CSA",
+      "responsibility": ""
+    }
+  ],
+  "dimensionDescription": [
+    {
+      "reference": "https://www.nasa.gov/feature/facts-and-figures",
+      "dimensionDescription": "Overall length and width.",
+      "lengthMeters": "73",
+      "widthMeters": "109",
+      "heightMeters": ""
+    }
+  ],
+  "news": [
+    {
+      "reference": "https://blogs.nasa.gov/spacestation/",
+      "news": "Sep 3, 2021: Russian cosmonauts Oleg Novitskiy and Pyotr Dubrov of Roscosmos concluded their spacewalk at 6:35 p.m. EDT after 7 hours and 54 minutes. It is the first of up to 11 spacewalks to prepare the new Nauka multipurpose laboratory module for operations in space."
+    }
+  ],
+  "status": [
+    {
+      "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
+      "status": "operational"
+    }
+  ],
+  "missionDuration": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/International_Space_Station",
+      "start": "1998-11-20T09:46",
+      "plannedMissionDuration": "",
+      "actualMissionDuration": ""
+    }
+  ],
+  "organization": [
+    {
+      "reference": "https://www.nasa.gov/mission_pages/station/cooperation/index.html",
+      "organization": "NASA"
+    },
+    {
+      "reference": "https://www.nasa.gov/mission_pages/station/cooperation/index.html",
+      "organization": "JAXA",
+      "responsibility": ""
+    },
+    {
+      "reference": "https://www.nasa.gov/mission_pages/station/cooperation/index.html",
+      "organization": "ESA",
+      "responsibility": ""
+    },
+    {
+      "reference": "https://www.nasa.gov/mission_pages/station/cooperation/index.html",
+      "organization": "Roscosmos",
+      "responsibility": ""
+    },
+    {
+      "reference": "https://www.nasa.gov/mission_pages/station/cooperation/index.html",
+      "organization": "CSA",
+      "responsibility": ""
+    }
+  ],
+  "dimensionVolumeM3": [
+    {
+      "reference": "https://www.nasa.gov/pdf/167128main_Facts.pdf",
+      "cubicMeters": "935"
+    }
+  ],
+  "power": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Electrical_system_of_the_International_Space_Station#:~:text=The%20ISS%20electrical%20system%20uses,solar%20power%20is%20called%20photovoltaics.",
+      "source": "solar",
+      "sourceStatus": "",
+      "voltage": "160",
+      "voltageScale": "volts",
+      "current": "",
+      "currentScale": ""
+    }
+  ],
+  "payload": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Assembly_of_the_International_Space_Station",
+      "description": "20 November 1998",
+      "name": "Zarya"
+    },
+    {
+      "reference": "https://en.wikipedia.org/wiki/Assembly_of_the_International_Space_Station",
+      "name": "Unity",
+      "description": "4 December 1998, also known as Node 1"
+    },
+    {
+      "reference": "https://en.wikipedia.org/wiki/Assembly_of_the_International_Space_Station",
+      "name": "Zvezda",
+      "description": "12 July 2000"
+    },
+    {
+      "reference": "https://en.wikipedia.org/wiki/Assembly_of_the_International_Space_Station",
+      "name": "Destiny",
+      "description": " 7 February 2001"
+    },
+    {
+      "reference": "https://en.wikipedia.org/wiki/Assembly_of_the_International_Space_Station",
+      "name": "Harmony",
+      "description": "23 October 2007"
+    },
+    {
+      "reference": "https://en.wikipedia.org/wiki/Assembly_of_the_International_Space_Station",
+      "name": "Columbus",
+      "description": "7 February 2008"
+    },
+    {
+      "reference": "https://en.wikipedia.org/wiki/Assembly_of_the_International_Space_Station",
+      "name": "Kibo",
+      "description": "multiple flights between 2008-2009"
+    },
+    {
+      "reference": "https://en.wikipedia.org/wiki/Assembly_of_the_International_Space_Station",
+      "name": "Truss and Solarpanels",
+      "description": "multiple flights between 2000-2009"
+    },
+    {
+      "reference": "https://en.wikipedia.org/wiki/Assembly_of_the_International_Space_Station",
+      "name": "Nauka",
+      "description": "21 July 2021"
+    }
+  ],
+  "launchMassKg": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/International_Space_Station",
+      "launchMassKg": "419289"
+    }
+  ]
+}

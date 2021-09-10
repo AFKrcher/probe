@@ -1,16 +1,21 @@
 {
   "name": "launchSites",
-  "description": "",
+  "description": "Launch location(s) of the satellite or its parts.",
   "fields": [
     {
       "name": "reference",
       "description": "Provide a source or rationale for the provided data",
-      "type": "string",
+      "type": "url",
       "allowedValues": [],
       "required": true
     },
     {
       "name": "name",
+      "type": "string",
+      "allowedValues": []
+    },
+    {
+      "name": "description",
       "type": "string",
       "allowedValues": []
     },

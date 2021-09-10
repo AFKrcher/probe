@@ -31,7 +31,7 @@ WebApp.connectHandlers.use("/api/satellites", async (req, res, next) => {
           res.end(JSON.stringify(error));
         }
       } catch (err) {
-        error = { error: "Could not fetch limit " };
+        error = { error: "Could not fetch limit" };
         res.writeHead(500);
         res.end(JSON.stringify(error));
       }
@@ -105,13 +105,17 @@ WebApp.connectHandlers.use("/api/schemas", (req, res, next) => {
       schemaName = req.query.name;
       if (schemaName !== null && schemaName !== "") {
         res.writeHead(200);
-        res.end(JSON.stringify(sats.fetch()));
+        res.end(
+          JSON.stringify(
+            SchemaCollection.find({ name: `${req.query.name}` }).fetch()
+          )
+        );
       } else {
         res.writeHead(200);
-        res.end(JSON.stringify(sats.fetch()));
+        res.end(JSON.stringify(SchemaCollection.find().fetch()));
       }
     } catch (err) {
-      error = { error: "Could not fetch schema" };
+      error = { error: "Could not fetch schemas" };
       res.writeHead(500);
       res.end(JSON.stringify(error));
     }

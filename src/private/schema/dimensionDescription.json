@@ -1,18 +1,19 @@
 {
   "name": "dimensionDescription",
-  "description": "",
+  "description": "Descriptions of the various parts of the satellite to including an explanation of its shape, and the dimensions of length, width, and height.",
   "fields": [
     {
       "name": "reference",
       "description": "Provide a source or rationale for the provided data",
-      "type": "string",
+      "type": "url",
       "allowedValues": [],
       "required": true
     },
     {
       "name": "dimensionDescription",
       "type": "string",
-      "allowedValues": []
+      "allowedValues": [],
+      "required": true
     },
     {
       "name": "lengthMeters",

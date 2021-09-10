@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiDataGrid-cell": {
       textOverflow: "clip",
     },
+    "& .MuiCircularProgress-colorPrimary": {
+      color: theme.palette.text.primary
+    },
   },
   spinner: {
     color: theme.palette.text.primary,
@@ -68,7 +71,7 @@ export const SatellitesTable = () => {
   function CustomToolbar() {
     return (
       <GridToolbarContainer className={classes.toolbarContainer}>
-        <GridToolbarColumnsButton className={classes.toolbar}/>
+        <GridToolbarColumnsButton className={classes.toolbar} />
         <GridToolbarFilterButton className={classes.toolbar} />
         <GridToolbarDensitySelector className={classes.toolbar} />
         <GridToolbarExport className={classes.toolbar} />
@@ -134,8 +137,8 @@ export const SatellitesTable = () => {
         id: sat.noradID,
         names: sat.names?.map((name) => name.names || name.name).join(", "),
         descriptions: sat.descriptionShort
-          ? sat.descriptionShort[0].descriptionShort
-          : "N/A",
+        ? sat.descriptionShort[0].descriptionShort
+        : "N/A",
       };
     });
     rows.getRows = count;
@@ -191,7 +194,7 @@ export const SatellitesTable = () => {
         components={{
           Toolbar: CustomToolbar,
         }}
-        rowsPerPageOptions={[10, 15, 20, 50, 100]}
+        rowsPerPageOptions={[5, 10, 15, 20, 50, 100]}
         columns={columns}
         rows={rows}
         rowCount={count}

@@ -78,7 +78,7 @@ export const MultiSelectTextInput = ({
         component={Autocomplete}
       />
       <FormHelperText className={classes.helpers}>
-        OPTIONAL: Provide a minimum and/or maximum value for the number
+        OPTIONAL: Provide a list of allowed values delineated by commas. (E.g. foo, baz, bar)
       </FormHelperText>
     </>
   );

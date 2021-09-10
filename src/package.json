@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.15.3",
+    "@demvsystems/yup-ast": "^1.2.0",
     "@material-ui/core": "^4.12.3",
     "@material-ui/data-grid": "^4.0.0-alpha.37",
     "@material-ui/icons": "^4.11.2",
@@ -24,6 +25,7 @@
     "react-multiline-clamp": "^2.0.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
+    "validator": "^13.6.0",
     "yup": "^0.32.9"
   },
   "meteor": {
@@ -32,5 +34,8 @@
       "server": "server/main.js"
     },
     "testModule": "tests/main.js"
+  },
+  "devDependencies": {
+    "cypress": "^8.3.1"
   }
 }

@@ -38,59 +38,63 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const SatelliteSchemaEntry = ({
-  index,
+  entryIndex,
   schema,
   entry,
   deleteEntry,
   setFieldValue,
   editing,
-  helpers,
   errors,
 }) => {
   const classes = useStyles();
 
-  const [filteredHelper, setFilteredHelper] = useState(null);
+  const [helpers, setHelpers] = useState(null);
 
-  const filterHelpers = () => {
+  const refreshHelpers = () => {
     if (JSON.stringify(errors) !== "{}") {
-      let correctEntryError = Object.keys(errors).find(string => string.includes(`**${index + 1}`))
-      setFilteredHelper(correctEntryError ? correctEntryError : null)
+      setHelpers(Object.keys(errors));
     } else {
-      setFilteredHelper(null);
+      setHelpers(null);
     }
   };
 
   useEffect(() => {
-    filterHelpers();
+    refreshHelpers();
   }, [errors]);
 
-  const onChange = async (event) => {
+  const filteredHelper = (name, entryIndex, fieldIndex) => {
+    let helper = null;
+    if (helpers?.includes(`${name}-${entryIndex}-${fieldIndex}`)) {
+      return errors
+        ? (helper = errors[`${name}-${entryIndex}-${fieldIndex}`])
+        : null;
+    }
+    return helper;
+  };
+
+  const onChange = (event) => {
     setFieldValue(event.target.name, event.target.value);
-    await setTimeout(() =>
-      setFieldValue(event.target.name, event.target.value)
-    );
-    filterHelpers();
+    setTimeout(() => setFieldValue(event.target.name, event.target.value));
   };
 
   handleEntryDelete = (schemaName, index) => {
     deleteEntry(schemaName, index);
-    setFilteredHelper(null);
+    setHelpers(null);
   };
 
   return (
     <Grid item xs={12}>
-      {console.log(errors, index)}
       <Paper className={classes.entryPaper}>
         <Grid container spacing={0}>
           <Grid item xs={editing ? 11 : 12} className={classes.allFields}>
-            {schema.fields.map((field, fieldindex) => {
+            {schema.fields.map((field, fieldIndex) => {
               return (
-                <div key={fieldindex} className={classes.fieldContainer}>
-                  {field.allowedValues.length < 1 ? (
+                <div key={fieldIndex} className={classes.fieldContainer}>
+                  {field.allowedValues.length === 0 ? (
                     <Field
                       className={classes.field}
                       inputProps={{
-                        name: `${schema.name}.${index}.${field.name}`,
+                        name: `${schema.name}.${entryIndex}.${field.name}`,
                         min: field.min,
                         max: field.max,
                         step: "any",
@@ -98,10 +102,13 @@ export const SatelliteSchemaEntry = ({
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      error={field.name === filteredHelper?.split("**")[0]}
+                      error={
+                        filteredHelper(schema.name, entryIndex, fieldIndex)
+                          ? true
+                          : false
+                      }
                       value={entry[`${field.name}`]}
                       onChange={onChange}
-                      onBlur={onChange}
                       label={field.name}
                       margin="dense"
                       required={field.required}
@@ -116,7 +123,11 @@ export const SatelliteSchemaEntry = ({
                   ) : (
                     <FormControl
                       className={classes.field}
-                      error={field.name === filteredHelper?.split("**")[0]}
+                      error={
+                        filteredHelper(schema.name, entryIndex, fieldIndex)
+                          ? true
+                          : false
+                      }
                       disabled={!editing}
                       variant="outlined"
                       margin="dense"
@@ -125,7 +136,7 @@ export const SatelliteSchemaEntry = ({
                     >
                       <Field
                         inputProps={{
-                          name: `${schema.name}.${index}.${field.name}`,
+                          name: `${schema.name}.${entryIndex}.${field.name}`,
                           min: field.min,
                           max: field.max,
                           step: "any",
@@ -135,7 +146,6 @@ export const SatelliteSchemaEntry = ({
                         }}
                         value={entry[`${field.name}`] || ""}
                         onChange={onChange}
-                        onBlur={onChange}
                         label={field.name}
                         margin="dense"
                         required={field.required}
@@ -143,7 +153,11 @@ export const SatelliteSchemaEntry = ({
                         select
                         variant="outlined"
                         disabled={!editing}
-                        error={field.name === filteredHelper?.split("**")[0]}
+                        error={
+                          filteredHelper(schema.name, entryIndex, fieldIndex)
+                            ? true
+                            : false
+                        }
                         component={TextField}
                         type={
                           field.type === "date" ? "datetime-local" : field.type
@@ -152,9 +166,9 @@ export const SatelliteSchemaEntry = ({
                         <MenuItem value="" disabled>
                           <em>Allowed Values</em>
                         </MenuItem>
-                        {field.allowedValues.map((value, index) => {
+                        {field.allowedValues.map((value, valueIndex) => {
                           return (
-                            <MenuItem key={index} value={value}>
+                            <MenuItem key={valueIndex} value={value}>
                               {value}
                             </MenuItem>
                           );
@@ -166,7 +180,7 @@ export const SatelliteSchemaEntry = ({
                     variant="caption"
                     className={classes.helpersError}
                   >
-                    {field.name === filteredHelper?.split("**")[0] ? errors[filteredHelper] : null}
+                    {filteredHelper(schema.name, entryIndex, fieldIndex)}
                   </Typography>
                 </div>
               );
@@ -178,7 +192,7 @@ export const SatelliteSchemaEntry = ({
               <IconButton
                 aria-label="delete field"
                 color="default"
-                onClick={() => handleEntryDelete(schema.name, index)}
+                onClick={() => handleEntryDelete(schema.name, entryIndex)}
               >
                 <DeleteIcon />
               </IconButton>

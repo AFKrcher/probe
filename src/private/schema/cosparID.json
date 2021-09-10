@@ -1,18 +1,20 @@
 {
   "name": "cosparID",
-  "description": "",
+  "description": "International identifier assigned to artificial objects in space. Consists of the launch year, a 3-digit incrementing launch number of that year and up to a 3-letter code representing the sequential identifier of a piece in a launch.",
   "fields": [
     {
       "name": "reference",
       "description": "Provide a source or rationale for the provided data",
-      "type": "string",
+      "type": "url",
       "allowedValues": [],
       "required": true
     },
     {
       "name": "cosparID",
       "type": "string",
-      "allowedValues": []
+      "allowedValues": [],
+      "required": true,
+      "isUnique": true
     }
   ]
 }

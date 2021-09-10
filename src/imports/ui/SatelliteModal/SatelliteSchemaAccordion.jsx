@@ -94,11 +94,11 @@ export const SatelliteSchemaAccordion = ({
             <Typography className={classes.description}>
               {schema.description || "N/A"}
             </Typography>
-            {entries?.map((entry, index) => (
+            {entries?.map((entry, entryIndex) => (
               <SatelliteSchemaEntry
                 errors={errors}
-                key={index}
-                index={index}
+                key={entryIndex}
+                entryIndex={entryIndex}
                 schema={schema}
                 entry={entry}
                 deleteEntry={handleEntryDelete}

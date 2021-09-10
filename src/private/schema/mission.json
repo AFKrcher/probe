@@ -1,18 +1,19 @@
 {
   "name": "mission",
-  "description": "",
+  "description": "Description of the satellite and/or its parts' purpose(s).",
   "fields": [
     {
       "name": "reference",
       "description": "Provide a source or rationale for the provided data",
-      "type": "string",
+      "type": "url",
       "allowedValues": [],
       "required": true
     },
     {
       "name": "description",
       "type": "string",
-      "allowedValues": []
+      "allowedValues": [],
+      "required": true
     }
   ]
 }

@@ -1,18 +1,24 @@
 {
   "name": "orbit",
-  "description": "",
+  "description": "Satellite's orbit classification and/or description.",
   "fields": [
     {
       "name": "reference",
       "description": "Provide a source or rationale for the provided data",
-      "type": "string",
+      "type": "url",
       "allowedValues": [],
       "required": true
     },
     {
       "name": "orbit",
       "type": "string",
-      "allowedValues": ["GEO", "LEO", "HEO", "SSO", "Polar", "GTO"]
+      "allowedValues": ["GEO", "LEO", "HEO", "SSO", "Polar", "GTO"],
+      "required": true
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "allowedValues": []
     }
   ]
 }
