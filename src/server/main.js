@@ -94,7 +94,7 @@ Meteor.startup(() => {
   });
 
   if (SchemaCollection.find().count() === 0) {
-    var jsonObj = new Array();
+    var jsonObj = [];
 
     files = fs.readdirSync("./assets/app/schema");
 
@@ -121,7 +121,7 @@ Meteor.startup(() => {
 
   // Insert seed satellite data
   if (SatelliteCollection.find().count() === 0) {
-    var jsonObj = new Array();
+    var jsonObj = [];
 
     files = fs.readdirSync("./assets/app/satellite");
 

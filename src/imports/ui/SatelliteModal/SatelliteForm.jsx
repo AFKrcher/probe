@@ -49,6 +49,7 @@ export const SatelliteForm = ({
   editing,
   initValues,
   newSat,
+  setTouched,
 }) => {
   const { setOpenAlert, alert, setAlert } = useContext(HelpersContext);
   const [schemaAddition, setSchemaAddition] = useState(false);
@@ -141,6 +142,7 @@ export const SatelliteForm = ({
                 editing={editing}
                 setValues={setValues}
                 newSat={newSat}
+                setTouched={setTouched}
               />
               {editing && (
                 <Tooltip title={`Delete ${schema.name}`}>
@@ -168,6 +170,7 @@ export const SatelliteForm = ({
                 setFieldValue={setFieldValue}
                 editing={editing}
                 setValues={setValues}
+                setTouched={setTouched}
               />
               {editing && (
                 <Tooltip title={`Delete ${schema.name}`}>
@@ -213,6 +216,7 @@ export const SatelliteForm = ({
                   ) {
                     return (
                       <MenuItem
+                        className="schemaIndex"
                         key={schemaIndex}
                         dense
                         value={`${schema.name}`}

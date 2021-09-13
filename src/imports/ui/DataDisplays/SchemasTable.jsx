@@ -36,7 +36,9 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     backgroundColor: theme.palette.grid.background
   },
-  tableNameCol: {
+  header: {
+    paddingTop: 12.5,
+    paddingBottom: 12.5,
     width: "25%",
   },
   tableRow: {
@@ -136,11 +138,11 @@ export const SchemasTable = () => {
           >
             <TableHead>
               <TableRow color="secondary">
-                <TableCell className={classes.tableNameCol}>
-                  <strong>NAME</strong>
+                <TableCell className={classes.header}>
+                  <Typography variant="h7">SCHEMA NAME</Typography>
                 </TableCell>
                 <TableCell>
-                  <strong>DESCRIPTION</strong>
+                  <Typography variant="h7">SCHEMA DESCRIPTION</Typography>
                 </TableCell>
               </TableRow>
             </TableHead>

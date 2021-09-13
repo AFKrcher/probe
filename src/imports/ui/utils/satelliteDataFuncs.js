@@ -67,7 +67,6 @@ const schemaDefinitionShaper = memoize((schemas) => {
       }
     });
   });
-
   return schemaDefinition;
 }, "schemaDefinition");
 
@@ -75,7 +74,6 @@ export const satelliteValidatorShaper = (schemas, isUniqueList) => {
   // dynamically generate an object that stores all possible schemas and their constraints
   // provides easier access and manipulation of schema data
   let schemaObj = schemaDefinitionShaper(schemas); // memoized schemaObj
-
   Yup.addMethod(Yup.array, "checkEachEntry", function (message) {
     let errObj = {}; // workaround object to generate populate errors object in Formik
     // test each entry in the array: Yup.object().shape({field.name: Yup.(fieldRequirements.type)[0].toUpperCase() + (fieldRequirements.type).substr(1).required(field.required).min(field.min).max(field.max).oneOf((field.allowedValues))})

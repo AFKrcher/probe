@@ -74,6 +74,9 @@ export const SatCard = ({ width, height, satellite }) => {
 
   const classes = useStyles();
 
+  const adjustableFontSize =
+    width < 500 ? (width < 400 ? "8px" : "10px") : "12px";
+
   function handleModify(e) {
     e.preventDefault();
     setShowModal(true);
@@ -168,7 +171,7 @@ export const SatCard = ({ width, height, satellite }) => {
           >
             <strong
               style={{
-                fontSize: width < 500 ? (width < 400 ? "8px" : "10px") : "12px",
+                fontSize: adjustableFontSize,
               }}
             >
               Visualize
@@ -182,7 +185,7 @@ export const SatCard = ({ width, height, satellite }) => {
           >
             <strong
               style={{
-                fontSize: width < 500 ? (width < 400 ? "8px" : "10px") : "12px",
+                fontSize: adjustableFontSize,
               }}
             >
               Dashboard
@@ -196,7 +199,7 @@ export const SatCard = ({ width, height, satellite }) => {
           >
             <strong
               style={{
-                fontSize: width < 500 ? (width < 400 ? "8px" : "10px") : "12px",
+                fontSize: adjustableFontSize,
               }}
             >
               Data

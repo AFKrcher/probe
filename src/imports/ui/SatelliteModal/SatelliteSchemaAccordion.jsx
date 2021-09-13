@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 
 // Components
 import { SatelliteSchemaEntry } from "./SatelliteSchemaEntry";
+import { FieldArray } from "formik";
 
 // @material-ui
 import {
@@ -17,15 +18,15 @@ import {
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const useStyles = makeStyles((theme) => ({
-  accordionbody: {
+  accordionBody: {
     backgroundColor: theme.palette.action.hover,
     width: "1000px",
     overflow: "hidden",
   },
-  accordionheader: {
+  accordionHeader: {
     display: "flex",
   },
-  accordioncount: {
+  accordionCount: {
     marginRight: "10px",
   },
   accordianDetails: {
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonContainer: {
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   button: {
     marginTop: 5,
@@ -50,8 +51,8 @@ export const SatelliteSchemaAccordion = ({
   entries,
   setFieldValue,
   editing,
+  setTouched,
 }) => {
-
   const classes = useStyles();
 
   useEffect(() => {
@@ -67,22 +68,16 @@ export const SatelliteSchemaAccordion = ({
     await setFieldValue(schema.name, newEntries);
   };
 
-  const handleEntryDelete = (schemaName, index) => {
-    let newEntries = entries.map((entry) => entry);
-    newEntries.splice(index, 1);
-    setFieldValue(schemaName, newEntries);
-  };
-
   return (
     <>
-      <Accordion className={classes.accordionbody}>
+      <Accordion className={classes.accordionBody}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           id={`${schema.name}-accord-header`}
         >
-          <div className={classes.accordionheader}>
+          <div className={classes.accordionHeader}>
             <Chip
-              className={classes.accordioncount}
+              className={classes.accordionCount}
               size="small"
               label={entries?.length ? entries.length : "0"}
             />
@@ -90,36 +85,41 @@ export const SatelliteSchemaAccordion = ({
           </div>
         </AccordionSummary>
         <AccordionDetails className={classes.accordianDetails}>
-          <Grid container spacing={1}>
-            <Typography className={classes.description}>
-              {schema.description || "N/A"}
-            </Typography>
-            {entries?.map((entry, entryIndex) => (
-              <SatelliteSchemaEntry
-                errors={errors}
-                key={entryIndex}
-                entryIndex={entryIndex}
-                schema={schema}
-                entry={entry}
-                deleteEntry={handleEntryDelete}
-                setFieldValue={setFieldValue}
-                editing={editing}
-              />
-            ))}
-            <Grid item xs={12} className={classes.buttonContainer}>
-              {editing && (
-                <Button
-                  variant="contained"
-                  size="medium"
-                  color="default"
-                  onClick={onAddField}
-                  className={classes.button}
-                >
-                  + Add Entry
-                </Button>
-              )}
-            </Grid>
-          </Grid>
+          <FieldArray
+            render={(arrayHelpers) => (
+              <Grid container spacing={1}>
+                <Typography className={classes.description}>
+                  {schema.description || "N/A"}
+                </Typography>
+                {entries?.map((entry, entryIndex) => (
+                  <SatelliteSchemaEntry
+                    errors={errors}
+                    key={entryIndex}
+                    entryIndex={entryIndex}
+                    schema={schema}
+                    entry={entry}
+                    setFieldValue={setFieldValue}
+                    editing={editing}
+                    setTouched={setTouched}
+                    entries={entries}
+                  />
+                ))}
+                <Grid item xs={12} className={classes.buttonContainer}>
+                  {editing && (
+                    <Button
+                      variant="contained"
+                      size="medium"
+                      color="default"
+                      onClick={onAddField}
+                      className={classes.button}
+                    >
+                      + Add Entry
+                    </Button>
+                  )}
+                </Grid>
+              </Grid>
+            )}
+          />
         </AccordionDetails>
       </Accordion>
     </>

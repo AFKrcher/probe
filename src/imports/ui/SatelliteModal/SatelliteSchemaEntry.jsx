@@ -12,8 +12,11 @@ import {
   Typography,
   FormControl,
   MenuItem,
+  InputAdornment,
+  Tooltip,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import LinkIcon from "@material-ui/icons/Link";
 
 const useStyles = makeStyles((theme) => ({
   entryPaper: {
@@ -28,6 +31,13 @@ const useStyles = makeStyles((theme) => ({
   field: {
     marginBottom: 4,
   },
+  inputAdornment: {
+    cursor: "pointer",
+    color: theme.palette.text.primary,
+    "&:hover": {
+      color: theme.palette.info.main,
+    },
+  },
   helpersError: {
     marginLeft: 14,
     color: theme.palette.error.main,
@@ -41,10 +51,11 @@ export const SatelliteSchemaEntry = ({
   entryIndex,
   schema,
   entry,
-  deleteEntry,
   setFieldValue,
   editing,
   errors,
+  setTouched,
+  entries,
 }) => {
   const classes = useStyles();
 
@@ -73,13 +84,55 @@ export const SatelliteSchemaEntry = ({
   };
 
   const onChange = (event) => {
+    let obj = {};
+    obj[`${event.target.name}`] = true;
+    setTouched(obj);
+
     setFieldValue(event.target.name, event.target.value);
+    // setTimeour used to activate test once more - temporary workaround until Yup refactor
     setTimeout(() => setFieldValue(event.target.name, event.target.value));
   };
 
   handleEntryDelete = (schemaName, index) => {
-    deleteEntry(schemaName, index);
-    setHelpers(null);
+    let newEntries = entries.map((entry) => entry);
+    newEntries.splice(index, 1);
+    setFieldValue(schemaName, newEntries);
+
+    let obj = {};
+    obj[schemaName] = true;
+    setTouched(obj);
+  };
+
+  handleClick = (url) => {
+    window.open(url, "_blank").focus();
+  };
+
+  const linkAdornment = (props, field, type) => {
+    return (
+      <TextField
+        InputProps={
+          type === "url"
+            ? {
+                endAdornment: (
+                  <Tooltip title={"Open URL in a new tab"} arrow placement="top-end">
+                    <InputAdornment
+                      className={classes.inputAdornment}
+                      position="end"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleClick(field);
+                      }}
+                    >
+                      <LinkIcon />
+                    </InputAdornment>
+                  </Tooltip>
+                ),
+              }
+            : null
+        }
+        {...props}
+      />
+    );
   };
 
   return (
@@ -107,7 +160,7 @@ export const SatelliteSchemaEntry = ({
                           ? true
                           : false
                       }
-                      value={entry[`${field.name}`]}
+                      value={entry[`${field.name}`] || ""}
                       onChange={onChange}
                       label={field.name}
                       margin="dense"
@@ -115,7 +168,16 @@ export const SatelliteSchemaEntry = ({
                       fullWidth
                       variant="outlined"
                       disabled={!editing}
-                      component={TextField}
+                      component={
+                        editing
+                          ? TextField
+                          : (props) =>
+                              linkAdornment(
+                                props,
+                                entry[`${field.name}`],
+                                field.type
+                              )
+                      }
                       type={
                         field.type === "date" ? "datetime-local" : field.type
                       }
@@ -158,7 +220,16 @@ export const SatelliteSchemaEntry = ({
                             ? true
                             : false
                         }
-                        component={TextField}
+                        component={
+                          editing
+                            ? TextField
+                            : (props) =>
+                                linkAdornment(
+                                  props,
+                                  entry[`${field.name}`],
+                                  field.type
+                                )
+                        }
                         type={
                           field.type === "date" ? "datetime-local" : field.type
                         }
@@ -178,7 +249,9 @@ export const SatelliteSchemaEntry = ({
                   )}
                   <Typography
                     variant="caption"
-                    className={classes.helpersError}
+                    className={
+                      !editing ? classes.helpers : classes.helpersError
+                    }
                   >
                     {filteredHelper(schema.name, entryIndex, fieldIndex)}
                   </Typography>

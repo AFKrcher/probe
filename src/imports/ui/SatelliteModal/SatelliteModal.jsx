@@ -108,7 +108,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
   const handleSubmit = async (values, { setSubmitting }) => {
     emptyDataRemover(values);
     window.sessionStorage.clear();
-
+    console.log(values)
     if (newSat) {
       SatelliteCollection.insert(values);
       setOpenSnack(false);
@@ -284,7 +284,6 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
             initialValues={initValues}
             validationSchema={satelliteValidatorShaper(schemas, isUniqueList)}
             onSubmit={handleSubmit}
-            validateOnChange={true}
           >
             {({
               errors,
@@ -293,6 +292,8 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
               setValues,
               setFieldValue,
               dirty,
+              touched,
+              setTouched
             }) => (
               <Form>
                 {isLoading ? (
@@ -315,6 +316,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
                       editing={editing}
                       initValues={initValues}
                       newSat={newSat}
+                      setTouched={setTouched}
                     />
                   </DialogContent>
                 )}
@@ -334,9 +336,9 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
 
                   <Button
                     variant="contained"
-                    color={editing ? "secondary" : ""}
+                    color={editing && dirty ? "secondary" : "default"}
                     onClick={() => handleEdit(setValues, dirty)}
-                    startIcon={editing ? <Delete /> : <Edit />}
+                    startIcon={editing ? dirty ? <Delete /> : null : <Edit />}
                   >
                     {editing ? "Cancel" : "Edit"}
                   </Button>
@@ -357,7 +359,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
                       disabled={!editing}
                       startIcon={<Save />}
                       disabled={
-                        Object.entries(errors).length > 0 || !dirty
+                        Object.entries(errors).length > 0 || !dirty || Object.entries(touched).length === 0
                           ? true
                           : false
                       }

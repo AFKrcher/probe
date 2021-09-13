@@ -252,8 +252,8 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
                   )}
                   <Button
                     variant="contained"
-                    color={editing ? "secondary" : "default"}
-                    startIcon={editing ? <Delete /> : <Edit />}
+                    color={editing && dirty ? "secondary" : "default"}
+                    startIcon={editing ? dirty ? <Delete /> : null : <Edit />}
                     onClick={() => handleEdit(setValues, dirty)}
                   >
                     {editing ? "Cancel" : "Edit"}

@@ -1,6 +1,6 @@
 import React from "react";
 // Imports
-import useWindowSize from "./utils/useWindowSize.jsx"
+import useWindowSize from "./utils/useWindowSize.jsx";
 
 // Components
 import { SatCard } from "./DataDisplays/SatCard.jsx";
@@ -8,7 +8,13 @@ import { useTracker } from "meteor/react-meteor-data";
 import { SatelliteCollection } from "../api/satellites";
 
 // @material-ui
-import { Container, Grid, Typography, makeStyles, CircularProgress } from "@material-ui/core";
+import {
+  Container,
+  Grid,
+  Typography,
+  makeStyles,
+  CircularProgress,
+} from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
 
 const useStyles = makeStyles((theme) => ({
@@ -16,13 +22,16 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
   },
   description: {
-    marginTop: 10
+    marginTop: 10,
   },
   showcase: {
     marginTop: 30,
   },
-  card : {
-    marginTop: -10
+  card: {
+    marginTop: -10,
+  },
+  skeleton: {
+    borderRadius: 5,
   },
   spinner: {
     color: theme.palette.text.primary,
@@ -33,16 +42,26 @@ export const Home = () => {
   const classes = useStyles();
 
   const [width, height] = useWindowSize();
-  
-  const [demoSats, isLoading] = useTracker(() => {
+
+  const numberOfSkeletons =
+    Math.round(width / 200) > 8 || Math.round(width / 200) <= 4
+      ? 8
+      : Math.round(width / 200);
+
+  const cardSpace =
+    Math.round(height / (width / 5)) > 10
+      ? 10
+      : Math.round(height / (width / 5));
+
+  const [sats, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("satellites");
-    const sats = SatelliteCollection.find({}, { limit: Math.round(width / 200) > 8 || Math.round(width / 200) <= 4 ? 8 : Math.round(width / 200)}).fetch();
-    return [sats,!sub.ready()];
+    const sats = SatelliteCollection.find(
+      {},
+      { limit: numberOfSkeletons }
+    ).fetch();
+    return [sats, !sub.ready()];
   });
-  
-  const skeletonHeight = Math.round(height / 2);
-  const space = Math.round(height / (width / 5)) > 10 ? 10 : Math.round(height / (width / 5))
-  
+
   return (
     <div className={classes.root}>
       <Container>
@@ -61,46 +80,47 @@ export const Home = () => {
         <Typography variant="h4" gutterBottom>
           Satellite Data Cards
         </Typography>
-        {space ? 
-          (<Grid container justifyContent="space-around" spacing={space} className={classes.card}>
-            {!isLoading &&
-              demoSats.map((sat, index) => (
-                <Grid item xs={space} key={index}>
-                  <SatCard satellite={sat} width={width} height={height} id={`SatCard-${index}`}/>
-                </Grid>
-              ))}
-            {isLoading && (
-              <React.Fragment>
-                <Grid item xs={space}>
-                  <Skeleton variant="rect" height={skeletonHeight} />
-                </Grid>
-                <Grid item xs={space}>
-                  <Skeleton variant="rect" height={skeletonHeight} />
-                </Grid>
-                <Grid item xs={space}>
-                  <Skeleton variant="rect" height={skeletonHeight} />
-                </Grid>
-                <Grid item xs={space}>
-                  <Skeleton variant="rect" height={skeletonHeight} />
-                </Grid>
-                <Grid item xs={space}>
-                  <Skeleton variant="rect" height={skeletonHeight} />
-                </Grid>
-                <Grid item xs={space}>
-                  <Skeleton variant="rect" height={skeletonHeight} />
-                </Grid>
-                <Grid item xs={space}>
-                  <Skeleton variant="rect" height={skeletonHeight} />
-                </Grid>
-                <Grid item xs={space}>
-                  <Skeleton variant="rect" height={skeletonHeight} />
-                </Grid>
-              </React.Fragment>
-            )}
-          </Grid>)
-          :
-          (<CircularProgress className={classes.spinner} />)
-        }
+        {cardSpace ? (
+          <Grid
+            container
+            justifyContent="space-around"
+            spacing={cardSpace}
+            className={classes.card}
+          >
+            {!isLoading
+              ? sats.map((sat, index) => (
+                  <Grid item xs={cardSpace} key={index}>
+                    <SatCard
+                      satellite={sat}
+                      width={width}
+                      height={height}
+                      id={`SatCard-${index}`}
+                    />
+                  </Grid>
+                ))
+              : [...Array(numberOfSkeletons)].map((_, index) => (
+                  <Grid item xs={cardSpace} key={index}>
+                    <Skeleton variant="rect" className={classes.skeleton}>
+                      <SatCard
+                        satellite={{
+                          noradID: "",
+                          names: [
+                            {
+                              reference: "",
+                              name: "",
+                            },
+                          ],
+                        }}
+                        width={width}
+                        height={height}
+                      />
+                    </Skeleton>
+                  </Grid>
+                ))}
+          </Grid>
+        ) : (
+          <CircularProgress className={classes.spinner} />
+        )}
       </Container>
     </div>
   );
