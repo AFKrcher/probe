@@ -1,5 +1,5 @@
 {
-  "name": "openorbit",
+  "name": "probe",
   "private": true,
   "scripts": {
     "start": "meteor run",
