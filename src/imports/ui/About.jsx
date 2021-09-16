@@ -132,7 +132,7 @@ export const About = () => {
         About <strong>PROBE</strong>
       </Typography>
       <p>
-        <strong>P</strong>ublically <strong>R</strong>esearched{" "}
+        <strong>P</strong>ublicly <strong>R</strong>esearched{" "}
         <strong>OB</strong>s<strong>E</strong>rvatory (PROBE) is a web
         application created by an incredible team of space enthusiasts who got
         together and gave up their weekend to complete this work during a

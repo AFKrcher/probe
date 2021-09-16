@@ -118,27 +118,27 @@ export const SatellitesTable = ({ roles }) => {
   useEffect(() => {
     const columns = [
       {
-        headerAlign: "center",
+        headerAlign: "left",
         field: "id",
         headerName: "NORAD ID",
         minWidth: 170,
       },
       {
-        headerAlign: "center",
+        headerAlign: "left",
         field: "type",
         headerName: "TYPE",
         minWidth: 150,
         editable: false,
       },
       {
-        headerAlign: "center",
+        headerAlign: "left",
         field: "orbit",
         headerName: "ORBIT(S)",
         minWidth: 200,
         editable: false,
       },
       {
-        headerAlign: "center",
+        headerAlign: "left",
         field: "names",
         headerName: "NAME(S)",
         minWidth: 250,
