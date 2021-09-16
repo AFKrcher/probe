@@ -2,7 +2,6 @@ import React from "react";
 
 // @material-ui
 import { Grid, makeStyles, Typography, Container } from "@material-ui/core";
-import Skeleton from "@material-ui/lab/Skeleton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -130,10 +129,10 @@ export const About = () => {
   return (
     <div className={classes.root}>
       <Typography variant="h3">
-        About <strong>OpenOrbit</strong>
+        About <strong>PROBE</strong>
       </Typography>
       <p>
-        <strong>P</strong>ublically <strong>R</strong>esearched{" "}
+        <strong>P</strong>ublicly <strong>R</strong>esearched{" "}
         <strong>OB</strong>s<strong>E</strong>rvatory (PROBE) is a web
         application created by an incredible team of space enthusiasts who got
         together and gave up their weekend to complete this work during a
@@ -148,7 +147,7 @@ export const About = () => {
         After the Hackathon, a pair of developers, Justin and Archer, continued
         the development of the application from August into November of 2021.
         Features were added to provide better data entry UX/UI and integration
-        into Saber Astronautics' Space Cockpit for data visualization and
+        into the Saber Astronautics' Space Cockpit for data visualization and
         analysis.
       </p>
       <div className={classes.meetTheTeam}>
@@ -167,6 +166,7 @@ export const About = () => {
                     target="_blank"
                     key={index}
                     className={classes.link}
+                    rel="noreferrer"
                   >
                     <div className={classes.imgContainer}>
                       <img

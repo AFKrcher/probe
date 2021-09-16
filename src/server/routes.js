@@ -84,6 +84,60 @@ WebApp.connectHandlers.use("/api/satellites", async (req, res, next) => {
         res.writeHead(500);
         res.end(JSON.stringify(error));
       }
+    } else if (req.query.type) {
+      let result = null;
+      try {
+        const target = req.query.type;
+        sats.fetch().forEach((sat) => {
+          let bool = sat.type.find((type) => {
+            return type.type || type.type === target ? true : false;
+          });
+          if (bool) {
+            result = sat;
+          }
+        });
+        if (result) {
+          res.writeHead(200);
+          res.end(JSON.stringify(result));
+        } else {
+          error = {
+            error: "Could not fetch sat based on type - non-existent type",
+          };
+          res.writeHead(500);
+          res.end(JSON.stringify(error));
+        }
+      } catch (err) {
+        error = { error: "Could not fetch list of sats" };
+        res.writeHead(500);
+        res.end(JSON.stringify(error));
+      }
+    } else if (req.query.orbit) {
+      let result = null;
+      try {
+        const target = req.query.orbit;
+        sats.fetch().forEach((sat) => {
+          let bool = sat.orbit.find((orbit) => {
+            return orbit.orbit || orbit.orbit === target ? true : false;
+          });
+          if (bool) {
+            result = sat;
+          }
+        });
+        if (result) {
+          res.writeHead(200);
+          res.end(JSON.stringify(result));
+        } else {
+          error = {
+            error: "Could not fetch sat based on orbit - non-existent orbit",
+          };
+          res.writeHead(500);
+          res.end(JSON.stringify(error));
+        }
+      } catch (err) {
+        error = { error: "Could not fetch list of sats" };
+        res.writeHead(500);
+        res.end(JSON.stringify(error));
+      }
     } else {
       try {
         res.writeHead(200);

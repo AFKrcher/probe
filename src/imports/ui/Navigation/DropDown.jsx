@@ -105,7 +105,7 @@ export const DropDown = ({ theme, toggleTheme }) => {
 
   const handleLogout = () => {
     Meteor.logout();
-    setTimeout(() => history.push("/"), 1000);
+    setTimeout(() => history.push("/"));
   };
 
   return (
