@@ -109,6 +109,8 @@ export const SatellitesTable = ({ roles }) => {
   const [limiter, setLimiter] = useState(10);
   const [sortNorad, setSortNorad] = useState(0);
   const [sortNames, setSortNames] = useState(0);
+  const [sortType, setSortType] = useState(0);
+  const [sortOrbit, setSortOrbit] = useState(0);
   const [selector, setSelector] = useState({});
   const [columns, setColumns] = useState([]);
   const [fav, setFav] = useState(<StarBorder />);
@@ -194,7 +196,7 @@ export const SatellitesTable = ({ roles }) => {
     const sats = SatelliteCollection.find(selector, {
       limit: limiter,
       skip: page * limiter,
-      sort: sortNames ? { names: sortNames } : { noradID: sortNorad },
+      sort: sortNames ? { names: sortNames } : sortNorad ? { noradID: sortNorad } : sortType ? {type: sortType} : {orbit: sortOrbit},
     }).fetch();
     const rows = sats.map((sat) => {
       return {
@@ -298,12 +300,21 @@ export const SatellitesTable = ({ roles }) => {
           if (e[0]) {
             if (e[0].field === "id") {
               e[0].sort === "asc" ? setSortNorad(1) : setSortNorad(-1);
-            } else {
+            }
+            if (e[0].field === "names") {
               e[0].sort === "asc" ? setSortNames(-1) : setSortNames(1);
+            }
+            if (e[0].field === "type") {
+              e[0].sort === "asc" ? setSortType(-1) : setSortType(1);
+            }
+            if (e[0].field === "orbit") {
+              e[0].sort === "asc" ? setSortOrbit(-1) : setSortOrbit(1);
             }
           } else {
             setSortNorad(0);
             setSortNames(0);
+            setSortType(0);
+            setSortOrbit(0);
           }
         }}
       />
