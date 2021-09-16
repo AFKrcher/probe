@@ -11,7 +11,7 @@ This open source project seeks to design a system that allows a community to mai
 
 ## Overview
 
-The main focus of this application is data entry experience, data validation, and api useability. In order to focus on those 3 core priorities, a MeteorJS framework was used to set-up and deploy the application. Meteor/WebApp and Meteor/Mongo were used in conjunction with ReactJS to provide a seamless stack that exposes a user-friendly frontend and api for the community to interact with. A custom combination of vanilla JS, Yup and Formik provide dynamic schema creation and data validation.
+The main focus of this application is data entry experience, data validation, and api useability. In order to focus on those 3 core priorities, a MeteorJS framework was used to set-up and deploy the application. Meteor/WebApp and Meteor/Mongo were used in conjunction with ReactJS to provide a seamless stack that exposes a user-friendly frontend and api for the community to use. A custom combination of vanilla JS, Yup and Formik provide dynamic schema creation and data validation.
 
 - Database: Meteor/MongoDB
 - Client: ReactJS
@@ -53,7 +53,7 @@ Deployment is done using Meteor Cloud. To deploy to the free cluster, all you ha
 
 `meteor deploy psra.meteorapp.com --free --mongo`
 
-Deployment is reserved for core contribtors. If your feature is successfully merged with the main production branch, then at the next release, a core contributor will deploy the build to Meteor.
+Deployment is reserved for core contributors. If your feature is reviewed and successfully merged with the main/master production branch, then at the next release, a core contributor will deploy the build to Meteor.
 
 ## Libraries
 
