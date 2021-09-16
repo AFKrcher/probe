@@ -1,4 +1,5 @@
 import React from 'react'
+//Imports
 import { useTracker } from "meteor/react-meteor-data";
 import { Accounts } from "meteor/accounts-base";
 
@@ -31,7 +32,7 @@ export const Settings = () =>{
     const [id, user, email] = useTracker(() => {
         const id = Meteor.user()?._id
         const user = Meteor.user()?.username
-        const email = Meteor.user()?.emails[Meteor.user().emails.length -1].address
+        const email = Meteor.user()?.emails[Meteor.user()?.emails.length -1].address
         return [id, user, email];
       });
 

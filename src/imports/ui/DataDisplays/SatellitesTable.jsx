@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 
@@ -13,6 +13,7 @@ import {
   makeStyles,
   Typography,
   Tooltip,
+  IconButton,
 } from "@material-ui/core";
 import {
   DataGrid,
@@ -22,6 +23,9 @@ import {
   GridToolbarExport,
   GridToolbarDensitySelector,
 } from "@material-ui/data-grid";
+import Star from "@material-ui/icons/Star";
+import StarBorder from "@material-ui/icons/StarBorder";
+import { Meteor } from "meteor/meteor";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
       textOverflow: "clip",
     },
     "& .MuiCircularProgress-colorPrimary": {
-      color: theme.palette.text.primary
+      color: theme.palette.text.primary,
     },
   },
   spinner: {
@@ -55,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 5,
   },
   toolbar: {
-    color: theme.palette.grid.text,
+    color: theme.palette.text.primary,
     fontWeight: 500,
     fontSize: "14px",
   },
@@ -65,7 +69,14 @@ const newSatValues = {
   noradID: "",
 };
 
-export const SatellitesTable = () => {
+const handleFavorite = (e, values) => {
+  e.preventDefault();
+  Meteor.call('addToFavorites', Meteor.userId(), values, (err, res) =>{
+    console.log(res)
+  })
+};
+
+export const SatellitesTable = ({ roles }) => {
   const classes = useStyles();
 
   function CustomToolbar() {
@@ -78,30 +89,6 @@ export const SatellitesTable = () => {
       </GridToolbarContainer>
     );
   }
-
-  const columns = [
-    {
-      headerAlign: "center",
-      field: "id",
-      headerName: "NORAD ID",
-      minWidth: 150,
-    },
-    {
-      headerAlign: "center",
-      field: "names",
-      headerName: "NAME(S)",
-      minWidth: 300,
-      editable: false,
-    },
-    {
-      headerAlign: "center",
-      field: "descriptions",
-      headerName: "DESCRIPTION",
-      minWidth: 300,
-      editable: false,
-      flex: 1,
-    },
-  ];
 
   const [showModal, setShowModal] = useState(false);
   const [newSat, setNewSat] = useState(true);
@@ -123,8 +110,80 @@ export const SatellitesTable = () => {
   const [sortNorad, setSortNorad] = useState(0);
   const [sortNames, setSortNames] = useState(0);
   const [selector, setSelector] = useState({});
+  const [columns, setColumns] = useState([]);
 
-  const [rows, sats, count, schemasIsLoading, loading] = useTracker(() => {
+  const [fav, setFav] = useState(<StarBorder/>)
+  useEffect(() => {
+    const columns = [
+      {
+        headerAlign: "center",
+        field: "id",
+        headerName: "NORAD ID",
+        minWidth: 150,
+      },
+      {
+        headerAlign: "center",
+        field: "names",
+        headerName: "NAME(S)",
+        minWidth: 250,
+        editable: false,
+      },
+      {
+        headerAlign: "center",
+        field: "descriptions",
+        headerName: "DESCRIPTION",
+        minWidth: 300,
+        editable: false,
+        flex: 1,
+      },
+    ];
+
+
+
+    if (Meteor.userId()) {
+      // if(Meteor.user()?.favorites?.indexOf(params.id)){
+      //   setFav(<Star />)
+      // }else{
+      //   setFav(<StarBorder />)
+      // }
+      columns.unshift({
+        field: <Star style={{ marginBottom: -5 }} />,
+        minWidth: 50,
+        headerAlign: "center",
+        renderCell: (params) => {
+          if(Meteor.user()?.favorites?.indexOf(params.id)){
+          return (
+            <IconButton
+              style={{ marginLeft: 3 }}
+              size="small"
+              onClick={(e) => {
+                handleFavorite(e, params.id);
+              }}
+            >
+              <Star/>
+            </IconButton>
+          );
+            }else{
+              return (
+                <IconButton
+                  style={{ marginLeft: 3 }}
+                  size="small"
+                  onClick={(e) => {
+                    handleFavorite(e, params.id);
+                  }}
+                >
+                  <StarBorder />
+                </IconButton>
+              );
+            }
+        },
+      });
+    }
+
+    setColumns(columns);
+  }, [Meteor.userId()]);
+
+  const [rows, sats, count, isLoadingSch, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("satellites");
     const count = SatelliteCollection.find().count();
     const sats = SatelliteCollection.find(selector, {
@@ -137,8 +196,8 @@ export const SatellitesTable = () => {
         id: sat.noradID,
         names: sat.names?.map((name) => name.names || name.name).join(", "),
         descriptions: sat.descriptionShort
-        ? sat.descriptionShort[0].descriptionShort
-        : "N/A",
+          ? sat.descriptionShort[0].descriptionShort
+          : "N/A",
       };
     });
     rows.getRows = count;
@@ -161,22 +220,25 @@ export const SatellitesTable = () => {
       setSelector({});
     }
   };
-
   return (
     <div className={classes.root}>
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item xs>
           <Typography variant="h3">Satellites</Typography>
         </Grid>
-        <Grid container item xs justifyContent="flex-end">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleAddNewSatellite}
-          >
-            + Add Satellite
-          </Button>
-        </Grid>
+        {roles.indexOf("dummies") !== -1 ? (
+          "You are banned 😝"
+        ) : (
+          <Grid container item xs justifyContent="flex-end">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddNewSatellite}
+            >
+              + Add Satellite
+            </Button>
+          </Grid>
+        )}
       </Grid>
       <Typography gutterBottom variant="body2" className={classes.description}>
         Each <strong>satellite</strong> in the catalogue contains a number of
@@ -199,7 +261,7 @@ export const SatellitesTable = () => {
         rows={rows}
         rowCount={count}
         pageSize={limiter}
-        loading={loading}
+        loading={isLoading}
         autoHeight={true}
         pagination
         paginationMode="server"
@@ -229,6 +291,7 @@ export const SatellitesTable = () => {
         }}
       />
       <SatelliteModal
+        roles={roles}
         show={showModal}
         newSat={newSat}
         initValues={initialSatValues}

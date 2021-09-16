@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 // Imports
+import { useHistory } from "react-router";
+import { Roles } from "meteor/alanning:roles";
 import { useTracker } from "meteor/react-meteor-data";
 import { Link } from "react-router-dom";
 
@@ -7,7 +9,6 @@ import { Link } from "react-router-dom";
 import {
   withStyles,
   makeStyles,
-  IconButton,
   Menu,
   MenuItem,
   Button,
@@ -20,6 +21,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import StarIcon from "@material-ui/icons/Star";
 import BrightnessHigh from "@material-ui/icons/BrightnessHigh";
 import Brightness2 from "@material-ui/icons/Brightness2";
+import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 import { themes } from "../css/Themes.jsx";
 
 const useStyles = makeStyles((theme) => ({
@@ -85,25 +87,11 @@ const StyledMenuItem = withStyles((theme) => ({
 }))(MenuItem);
 
 export const DropDown = ({ theme, toggleTheme }) => {
-  let user = useTracker(() => Meteor.user()?.username, []);
+  const history = useHistory();
 
-  const userMgmt = () => {
-    let userNav = (
-      <Button
-        disableElevation
-        className={classes.navBtn}
-        component={Link}
-        onClick={() => {
-          setOpenAlert(false);
-          setOpenSnack(false);
-        }}
-        to={user ? "/profile" : "/login"}
-      >
-        Hi {user ? "Options" : "Login"}
-      </Button>
-    );
-    return userNav;
-  };
+  let user = useTracker(() => Meteor.user()?.username, []);
+  Meteor.subscribe("roles");
+  let roles = useTracker(() => Roles.getRolesForUser(Meteor.userId()), []);
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -115,8 +103,13 @@ export const DropDown = ({ theme, toggleTheme }) => {
     setAnchorEl(null);
   };
 
+  const handleLogout = () => {
+    Meteor.logout();
+    setTimeout(() => history.push("/"), 1000);
+  };
+
   return (
-    <div>
+    <React.Fragment>
       <Button onClick={handleClick} id="drop-down" disableElevation>
         <SettingsIcon fontSize="medium" />
       </Button>
@@ -145,37 +138,46 @@ export const DropDown = ({ theme, toggleTheme }) => {
               </ListItemIcon>
               <ListItemText primary="Favorites" />
             </StyledMenuItem>
-            <StyledMenuItem id="settings" component={Link} to="/settings" >
+            <StyledMenuItem id="settings" component={Link} to="/settings">
               <ListItemIcon>
                 <SettingsIcon fontSize="small" />
               </ListItemIcon>
-              <ListItemText primary={`${user}'s Settings`}/>
+              <ListItemText primary="Profile" />
             </StyledMenuItem>
             <StyledMenuItem>
               <ListItemIcon>
                 <ExitToAppIcon fontSize="small" />
               </ListItemIcon>
-              <ListItemText id="logout" primary="Logout" onClick={() => Meteor.logout()} />
+              <ListItemText
+                id="logout"
+                primary="Logout"
+                onClick={handleLogout}
+              />
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <ListItemIcon>
+                <SupervisorAccountIcon />
+              </ListItemIcon>
+              <ListItemText id="role" primary="Admin Page" />
             </StyledMenuItem>
           </div>
         ) : (
           <div>
-
-          <StyledMenuItem id="login" component={Link} to="/login">
-            <ListItemIcon>
-              <AccountCircleIcon />
-            </ListItemIcon>
-            <ListItemText primary="Login" />
-          </StyledMenuItem>
-          <StyledMenuItem id="register" component={Link} to="/register">
-          <ListItemIcon>
-            <AccountCircleIcon />
-          </ListItemIcon>
-          <ListItemText primary="Register" />
-        </StyledMenuItem>
-        </div>
+            <StyledMenuItem id="login" component={Link} to="/login">
+              <ListItemIcon>
+                <AccountCircleIcon />
+              </ListItemIcon>
+              <ListItemText primary="Login" />
+            </StyledMenuItem>
+            <StyledMenuItem id="register" component={Link} to="/register">
+              <ListItemIcon>
+                <AccountCircleIcon />
+              </ListItemIcon>
+              <ListItemText primary="Register" />
+            </StyledMenuItem>
+          </div>
         )}
       </StyledMenu>
-    </div>
-    );
+    </React.Fragment>
+  );
 };

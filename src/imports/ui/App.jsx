@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
-import HelpersContext from "./helpers/HelpersContext.jsx";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import HelpersContext from "./Dialogs/HelpersContext.jsx";
+import { useTracker } from "meteor/react-meteor-data";
 import { Accounts } from "meteor/accounts-base";
 // Components
 import { Nav } from "./Navigation/Nav.jsx";
@@ -11,16 +12,17 @@ import { About } from "./About.jsx";
 import { Footer } from "./Navigation/Footer.jsx";
 import { Login } from "./Accounts/Login";
 import { Register } from "./Accounts/Register";
-import {ResetPassword} from "./Accounts/ResetPassword"
+import { ResetPassword } from "./Accounts/ResetPassword";
 import { DropDown } from "./Navigation/DropDown";
-import {Settings } from './Accounts/Settings'
+import { Settings } from "./Accounts/Settings";
+import {Admin} from './Accounts/Admin'
 
 // @material-ui
 import { ThemeProvider } from "@material-ui/core/styles";
-import { themes } from "./css/Themes.jsx"; 
+import { themes } from "./css/Themes.jsx";
 import { CssBaseline, Container, makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   main: {
     position: "relative",
     marginTop: 30,
@@ -31,10 +33,12 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     bottom: 0,
     height: 0,
-  }
+  },
 }));
 
 export const App = () => {
+  Meteor.subscribe('roles')
+  const roles = useTracker(() => Roles.getRolesForUser(Meteor.userId()), [])
   const [theme, setTheme] = useState(themes.dark);
   const [openAlert, setOpenAlert] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
@@ -51,10 +55,6 @@ export const App = () => {
   const toggleTheme = () => {
     setTheme((theme) => (theme === themes.dark ? themes.light : themes.dark));
   };
-
-  Accounts.onResetPasswordLink((token, done) =>{
-    console.log('resetpassword')
-  })
 
   return (
     <HelpersContext.Provider
@@ -77,7 +77,7 @@ export const App = () => {
             <main className={classes.main}>
               <Switch>
                 <Route exact={true} path="/satellites">
-                  <SatellitesTable />
+                  <SatellitesTable roles={roles}/>
                 </Route>
                 <Route exact={true} path="/login">
                   <Login />
@@ -86,13 +86,16 @@ export const App = () => {
                   <Register />
                 </Route>
                 <Route path="/reset">
-                  <ResetPassword/>
+                  <ResetPassword />
                 </Route>
                 <Route exact={true} path="/settings">
                   <Settings />
                 </Route>
                 <Route exact={true} path="/menu">
                   <DropDown />
+                </Route>
+                <Route exact={true} path="/admin">
+                  <Admin />
                 </Route>
                 <Route exact={true} path="/schemas">
                   <SchemasTable />

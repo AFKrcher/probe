@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 
 // Components
 import { SatelliteSchemaEntry } from "./SatelliteSchemaEntry";
-import { FieldArray } from "formik";
 
 // @material-ui
 import {
@@ -48,10 +47,15 @@ const useStyles = makeStyles((theme) => ({
 export const SatelliteSchemaAccordion = ({
   errors,
   schema,
+  schemas,
   entries,
   setFieldValue,
   editing,
-  setTouched,
+  setSatSchema,
+  values,
+  isUniqueList,
+  schemaGenerator,
+  setTouched
 }) => {
   const classes = useStyles();
 
@@ -66,6 +70,11 @@ export const SatelliteSchemaAccordion = ({
     );
     const newEntries = [...entries, schemaFields];
     await setFieldValue(schema.name, newEntries);
+    setSatSchema(schemaGenerator(
+      schemas,
+      values,
+      isUniqueList
+    ))
   };
 
   return (
@@ -85,41 +94,41 @@ export const SatelliteSchemaAccordion = ({
           </div>
         </AccordionSummary>
         <AccordionDetails className={classes.accordianDetails}>
-          <FieldArray
-            render={(arrayHelpers) => (
-              <Grid container spacing={1}>
-                <Typography className={classes.description}>
-                  {schema.description || "N/A"}
-                </Typography>
-                {entries?.map((entry, entryIndex) => (
-                  <SatelliteSchemaEntry
-                    errors={errors}
-                    key={entryIndex}
-                    entryIndex={entryIndex}
-                    schema={schema}
-                    entry={entry}
-                    setFieldValue={setFieldValue}
-                    editing={editing}
-                    setTouched={setTouched}
-                    entries={entries}
-                  />
-                ))}
-                <Grid item xs={12} className={classes.buttonContainer}>
-                  {editing && (
-                    <Button
-                      variant="contained"
-                      size="medium"
-                      color="default"
-                      onClick={onAddField}
-                      className={classes.button}
-                    >
-                      + Add Entry
-                    </Button>
-                  )}
-                </Grid>
-              </Grid>
-            )}
-          />
+          <Grid container spacing={1}>
+            <Typography className={classes.description}>
+              {schema.description || "N/A"}
+            </Typography>
+            {entries?.map((entry, entryIndex) => (
+              <SatelliteSchemaEntry
+                errors={errors}
+                key={entryIndex}
+                entryIndex={entryIndex}
+                schema={schema}
+                entry={entry}
+                setFieldValue={setFieldValue}
+                editing={editing}
+                entries={entries}
+                setSatSchema={setSatSchema}
+                isUniqueList={isUniqueList}
+                schemas={schemas}
+                schemaGenerator={schemaGenerator}
+                setTouched={setTouched}
+              />
+            ))}
+            <Grid item xs={12} className={classes.buttonContainer}>
+              {editing && (
+                <Button
+                  variant="contained"
+                  size="medium"
+                  color="default"
+                  onClick={onAddField}
+                  className={classes.button}
+                >
+                  + Add Entry
+                </Button>
+              )}
+            </Grid>
+          </Grid>
         </AccordionDetails>
       </Accordion>
     </>

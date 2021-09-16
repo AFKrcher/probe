@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+// Imports
 import { Accounts } from "meteor/accounts-base";
 import { useTracker } from "meteor/react-meteor-data";
 import { useHistory } from "react-router";
+
 // @material-ui
 import { Grid, Button } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";

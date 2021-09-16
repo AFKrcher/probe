@@ -2,6 +2,7 @@ import React from "react";
 
 // @material-ui
 import { Grid, makeStyles, Typography, Container } from "@material-ui/core";
+import Skeleton from "@material-ui/lab/Skeleton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -125,15 +126,18 @@ let TeamMembers = [
 
 export const About = () => {
   const classes = useStyles();
+
   return (
     <div className={classes.root}>
       <Typography variant="h3">
         About <strong>OpenOrbit</strong>
       </Typography>
       <p>
-        This web application was created by an incredible team of space
-        enthusiasts who got together and gave up their weekend to complete this
-        work during a Hackathon which took place over the 8th - 9th May 2021.
+        <strong>P</strong>ublically <strong>R</strong>esearched{" "}
+        <strong>OB</strong>s<strong>E</strong>rvatory (PROBE) is a web
+        application created by an incredible team of space enthusiasts who got
+        together and gave up their weekend to complete this work during a
+        Hackathon which took place over the 8th - 9th May 2021.
       </p>
       <p>
         Fueled by Pizza and Lofi, we had a lot of fun and hope you find this
@@ -170,7 +174,7 @@ export const About = () => {
                         height="100%"
                         src={member.Img}
                         className={classes.image}
-                        alt={""}
+                        alt={`${member.Name}`}
                       />
                     </div>
                     <Typography variant="body2" className={classes.caption}>

@@ -2,9 +2,10 @@ import * as Yup from "yup";
 
 export const schemaValidatorShaper = (schemas) => {
   return Yup.object().shape({
+    _id: Yup.string(), 
     name: Yup.string()
       .notOneOf(schemas, "Schema name already exists")
-      .matches(/^[a-zA-Z0-9]*$/g, "Schema name be spaceless, camelCase, and only contain letters and numbers")
+      .matches(/^[a-zA-Z0-9]*$/g, "Schema name must be spaceless, camelCase, and only contain letters and numbers")
       .required("Required"),
     description: Yup.string().required("Required"),
     fields: Yup.array().of(

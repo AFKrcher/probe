@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+// Imports
 import Clamp from "react-multiline-clamp";
 
 // Components
 import { SatelliteModal } from "../SatelliteModal/SatelliteModal";
-import VisualizeDialog from "../helpers/VisualizeDialog";
+import VisualizeDialog from "../Dialogs/VisualizeDialog";
 import {
   getSatID,
   getSatName,
@@ -21,6 +22,8 @@ import {
   Button,
   IconButton,
   Typography,
+  Menu,
+  MenuItem,
 } from "@material-ui/core";
 import Close from "@material-ui/icons/Close";
 
@@ -42,7 +45,6 @@ const useStyles = makeStyles((theme) => ({
   cardActions: {
     position: "relative",
     display: "flex",
-    justifyContent: "space-between",
     marginBottom: 5,
   },
   cardButton: {
@@ -71,11 +73,19 @@ export const SatCard = ({ width, height, satellite }) => {
     text: "", // dialog body text
     actions: "", // dialog actions
   });
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const classes = useStyles();
 
-  const adjustableFontSize =
-    width < 500 ? (width < 400 ? "8px" : "10px") : "12px";
+  const adjustableFontSize = width < 600 ? 16 : 12;
 
   function handleModify(e) {
     e.preventDefault();
@@ -137,6 +147,7 @@ export const SatCard = ({ width, height, satellite }) => {
         initValues={satellite}
         newSat={false}
         handleClose={() => setShowModal(false)}
+        width={width}
       />
       <Card className={classes.satCard} elevation={4} raised={true}>
         <CardMedia
@@ -157,54 +168,119 @@ export const SatCard = ({ width, height, satellite }) => {
             </Clamp>
           </Typography>
         </CardContent>
-        <CardActions className={classes.cardActions}>
-          <Button
-            size={width < 500 ? "small" : "medium"}
-            variant="outlined"
-            className={classes.cardButton}
-            onClick={(e) =>
-              handleVisualize(
-                e,
-                `https://spacecockpit.saberastro.com/?SID=${satellite.noradID}&FS=${satellite.noradID}`
-              )
-            }
-          >
-            <strong
-              style={{
-                fontSize: adjustableFontSize,
-              }}
-            >
-              Visualize
-            </strong>
-          </Button>
-          <Button
-            size={width < 500 ? "small" : "medium"}
-            variant="outlined"
-            className={classes.cardButton}
-            onClick={(e) => handleDashboard(e, satellite)}
-          >
-            <strong
-              style={{
-                fontSize: adjustableFontSize,
-              }}
-            >
-              Dashboard
-            </strong>
-          </Button>
-          <Button
-            size={width < 500 ? "small" : "medium"}
-            variant="outlined"
-            className={classes.cardButton}
-            onClick={(e) => handleModify(e, satellite)}
-          >
-            <strong
-              style={{
-                fontSize: adjustableFontSize,
-              }}
-            >
-              Data
-            </strong>
-          </Button>
+        <CardActions
+          className={classes.cardActions}
+          style={
+            width < 500
+              ? { justifyContent: "space-around" }
+              : { justifyContent: "space-between" }
+          }
+        >
+          {width < 500 ? (
+            <React.Fragment>
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={handleClick}
+                className={classes.cardButton}
+              >
+                <strong
+                  style={{
+                    fontSize: adjustableFontSize,
+                  }}
+                >
+                  Options
+                </strong>
+              </Button>
+              <Menu
+                keepMounted
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem
+                  dense
+                  onClick={(e) => {
+                    handleVisualize(
+                      e,
+                      `https://spacecockpit.saberastro.com/?SID=${satellite.noradID}&FS=${satellite.noradID}`
+                    );
+                    handleClose(e);
+                  }}
+                >
+                  Visualize
+                </MenuItem>
+                <MenuItem
+                  dense
+                  onClick={(e) => {
+                    handleDashboard(e, satellite);
+                    handleClose(e);
+                  }}
+                >
+                  Dashboard
+                </MenuItem>
+                <MenuItem
+                  dense
+                  onClick={(e) => {
+                    handleModify(e, satellite);
+                    handleClose(e);
+                  }}
+                >
+                  Data
+                </MenuItem>
+              </Menu>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <Button
+                size="medium"
+                variant="outlined"
+                className={classes.cardButton}
+                onClick={(e) =>
+                  handleVisualize(
+                    e,
+                    `https://spacecockpit.saberastro.com/?SID=${satellite.noradID}&FS=${satellite.noradID}`
+                  )
+                }
+              >
+                <strong
+                  style={{
+                    fontSize: adjustableFontSize,
+                  }}
+                >
+                  Visualize
+                </strong>
+              </Button>
+              <Button
+                size="medium"
+                variant="outlined"
+                className={classes.cardButton}
+                onClick={(e) => handleDashboard(e, satellite)}
+              >
+                <strong
+                  style={{
+                    fontSize: adjustableFontSize,
+                  }}
+                >
+                  Dashboard
+                </strong>
+              </Button>
+              <Button
+                size="medium"
+                variant="outlined"
+                className={classes.cardButton}
+                onClick={(e) => handleModify(e, satellite)}
+              >
+                <strong
+                  style={{
+                    fontSize: adjustableFontSize,
+                  }}
+                >
+                  Data
+                </strong>
+              </Button>{" "}
+            </React.Fragment>
+          )}
         </CardActions>
       </Card>
     </>

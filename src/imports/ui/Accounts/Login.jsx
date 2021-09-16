@@ -40,12 +40,13 @@ const useStyles = makeStyles((theme) => ({
 export const Login = () => {
   const classes = useStyles();
   const history = useHistory();
-  const [err, setErr] = useState(false);
   const [errHelper, setErrHelper] = useState("");
+
   let user = useTracker(() => Meteor.user()?.username, []);
   let regex = /[~`!@.#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g;
+  
   const redirect = () => {
-    history.push("/");
+    setTimeout(() => history.push("/"));
   };
 
   const [disabled, setDisabled] = useState(true);
@@ -65,7 +66,6 @@ export const Login = () => {
         error.message === "User not found [403]" ||
         error.message === "Incorrect password [403]"
       ) {
-        setErr(true);
         setErrHelper("Incorrect username or password");
       } else {
         setErrHelper(
@@ -79,7 +79,6 @@ export const Login = () => {
     e.preventDefault();
     let username = e.target.username.value;
     let password = e.target.password.value;
-    setErr(false);
     setErrHelper("");
     if (regex.test(username)) {
       Meteor.loginWithPassword(
@@ -113,14 +112,12 @@ export const Login = () => {
     let username = document.getElementById("username").value;
     if (regex.test(username)) {
       options.email = username;
-      setErr(false);
       Accounts.forgotPassword(options, (res) => {
         alert(
           res || "An email has been sent with a link to reset your password."
         );
       });
     } else {
-      setErr(true);
       setErrHelper("Please provide a valid email.");
     }
   };

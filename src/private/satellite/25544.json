@@ -37,10 +37,11 @@
   "propulsion": [
     {
       "reference": "https://www.nasa.gov/vision/space/travelinginspace/future_propulsion.html#:~:text=In%20the%20less-distant%20future%2C%20VASIMR%20could%20even%20help,source%20is%20used%20to%20ionize%20fuel%20into%20plasma.",
-      "type": "Chemical",
+      "type": "chemical",
       "thrust": "",
       "thrustScale": "",
-      "rangeType": "stationKeeping"
+      "rangeType": "stationKeeping",
+      "description": "The Zvezda Service Module and Progress Module serve as the main thrust providers for the ISS."
     }
   ],
   "orbit": [
@@ -57,10 +58,15 @@
       "longitude": "63.305"
     }
   ],
-  "type": [{ "reference": "https://en.wikipedia.org/", "type": "manMade" }],
+  "type": [
+    {
+      "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
+      "type": "manMade"
+    }
+  ],
   "mission": [
     {
-      "reference": "https://www.pbs.org/spacestation/station/purpose.htm",
+      "reference": "https://www.pbs.org/spacestation/station/purpose.html",
       "description": "To enable long-term exploration of space and provide benefits to people on Earth. "
     }
   ],
@@ -126,7 +132,7 @@
     {
       "reference": "https://en.wikipedia.org/wiki/International_Space_Station",
       "start": "1998-11-20T09:46",
-      "plannedMissionDuration": "",
+      "plannedMissionDuration": "27",
       "actualMissionDuration": ""
     }
   ],

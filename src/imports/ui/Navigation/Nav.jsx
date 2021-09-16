@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 // Imports
 import { Link } from "react-router-dom";
-import HelpersContext from "../helpers/HelpersContext.jsx";
+import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import { DropDown } from "../Navigation/DropDown";
 
 // @material-ui
@@ -27,8 +27,7 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     color: theme.palette.text.primary,
     textDecoration: "none",
-    marginRight: 10,
-    marginTop: -2.5,
+    marginRight: 0,
     fontSize: "30px",
     "&:hover": {
       color: theme.palette.text.primary,
@@ -67,7 +66,16 @@ export const Nav = ({ theme, toggleTheme }) => {
       <AppBar className={classes.navbar} position="sticky">
         <Toolbar className={classes.toolbar}>
           <div className={classes.links}>
-            <Tooltip title="To Home">
+            <Tooltip
+              title={
+                <Typography color="inherit" variant="body2">
+                  <strong>P</strong>ublically <strong>R</strong>esearched{" "}
+                  <strong>OB</strong>s<strong>E</strong>rvatory
+                </Typography>
+              }
+              arrow
+              placement="bottom-start"
+            >
               <Typography
                 variant="h5"
                 className={classes.logo}
@@ -78,7 +86,7 @@ export const Nav = ({ theme, toggleTheme }) => {
                 }}
                 to="/"
               >
-                <strong>OpenOrbit</strong>
+                <strong>PROBE</strong>
               </Typography>
             </Tooltip>
             <Button

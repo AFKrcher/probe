@@ -139,10 +139,10 @@ export const SchemasTable = () => {
             <TableHead>
               <TableRow color="secondary">
                 <TableCell className={classes.header}>
-                  <Typography variant="h7">SCHEMA NAME</Typography>
+                  <Typography variant="body2">SCHEMA NAME</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography variant="h7">SCHEMA DESCRIPTION</Typography>
+                  <Typography variant="body2">SCHEMA DESCRIPTION</Typography>
                 </TableCell>
               </TableRow>
             </TableHead>

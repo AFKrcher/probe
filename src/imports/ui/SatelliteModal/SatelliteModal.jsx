@@ -3,17 +3,17 @@ import React, { useState, useEffect, useContext } from "react";
 import { useTracker } from "meteor/react-meteor-data";
 import { SchemaCollection } from "../../api/schemas";
 import { SatelliteCollection } from "../../api/satellites";
-import HelpersContext from "../helpers/HelpersContext.jsx";
+import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import {
   emptyDataRemover,
-  satelliteValidatorShaper,
+  schemaGenerator,
 } from "../utils/satelliteDataFuncs.js";
 
 // Components
 import { Formik, Form } from "formik";
 import { SatelliteForm } from "./SatelliteForm";
-import AlertDialog from "../helpers/AlertDialog.jsx";
-import SnackBar from "../helpers/SnackBar.jsx";
+import AlertDialog from "../Dialogs/AlertDialog.jsx";
+import SnackBar from "../Dialogs/SnackBar.jsx";
 
 // @material-ui
 import {
@@ -34,14 +34,13 @@ import Close from "@material-ui/icons/Close";
 const useStyles = makeStyles(() => ({
   modal: {
     width: "auto",
-    height: "auto"
+    height: "auto",
   },
   titleText: {
     fontSize: "25px",
   },
   content: {
-    height: "75vh",
-    overflowY: "auto"
+    overflowY: "auto",
   },
   description: {
     marginTop: -10,
@@ -64,20 +63,25 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
+export const SatelliteModal = ({
+  show,
+  newSat,
+  initValues,
+  handleClose,
+  width,
+}) => {
   const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } =
     useContext(HelpersContext);
 
   const classes = useStyles();
 
-  const [schemas, sats, isLoading] = useTracker(() => {
-    const sub = Meteor.subscribe("schemas");
+  const [schemas, sats, isLoadingSch, isLoadingSat] = useTracker(() => {
+    const subSch = Meteor.subscribe("schemas");
+    const subSat = Meteor.subscribe("satellites");
     const schemas = SchemaCollection.find().fetch();
     const sats = SatelliteCollection.find().fetch();
-    return [schemas, sats, !sub.ready()];
+    return [schemas, sats, !subSch.ready(), !subSat.ready()];
   });
-
-  const [editing, setEditing] = useState(newSat || false);
 
   const isUniqueList = (path, field) => {
     let list = [];
@@ -87,7 +91,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
           ? null
           : list.push(sats[sat][field]);
       }
-    } else {
+    } else if (initValues[path]) {
       for (let sat in sats) {
         let satEntries = sats[sat][path];
         for (let entry in satEntries) {
@@ -101,14 +105,20 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
     return list;
   };
 
+  const [editing, setEditing] = useState(newSat || false);
+  const [satSchema, setSatSchema] = useState(null);
+
   useEffect(() => {
     setEditing(newSat || false);
   }, [newSat, show]);
 
+  useEffect(() => {
+    setSatSchema(schemaGenerator(schemas, initValues, isUniqueList));
+  }, [initValues, show, isLoadingSch]);
+
   const handleSubmit = async (values, { setSubmitting }) => {
-    emptyDataRemover(values);
-    window.sessionStorage.clear();
-    console.log(values)
+    emptyDataRemover(values); // remove schemas that were added by the user but contain no entries
+
     if (newSat) {
       SatelliteCollection.insert(values);
       setOpenSnack(false);
@@ -182,6 +192,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
       ),
       actions: (
         <Button
+          size={width && width < 500 ? "small" : "medium"}
           variant="contained"
           size="small"
           color="secondary"
@@ -198,10 +209,11 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
 
   const handleToggleEdit = (setValues) => {
     if (editing) setValues(initValues);
-    initValues.names ? setEditing(!editing) : handleClose();
+    if (newSat) handleClose();
+    setEditing(!editing);
   };
 
-  const handleEdit = (setValues, dirty) => {
+  const handleEdit = (setValues, dirty, values) => {
     if (editing && dirty) {
       setAlert({
         title: initValues.names ? (
@@ -235,14 +247,15 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
         ),
         actions: (
           <Button
+            size={width && width < 500 ? "small" : "medium"}
             variant="contained"
             size="small"
             color="secondary"
             disableElevation
             onClick={() => {
               setOpenAlert(false);
+              emptyDataRemover(values);
               handleToggleEdit(setValues);
-              handleClose();
             }}
           >
             Confirm
@@ -252,6 +265,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
       });
       setOpenAlert(true);
     } else {
+      emptyDataRemover(values);
       handleToggleEdit(setValues);
     }
   };
@@ -282,8 +296,8 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
           </DialogTitle>
           <Formik
             initialValues={initValues}
-            validationSchema={satelliteValidatorShaper(schemas, isUniqueList)}
             onSubmit={handleSubmit}
+            validationSchema={satSchema}
           >
             {({
               errors,
@@ -296,12 +310,21 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
               setTouched
             }) => (
               <Form>
-                {isLoading ? (
+                {isLoadingSch || isLoadingSat ? (
                   <DialogContent className={classes.loadingDialog}>
                     <CircularProgress size={75} />
                   </DialogContent>
                 ) : (
-                  <DialogContent className={classes.content}>
+                  <DialogContent
+                    className={classes.content}
+                    style={
+                      width < 500
+                        ? width < 350
+                          ? { height: "50vh" }
+                          : { height: "60vh" }
+                        : { height: "75vh" }
+                    }
+                  >
                     <Typography className={classes.description}>
                       Each satellite in the catalogue contains a number of
                       fields based on schemas. Schemas can be added, deleted,
@@ -316,64 +339,95 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose }) => {
                       editing={editing}
                       initValues={initValues}
                       newSat={newSat}
+                      setSatSchema={setSatSchema}
+                      isUniqueList={isUniqueList}
+                      schemaGenerator={schemaGenerator}
                       setTouched={setTouched}
                     />
                   </DialogContent>
                 )}
                 <DialogActions className={classes.actions}>
-                  {editing ? (
-                    ""
+                  {Meteor.userId() ? (
+                    <>
+                      {editing ? (
+                        ""
+                      ) : (
+                        // Deletes the entire satellite and all its data
+                        <Button
+                          size={width && width < 500 ? "small" : "medium"}
+                          variant="contained"
+                          color="secondary"
+                          onClick={handleDeleteDialog}
+                          startIcon={width && width < 500 ? null : <Delete />}
+                        >
+                          Delete
+                        </Button>
+                      )}
+                      {/* Conditionally renders edit button and changes to a Cancel button that deletes changes made to editing the satellite */}
+                      <Button
+                        size={width && width < 500 ? "small" : "medium"}
+                        variant="contained"
+                        color={editing && dirty ? "secondary" : "default"}
+                        onClick={() => handleEdit(setValues, dirty, values)}
+                        startIcon={
+                          width && width < 500 ? null : editing ? (
+                            dirty ? (
+                              <Delete />
+                            ) : null
+                          ) : (
+                            <Edit />
+                          )
+                        }
+                      >
+                        {editing ? "Cancel" : "Edit"}
+                      </Button>
+                      {editing ? null : (
+                        <Button
+                          size={width && width < 500 ? "small" : "medium"}
+                          variant="contained"
+                          onClick={handleClose}
+                          startIcon={width && width < 500 ? null : <Close />}
+                        >
+                          Close
+                        </Button>
+                      )}
+                      {editing && (
+                        <Button
+                          size={width && width < 500 ? "small" : "medium"}
+                          type="submit"
+                          variant="contained"
+                          color="primary"
+                          disabled={!editing}
+                          startIcon={width && width < 500 ? null : <Save />}
+                          disabled={
+                            Object.entries(errors).length > 0 ||
+                            !dirty ||
+                            Object.entries(touched).length === 0
+                              ? true
+                              : false
+                          }
+                        >
+                          {isSubmitting ? (
+                            <CircularProgress
+                              size={25}
+                              className={classes.loadingSave}
+                            />
+                          ) : newSat ? (
+                            "Save"
+                          ) : (
+                            "Save Changes"
+                          )}
+                        </Button>
+                      )}
+                    </>
                   ) : (
                     <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={handleDeleteDialog}
-                      startIcon={<Delete />}
-                    >
-                      Delete
-                    </Button>
-                  )}
-
-                  <Button
-                    variant="contained"
-                    color={editing && dirty ? "secondary" : "default"}
-                    onClick={() => handleEdit(setValues, dirty)}
-                    startIcon={editing ? dirty ? <Delete /> : null : <Edit />}
-                  >
-                    {editing ? "Cancel" : "Edit"}
-                  </Button>
-                  {editing ? null : (
-                    <Button
+                      size={width && width < 500 ? "small" : "medium"}
                       variant="contained"
                       onClick={handleClose}
-                      startIcon={<Close />}
+                      startIcon={width && width < 500 ? null : <Close />}
                     >
                       Close
-                    </Button>
-                  )}
-                  {editing && (
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      disabled={!editing}
-                      startIcon={<Save />}
-                      disabled={
-                        Object.entries(errors).length > 0 || !dirty || Object.entries(touched).length === 0
-                          ? true
-                          : false
-                      }
-                    >
-                      {isSubmitting ? (
-                        <CircularProgress
-                          size={25}
-                          className={classes.loadingSave}
-                        />
-                      ) : newSat ? (
-                        "Save"
-                      ) : (
-                        "Save Changes"
-                      )}
                     </Button>
                   )}
                 </DialogActions>

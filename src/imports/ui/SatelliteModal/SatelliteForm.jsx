@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
 // Imports
-import HelpersContext from "../helpers/HelpersContext.jsx";
+import HelpersContext from "../Dialogs/HelpersContext.jsx";
 
 // Components
-import AlertDialog from "../helpers/AlertDialog.jsx";
+import AlertDialog from "../Dialogs/AlertDialog.jsx";
 import { Field } from "formik";
 import { SatelliteSchemaAccordion } from "./SatelliteSchemaAccordion";
 
@@ -48,7 +48,9 @@ export const SatelliteForm = ({
   setFieldValue,
   editing,
   initValues,
-  newSat,
+  setSatSchema,
+  isUniqueList,
+  schemaGenerator,
   setTouched,
 }) => {
   const { setOpenAlert, alert, setAlert } = useContext(HelpersContext);
@@ -69,6 +71,10 @@ export const SatelliteForm = ({
     delete initValues[`${name}`];
     setFlag(!flag);
     setOpenAlert(false);
+
+    let obj = {};
+    obj[name] = true;
+    setTouched(obj);
   };
 
   const handleDeleteDialog = (name) => {
@@ -92,12 +98,16 @@ export const SatelliteForm = ({
           disableElevation
           onClick={() => handleDelete(name)}
         >
-          Confirm
+          <StarBorder />
         </Button>
       ),
       closeAction: "Cancel",
     });
     setOpenAlert(true);
+  };
+
+  const onChange = (event) => {
+    setFieldValue(event.target.name, event.target.value);
   };
 
   const onSchemaChange = (e) => {
@@ -121,8 +131,8 @@ export const SatelliteForm = ({
               required
               fullWidth
               variant="outlined"
-              disabled={!editing}
               component={TextField}
+              onChange={onChange}
             />
           </Paper>
         </Grid>
@@ -137,11 +147,15 @@ export const SatelliteForm = ({
                 errors={errors}
                 key={schemaIndex}
                 schema={schema}
+                schemas={schemas}
                 entries={values[`${schema.name}`]}
                 setFieldValue={setFieldValue}
                 editing={editing}
                 setValues={setValues}
-                newSat={newSat}
+                setSatSchema={setSatSchema}
+                values={values}
+                isUniqueList={isUniqueList}
+                schemaGenerator={schemaGenerator}
                 setTouched={setTouched}
               />
               {editing && (
@@ -166,10 +180,15 @@ export const SatelliteForm = ({
               <SatelliteSchemaAccordion
                 errors={errors}
                 schema={schema}
+                schemas={schemas}
                 entries={values[`${schema.name}`]}
                 setFieldValue={setFieldValue}
                 editing={editing}
                 setValues={setValues}
+                setSatSchema={setSatSchema}
+                values={values}
+                isUniqueList={isUniqueList}
+                schemaGenerator={schemaGenerator}
                 setTouched={setTouched}
               />
               {editing && (

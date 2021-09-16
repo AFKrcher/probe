@@ -21,6 +21,6 @@ insecure@1.0.7                  # Allow all DB writes from clients (for prototyp
 static-html                     # Define static page content in .html files
 react-meteor-data               # React higher-order component for reactively tracking Meteor data
 
-accounts-base@2.0.1                   # Meteor account management
-accounts-password@2.0.1               # Meteor account password management
+accounts-base@2.0.1             # Meteor account management
+accounts-password@2.0.1         # Meteor account password management
 alanning:roles                  # Meteor account roles

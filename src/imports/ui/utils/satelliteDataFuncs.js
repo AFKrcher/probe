@@ -1,6 +1,7 @@
 import * as Yup from "yup";
-import { memoize } from "./memoize.js";
+import { transformAll } from "@demvsystems/yup-ast";
 
+// Data display functions
 export const getSatName = (satellite) => {
   return satellite && satellite.names && satellite.names.length > 0
     ? satellite.names[0].name
@@ -27,6 +28,7 @@ export const getSatDesc = (satellite) => {
     : "";
 };
 
+// Data entry functions
 export const emptyDataRemover = (values) => {
   let tempObj = {};
   let deleteEmptyArr = [];
@@ -48,35 +50,59 @@ export const emptyDataRemover = (values) => {
   return values;
 };
 
-const schemaDefinitionShaper = memoize((schemas) => {
-  let schemaDefinition = {}; // object: {schema.name: {field.name: {field.type: string/number/date, field.allowedValues: [], required: field.required, min: field.min, max: field.max}}}
+const schemaCleaner = (schemas, values) => {
+  let schemaObj = {}; // object: {schema.name: {field.name: {field.type: string/number/date, field.allowedValues: [], required: field.required, min: field.min, max: field.max}}}
 
-  schemas?.forEach((schema) => {
+  let cleanSchemas = []; // stores only the schemas applicable to the current satellite values
+  for (let value in values) {
+    for (let schema in schemas) {
+      if (schemas[schema].name === value) cleanSchemas.push(schemas[schema]);
+    }
+  }
+
+  cleanSchemas?.forEach((schema) => {
     // step 1: map over schemas and assign each schema name as a key in the object
-    schemaDefinition[schema.name] = {};
+    schemaObj[schema.name] = {};
     // step 2: map over each schema and assign an object containing all field names as keys in that object
     return schema.fields.forEach((field) => {
-      schemaDefinition[schema.name][field.name] = {};
+      schemaObj[schema.name][field.name] = {};
       // step 3: map over each field and assign an object containing all of the field's attributes (type, allowedValues, min, max, required)
       for (let attribute in field) {
         if (attribute !== "name" && attribute !== "description") {
           // step 4: Take each attribute's value and assign it to the attribute in the object
-          schemaDefinition[schema.name][field.name][attribute] =
-            field[attribute];
+          schemaObj[schema.name][field.name][attribute] = field[attribute];
         }
       }
     });
   });
-  return schemaDefinition;
-}, "schemaDefinition");
+  return schemaObj;
+};
 
-export const satelliteValidatorShaper = (schemas, isUniqueList) => {
-  // dynamically generate an object that stores all possible schemas and their constraints
-  // provides easier access and manipulation of schema data
-  let schemaObj = schemaDefinitionShaper(schemas); // memoized schemaObj
-  Yup.addMethod(Yup.array, "checkEachEntry", function (message) {
+const initialYupShapeGenerator = (isUniqueList) => {
+  return {
+    // NORAD ID and _id are always a part of the yup shape
+    _id: Yup.string().notOneOf(
+      isUniqueList(null, "nullid"),
+      "Something went wrong while assigning _id"
+    ),
+    noradID: Yup.string()
+      .required(`Required`)
+      .matches(/^[0-9]+$/g, "Must be a positive number")
+      .notOneOf(
+        isUniqueList(null, "noradID"),
+        (obj) =>
+          `A satellite with noradID of ${obj.value} already exists in our records.`
+      ),
+  };
+};
+
+export const schemaGenerator = (schemas, values, isUniqueList) => {
+  let yupShape = initialYupShapeGenerator(isUniqueList); // instantiation of base yupShape
+  const cleanSchema = schemaCleaner(schemas, values); // generates a clean schema object for easier manipulation
+
+  Yup.addMethod(Yup.mixed, "checkEachEntry", function (message) {
     let errObj = {}; // workaround object to generate populate errors object in Formik
-    // test each entry in the array: Yup.object().shape({field.name: Yup.(fieldRequirements.type)[0].toUpperCase() + (fieldRequirements.type).substr(1).required(field.required).min(field.min).max(field.max).oneOf((field.allowedValues))})
+    // test each entry in the array: Yup.object().shape({field.name: Yup.(field.type)[0].toUpperCase() + (field.type).substr(1).required(field.required).min(field.min).max(field.max).oneOf((field.allowedValues))})
     return this.test("checkEachEntry", message, function (value) {
       const { path, createError } = this;
 
@@ -85,45 +111,38 @@ export const satelliteValidatorShaper = (schemas, isUniqueList) => {
       value?.forEach((entry) => {
         // "entry" is composed of multiple "fields", and is part of the submitted array, aka "value"
         let fieldObj = {};
-        // window.sessionStorage.getItem("fieldObj")
-        // ? JSON.parse(window.sessionStorage.getItem("fieldObj"))
-        // : {};
-
-        let fieldCount = 0; // "fieldCount"
-
-        let schema = schemaObj[path];
-
+        let fieldCount = 0;
+        let schema = cleanSchema[path];
         for (let schemaField in schema) {
           // "schema" are the schemas seen on the SchemasTable, and "schemaField" are the fields to be filled-in in each schema
-          let fieldRequirements = schema[schemaField];
-
+          let field = schema[schemaField];
           // the following switch statements must be modified whenever we decide to create:
           // a new "type" (e.g. number, string, date) or
           // "type constraint" (e.g. max number, min number, max string length)
           // this isn't the most elegant solution, but this was the only way we know how to implement dynamic yupJS validation shapes
-          // yupJS does not like reading string literals in its shape (e.g. `Yup-${fieldRequirements.type}.required()` does not work)
-          switch (fieldRequirements.type) {
+          // yupJS does not like reading string literals in its shape (e.g. `Yup-${field.type}.required()` does not work)
+          switch (field.type) {
             case "string":
-              switch (fieldRequirements.required) {
+              switch (field.required) {
                 case true:
-                  switch (fieldRequirements.allowedValues.length > 0) {
+                  switch (field.allowedValues.length > 0) {
                     case true:
-                      switch (typeof fieldRequirements.stringMax === "string") {
+                      switch (typeof field.stringMax === "string") {
                         case true:
                           fieldObj[schemaField] = Yup.string()
                             .required(
                               `${path}-${entryCount}-${fieldCount}_${
-                                fieldRequirements.type[0].toUpperCase() +
-                                fieldRequirements.type.substr(1)
+                                field.type[0].toUpperCase() +
+                                field.type.substr(1)
                               } Required`
                             )
                             .max(
-                              parseInt(fieldRequirements.stringMax),
-                              `${path}-${entryCount}-${fieldCount}_Must not exceed ${fieldRequirements.stringMax} characters.`
+                              parseInt(field.stringMax),
+                              `${path}-${entryCount}-${fieldCount}_Must not exceed ${field.stringMax} characters.`
                             )
                             .oneOf(
-                              fieldRequirements.allowedValues,
-                              `${path}-${entryCount}-${fieldCount}_Must be one of the following: ${fieldRequirements.allowedValues.join(
+                              field.allowedValues,
+                              `${path}-${entryCount}-${fieldCount}_Must be one of the following: ${field.allowedValues.join(
                                 ", "
                               )}`
                             );
@@ -132,26 +151,26 @@ export const satelliteValidatorShaper = (schemas, isUniqueList) => {
                           fieldObj[schemaField] = Yup.string()
                             .required(
                               `${path}-${entryCount}-${fieldCount}_${
-                                fieldRequirements.type[0].toUpperCase() +
-                                fieldRequirements.type.substr(1)
+                                field.type[0].toUpperCase() +
+                                field.type.substr(1)
                               } Required`
                             )
                             .oneOf(
-                              fieldRequirements.allowedValues,
-                              `${path}-${entryCount}-${fieldCount}_Must be one of the following: ${fieldRequirements.allowedValues.join(
+                              field.allowedValues,
+                              `${path}-${entryCount}-${fieldCount}_Must be one of the following: ${field.allowedValues.join(
                                 ", "
                               )}`
                             );
                       }
                       break;
                     default:
-                      switch (fieldRequirements.isUnique) {
+                      switch (field.isUnique) {
                         case true:
                           fieldObj[schemaField] = Yup.string()
                             .required(
                               `${path}-${entryCount}-${fieldCount}_${
-                                fieldRequirements.type[0].toUpperCase() +
-                                fieldRequirements.type.substr(1)
+                                field.type[0].toUpperCase() +
+                                field.type.substr(1)
                               } Required`
                             )
                             .notOneOf(
@@ -162,24 +181,23 @@ export const satelliteValidatorShaper = (schemas, isUniqueList) => {
                         default:
                           fieldObj[schemaField] = Yup.string().required(
                             `${path}-${entryCount}-${fieldCount}_${
-                              fieldRequirements.type[0].toUpperCase() +
-                              fieldRequirements.type.substr(1)
+                              field.type[0].toUpperCase() + field.type.substr(1)
                             } Required`
                           );
                       }
                   }
                   break;
                 default:
-                  switch (fieldRequirements.allowedValues.length === 0) {
+                  switch (field.allowedValues.length === 0) {
                     case true:
-                      switch (typeof fieldRequirements.stringMax === "string") {
+                      switch (typeof field.stringMax === "string") {
                         case true:
-                          switch (fieldRequirements.isUnique) {
+                          switch (field.isUnique) {
                             case true:
                               fieldObj[schemaField] = Yup.string()
                                 .max(
-                                  parseInt(fieldRequirements.stringMax),
-                                  `${path}-${entryCount}-${fieldCount}_Must not exceed ${fieldRequirements.stringMax} characters.`
+                                  parseInt(field.stringMax),
+                                  `${path}-${entryCount}-${fieldCount}_Must not exceed ${field.stringMax} characters.`
                                 )
                                 .notOneOf(
                                   isUniqueList(path, schemaField),
@@ -188,14 +206,14 @@ export const satelliteValidatorShaper = (schemas, isUniqueList) => {
                               break;
                             default:
                               fieldObj[schemaField] = Yup.string().max(
-                                parseInt(fieldRequirements.stringMax),
-                                `${path}-${entryCount}-${fieldCount}_Must not exceed ${fieldRequirements.stringMax} characters.`
+                                parseInt(field.stringMax),
+                                `${path}-${entryCount}-${fieldCount}_Must not exceed ${field.stringMax} characters.`
                               );
                               break;
                           }
                           break;
                         default:
-                          switch (fieldRequirements.isUnique) {
+                          switch (field.isUnique) {
                             case true:
                               fieldObj[schemaField] = Yup.string().notOneOf(
                                 isUniqueList(path, schemaField),
@@ -210,8 +228,8 @@ export const satelliteValidatorShaper = (schemas, isUniqueList) => {
                       break;
                     default:
                       fieldObj[schemaField] = Yup.string().oneOf(
-                        fieldRequirements.allowedValues,
-                        `${path}-${entryCount}-${fieldCount}_Must be one of the following: ${fieldRequirements.allowedValues.join(
+                        field.allowedValues,
+                        `${path}-${entryCount}-${fieldCount}_Must be one of the following: ${field.allowedValues.join(
                           ", "
                         )}`
                       );
@@ -219,65 +237,60 @@ export const satelliteValidatorShaper = (schemas, isUniqueList) => {
               }
               break;
             case "number":
-              switch (fieldRequirements.required) {
+              switch (field.required) {
                 case true:
-                  switch (
-                    fieldRequirements.min && fieldRequirements.max
-                      ? true
-                      : false
-                  ) {
+                  switch (field.min && field.max ? true : false) {
                     case true:
                       fieldObj[schemaField] = Yup.number()
                         .required(
                           `${path}-${entryCount}-${fieldCount}_${
-                            fieldRequirements.type[0].toUpperCase() +
-                            fieldRequirements.type.substr(1)
+                            field.type[0].toUpperCase() + field.type.substr(1)
                           } Required`
                         )
                         .min(
-                          parseInt(fieldRequirements.min),
-                          `${path}-${entryCount}-${fieldCount}_Must be between the values of ${fieldRequirements.min} and ${fieldRequirements.max}`
+                          parseInt(field.min),
+                          `${path}-${entryCount}-${fieldCount}_Must be between the values of ${field.min} and ${field.max}`
                         )
                         .max(
-                          parseInt(fieldRequirements.max),
-                          `${path}-${entryCount}-${fieldCount}_Must be between the values of ${fieldRequirements.min} and ${fieldRequirements.max}`
+                          parseInt(field.max),
+                          `${path}-${entryCount}-${fieldCount}_Must be between the values of ${field.min} and ${field.max}`
                         );
                       break;
                     default:
-                      switch (typeof fieldRequirements.min === "string") {
+                      switch (typeof field.min === "string") {
                         case true:
                           fieldObj[schemaField] = Yup.number()
                             .required(
                               `${path}-${entryCount}-${fieldCount}_${
-                                fieldRequirements.type[0].toUpperCase() +
-                                fieldRequirements.type.substr(1)
+                                field.type[0].toUpperCase() +
+                                field.type.substr(1)
                               } Required`
                             )
                             .min(
-                              parseInt(fieldRequirements.min),
-                              `${path}-${entryCount}-${fieldCount}_Must be equal or greater than ${fieldRequirements.min}`
+                              parseInt(field.min),
+                              `${path}-${entryCount}-${fieldCount}_Must be equal or greater than ${field.min}`
                             );
                           break;
                         default:
-                          switch (typeof fieldRequirements.max === "string") {
+                          switch (typeof field.max === "string") {
                             case true:
                               fieldObj[schemaField] = Yup.number()
                                 .required(
                                   `${path}-${entryCount}-${fieldCount}_${
-                                    fieldRequirements.type[0].toUpperCase() +
-                                    fieldRequirements.type.substr(1)
+                                    field.type[0].toUpperCase() +
+                                    field.type.substr(1)
                                   } Required`
                                 )
                                 .max(
-                                  parseInt(fieldRequirements.max),
-                                  `${path}-${entryCount}-${fieldCount}_Must be equal to or less than ${fieldRequirements.max}`
+                                  parseInt(field.max),
+                                  `${path}-${entryCount}-${fieldCount}_Must be equal to or less than ${field.max}`
                                 );
                               break;
                             default:
                               fieldObj[schemaField] = Yup.number().required(
                                 `${path}-${entryCount}-${fieldCount}_${
-                                  fieldRequirements.type[0].toUpperCase() +
-                                  fieldRequirements.type.substr(1)
+                                  field.type[0].toUpperCase() +
+                                  field.type.substr(1)
                                 } Required`
                               );
                           }
@@ -285,36 +298,32 @@ export const satelliteValidatorShaper = (schemas, isUniqueList) => {
                   }
                   break;
                 default:
-                  switch (
-                    fieldRequirements.min && fieldRequirements.max
-                      ? true
-                      : false
-                  ) {
+                  switch (field.min && field.max ? true : false) {
                     case true:
                       fieldObj[schemaField] = Yup.number()
                         .min(
-                          parseInt(fieldRequirements.min),
-                          `${path}-${entryCount}-${fieldCount}_Must be between the values of ${fieldRequirements.min} and ${fieldRequirements.max}`
+                          parseInt(field.min),
+                          `${path}-${entryCount}-${fieldCount}_Must be between the values of ${field.min} and ${field.max}`
                         )
                         .max(
-                          parseInt(fieldRequirements.max),
-                          `${path}-${entryCount}-${fieldCount}_Must be between the values of ${fieldRequirements.min} and ${fieldRequirements.max}`
+                          parseInt(field.max),
+                          `${path}-${entryCount}-${fieldCount}_Must be between the values of ${field.min} and ${field.max}`
                         );
                       break;
                     default:
-                      switch (typeof fieldRequirements.min === "string") {
+                      switch (typeof field.min === "string") {
                         case true:
                           fieldObj[schemaField] = Yup.number().min(
-                            parseInt(fieldRequirements.min),
-                            `${path}-${entryCount}-${fieldCount}_Must be equal to or greater than ${fieldRequirements.min}`
+                            parseInt(field.min),
+                            `${path}-${entryCount}-${fieldCount}_Must be equal to or greater than ${field.min}`
                           );
                           break;
                         default:
-                          switch (typeof fieldRequirements.max === "string") {
+                          switch (typeof field.max === "string") {
                             case true:
                               fieldObj[schemaField] = Yup.number().max(
-                                parseInt(fieldRequirements.max),
-                                `${path}-${entryCount}-${fieldCount}_Must be equal to or less than ${fieldRequirements.max}`
+                                parseInt(field.max),
+                                `${path}-${entryCount}-${fieldCount}_Must be equal to or less than ${field.max}`
                               );
                               break;
                             default:
@@ -325,12 +334,11 @@ export const satelliteValidatorShaper = (schemas, isUniqueList) => {
               }
               break;
             case "date":
-              switch (fieldRequirements.required) {
+              switch (field.required) {
                 case true:
                   fieldObj[schemaField] = Yup.date().required(
                     `${path}-${entryCount}-${fieldCount}_${
-                      fieldRequirements.type[0].toUpperCase() +
-                      fieldRequirements.type.substr(1)
+                      field.type[0].toUpperCase() + field.type.substr(1)
                     } Required`
                   );
                   break;
@@ -339,7 +347,7 @@ export const satelliteValidatorShaper = (schemas, isUniqueList) => {
               }
               break;
             case "url":
-              switch (fieldRequirements.required) {
+              switch (field.required) {
                 case true:
                   fieldObj[schemaField] = Yup.string()
                     .matches(
@@ -347,9 +355,7 @@ export const satelliteValidatorShaper = (schemas, isUniqueList) => {
                       `${path}-${entryCount}-${fieldCount}_Must be a valid URL (e.g. https://en.wikipedia.org/wiki/Main_Page).`
                     )
                     .required(
-                      `${path}-${entryCount}-${fieldCount}_${
-                        fieldRequirements.type.toUpperCase()
-                      } Required`
+                      `${path}-${entryCount}-${fieldCount}_${field.type.toUpperCase()} Required`
                     );
                   break;
                 default:
@@ -365,7 +371,6 @@ export const satelliteValidatorShaper = (schemas, isUniqueList) => {
           fieldCount++;
         }
         let fieldValidator = Yup.object().shape(fieldObj);
-
         // Yup.addMethod's test must return a boolean, and generate errors as necessary, in order to complete the validation step
         fieldValidator
           .validate(entry, { abortEarly: true })
@@ -399,25 +404,11 @@ export const satelliteValidatorShaper = (schemas, isUniqueList) => {
       }
     });
   });
-
-  let yupShape = {
-    // NORAD ID is always a part of the yup shape
-    noradID: Yup.string()
-      .required(`Required`)
-      .matches(/^[0-9]+$/g, "Must be a positive number")
-      .notOneOf(
-        isUniqueList(null, "noradID"),
-        (obj) =>
-          `A satellite with noradID of ${obj.value} already exists in our records.`
-      ),
-  };
-
-  // if the schemaObj is complete, begin building the final yup schema object
-  if (JSON.stringify(schemaObj) !== "{}") {
-    for (let schema in schemaObj) {
+  // if the cleanSchema is complete, begin building the final yup schema object
+  if (JSON.stringify(cleanSchema) !== "{}") {
+    for (let schema in cleanSchema) {
       yupShape[schema] = Yup.array().checkEachEntry();
     }
   }
-
   return Yup.object().shape(yupShape);
 };

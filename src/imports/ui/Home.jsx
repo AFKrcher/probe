@@ -1,6 +1,6 @@
 import React from "react";
 // Imports
-import useWindowSize from "./utils/useWindowSize.jsx";
+import useWindowSize from "./Hooks/useWindowSize.jsx";
 
 // Components
 import { SatCard } from "./DataDisplays/SatCard.jsx";
@@ -40,12 +40,11 @@ const useStyles = makeStyles((theme) => ({
 
 export const Home = () => {
   const classes = useStyles();
-
   const [width, height] = useWindowSize();
 
   const numberOfSkeletons =
-    Math.round(width / 200) > 8 || Math.round(width / 200) <= 4
-      ? 8
+    Math.round(width / 200) > 9 || Math.round(width / 200) <= 3
+      ? 9
       : Math.round(width / 200);
 
   const cardSpace =
@@ -66,11 +65,13 @@ export const Home = () => {
     <div className={classes.root}>
       <Container>
         <Typography variant="h3">
-          Welcome to <strong>OpenOrbit!</strong>
+          Welcome to <strong>PROBE</strong>!
         </Typography>
         <Typography variant="body1" className={classes.description}>
-          OpenOrbit is seeking to become the world's most complete and easy to
-          use resource for spacecraft data and information.
+          <strong>P</strong>ublically <strong>R</strong>esearched{" "}
+          <strong>OB</strong>s<strong>E</strong>rvatory (PROBE) is seeking to
+          become the world's most complete and easy to use resource for
+          spacecraft data and information.
         </Typography>
         <Typography variant="subtitle1">
           100% Open Source, 100% Machine Readable.
@@ -103,13 +104,19 @@ export const Home = () => {
                     <Skeleton variant="rect" className={classes.skeleton}>
                       <SatCard
                         satellite={{
-                          noradID: "",
+                          noradID: "skeleton",
                           names: [
                             {
-                              reference: "",
-                              name: "",
+                              reference: "skeleton",
+                              name: "skeleton",
                             },
                           ],
+                          descriptionShort: [
+                            {
+                              reference: "skeleton",
+                              descriptionShort: "skeleton",
+                            }
+                          ]
                         }}
                         width={width}
                         height={height}

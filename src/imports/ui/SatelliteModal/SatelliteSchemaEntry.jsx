@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 // Imports
-import { Field } from "formik";
+import { Field, FieldArray } from "formik";
 
 // @material-ui
 import {
@@ -9,11 +9,11 @@ import {
   Paper,
   IconButton,
   TextField,
-  Typography,
   FormControl,
   MenuItem,
   InputAdornment,
   Tooltip,
+  Typography,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import LinkIcon from "@material-ui/icons/Link";
@@ -54,8 +54,12 @@ export const SatelliteSchemaEntry = ({
   setFieldValue,
   editing,
   errors,
-  setTouched,
   entries,
+  setSatSchema,
+  isUniqueList,
+  schemas,
+  schemaGenerator,
+  setTouched
 }) => {
   const classes = useStyles();
 
@@ -89,18 +93,14 @@ export const SatelliteSchemaEntry = ({
     setTouched(obj);
 
     setFieldValue(event.target.name, event.target.value);
-    // setTimeour used to activate test once more - temporary workaround until Yup refactor
     setTimeout(() => setFieldValue(event.target.name, event.target.value));
   };
 
-  handleEntryDelete = (schemaName, index) => {
+  handleEntryDelete = async (schemaName, index) => {
     let newEntries = entries.map((entry) => entry);
     newEntries.splice(index, 1);
-    setFieldValue(schemaName, newEntries);
-
-    let obj = {};
-    obj[schemaName] = true;
-    setTouched(obj);
+    await setFieldValue(schemaName, newEntries);
+    setSatSchema(schemaGenerator(schemas, values, isUniqueList));
   };
 
   handleClick = (url) => {
@@ -114,7 +114,11 @@ export const SatelliteSchemaEntry = ({
           type === "url"
             ? {
                 endAdornment: (
-                  <Tooltip title={"Open URL in a new tab"} arrow placement="top-end">
+                  <Tooltip
+                    title={"Open URL in a new tab"}
+                    arrow
+                    placement="top-end"
+                  >
                     <InputAdornment
                       className={classes.inputAdornment}
                       position="end"
@@ -143,110 +147,123 @@ export const SatelliteSchemaEntry = ({
             {schema.fields.map((field, fieldIndex) => {
               return (
                 <div key={fieldIndex} className={classes.fieldContainer}>
-                  {field.allowedValues.length === 0 ? (
-                    <Field
-                      className={classes.field}
-                      inputProps={{
-                        name: `${schema.name}.${entryIndex}.${field.name}`,
-                        min: field.min,
-                        max: field.max,
-                        step: "any",
-                      }}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      error={
-                        filteredHelper(schema.name, entryIndex, fieldIndex)
-                          ? true
-                          : false
-                      }
-                      value={entry[`${field.name}`] || ""}
-                      onChange={onChange}
-                      label={field.name}
-                      margin="dense"
-                      required={field.required}
-                      fullWidth
-                      variant="outlined"
-                      disabled={!editing}
-                      component={
-                        editing
-                          ? TextField
-                          : (props) =>
-                              linkAdornment(
-                                props,
-                                entry[`${field.name}`],
-                                field.type
+                  <FieldArray
+                    name={schema.name}
+                    render={() => {
+                      return field.allowedValues.length === 0 ? (
+                        <Field
+                          className={classes.field}
+                          inputProps={{
+                            name: `${schema.name}.${entryIndex}.${field.name}`,
+                            min: field.min,
+                            max: field.max,
+                            step: "any",
+                          }}
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          value={entry[`${field.name}`] || ""}
+                          onChange={onChange}
+                          error={
+                            filteredHelper(schema.name, entryIndex, fieldIndex)
+                              ? true
+                              : false
+                          }
+                          label={field.name}
+                          margin="dense"
+                          required={field.required}
+                          fullWidth
+                          variant="outlined"
+                          disabled={!editing}
+                          component={
+                            editing
+                              ? TextField
+                              : (props) =>
+                                  linkAdornment(
+                                    props,
+                                    entry[`${field.name}`],
+                                    field.type
+                                  )
+                          }
+                          type={
+                            field.type === "date"
+                              ? "datetime-local"
+                              : field.type
+                          }
+                        />
+                      ) : (
+                        <FormControl
+                          className={classes.field}
+                          disabled={!editing}
+                          variant="outlined"
+                          margin="dense"
+                          required
+                          fullWidth
+                          error={
+                            filteredHelper(schema.name, entryIndex, fieldIndex)
+                              ? true
+                              : false
+                          }
+                        >
+                          <Field
+                            inputProps={{
+                              name: `${schema.name}.${entryIndex}.${field.name}`,
+                              min: field.min,
+                              max: field.max,
+                              step: "any",
+                            }}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            value={entry[`${field.name}`] || ""}
+                            onChange={onChange}
+                            error={
+                              filteredHelper(
+                                schema.name,
+                                entryIndex,
+                                fieldIndex
                               )
-                      }
-                      type={
-                        field.type === "date" ? "datetime-local" : field.type
-                      }
-                    />
-                  ) : (
-                    <FormControl
-                      className={classes.field}
-                      error={
-                        filteredHelper(schema.name, entryIndex, fieldIndex)
-                          ? true
-                          : false
-                      }
-                      disabled={!editing}
-                      variant="outlined"
-                      margin="dense"
-                      required
-                      fullWidth
-                    >
-                      <Field
-                        inputProps={{
-                          name: `${schema.name}.${entryIndex}.${field.name}`,
-                          min: field.min,
-                          max: field.max,
-                          step: "any",
-                        }}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        value={entry[`${field.name}`] || ""}
-                        onChange={onChange}
-                        label={field.name}
-                        margin="dense"
-                        required={field.required}
-                        fullWidth
-                        select
-                        variant="outlined"
-                        disabled={!editing}
-                        error={
-                          filteredHelper(schema.name, entryIndex, fieldIndex)
-                            ? true
-                            : false
-                        }
-                        component={
-                          editing
-                            ? TextField
-                            : (props) =>
-                                linkAdornment(
-                                  props,
-                                  entry[`${field.name}`],
-                                  field.type
-                                )
-                        }
-                        type={
-                          field.type === "date" ? "datetime-local" : field.type
-                        }
-                      >
-                        <MenuItem value="" disabled>
-                          <em>Allowed Values</em>
-                        </MenuItem>
-                        {field.allowedValues.map((value, valueIndex) => {
-                          return (
-                            <MenuItem key={valueIndex} value={value}>
-                              {value}
+                                ? true
+                                : false
+                            }
+                            label={field.name}
+                            margin="dense"
+                            required={field.required}
+                            fullWidth
+                            select={true}
+                            variant="outlined"
+                            disabled={!editing}
+                            component={
+                              editing
+                                ? TextField
+                                : (props) =>
+                                    linkAdornment(
+                                      props,
+                                      entry[`${field.name}`],
+                                      field.type
+                                    )
+                            }
+                            type={
+                              field.type === "date"
+                                ? "datetime-local"
+                                : field.type
+                            }
+                          >
+                            <MenuItem value="" disabled>
+                              <em>Allowed Values</em>
                             </MenuItem>
-                          );
-                        })}
-                      </Field>
-                    </FormControl>
-                  )}
+                            {field.allowedValues.map((value, valueIndex) => {
+                              return (
+                                <MenuItem key={valueIndex} value={value}>
+                                  {value}
+                                </MenuItem>
+                              );
+                            })}
+                          </Field>
+                        </FormControl>
+                      );
+                    }}
+                  />
                   <Typography
                     variant="caption"
                     className={

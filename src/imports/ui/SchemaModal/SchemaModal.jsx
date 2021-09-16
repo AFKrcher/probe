@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 // Imports
+import { useTracker } from "meteor/react-meteor-data";
 import { Formik, Form } from "formik";
-import HelpersContext from "../helpers/HelpersContext.jsx";
+import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import { schemaValidatorShaper } from "../utils/schemaDataFuncs.js";
+import useWindowSize from "../Hooks/useWindowSize.jsx";
 
 // Components
 import { SchemaForm } from "./SchemaForm";
 import { SchemaCollection } from "../../api/schemas";
-import AlertDialog from "../helpers/AlertDialog.jsx";
-import SnackBar from "../helpers/SnackBar.jsx";
+import AlertDialog from "../Dialogs/AlertDialog.jsx";
+import SnackBar from "../Dialogs/SnackBar.jsx";
 
 // @material-ui
 import {
@@ -29,13 +31,12 @@ import Save from "@material-ui/icons/Save";
 const useStyles = makeStyles(() => ({
   modal: {
     width: "auto",
-    height: "100vh",
+    height: "auto",
   },
   titleText: {
     fontSize: "25px",
   },
   content: {
-    maxHeight: "75vh",
     overflowY: "auto",
   },
   description: {
@@ -52,17 +53,25 @@ const useStyles = makeStyles(() => ({
 
 export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
   const classes = useStyles();
+
   const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } =
     useContext(HelpersContext);
 
+  const [width] = useWindowSize();
+
   const [editing, setEditing] = useState(newSchema || false);
+
+  const [schemas, isLoading] = useTracker(() => {
+    const sub = Meteor.subscribe("schemas");
+    const schemas = SchemaCollection.find().fetch();
+    return [schemas, !sub.ready()];
+  });
+
   useEffect(() => {
     setEditing(newSchema || false);
   }, [newSchema, show]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    window.sessionStorage.clear();
-
     if (values) {
       if (newSchema) {
         SchemaCollection.insert(values);
@@ -92,19 +101,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
     }
   };
 
-  // Refactor for modularity/ Import form yupFuncs. Currently, doesn't work asynchronously.
-  const schemas = SchemaCollection.find()
-    .fetch()
-    .map((schema) =>
-      editing
-        ? initValues.name !== schema.name
-          ? schema.name
-          : null
-        : schema.name
-    );
-
   const handleDelete = () => {
-    window.sessionStorage.clear();
     SchemaCollection.remove(initValues._id);
     setOpenAlert(false);
     handleClose();
@@ -219,30 +216,37 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
               dirty,
             }) => (
               <Form>
-                <DialogContent className={classes.content}>
-                  <Typography className={classes.description}>
-                    Each schema is built to store sets of data that characterize
-                    a satellite. Data fields can be added, modified, or deleted
-                    below.
-                  </Typography>
-                  <SchemaForm
-                    touched={touched}
-                    errors={errors}
-                    formValues={values}
-                    setValues={setValues}
-                    setFieldValue={setFieldValue}
-                    editing={editing}
-                    initValues={initValues}
-                  />
-                </DialogContent>
+                {isLoading ? (
+                  <DialogContent className={classes.loadingDialog}>
+                    <CircularProgress size={75} />
+                  </DialogContent>
+                ) : (
+                  <DialogContent className={classes.content}>
+                    <Typography className={classes.description}>
+                      Each schema is built to store sets of data that
+                      characterize a satellite. Data fields can be added,
+                      modified, or deleted below.
+                    </Typography>
+                    <SchemaForm
+                      touched={touched}
+                      errors={errors}
+                      formValues={values}
+                      setValues={setValues}
+                      setFieldValue={setFieldValue}
+                      editing={editing}
+                      initValues={initValues}
+                    />
+                  </DialogContent>
+                )}
                 <DialogActions className={classes.actions}>
                   {!newSchema && (
                     <>
                       {!editing && (
                         <Button
+                          size={width && width < 500 ? "small" : "medium"}
                           variant="contained"
                           color="secondary"
-                          startIcon={<Delete />}
+                          startIcon={width && width < 500 ? null : <Delete />}
                           onClick={handleDeleteDialog}
                         >
                           Delete
@@ -251,30 +255,43 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
                     </>
                   )}
                   <Button
+                    size={width && width < 500 ? "small" : "medium"}
                     variant="contained"
                     color={editing && dirty ? "secondary" : "default"}
-                    startIcon={editing ? dirty ? <Delete /> : null : <Edit />}
+                    startIcon={
+                      width && width < 500 ? null : editing ? (
+                        dirty ? (
+                          <Delete />
+                        ) : null
+                      ) : (
+                        <Edit />
+                      )
+                    }
                     onClick={() => handleEdit(setValues, dirty)}
                   >
                     {editing ? "Cancel" : "Edit"}
                   </Button>
                   {!editing && (
                     <Button
+                      size={width && width < 500 ? "small" : "medium"}
                       variant="contained"
                       onClick={handleClose}
-                      startIcon={<Close />}
+                      startIcon={width && width < 500 ? null : <Close />}
                     >
                       Close
                     </Button>
                   )}
                   {editing && (
                     <Button
+                      size={width && width < 500 ? "small" : "medium"}
                       type="submit"
                       variant="contained"
                       color="primary"
-                      startIcon={<Save />}
+                      startIcon={width && width < 500 ? null : <Save />}
                       disabled={
-                        Object.entries(errors).length > 0 || !dirty
+                        Object.entries(errors).length > 0 ||
+                        !dirty ||
+                        Object.entries(touched).length === 0
                           ? true
                           : false
                       }
