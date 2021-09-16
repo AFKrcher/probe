@@ -68,7 +68,7 @@ export const Home = () => {
           Welcome to <strong>PROBE</strong>!
         </Typography>
         <Typography variant="body1" className={classes.description}>
-          <strong>P</strong>ublically <strong>R</strong>esearched{" "}
+          <strong>P</strong>ublicly <strong>R</strong>esearched{" "}
           <strong>OB</strong>s<strong>E</strong>rvatory (PROBE) is seeking to
           become the world's most complete and easy to use resource for
           satellite data and information.
