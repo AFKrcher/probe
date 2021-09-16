@@ -71,9 +71,9 @@ const newSatValues = {
 
 const handleFavorite = (e, values) => {
   e.preventDefault();
-  Meteor.call('addToFavorites', Meteor.userId(), values, (err, res) =>{
-    console.log(res)
-  })
+  Meteor.call("addToFavorites", Meteor.userId(), values, (err, res) => {
+    console.log(res);
+  });
 };
 
 export const SatellitesTable = ({ roles }) => {
@@ -111,34 +111,39 @@ export const SatellitesTable = ({ roles }) => {
   const [sortNames, setSortNames] = useState(0);
   const [selector, setSelector] = useState({});
   const [columns, setColumns] = useState([]);
+  const [fav, setFav] = useState(<StarBorder />);
 
-  const [fav, setFav] = useState(<StarBorder/>)
   useEffect(() => {
     const columns = [
       {
         headerAlign: "center",
         field: "id",
         headerName: "NORAD ID",
+        minWidth: 170,
+      },
+      {
+        headerAlign: "center",
+        field: "type",
+        headerName: "TYPE",
         minWidth: 150,
+        editable: false,
+      },
+      {
+        headerAlign: "center",
+        field: "orbit",
+        headerName: "ORBIT(S)",
+        minWidth: 200,
+        editable: false,
       },
       {
         headerAlign: "center",
         field: "names",
         headerName: "NAME(S)",
         minWidth: 250,
-        editable: false,
-      },
-      {
-        headerAlign: "center",
-        field: "descriptions",
-        headerName: "DESCRIPTION",
-        minWidth: 300,
-        editable: false,
         flex: 1,
+        editable: false,
       },
     ];
-
-
 
     if (Meteor.userId()) {
       // if(Meteor.user()?.favorites?.indexOf(params.id)){
@@ -151,31 +156,31 @@ export const SatellitesTable = ({ roles }) => {
         minWidth: 50,
         headerAlign: "center",
         renderCell: (params) => {
-          if(Meteor.user()?.favorites?.indexOf(params.id)){
-          return (
-            <IconButton
-              style={{ marginLeft: 3 }}
-              size="small"
-              onClick={(e) => {
-                handleFavorite(e, params.id);
-              }}
-            >
-              <Star/>
-            </IconButton>
-          );
-            }else{
-              return (
-                <IconButton
-                  style={{ marginLeft: 3 }}
-                  size="small"
-                  onClick={(e) => {
-                    handleFavorite(e, params.id);
-                  }}
-                >
-                  <StarBorder />
-                </IconButton>
-              );
-            }
+          if (Meteor.user()?.favorites?.indexOf(params.id)) {
+            return (
+              <IconButton
+                style={{ marginLeft: 3 }}
+                size="small"
+                onClick={(e) => {
+                  handleFavorite(e, params.id);
+                }}
+              >
+                <Star />
+              </IconButton>
+            );
+          } else {
+            return (
+              <IconButton
+                style={{ marginLeft: 3 }}
+                size="small"
+                onClick={(e) => {
+                  handleFavorite(e, params.id);
+                }}
+              >
+                <StarBorder />
+              </IconButton>
+            );
+          }
         },
       });
     }
@@ -195,8 +200,9 @@ export const SatellitesTable = ({ roles }) => {
       return {
         id: sat.noradID,
         names: sat.names?.map((name) => name.names || name.name).join(", "),
-        descriptions: sat.descriptionShort
-          ? sat.descriptionShort[0].descriptionShort
+        type: sat.type ? sat.type[0].type : "N/A",
+        orbit: sat.orbit
+          ? sat.orbit.map((entry) => entry.orbit).join(", ")
           : "N/A",
       };
     });
@@ -211,9 +217,20 @@ export const SatellitesTable = ({ roles }) => {
         setSelector({
           noradID: { $regex: `${filterBy.value}` },
         });
-      } else {
+      }
+      if (filterBy.columnField === "names") {
         setSelector({
           "names.name": { $regex: `${filterBy.value}`, $options: "i" },
+        });
+      }
+      if (filterBy.columnField === "type") {
+        setSelector({
+          "type.type": { $regex: `${filterBy.value}`, $options: "i" },
+        });
+      }
+      if (filterBy.columnField === "orbit") {
+        setSelector({
+          "orbit.orbit": { $regex: `${filterBy.value}`, $options: "i" },
         });
       }
     } else {
