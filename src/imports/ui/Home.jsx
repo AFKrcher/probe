@@ -71,7 +71,7 @@ export const Home = () => {
           <strong>P</strong>ublically <strong>R</strong>esearched{" "}
           <strong>OB</strong>s<strong>E</strong>rvatory (PROBE) is seeking to
           become the world's most complete and easy to use resource for
-          spacecraft data and information.
+          satellite data and information.
         </Typography>
         <Typography variant="subtitle1">
           100% Open Source, 100% Machine Readable.
