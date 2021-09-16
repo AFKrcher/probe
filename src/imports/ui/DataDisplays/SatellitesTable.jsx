@@ -69,6 +69,16 @@ const newSatValues = {
   noradID: "",
 };
 
+<<<<<<< HEAD
+=======
+const handleFavorite = (e, values) => {
+  e.preventDefault();
+  Meteor.call("addToFavorites", Meteor.userId(), values, (err, res) => {
+    console.log(res);
+  });
+};
+
+>>>>>>> 8015564bd0027c46171fba122cbed37553aa67d9
 export const SatellitesTable = ({ roles }) => {
   const classes = useStyles();
 
@@ -109,35 +119,43 @@ export const SatellitesTable = ({ roles }) => {
   const [limiter, setLimiter] = useState(10);
   const [sortNorad, setSortNorad] = useState(0);
   const [sortNames, setSortNames] = useState(0);
+  const [sortType, setSortType] = useState(0);
+  const [sortOrbit, setSortOrbit] = useState(0);
   const [selector, setSelector] = useState({});
   const [columns, setColumns] = useState([]);
+  const [fav, setFav] = useState(<StarBorder />);
 
   useEffect(() => {
     const columns = [
       {
-        headerAlign: "center",
+        headerAlign: "left",
         field: "id",
         headerName: "NORAD ID",
-        minWidth: 150,
+        minWidth: 170,
       },
       {
-        headerAlign: "center",
+        headerAlign: "left",
+        field: "type",
+        headerName: "TYPE",
+        minWidth: 150,
+        editable: false,
+      },
+      {
+        headerAlign: "left",
+        field: "orbit",
+        headerName: "ORBIT(S)",
+        minWidth: 200,
+        editable: false,
+      },
+      {
+        headerAlign: "left",
         field: "names",
         headerName: "NAME(S)",
         minWidth: 250,
-        editable: false,
-      },
-      {
-        headerAlign: "center",
-        field: "descriptions",
-        headerName: "DESCRIPTION",
-        minWidth: 300,
-        editable: false,
         flex: 1,
+        editable: false,
       },
     ];
-
-
 
     if (Meteor.userId()) {
       columns.unshift({
@@ -145,6 +163,7 @@ export const SatellitesTable = ({ roles }) => {
         minWidth: 50,
         headerAlign: "center",
         renderCell: (params) => {
+<<<<<<< HEAD
           return (
             <IconButton
               style={{ marginLeft: 3 }}
@@ -157,6 +176,33 @@ export const SatellitesTable = ({ roles }) => {
               <Star/> : <StarBorder/>}
             </IconButton>
           );
+=======
+          if (Meteor.user()?.favorites?.indexOf(params.id)) {
+            return (
+              <IconButton
+                style={{ marginLeft: 3 }}
+                size="small"
+                onClick={(e) => {
+                  handleFavorite(e, params.id);
+                }}
+              >
+                <Star />
+              </IconButton>
+            );
+          } else {
+            return (
+              <IconButton
+                style={{ marginLeft: 3 }}
+                size="small"
+                onClick={(e) => {
+                  handleFavorite(e, params.id);
+                }}
+              >
+                <StarBorder />
+              </IconButton>
+            );
+          }
+>>>>>>> 8015564bd0027c46171fba122cbed37553aa67d9
         },
       });
     }
@@ -170,14 +216,15 @@ export const SatellitesTable = ({ roles }) => {
     const sats = SatelliteCollection.find(selector, {
       limit: limiter,
       skip: page * limiter,
-      sort: sortNames ? { names: sortNames } : { noradID: sortNorad },
+      sort: sortNames ? { names: sortNames } : sortNorad ? { noradID: sortNorad } : sortType ? {type: sortType} : {orbit: sortOrbit},
     }).fetch();
     const rows = sats.map((sat) => {
       return {
         id: sat.noradID,
         names: sat.names?.map((name) => name.names || name.name).join(", "),
-        descriptions: sat.descriptionShort
-          ? sat.descriptionShort[0].descriptionShort
+        type: sat.type ? sat.type[0].type : "N/A",
+        orbit: sat.orbit
+          ? sat.orbit.map((entry) => entry.orbit).join(", ")
           : "N/A",
       };
     });
@@ -192,9 +239,20 @@ export const SatellitesTable = ({ roles }) => {
         setSelector({
           noradID: { $regex: `${filterBy.value}` },
         });
-      } else {
+      }
+      if (filterBy.columnField === "names") {
         setSelector({
           "names.name": { $regex: `${filterBy.value}`, $options: "i" },
+        });
+      }
+      if (filterBy.columnField === "type") {
+        setSelector({
+          "type.type": { $regex: `${filterBy.value}`, $options: "i" },
+        });
+      }
+      if (filterBy.columnField === "orbit") {
+        setSelector({
+          "orbit.orbit": { $regex: `${filterBy.value}`, $options: "i" },
         });
       }
     } else {
@@ -262,12 +320,21 @@ export const SatellitesTable = ({ roles }) => {
           if (e[0]) {
             if (e[0].field === "id") {
               e[0].sort === "asc" ? setSortNorad(1) : setSortNorad(-1);
-            } else {
+            }
+            if (e[0].field === "names") {
               e[0].sort === "asc" ? setSortNames(-1) : setSortNames(1);
+            }
+            if (e[0].field === "type") {
+              e[0].sort === "asc" ? setSortType(-1) : setSortType(1);
+            }
+            if (e[0].field === "orbit") {
+              e[0].sort === "asc" ? setSortOrbit(-1) : setSortOrbit(1);
             }
           } else {
             setSortNorad(0);
             setSortNames(0);
+            setSortType(0);
+            setSortOrbit(0);
           }
         }}
       />

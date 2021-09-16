@@ -1,4 +1,6 @@
 import React from "react";
+// Imports
+import { Link } from "react-router-dom";
 
 // @material-ui
 import { makeStyles } from "@material-ui/core";
@@ -24,13 +26,13 @@ export const Footer = () => {
   return (
     <div className={classes.root}>
         2021 - OpenOrbit -{" "}
-      <a href="" className={classes.link}>
+      <Link to="/terms" className={classes.link}>
         Terms
-      </a>{" "}
+      </Link>{" "}
       -{" "}
-      <a href="" className={classes.link}>
+      <Link to="/privacypolicy" className={classes.link}>
         Privacy Policy
-      </a>
+      </Link>
     </div>
   );
 };
