@@ -69,13 +69,6 @@ const newSatValues = {
   noradID: "",
 };
 
-const handleFavorite = (e, values) => {
-  e.preventDefault();
-  Meteor.call('addToFavorites', Meteor.userId(), values, (err, res) =>{
-    console.log(res)
-  })
-};
-
 export const SatellitesTable = ({ roles }) => {
   const classes = useStyles();
 
@@ -89,6 +82,13 @@ export const SatellitesTable = ({ roles }) => {
       </GridToolbarContainer>
     );
   }
+
+  const handleFavorite = (e, values) => {
+    e.preventDefault();
+    Meteor.call('addToFavorites', Meteor.userId(), values, (err, res) =>{
+      console.log(err || res)
+    })
+  };
 
   const [showModal, setShowModal] = useState(false);
   const [newSat, setNewSat] = useState(true);
@@ -112,7 +112,6 @@ export const SatellitesTable = ({ roles }) => {
   const [selector, setSelector] = useState({});
   const [columns, setColumns] = useState([]);
 
-  const [fav, setFav] = useState(<StarBorder/>)
   useEffect(() => {
     const columns = [
       {
@@ -141,17 +140,11 @@ export const SatellitesTable = ({ roles }) => {
 
 
     if (Meteor.userId()) {
-      // if(Meteor.user()?.favorites?.indexOf(params.id)){
-      //   setFav(<Star />)
-      // }else{
-      //   setFav(<StarBorder />)
-      // }
       columns.unshift({
         field: <Star style={{ marginBottom: -5 }} />,
         minWidth: 50,
         headerAlign: "center",
         renderCell: (params) => {
-          if(Meteor.user()?.favorites?.indexOf(params.id)){
           return (
             <IconButton
               style={{ marginLeft: 3 }}
@@ -160,22 +153,10 @@ export const SatellitesTable = ({ roles }) => {
                 handleFavorite(e, params.id);
               }}
             >
-              <Star/>
+              {Meteor.user()?.favorites?.indexOf(params.id) > -1 ? 
+              <Star/> : <StarBorder/>}
             </IconButton>
           );
-            }else{
-              return (
-                <IconButton
-                  style={{ marginLeft: 3 }}
-                  size="small"
-                  onClick={(e) => {
-                    handleFavorite(e, params.id);
-                  }}
-                >
-                  <StarBorder />
-                </IconButton>
-              );
-            }
         },
       });
     }
@@ -272,7 +253,7 @@ export const SatellitesTable = ({ roles }) => {
         onPageSizeChange={(newLimit) => setLimiter(newLimit)}
         onPageChange={(newPage) => setPage(newPage)}
         disableSelectionOnClick
-        onRowClick={(satellite) => {
+        onRowDoubleClick={(satellite) => {
           handleRowClick(
             SatelliteCollection.find({ noradID: satellite.id }).fetch()[0]
           );

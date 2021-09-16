@@ -90,8 +90,7 @@ Meteor.startup(() => {
         favorites.splice(favorites.indexOf(noradid), 1)
       }
       Meteor.users.update(user, {$set: {'favorites': favorites}});
-      // console.log('favorites: ',favorites)
-      // return Meteor.user().favorites
+      return Meteor.user().favorites
     }
   })
 
