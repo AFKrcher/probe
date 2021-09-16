@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+// Imports
+import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import HelpersContext from "./Dialogs/HelpersContext.jsx";
 import { useTracker } from "meteor/react-meteor-data";
 import { Accounts } from "meteor/accounts-base";
+
 // Components
 import { Nav } from "./Navigation/Nav.jsx";
 import { SatellitesTable } from "./DataDisplays/SatellitesTable.jsx";
@@ -10,12 +12,14 @@ import { SchemasTable } from "./DataDisplays/SchemasTable.jsx";
 import { Home } from "./Home.jsx";
 import { About } from "./About.jsx";
 import { Footer } from "./Navigation/Footer.jsx";
+import { PrivacyPolicy } from "./Navigation/PrivacyPolicy.jsx";
+import { Terms } from "./Navigation/Terms.jsx";
 import { Login } from "./Accounts/Login";
 import { Register } from "./Accounts/Register";
 import { ResetPassword } from "./Accounts/ResetPassword";
 import { DropDown } from "./Navigation/DropDown";
 import { Settings } from "./Accounts/Settings";
-import {Admin} from './Accounts/Admin'
+import { Admin } from './Accounts/Admin'
 
 // @material-ui
 import { ThemeProvider } from "@material-ui/core/styles";
@@ -102,6 +106,12 @@ export const App = () => {
                 </Route>
                 <Route exact={true} path="/about">
                   <About />
+                </Route>
+                <Route exact={true} path="/privacypolicy">
+                  <PrivacyPolicy />
+                </Route>
+                <Route exact={true} path="/terms">
+                  <Terms />
                 </Route>
                 <Route exact={true} path="/">
                   <Home />
