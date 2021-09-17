@@ -74,6 +74,14 @@ export const SchemaFormField = ({
     setFieldValue(event.target.name, event.target.checked);
   };
 
+  const maxErrorMessage = (message) => {
+    const toIndex = message.indexOf("to ");
+    const to = message.substr(toIndex);
+    const numberIndex = to.indexOf(" ");
+    const number = to.substr(numberIndex);
+    return `Maximum Value must be greater than the Minimum Value of ${number}`;
+  };
+
   const handleBlur = () => {
     setTouched(true);
   };
@@ -176,6 +184,13 @@ export const SchemaFormField = ({
                   }}
                   onChange={onMaxChange}
                   defaultValue={field.max}
+                  error={
+                    !errors["fields"]
+                      ? false
+                      : errors["fields"][index]
+                      ? true
+                      : false
+                  }
                   label="Maximum Value"
                   margin="dense"
                   fullWidth
@@ -187,9 +202,17 @@ export const SchemaFormField = ({
                 />
               </Grid>
             </Grid>
-            <FormHelperText className={classes.helpers}>
-              OPTIONAL: Provide a minimum and/or maximum value for the number
-            </FormHelperText>
+            {!errors["fields"] ? (
+              false
+            ) : errors["fields"][index] ? (
+              <FormHelperText className={classes.helpersError}>
+                {maxErrorMessage(errors["fields"][index]["max"])}
+              </FormHelperText>
+            ) : (
+              <FormHelperText className={classes.helpers}>
+                OPTIONAL: Provide a minimum and/or maximum value for the number
+              </FormHelperText>
+            )}
           </>
         ) : null}
         {field.type === "string" ? (
