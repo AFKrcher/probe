@@ -70,7 +70,7 @@ export const Home = () => {
         <Typography variant="body1" className={classes.description}>
           <strong>P</strong>ublicly <strong>R</strong>esearched{" "}
           <strong>OB</strong>s<strong>E</strong>rvatory (PROBE) is seeking to
-          become the world's most complete and easy to use resource for
+          become the world&apos;s most complete and easy to use resource for
           satellite data and information.
         </Typography>
         <Typography variant="subtitle1">
@@ -115,8 +115,8 @@ export const Home = () => {
                             {
                               reference: "skeleton",
                               descriptionShort: "skeleton",
-                            }
-                          ]
+                            },
+                          ],
                         }}
                         width={width}
                         height={height}
