@@ -85,7 +85,14 @@ export const SatCard = ({ width, height, satellite }) => {
 
   const classes = useStyles();
 
-  const adjustableFontSize = width < 600 ? 16 : 12;
+  const adjustableFontSize = (width) => {
+    switch (width) {
+      case width < 900:
+        return 16;
+      default:
+        return 12;
+    }
+  };
 
   function handleModify(e) {
     e.preventDefault();
@@ -176,7 +183,7 @@ export const SatCard = ({ width, height, satellite }) => {
               : { justifyContent: "space-between" }
           }
         >
-          {width < 500 ? (
+          {width < 900 ? (
             <React.Fragment>
               <Button
                 variant="outlined"
@@ -186,7 +193,7 @@ export const SatCard = ({ width, height, satellite }) => {
               >
                 <strong
                   style={{
-                    fontSize: adjustableFontSize,
+                    fontSize: adjustableFontSize(width),
                   }}
                 >
                   Options
@@ -245,7 +252,7 @@ export const SatCard = ({ width, height, satellite }) => {
               >
                 <strong
                   style={{
-                    fontSize: adjustableFontSize,
+                    fontSize: adjustableFontSize(width),
                   }}
                 >
                   Visualize
@@ -259,7 +266,7 @@ export const SatCard = ({ width, height, satellite }) => {
               >
                 <strong
                   style={{
-                    fontSize: adjustableFontSize,
+                    fontSize: adjustableFontSize(width),
                   }}
                 >
                   Dashboard
@@ -273,7 +280,7 @@ export const SatCard = ({ width, height, satellite }) => {
               >
                 <strong
                   style={{
-                    fontSize: adjustableFontSize,
+                    fontSize: adjustableFontSize(width),
                   }}
                 >
                   Data

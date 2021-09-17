@@ -289,9 +289,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
                       color="primary"
                       startIcon={width && width < 500 ? null : <Save />}
                       disabled={
-                        Object.entries(errors).length > 0 ||
-                        !dirty ||
-                        Object.entries(touched).length === 0
+                        Object.entries(errors).length > 0 || !dirty
                           ? true
                           : false
                       }

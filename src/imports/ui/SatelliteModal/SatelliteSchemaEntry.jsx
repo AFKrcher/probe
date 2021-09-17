@@ -59,7 +59,7 @@ export const SatelliteSchemaEntry = ({
   isUniqueList,
   schemas,
   schemaGenerator,
-  setTouched
+  setTouched,
 }) => {
   const classes = useStyles();
 
@@ -96,14 +96,23 @@ export const SatelliteSchemaEntry = ({
     setTimeout(() => setFieldValue(event.target.name, event.target.value));
   };
 
-  handleEntryDelete = async (schemaName, index) => {
+  const onBlur = (event) => {
+    let obj = {};
+    obj[`${event.target.name}`] = true;
+    setTouched(obj);
+
+    setFieldValue(event.target.name, event.target.value);
+    setTimeout(() => setFieldValue(event.target.name, event.target.value));
+  };
+
+  const handleEntryDelete = async (schemaName, index) => {
     let newEntries = entries.map((entry) => entry);
     newEntries.splice(index, 1);
     await setFieldValue(schemaName, newEntries);
     setSatSchema(schemaGenerator(schemas, values, isUniqueList));
   };
 
-  handleClick = (url) => {
+  const handleClick = (url) => {
     window.open(url, "_blank").focus();
   };
 
@@ -164,6 +173,7 @@ export const SatelliteSchemaEntry = ({
                           }}
                           value={entry[`${field.name}`] || ""}
                           onChange={onChange}
+                          onBlur={onBlur}
                           error={
                             filteredHelper(schema.name, entryIndex, fieldIndex)
                               ? true
@@ -217,6 +227,7 @@ export const SatelliteSchemaEntry = ({
                             }}
                             value={entry[`${field.name}`] || ""}
                             onChange={onChange}
+                            onBlur={onBlur}
                             error={
                               filteredHelper(
                                 schema.name,

@@ -70,10 +70,13 @@ export const SatelliteModal = ({
   handleClose,
   width,
 }) => {
+  const classes = useStyles();
+
   const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } =
     useContext(HelpersContext);
 
-  const classes = useStyles();
+  const [editing, setEditing] = useState(newSat || false);
+  const [satSchema, setSatSchema] = useState(null);
 
   const [schemas, sats, isLoadingSch, isLoadingSat] = useTracker(() => {
     const subSch = Meteor.subscribe("schemas");
@@ -104,9 +107,6 @@ export const SatelliteModal = ({
     }
     return list;
   };
-
-  const [editing, setEditing] = useState(newSat || false);
-  const [satSchema, setSatSchema] = useState(null);
 
   useEffect(() => {
     setEditing(newSat || false);
@@ -207,7 +207,8 @@ export const SatelliteModal = ({
     setOpenAlert(true);
   };
 
-  const handleToggleEdit = (setValues) => {
+  const handleToggleEdit = (setValues, values) => {
+    emptyDataRemover(values);
     if (editing) setValues(initValues);
     if (newSat) handleClose();
     setEditing(!editing);
@@ -254,8 +255,7 @@ export const SatelliteModal = ({
             disableElevation
             onClick={() => {
               setOpenAlert(false);
-              emptyDataRemover(values);
-              handleToggleEdit(setValues);
+              handleToggleEdit(setValues, values);
             }}
           >
             Confirm
@@ -265,8 +265,7 @@ export const SatelliteModal = ({
       });
       setOpenAlert(true);
     } else {
-      emptyDataRemover(values);
-      handleToggleEdit(setValues);
+      handleToggleEdit(setValues, values);
     }
   };
 
@@ -307,7 +306,7 @@ export const SatelliteModal = ({
               setFieldValue,
               dirty,
               touched,
-              setTouched
+              setTouched,
             }) => (
               <Form>
                 {isLoadingSch || isLoadingSat ? (
