@@ -89,9 +89,12 @@ const StyledMenuItem = withStyles((theme) => ({
 export const DropDown = ({ theme, toggleTheme }) => {
   const history = useHistory();
 
-  let user = useTracker(() => Meteor.user()?.username, []);
-  Meteor.subscribe("roles");
-  let roles = useTracker(() => Roles.getRolesForUser(Meteor.userId()), []);
+  const [user, roles, isLoadingRoles] = useTracker(() => {
+    const subRoles = Meteor.subscribe("roles");
+    const user = Meteor.user()?.username;
+    const roles = Roles.getRolesForUser(Meteor.userId());
+    return [user, roles, !subRoles.ready()];
+  });
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -154,12 +157,14 @@ export const DropDown = ({ theme, toggleTheme }) => {
                 onClick={handleLogout}
               />
             </StyledMenuItem>
-            <StyledMenuItem>
-              <ListItemIcon>
-                <SupervisorAccountIcon />
-              </ListItemIcon>
-              <ListItemText id="role" primary="Admin Page" />
-            </StyledMenuItem>
+            {roles.indexOf("admin") !== -1 ? (
+              <StyledMenuItem id="admin" component={Link} to="/admin">
+                <ListItemIcon>
+                  <SupervisorAccountIcon />
+                </ListItemIcon>
+                <ListItemText id="role" primary="Admin Page" />
+              </StyledMenuItem>
+            ) : null}
           </div>
         ) : (
           <div>
