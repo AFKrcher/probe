@@ -71,6 +71,7 @@ The following is a list of notable packages and technologies used to build this 
 | react              | Runtime     | Web-application framework            |
 | react-dom          | Runtime     | DOM renderer for React               |
 | yup                | Runtime     | Object schema and validation library |
+| use-debounce       | Runtime     | React debouncing hook                |
 
 ### Meteor
 
