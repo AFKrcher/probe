@@ -196,9 +196,15 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
       <Dialog open={show} scroll="paper" maxWidth="md">
         <div className={classes.modal}>
           <DialogTitle>
-            <strong className={classes.titleText}>{`${
-              newSchema ? "Create New Schema" : "Edit Exisiting Schema"
-            }`}</strong>
+            <Typography className={classes.titleText}>
+              {newSchema ? (
+                "Create New Schema"
+              ) : (
+                <>
+                  Editing <strong>{initValues.name || "N/A"}</strong>
+                </>
+              )}
+            </Typography>
           </DialogTitle>
           <Formik
             initialValues={initValues}
