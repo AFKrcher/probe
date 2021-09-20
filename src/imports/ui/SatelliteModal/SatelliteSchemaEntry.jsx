@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 // Imports
-import { FieldArray, Field } from "formik";
+import { Field } from "formik";
+import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
 
 // @material-ui
 import {
@@ -64,6 +65,12 @@ export const SatelliteSchemaEntry = ({
   const classes = useStyles();
 
   const [helpers, setHelpers] = useState(null);
+  const debounced = useDebouncedCallback((event) => {
+    let obj = {};
+    obj[`${event.target.name}`] = true;
+    setTouched(obj);
+    setFieldValue(event.target.name, event.target.value);
+  }, 300);
 
   const refreshHelpers = () => {
     if (JSON.stringify(errors) !== "{}") {
@@ -87,14 +94,14 @@ export const SatelliteSchemaEntry = ({
     return helper;
   };
 
-  const onChange = (event) => {
-    let obj = {};
-    obj[`${event.target.name}`] = true;
-    setTouched(obj);
+  // const onChange = (event) => {
+  //   let obj = {};
+  //   obj[`${event.target.name}`] = true;
+  //   setTouched(obj);
 
-    setFieldValue(event.target.name, event.target.value);
-    setTimeout(() => setFieldValue(event.target.name, event.target.value));
-  };
+  //   setFieldValue(event.target.name, event.target.value);
+  //   setTimeout(() => setFieldValue(event.target.name, event.target.value));
+  // };
 
   const onBlur = (event) => {
     setFieldValue(event.target.name, event.target.value);
@@ -123,8 +130,8 @@ export const SatelliteSchemaEntry = ({
       InputLabelProps: {
         shrink: true,
       },
-      value: entry[`${field.name}`] || "",
-      onChange: onChange,
+      defaultValue: entry[`${field.name}`] || "",
+      onChange: debounced,
       onBlur: onBlur,
       error: filteredHelper(schema.name, entryIndex, fieldIndex) ? true : false,
       label: field.name,
@@ -178,58 +185,50 @@ export const SatelliteSchemaEntry = ({
       <Paper className={classes.entryPaper}>
         <Grid container spacing={0}>
           <Grid item xs={editing ? 11 : 12} className={classes.allFields}>
-            <FieldArray
-              name={schema.name}
-              render={() => {
-                return schema.fields.map((field, fieldIndex) => {
-                  return (
-                    <div key={fieldIndex} className={classes.fieldContainer}>
-                      {field.allowedValues.length === 0 ? (
-                        <Field {...fieldProps(classes, field, fieldIndex)} />
-                      ) : (
-                        <FormControl
-                          className={classes.field}
-                          disabled={!editing}
-                          variant="outlined"
-                          margin="dense"
-                          required
-                          fullWidth
-                          error={
-                            filteredHelper(schema.name, entryIndex, fieldIndex)
-                              ? true
-                              : false
-                          }
-                        >
-                          <Field
-                            {...fieldProps(classes, field, fieldIndex)}
-                            select
-                          >
-                            <MenuItem value="" disabled>
-                              <em>Allowed Values</em>
+            {schema.fields.map((field, fieldIndex) => {
+              return (
+                <div key={fieldIndex} className={classes.fieldContainer}>
+                  {field.allowedValues.length === 0 ? (
+                    <Field {...fieldProps(classes, field, fieldIndex)} />
+                  ) : (
+                    <FormControl
+                      className={classes.field}
+                      disabled={!editing}
+                      variant="outlined"
+                      margin="dense"
+                      required
+                      fullWidth
+                      error={
+                        filteredHelper(schema.name, entryIndex, fieldIndex)
+                          ? true
+                          : false
+                      }
+                    >
+                      <Field {...fieldProps(classes, field, fieldIndex)} select>
+                        <MenuItem value="" disabled>
+                          <em>Allowed Values</em>
+                        </MenuItem>
+                        {field.allowedValues.map((value, valueIndex) => {
+                          return (
+                            <MenuItem key={valueIndex} value={value}>
+                              {value}
                             </MenuItem>
-                            {field.allowedValues.map((value, valueIndex) => {
-                              return (
-                                <MenuItem key={valueIndex} value={value}>
-                                  {value}
-                                </MenuItem>
-                              );
-                            })}
-                          </Field>
-                        </FormControl>
-                      )}
-                      <Typography
-                        variant="caption"
-                        className={
-                          !editing ? classes.helpers : classes.helpersError
-                        }
-                      >
-                        {filteredHelper(schema.name, entryIndex, fieldIndex)}
-                      </Typography>
-                    </div>
-                  );
-                });
-              }}
-            />
+                          );
+                        })}
+                      </Field>
+                    </FormControl>
+                  )}
+                  <Typography
+                    variant="caption"
+                    className={
+                      !editing ? classes.helpers : classes.helpersError
+                    }
+                  >
+                    {filteredHelper(schema.name, entryIndex, fieldIndex)}
+                  </Typography>
+                </div>
+              );
+            })}
             <div className={classes.lastBuffer} />
           </Grid>
           {editing && (
