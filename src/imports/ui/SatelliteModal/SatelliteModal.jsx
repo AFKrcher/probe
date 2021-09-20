@@ -99,7 +99,7 @@ export const SatelliteModal = ({
         let satEntries = sats[sat][path];
         for (let entry in satEntries) {
           satEntries[entry][field] ===
-          (initValues[path].length > 0 ? initValues[path][entry][field] : null)
+          (initValues[path].length > 0 ? initValues[path][entry][field] : false)
             ? null
             : list.push(satEntries[entry][field]);
         }
@@ -109,11 +109,11 @@ export const SatelliteModal = ({
   };
 
   useEffect(() => {
-    setEditing(newSat || false);
+    setEditing(newSat || false); // ensures that Add Satellite always opens as a new instance in edit-mode
   }, [newSat, show]);
 
   useEffect(() => {
-    setSatSchema(schemaGenerator(schemas, initValues, isUniqueList));
+    setSatSchema(schemaGenerator(schemas, initValues, isUniqueList)); // generate new validation schema based on schema changes and the satellite being edited
   }, [initValues, show, isLoadingSch]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
@@ -155,12 +155,7 @@ export const SatelliteModal = ({
     setSnack(
       <span>
         Deleted{" "}
-        <strong>
-          {initValues.names && initValues.names[0]
-            ? initValues.names[0].name
-            : "N/A"}
-        </strong>
-        !
+        <strong>{initValues.names ? initValues.names[0].name : "N/A"}</strong>!
       </span>
     );
     setOpenSnack(true);
@@ -171,22 +166,14 @@ export const SatelliteModal = ({
       title: (
         <span>
           Delete{" "}
-          <strong>
-            {initValues.name && initValues.names[0]
-              ? initValues.names[0].name
-              : "N/A"}
-          </strong>{" "}
-          Schema?
+          <strong>{initValues.names ? initValues.names[0].name : "N/A"}</strong>
+          ?
         </span>
       ),
       text: (
         <span>
           Are you sure you want to delete{" "}
-          <strong>
-            {initValues.name && initValues.names[0]
-              ? initValues.names[0].name
-              : "N/A"}
-          </strong>{" "}
+          <strong>{initValues.names ? initValues.names[0].name : "N/A"}</strong>{" "}
           and all of its data?
         </span>
       ),
@@ -194,7 +181,6 @@ export const SatelliteModal = ({
         <Button
           size={width && width < 500 ? "small" : "medium"}
           variant="contained"
-          size="small"
           color="secondary"
           disableElevation
           onClick={handleDelete}
@@ -221,9 +207,7 @@ export const SatelliteModal = ({
           <span>
             Delete changes on{" "}
             <strong>
-              {initValues.names && initValues.names[0]
-                ? initValues.names[0].name
-                : "N/A"}
+              {initValues.names ? initValues.names[0].name : "N/A"}
             </strong>
             ?
           </span>
@@ -234,23 +218,20 @@ export const SatelliteModal = ({
           <span>
             Are you sure you want to cancel all changes made to{" "}
             <strong>
-              {initValues.names && initValues.names[0]
-                ? initValues.names[0].name
-                : "N/A"}
+              {initValues.names ? initValues.names[0].name : "N/A"}
             </strong>{" "}
             and its data?
           </span>
         ) : (
           <span>
-            Are you sure you want to delete all the changes you've made to this
-            new satellite?
+            Are you sure you want to delete all the changes made to this new
+            satellite?
           </span>
         ),
         actions: (
           <Button
             size={width && width < 500 ? "small" : "medium"}
             variant="contained"
-            size="small"
             color="secondary"
             disableElevation
             onClick={() => {
@@ -396,7 +377,6 @@ export const SatelliteModal = ({
                           type="submit"
                           variant="contained"
                           color="primary"
-                          disabled={!editing}
                           startIcon={width && width < 500 ? null : <Save />}
                           disabled={
                             Object.entries(errors).length > 0 ||

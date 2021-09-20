@@ -16,8 +16,9 @@ The main focus of this application is data entry experience, data validation, an
 - Database: Meteor/MongoDB
 - Client: ReactJS
 - Server: Meteor/WebApp
-- Repository: [GitHub](**URL here**)
-- Deployment: [Meteor](**URL here**)
+- Repository: [GitHub](https://github.com/AFKrcher/PSRA)
+- Staging Deployment: [Meteor](http://psra.meteorapp.com/)
+- Production Deployment: [Meteor](**COMING SOON**)
 
 ## How To Contribute
 
@@ -34,7 +35,7 @@ The main focus of this application is data entry experience, data validation, an
 
 1. Ensure you have NodeJs installed: https://nodejs.org/en/download/
 2. Install Meteor here: https://www.meteor.com/developers/install
-3. Clone the repo `git clone https://bitbucket.org/saber-astronautics-usa/psra.git`
+3. Clone the repo `git clone https://github.com/AFKrcher/PSRA.git`
 4. Inside the src folder run `meteor npm install`
 5. Run `meteor`
 6. Go to `http://localhost:3000` and you should see the test app running.
@@ -53,27 +54,25 @@ Deployment is done using Meteor Cloud. To deploy to the free cluster, all you ha
 
 `meteor deploy psra.meteorapp.com --free --mongo`
 
-Deployment is reserved for core contributors. If your feature is reviewed and successfully merged with the main/master production branch, then at the next release, a core contributor will deploy the build to Meteor.
+Deployment is reserved for core contributors. If your feature is reviewed, successfully merged with the main/master branch, and tested in staging, then at the next release, a core contributor will deploy the build to the production deployment endpoint on Meteor.
 
 ## Libraries
 
-The following is a list of notable packages and technologies used to build this application.
+The following is a list of notable packages and technologies used to build this application. Those not listed are considered defaults for the Meteor or React frameworks.
 
 ### NPM
 
-| Module/Library     | Environment | Description                            |
-| :----------------- | :---------- | :------------------------------------- |
-| meteor             | Runtime     | App adaptation library for Meteor      |
-| react              | Runtime     | Web-application framework              |
-| react-dom          | Runtime     | DOM renderer for React                 |
-| material-ui        | Development | Component library                      |
-| formik             | Development | Form management library                |
-| formik-material-ui | Development | Formik + MUI compatability library     |
-| yup                | Runtime     | Object schema and validation library   |
-| yup-ast            | Runtime     | yup abstract syntax tree compatability |
-| validator          | Runtime     | String validation library              |
+| Module/Library     | Environment | Description                          |
+| :----------------- | :---------- | :----------------------------------- |
+| material-ui        | Development | Component library                    |
+| formik             | Development | Form management library              |
+| formik-material-ui | Development | Formik + MUI compatability library   |
+| meteor             | Runtime     | App adaptation library for Meteor    |
+| react              | Runtime     | Web-application framework            |
+| react-dom          | Runtime     | DOM renderer for React               |
+| yup                | Runtime     | Object schema and validation library |
 
-### Meteor-Specific
+### Meteor
 
 | Module/Library    | Environment | Description                    |
 | :---------------- | :---------- | :----------------------------- |
