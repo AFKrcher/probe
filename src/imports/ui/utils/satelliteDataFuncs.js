@@ -1,5 +1,4 @@
 import * as Yup from "yup";
-import { transformAll } from "@demvsystems/yup-ast";
 
 // Data display functions
 export const getSatName = (satellite) => {
@@ -82,7 +81,7 @@ const initialYupShapeGenerator = (isUniqueList) => {
   return {
     // NORAD ID and _id are always a part of the yup shape
     _id: Yup.string().notOneOf(
-      isUniqueList(null, "nullid"),
+      isUniqueList(null, "_id"),
       "Something went wrong while assigning _id"
     ),
     noradID: Yup.string()
@@ -101,284 +100,101 @@ export const schemaGenerator = (schemas, values, isUniqueList) => {
   const cleanSchema = schemaCleaner(schemas, values); // generates a clean schema object for easier manipulation
 
   Yup.addMethod(Yup.mixed, "checkEachEntry", function (message) {
-    let errObj = {}; // workaround object to generate populate errors object in Formik
+    let errObj = {}; // workaround object to push errors into Formik
     // test each entry in the array: Yup.object().shape({field.name: Yup.(field.type)[0].toUpperCase() + (field.type).substr(1).required(field.required).min(field.min).max(field.max).oneOf((field.allowedValues))})
     return this.test("checkEachEntry", message, function (value) {
-      const { path, createError } = this;
-
+      const { path, createError } = this; // path is the schema's name, and createError generates errors to be handled by Formik
       let entryCount = 0; // "entryCount" and "fieldCount" are used to provide the location of the error to the SatelliteModal for rendering underneath the correct entry in SatelliteSchemaEntry
-
       value?.forEach((entry) => {
         // "entry" is composed of multiple "fields", and is part of the submitted array, aka "value"
         let fieldObj = {};
         let fieldCount = 0;
-        let schema = cleanSchema[path];
+        const schema = cleanSchema[path];
         for (let schemaField in schema) {
           // "schema" are the schemas seen on the SchemasTable, and "schemaField" are the fields to be filled-in in each schema
-          let field = schema[schemaField];
-          // the following switch statements must be modified whenever we decide to create:
+          const field = schema[schemaField];
+          // the following must be modified whenever we decide to create:
           // a new "type" (e.g. number, string, date) or
-          // "type constraint" (e.g. max number, min number, max string length)
-          // this isn't the most elegant solution, but this was the only way we know how to implement dynamic yupJS validation shapes
-          // yupJS does not like reading string literals in its shape (e.g. `Yup-${field.type}.required()` does not work)
-          switch (field.type) {
-            case "string":
-              switch (field.required) {
-                case true:
-                  switch (field.allowedValues.length > 0) {
-                    case true:
-                      switch (typeof field.stringMax === "string") {
-                        case true:
-                          fieldObj[schemaField] = Yup.string()
-                            .required(
-                              `${path}-${entryCount}-${fieldCount}_${
-                                field.type[0].toUpperCase() +
-                                field.type.substr(1)
-                              } Required`
-                            )
-                            .max(
-                              parseInt(field.stringMax),
-                              `${path}-${entryCount}-${fieldCount}_Must not exceed ${field.stringMax} characters.`
-                            )
-                            .oneOf(
-                              field.allowedValues,
-                              `${path}-${entryCount}-${fieldCount}_Must be one of the following: ${field.allowedValues.join(
-                                ", "
-                              )}`
-                            );
-                          break;
-                        default:
-                          fieldObj[schemaField] = Yup.string()
-                            .required(
-                              `${path}-${entryCount}-${fieldCount}_${
-                                field.type[0].toUpperCase() +
-                                field.type.substr(1)
-                              } Required`
-                            )
-                            .oneOf(
-                              field.allowedValues,
-                              `${path}-${entryCount}-${fieldCount}_Must be one of the following: ${field.allowedValues.join(
-                                ", "
-                              )}`
-                            );
-                      }
-                      break;
-                    default:
-                      switch (field.isUnique) {
-                        case true:
-                          fieldObj[schemaField] = Yup.string()
-                            .required(
-                              `${path}-${entryCount}-${fieldCount}_${
-                                field.type[0].toUpperCase() +
-                                field.type.substr(1)
-                              } Required`
-                            )
-                            .notOneOf(
-                              isUniqueList(path, schemaField),
-                              `${path}-${entryCount}-${fieldCount}_A satellite with ${schemaField} of ${value[entryCount][schemaField]} already exists.`
-                            );
-                          break;
-                        default:
-                          fieldObj[schemaField] = Yup.string().required(
-                            `${path}-${entryCount}-${fieldCount}_${
-                              field.type[0].toUpperCase() + field.type.substr(1)
-                            } Required`
-                          );
-                      }
-                  }
-                  break;
-                default:
-                  switch (field.allowedValues.length === 0) {
-                    case true:
-                      switch (typeof field.stringMax === "string") {
-                        case true:
-                          switch (field.isUnique) {
-                            case true:
-                              fieldObj[schemaField] = Yup.string()
-                                .max(
-                                  parseInt(field.stringMax),
-                                  `${path}-${entryCount}-${fieldCount}_Must not exceed ${field.stringMax} characters.`
-                                )
-                                .notOneOf(
-                                  isUniqueList(path, schemaField),
-                                  `${path}-${entryCount}-${fieldCount}_A satellite with ${schemaField} of ${value[entryCount][schemaField]} already exists.`
-                                );
-                              break;
-                            default:
-                              fieldObj[schemaField] = Yup.string().max(
-                                parseInt(field.stringMax),
-                                `${path}-${entryCount}-${fieldCount}_Must not exceed ${field.stringMax} characters.`
-                              );
-                              break;
-                          }
-                          break;
-                        default:
-                          switch (field.isUnique) {
-                            case true:
-                              fieldObj[schemaField] = Yup.string().notOneOf(
-                                isUniqueList(path, schemaField),
-                                `${path}-${entryCount}-${fieldCount}_A satellite with ${schemaField} of ${value[entryCount][schemaField]} already exists.`
-                              );
-                              break;
-                            default:
-                              fieldObj[schemaField] = Yup.string();
-                              break;
-                          }
-                      }
-                      break;
-                    default:
-                      fieldObj[schemaField] = Yup.string().oneOf(
-                        field.allowedValues,
-                        `${path}-${entryCount}-${fieldCount}_Must be one of the following: ${field.allowedValues.join(
-                          ", "
-                        )}`
-                      );
-                  }
-              }
-              break;
-            case "number":
-              switch (field.required) {
-                case true:
-                  switch (field.min && field.max ? true : false) {
-                    case true:
-                      fieldObj[schemaField] = Yup.number()
-                        .required(
-                          `${path}-${entryCount}-${fieldCount}_${
-                            field.type[0].toUpperCase() + field.type.substr(1)
-                          } Required`
-                        )
-                        .min(
-                          parseInt(field.min),
-                          `${path}-${entryCount}-${fieldCount}_Must be between the values of ${field.min} and ${field.max}`
-                        )
-                        .max(
-                          parseInt(field.max),
-                          `${path}-${entryCount}-${fieldCount}_Must be between the values of ${field.min} and ${field.max}`
-                        );
-                      break;
-                    default:
-                      switch (typeof field.min === "string") {
-                        case true:
-                          fieldObj[schemaField] = Yup.number()
-                            .required(
-                              `${path}-${entryCount}-${fieldCount}_${
-                                field.type[0].toUpperCase() +
-                                field.type.substr(1)
-                              } Required`
-                            )
-                            .min(
-                              parseInt(field.min),
-                              `${path}-${entryCount}-${fieldCount}_Must be equal or greater than ${field.min}`
-                            );
-                          break;
-                        default:
-                          switch (typeof field.max === "string") {
-                            case true:
-                              fieldObj[schemaField] = Yup.number()
-                                .required(
-                                  `${path}-${entryCount}-${fieldCount}_${
-                                    field.type[0].toUpperCase() +
-                                    field.type.substr(1)
-                                  } Required`
-                                )
-                                .max(
-                                  parseInt(field.max),
-                                  `${path}-${entryCount}-${fieldCount}_Must be equal to or less than ${field.max}`
-                                );
-                              break;
-                            default:
-                              fieldObj[schemaField] = Yup.number().required(
-                                `${path}-${entryCount}-${fieldCount}_${
-                                  field.type[0].toUpperCase() +
-                                  field.type.substr(1)
-                                } Required`
-                              );
-                          }
-                      }
-                  }
-                  break;
-                default:
-                  switch (field.min && field.max ? true : false) {
-                    case true:
-                      fieldObj[schemaField] = Yup.number()
-                        .min(
-                          parseInt(field.min),
-                          `${path}-${entryCount}-${fieldCount}_Must be between the values of ${field.min} and ${field.max}`
-                        )
-                        .max(
-                          parseInt(field.max),
-                          `${path}-${entryCount}-${fieldCount}_Must be between the values of ${field.min} and ${field.max}`
-                        );
-                      break;
-                    default:
-                      switch (typeof field.min === "string") {
-                        case true:
-                          fieldObj[schemaField] = Yup.number().min(
-                            parseInt(field.min),
-                            `${path}-${entryCount}-${fieldCount}_Must be equal to or greater than ${field.min}`
-                          );
-                          break;
-                        default:
-                          switch (typeof field.max === "string") {
-                            case true:
-                              fieldObj[schemaField] = Yup.number().max(
-                                parseInt(field.max),
-                                `${path}-${entryCount}-${fieldCount}_Must be equal to or less than ${field.max}`
-                              );
-                              break;
-                            default:
-                              fieldObj[schemaField] = Yup.number();
-                          }
-                      }
-                  }
-              }
-              break;
-            case "date":
-              switch (field.required) {
-                case true:
-                  fieldObj[schemaField] = Yup.date().required(
-                    `${path}-${entryCount}-${fieldCount}_${
-                      field.type[0].toUpperCase() + field.type.substr(1)
-                    } Required`
-                  );
-                  break;
-                default:
-                  fieldObj[schemaField] = Yup.date();
-              }
-              break;
-            case "url":
-              switch (field.required) {
-                case true:
-                  fieldObj[schemaField] = Yup.string()
-                    .matches(
-                      /https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/g,
-                      `${path}-${entryCount}-${fieldCount}_Must be a valid URL (e.g. https://en.wikipedia.org/wiki/Main_Page).`
-                    )
-                    .required(
-                      `${path}-${entryCount}-${fieldCount}_${field.type.toUpperCase()} Required`
-                    );
-                  break;
-                default:
-                  fieldObj[schemaField] = Yup.string().matches(
+          // a new "type constraint" (e.g. max number, min number, max string length)
+          let tempFieldSchema =
+            field.type !== "url" ? Yup[field.type]() : Yup["string"]();
+          const baseFieldType = tempFieldSchema;
+          // stores the yup fragments needed for each constraint
+          const fieldSchemaMatrix = {
+            required: field.required
+              ? baseFieldType.required(
+                  `${path}-${entryCount}-${fieldCount}_${
+                    field.type === "url"
+                      ? "URL Required"
+                      : field.type[0].toUpperCase() +
+                        field.type.substr(1) +
+                        " Input"
+                  } Required`
+                )
+              : false,
+            url:
+              field.type === "url"
+                ? baseFieldType.matches(
                     /https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/g,
                     `${path}-${entryCount}-${fieldCount}_Must be a valid URL (e.g. https://en.wikipedia.org/wiki/Main_Page).`
-                  );
-                  break;
-              }
-            default:
-              break;
+                  )
+                : false,
+            allowedValues:
+              field.allowedValues?.length > 0
+                ? baseFieldType.oneOf(
+                    [...field.allowedValues],
+                    `${path}-${entryCount}-${fieldCount}_Must be one of the following: ${field.allowedValues.join(
+                      ", "
+                    )}`
+                  )
+                : false,
+            isUnique: field.isUnique
+              ? baseFieldType.notOneOf(
+                  isUniqueList(path, schemaField),
+                  `${path}-${entryCount}-${fieldCount}_A satellite with ${schemaField} of ${value[entryCount][schemaField]} already exists.`
+                )
+              : false,
+            min:
+              field.type === "number" && field.max
+                ? baseFieldType.min(
+                    parseInt(field.min),
+                    `${path}-${entryCount}-${fieldCount}_Must be no less than ${field.min}`
+                  )
+                : false,
+            max:
+              field.type === "number" && field.max
+                ? baseFieldType.max(
+                    parseInt(field.max),
+                    `${path}-${entryCount}-${fieldCount}_Must be no greater than ${field.max}`
+                  )
+                : false,
+            stringMax:
+              field.type === "string" && field.stringMax
+                ? baseFieldType.max(
+                    parseInt(field.max),
+                    `${path}-${entryCount}-${fieldCount}_Must not exceed ${field.stringMax} characters.`
+                  )
+                : false,
+          };
+          // loop over the schema and concatenate all valid constraints to field's yup object
+          for (let check in fieldSchemaMatrix) {
+            if (fieldSchemaMatrix[check])
+              tempFieldSchema = tempFieldSchema.concat(
+                fieldSchemaMatrix[check]
+              );
           }
+          fieldObj[schemaField] = tempFieldSchema;
           fieldCount++;
         }
         let fieldValidator = Yup.object().shape(fieldObj);
-        // Yup.addMethod's test must return a boolean, and generate errors as necessary, in order to complete the validation step
+        // Yup.addMethod's test must return a boolean, and/or generate errors as necessary, in order to complete the validation
         fieldValidator
           .validate(entry, { abortEarly: true })
           .then(() => {
-            errObj = {};
+            errObj = {}; // clear all errors on successful validation
           })
           .catch((err) => {
-            errObj = {};
+            errObj = {}; // clear old errors and repopulate error object upon failed validation
             err.path === undefined
               ? (err.message = "err is not defined")
               : null;
@@ -388,7 +204,7 @@ export const schemaGenerator = (schemas, values, isUniqueList) => {
           });
         entryCount++;
       });
-
+      // check error object to determine the success of the validation and the amount of errors that need to be generated for Formik to handle
       if (JSON.stringify(errObj) === "{}") {
         return true;
       } else {
@@ -404,7 +220,7 @@ export const schemaGenerator = (schemas, values, isUniqueList) => {
       }
     });
   });
-  // if the cleanSchema is complete, begin building the final yup schema object
+  // building the final yup schema object, calling checkEachEntry for each entry in the satellite
   if (JSON.stringify(cleanSchema) !== "{}") {
     for (let schema in cleanSchema) {
       yupShape[schema] = Yup.array().checkEachEntry();
