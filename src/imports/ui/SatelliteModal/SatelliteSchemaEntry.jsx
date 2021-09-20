@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 // Imports
-import { Field, FieldArray } from "formik";
+import { FieldArray, Field } from "formik";
 
 // @material-ui
 import {
@@ -97,23 +97,48 @@ export const SatelliteSchemaEntry = ({
   };
 
   const onBlur = (event) => {
-    let obj = {};
-    obj[`${event.target.name}`] = true;
-    setTouched(obj);
-
     setFieldValue(event.target.name, event.target.value);
-    setTimeout(() => setFieldValue(event.target.name, event.target.value));
   };
 
   const handleEntryDelete = async (schemaName, index) => {
     let newEntries = entries.map((entry) => entry);
     newEntries.splice(index, 1);
     await setFieldValue(schemaName, newEntries);
-    setSatSchema(schemaGenerator(schemas, values, isUniqueList));
+    setSatSchema(schemaGenerator(schemas, values, isUniqueList)); // generate new validation schema based on added entry
   };
 
   const handleClick = (url) => {
     window.open(url, "_blank").focus();
+  };
+
+  const fieldProps = (classes, field, fieldIndex) => {
+    return {
+      className: classes.field,
+      inputProps: {
+        name: `${schema.name}.${entryIndex}.${field.name}`,
+        min: field.min,
+        max: field.max,
+        step: "any",
+      },
+      InputLabelProps: {
+        shrink: true,
+      },
+      value: entry[`${field.name}`] || "",
+      onChange: onChange,
+      onBlur: onBlur,
+      error: filteredHelper(schema.name, entryIndex, fieldIndex) ? true : false,
+      label: field.name,
+      margin: "dense",
+      required: field.required,
+      fullWidth: true,
+      variant: "outlined",
+      component: editing
+        ? TextField
+        : (props) => linkAdornment(props, entry[`${field.name}`], field.type),
+
+      type: field.type === "date" ? "datetime-local" : field.type,
+      disabled: !editing,
+    };
   };
 
   const linkAdornment = (props, field, type) => {
@@ -153,54 +178,14 @@ export const SatelliteSchemaEntry = ({
       <Paper className={classes.entryPaper}>
         <Grid container spacing={0}>
           <Grid item xs={editing ? 11 : 12} className={classes.allFields}>
-            {schema.fields.map((field, fieldIndex) => {
-              return (
-                <div key={fieldIndex} className={classes.fieldContainer}>
-                  <FieldArray
-                    name={schema.name}
-                    render={() => {
-                      return field.allowedValues.length === 0 ? (
-                        <Field
-                          className={classes.field}
-                          inputProps={{
-                            name: `${schema.name}.${entryIndex}.${field.name}`,
-                            min: field.min,
-                            max: field.max,
-                            step: "any",
-                          }}
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                          value={entry[`${field.name}`] || ""}
-                          onChange={onChange}
-                          onBlur={onBlur}
-                          error={
-                            filteredHelper(schema.name, entryIndex, fieldIndex)
-                              ? true
-                              : false
-                          }
-                          label={field.name}
-                          margin="dense"
-                          required={field.required}
-                          fullWidth
-                          variant="outlined"
-                          disabled={!editing}
-                          component={
-                            editing
-                              ? TextField
-                              : (props) =>
-                                  linkAdornment(
-                                    props,
-                                    entry[`${field.name}`],
-                                    field.type
-                                  )
-                          }
-                          type={
-                            field.type === "date"
-                              ? "datetime-local"
-                              : field.type
-                          }
-                        />
+            <FieldArray
+              name={schema.name}
+              render={() => {
+                return schema.fields.map((field, fieldIndex) => {
+                  return (
+                    <div key={fieldIndex} className={classes.fieldContainer}>
+                      {field.allowedValues.length === 0 ? (
+                        <Field {...fieldProps(classes, field, fieldIndex)} />
                       ) : (
                         <FormControl
                           className={classes.field}
@@ -216,49 +201,8 @@ export const SatelliteSchemaEntry = ({
                           }
                         >
                           <Field
-                            inputProps={{
-                              name: `${schema.name}.${entryIndex}.${field.name}`,
-                              min: field.min,
-                              max: field.max,
-                              step: "any",
-                            }}
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            value={entry[`${field.name}`] || ""}
-                            onChange={onChange}
-                            onBlur={onBlur}
-                            error={
-                              filteredHelper(
-                                schema.name,
-                                entryIndex,
-                                fieldIndex
-                              )
-                                ? true
-                                : false
-                            }
-                            label={field.name}
-                            margin="dense"
-                            required={field.required}
-                            fullWidth
-                            select={true}
-                            variant="outlined"
-                            disabled={!editing}
-                            component={
-                              editing
-                                ? TextField
-                                : (props) =>
-                                    linkAdornment(
-                                      props,
-                                      entry[`${field.name}`],
-                                      field.type
-                                    )
-                            }
-                            type={
-                              field.type === "date"
-                                ? "datetime-local"
-                                : field.type
-                            }
+                            {...fieldProps(classes, field, fieldIndex)}
+                            select
                           >
                             <MenuItem value="" disabled>
                               <em>Allowed Values</em>
@@ -272,20 +216,20 @@ export const SatelliteSchemaEntry = ({
                             })}
                           </Field>
                         </FormControl>
-                      );
-                    }}
-                  />
-                  <Typography
-                    variant="caption"
-                    className={
-                      !editing ? classes.helpers : classes.helpersError
-                    }
-                  >
-                    {filteredHelper(schema.name, entryIndex, fieldIndex)}
-                  </Typography>
-                </div>
-              );
-            })}
+                      )}
+                      <Typography
+                        variant="caption"
+                        className={
+                          !editing ? classes.helpers : classes.helpersError
+                        }
+                      >
+                        {filteredHelper(schema.name, entryIndex, fieldIndex)}
+                      </Typography>
+                    </div>
+                  );
+                });
+              }}
+            />
             <div className={classes.lastBuffer} />
           </Grid>
           {editing && (

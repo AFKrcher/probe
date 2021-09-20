@@ -55,7 +55,7 @@ export const SatelliteSchemaAccordion = ({
   values,
   isUniqueList,
   schemaGenerator,
-  setTouched
+  setTouched,
 }) => {
   const classes = useStyles();
 
@@ -70,11 +70,7 @@ export const SatelliteSchemaAccordion = ({
     );
     const newEntries = [...entries, schemaFields];
     await setFieldValue(schema.name, newEntries);
-    setSatSchema(schemaGenerator(
-      schemas,
-      values,
-      isUniqueList
-    ))
+    setSatSchema(schemaGenerator(schemas, values, isUniqueList)); //
   };
 
   return (

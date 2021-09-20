@@ -1,14 +1,16 @@
 import { Meteor } from "meteor/meteor";
-import validator from "validator";
+import * as Yup from "yup";
 import { SchemaCollection } from "/imports/api/schemas";
 import { SatelliteCollection } from "/imports/api/satellites";
 import "./routes";
 import { Roles } from "meteor/alanning:roles";
 import { Accounts } from "meteor/accounts-base";
-import { gridColumnsTotalWidthSelector } from "@material-ui/data-grid";
-import { object } from "yup/lib/locale";
-
 var fs = Npm.require("fs");
+
+const isValidEmail = (value) => {
+  let schema = Yup.string().email();
+  return schema.isValidSync(value);
+};
 
 Meteor.startup(() => {
   // console.log("users: ", Meteor.users.find().fetch());
@@ -27,31 +29,36 @@ Meteor.startup(() => {
   };
 
   Accounts.onCreateUser((options, user) => {
-    // console.log('options', options, 'end of options')
-    // console.log('user', user, 'end of user')
     let username = options.username;
     let email = options.email;
-    if (!email || !validator.isEmail(email) || !username || !options.password)
+    if (!email || !isValidEmail(email) || !username || !options.password)
       return;
-    user.roles = []
-    user.favorites = []
-    return user
+    user.roles = [];
+    user.favorites = [];
+    return user;
   });
-  
-  Meteor.publish('roles', () => {
+
+  Meteor.publish("roles", () => {
     if (Meteor.user()) {
-      if(Roles.userIsInRole(Meteor.userId(), 'admin')){
-        return [ Meteor.users.find(), Meteor.roles.find(), Meteor.roleAssignment.find()]
-      }else{
-        return Meteor.roleAssignment.find({ 'user._id': Meteor.user()._id});
+      if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+        return [
+          Meteor.users.find(),
+          Meteor.roles.find(),
+          Meteor.roleAssignment.find(),
+        ];
+      } else {
+        return Meteor.roleAssignment.find({ "user._id": Meteor.user()._id });
       }
     } else {
-      return []
+      return [];
     }
   });
 
   Meteor.publish("userList", function () {
-    return Meteor.users.find({}, {fields: {username: 1, emails: 1, roles: 1}});
+    return Meteor.users.find(
+      {},
+      { fields: { username: 1, emails: 1, roles: 1 } }
+    );
   });
 
   Meteor.methods({
@@ -82,26 +89,26 @@ Meteor.startup(() => {
   });
 
   Meteor.methods({
-    addToFavorites: (user, noradid) =>{
-      let favorites = Meteor.user().favorites
-      if(favorites.indexOf(noradid) === -1){
-        favorites.push(noradid)
-      }else{
-        favorites.splice(favorites.indexOf(noradid), 1)
+    addToFavorites: (user, noradid) => {
+      let favorites = Meteor.user().favorites;
+      if (favorites.indexOf(noradid) === -1) {
+        favorites.push(noradid);
+      } else {
+        favorites.splice(favorites.indexOf(noradid), 1);
       }
-      Meteor.users.update(user, {$set: {'favorites': favorites}});
-      return Meteor.user().favorites
-    }
-  })
+      Meteor.users.update(user, { $set: { favorites: favorites } });
+      return Meteor.user().favorites;
+    },
+  });
 
   Meteor.methods({
-    addUserToRole: (user, role) =>{
-      if(Roles.userIsInRole(Meteor.userId(), 'admin')){
-         Roles.addUsersToRoles(Accounts.findUserByUsername(user), role);
-         return `${user} added to ${role}`
+    addUserToRole: (user, role) => {
+      if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+        Roles.addUsersToRoles(Accounts.findUserByUsername(user), role);
+        return `${user} added to ${role}`;
       }
-    }
-  })
+    },
+  });
 
   Meteor.methods({
     emailExists: (email) => {
@@ -131,23 +138,26 @@ Meteor.startup(() => {
 
   Meteor.methods({
     deleteAccount: (id) => {
-      if(Meteor.userId() === id || Roles.userIsInRole(Meteor.userId(), 'admin')){
+      if (
+        Meteor.userId() === id ||
+        Roles.userIsInRole(Meteor.userId(), "admin")
+      ) {
         Meteor.users.remove({ _id: id });
         console.log(`user ${id} deleted`);
         return "success";
-      }else{
-        return "nice try"
+      } else {
+        return "nice try";
       }
-    }
+    },
   });
 
   Meteor.methods({
-    removeRole: (id, role) =>{
-      if(Roles.userIsInRole(Meteor.userId(), 'admin')){
-        Roles.removeUsersFromRoles(id, role)
+    removeRole: (id, role) => {
+      if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+        Roles.removeUsersFromRoles(id, role);
       }
-    }
-  })
+    },
+  });
 
   if (SchemaCollection.find().count() === 0) {
     var jsonObj = [];

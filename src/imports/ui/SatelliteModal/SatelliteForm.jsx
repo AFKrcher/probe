@@ -98,7 +98,7 @@ export const SatelliteForm = ({
           disableElevation
           onClick={() => handleDelete(name)}
         >
-          <StarBorder />
+          <DeleteIcon />
         </Button>
       ),
       closeAction: "Cancel",
@@ -118,22 +118,26 @@ export const SatelliteForm = ({
     setSchemaAddition(!schemaAddition);
   };
 
+  const fieldProps = {
+    value: values.noradID || "",
+    name: "noradID",
+    label: "NORAD ID",
+    margin: "dense",
+    required: true,
+    fullWidth: true,
+    variant: "outlined",
+    component: TextField,
+    onChange: onChange,
+    disabled: !editing,
+  };
+
   return (
     <Grid container spacing={1}>
       <AlertDialog bodyAlert={alert} />
       <Grid container item>
         <Grid item xs={12}>
           <Paper className={classes.noradID}>
-            <Field
-              name="noradID"
-              label="NORAD ID"
-              margin="dense"
-              required
-              fullWidth
-              variant="outlined"
-              component={TextField}
-              onChange={onChange}
-            />
+            <Field {...fieldProps} />
           </Paper>
         </Grid>
       </Grid>
