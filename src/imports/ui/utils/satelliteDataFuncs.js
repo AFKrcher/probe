@@ -125,7 +125,7 @@ export const schemaGenerator = (schemas, values, isUniqueList) => {
               ? baseFieldType.required(
                   `${path}-${entryCount}-${fieldCount}_${
                     field.type === "url"
-                      ? "URL Required"
+                      ? "URL"
                       : field.type[0].toUpperCase() +
                         field.type.substr(1) +
                         " Input"
@@ -134,8 +134,7 @@ export const schemaGenerator = (schemas, values, isUniqueList) => {
               : false,
             url:
               field.type === "url"
-                ? baseFieldType.matches(
-                    /https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/g,
+                ? baseFieldType.url(
                     `${path}-${entryCount}-${fieldCount}_Must be a valid URL (e.g. https://en.wikipedia.org/wiki/Main_Page).`
                   )
                 : false,
@@ -187,6 +186,7 @@ export const schemaGenerator = (schemas, values, isUniqueList) => {
           fieldCount++;
         }
         let fieldValidator = Yup.object().shape(fieldObj);
+
         // Yup.addMethod's test must return a boolean, and/or generate errors as necessary, in order to complete the validation
         fieldValidator
           .validate(entry, { abortEarly: true })
@@ -204,6 +204,7 @@ export const schemaGenerator = (schemas, values, isUniqueList) => {
           });
         entryCount++;
       });
+
       // check error object to determine the success of the validation and the amount of errors that need to be generated for Formik to handle
       if (JSON.stringify(errObj) === "{}") {
         return true;
@@ -226,5 +227,6 @@ export const schemaGenerator = (schemas, values, isUniqueList) => {
       yupShape[schema] = Yup.array().checkEachEntry();
     }
   }
+
   return Yup.object().shape(yupShape);
 };
