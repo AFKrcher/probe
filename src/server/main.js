@@ -8,8 +8,19 @@ import { Accounts } from "meteor/accounts-base";
 var fs = Npm.require("fs");
 
 const isValidEmail = (value) => {
-  let schema = Yup.string().email();
+  const schema = Yup.string().email();
   return schema.isValidSync(value);
+};
+
+const isValidUsername = (value) => {
+  const regex = /^[a-zA-Z0-9]{4,}$/g;
+  return regex.test(value);
+};
+
+const isValidPassword = (value) => {
+  const regex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
+  return regex.test(value);
 };
 
 Meteor.startup(() => {
@@ -29,13 +40,20 @@ Meteor.startup(() => {
   };
 
   Accounts.onCreateUser((options, user) => {
-    let username = options.username;
-    let email = options.email;
-    if (!email || !isValidEmail(email) || !username || !options.password)
-      return;
-    user.roles = [];
-    user.favorites = [];
-    return user;
+    const username = options.username;
+    const email = options.email;
+    const password = options.password;
+    if (
+      !isValidEmail(email) ||
+      !isValidUsername(username) ||
+      !isValidPassword(password)
+    ) {
+      return "failure";
+    } else {
+      user.roles = [];
+      user.favorites = [];
+      return user;
+    }
   });
 
   Meteor.publish("roles", () => {
@@ -75,6 +93,7 @@ Meteor.startup(() => {
     },
   });
 
+  // seed admin account for testing
   Meteor.call("userExists", "admin", (res, err) => {
     if (err) {
       return;
