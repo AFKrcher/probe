@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 
 // Imports
+import useWindowSize from "../Hooks/useWindowSize.jsx";
 import { Link } from "react-router-dom";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import { DropDown } from "../Navigation/DropDown";
@@ -60,7 +61,11 @@ const useStyles = makeStyles((theme) => ({
 
 export const Nav = ({ theme, toggleTheme }) => {
   const { setOpenAlert, setOpenSnack } = useContext(HelpersContext);
+
   const classes = useStyles();
+
+  const [width, height] = useWindowSize();
+
   return (
     <div className={classes.root}>
       <AppBar className={classes.navbar} position="sticky">
@@ -89,58 +94,62 @@ export const Nav = ({ theme, toggleTheme }) => {
                 <strong>PROBE</strong>
               </Typography>
             </Tooltip>
-            <Button
-              disableElevation
-              size="medium"
-              className={classes.navButton}
-              component={Link}
-              onClick={() => {
-                setOpenAlert(false);
-                setOpenSnack(false);
-              }}
-              to="/"
-            >
-              Home
-            </Button>
-            <Button
-              disableElevation
-              size="medium"
-              className={classes.navButton}
-              component={Link}
-              onClick={() => {
-                setOpenAlert(false);
-                setOpenSnack(false);
-              }}
-              to="/satellites"
-            >
-              Satellites
-            </Button>
-            <Button
-              disableElevation
-              size="medium"
-              className={classes.navButton}
-              component={Link}
-              onClick={() => {
-                setOpenAlert(false);
-                setOpenSnack(false);
-              }}
-              to="/schemas"
-            >
-              Schemas
-            </Button>
-            <Button
-              disableElevation
-              size="medium"
-              className={classes.navButton}
-              component={Link}
-              onClick={() => {
-                setOpenAlert(false);
-                setOpenSnack(false);
-              }}
-              to="/about"
-            >
-              About
-            </Button>
+            {width > 620 ? (
+              <React.Fragment>
+                <Button
+                  disableElevation
+                  size="medium"
+                  className={classes.navButton}
+                  component={Link}
+                  onClick={() => {
+                    setOpenAlert(false);
+                    setOpenSnack(false);
+                  }}
+                  to="/"
+                >
+                  Home
+                </Button>
+                <Button
+                  disableElevation
+                  size="medium"
+                  className={classes.navButton}
+                  component={Link}
+                  onClick={() => {
+                    setOpenAlert(false);
+                    setOpenSnack(false);
+                  }}
+                  to="/satellites"
+                >
+                  Satellites
+                </Button>
+                <Button
+                  disableElevation
+                  size="medium"
+                  className={classes.navButton}
+                  component={Link}
+                  onClick={() => {
+                    setOpenAlert(false);
+                    setOpenSnack(false);
+                  }}
+                  to="/schemas"
+                >
+                  Schemas
+                </Button>
+                <Button
+                  disableElevation
+                  size="medium"
+                  className={classes.navButton}
+                  component={Link}
+                  onClick={() => {
+                    setOpenAlert(false);
+                    setOpenSnack(false);
+                  }}
+                  to="/about"
+                >
+                  About
+                </Button>
+              </React.Fragment>
+            ) : null}
           </div>
           <div edge="end" className={classes.dropDown}>
             <DropDown theme={theme} toggleTheme={toggleTheme} />
