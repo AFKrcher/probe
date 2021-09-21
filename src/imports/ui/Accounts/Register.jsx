@@ -40,11 +40,13 @@ export const Register = () => {
   const [emailHelper, setEmailHelper] = useState("");
   const [userErr, setUserErr] = useState();
   const [userHelper, setUserHelper] = useState("");
+
   const redirect = () => {
-    history.push("/");
+    setTimeout(history.push("/"));
   };
+
   const loginRedirect = () => {
-    history.push("/login");
+    setTimeout(history.push("/login"));
   };
 
   const [disabled] = useTracker(() => {
@@ -110,7 +112,7 @@ export const Register = () => {
     }
   };
 
-  const validate = () => {
+  const validatePassword = () => {
     let pass = document.getElementById("password").value;
     let confirm = document.getElementById("confirm").value;
     const regex =
@@ -135,18 +137,6 @@ export const Register = () => {
           setConfirmHelper("Passwords do not match!");
         }
       }
-    }
-  };
-
-  let timer;
-  const waitValidate = (arg) => {
-    // Clears any outstanding timer
-    clearTimeout(timer);
-    // Then sets new timer that may or may not get cleared
-    if (arg === "email") {
-      timer = setTimeout(() => validateEmail(), 1000);
-    } else {
-      timer = setTimeout(() => validateUsername(), 1000);
     }
   };
 
@@ -180,7 +170,7 @@ export const Register = () => {
               label="Email"
               type="email"
               onBlur={validateEmail}
-              onChange={() => waitValidate("email")}
+              onChange={validateEmail}
               ref={(input) => (email = input)}
               fullWidth
               className={classes.textField}
@@ -191,7 +181,7 @@ export const Register = () => {
               helperText={userHelper}
               label="Username"
               onBlur={validateUsername}
-              onChange={() => waitValidate("username")}
+              onChange={validateUsername}
               ref={(input) => (username = input)}
               fullWidth
               className={classes.textField}
@@ -202,7 +192,7 @@ export const Register = () => {
               type="password"
               error={passErr}
               helperText={passHelper}
-              onChange={validate}
+              onChange={validatePassword}
               ref={(input) => (password = input)}
               fullWidth
               className={classes.textField}
@@ -212,7 +202,7 @@ export const Register = () => {
               id="confirm"
               helperText={confirmHelper}
               label="Confirm password"
-              onChange={validate}
+              onChange={validatePassword}
               type="password"
               fullWidth
               className={classes.textField}
