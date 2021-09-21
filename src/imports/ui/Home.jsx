@@ -50,6 +50,8 @@ export const Home = () => {
   const cardSpace =
     Math.round(height / (width / 5)) > 10
       ? 10
+      : height < 1000 && width > 1000
+      ? 3
       : Math.round(height / (width / 5));
 
   const [sats, isLoading] = useTracker(() => {

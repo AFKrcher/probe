@@ -48,10 +48,16 @@ Meteor.startup(() => {
       !isValidUsername(username) ||
       !isValidPassword(password)
     ) {
-      return "failure";
+      console.log(
+        !isValidEmail(email),
+        !isValidUsername(username),
+        !isValidPassword(password)
+      );
+      return;
     } else {
       user.roles = [];
       user.favorites = [];
+      console.log(user);
       return user;
     }
   });
@@ -101,7 +107,7 @@ Meteor.startup(() => {
       Accounts.createUser({
         email: "admin@gmail.com",
         username: "admin",
-        password: "admin",
+        password: "12345678aA!",
       });
       Roles.addUsersToRoles(Accounts.findUserByUsername("admin"), "admin");
     }
