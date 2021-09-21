@@ -131,6 +131,7 @@ export const SatelliteModal = ({
       await handleClose();
     } else {
       SatelliteCollection.update({ _id: values._id }, values);
+      console.log(values);
       setOpenSnack(false);
       setSnack(
         <span>

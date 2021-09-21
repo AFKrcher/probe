@@ -13,8 +13,10 @@ import {
   Grid,
   Button,
   makeStyles,
+  Tooltip,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import HelpIcon from "@material-ui/icons/Help";
 
 const useStyles = makeStyles((theme) => ({
   accordionBody: {
@@ -25,8 +27,13 @@ const useStyles = makeStyles((theme) => ({
   accordionHeader: {
     display: "flex",
   },
-  accordionCount: {
-    marginRight: "10px",
+  accordionTitle: {
+    marginRight: "5px",
+    marginLeft: "10px",
+  },
+  helpIcon: {
+    color: theme.palette.text.disabled,
+    fontSize: "medium",
   },
   accordianDetails: {
     marginTop: -15,
@@ -81,12 +88,13 @@ export const SatelliteSchemaAccordion = ({
           id={`${schema.name}-accord-header`}
         >
           <div className={classes.accordionHeader}>
-            <Chip
-              className={classes.accordionCount}
-              size="small"
-              label={entries?.length ? entries.length : "0"}
-            />
-            <Typography variant="body1">{schema.name}</Typography>
+            <Chip size="small" label={entries?.length ? entries.length : "0"} />
+            <Typography variant="body1" className={classes.accordionTitle}>
+              {schema.name}
+            </Typography>
+            <Tooltip title={schema.description} placement="top-start" arrow>
+              <HelpIcon fontSize="small" className={classes.helpIcon} />
+            </Tooltip>
           </div>
         </AccordionSummary>
         <AccordionDetails className={classes.accordianDetails}>

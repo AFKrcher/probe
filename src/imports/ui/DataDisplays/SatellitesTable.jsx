@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 // Imports
 import { Link } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
+import HelpersContext from "../Dialogs/HelpersContext.jsx";
 
 // Components
 import { SatelliteModal } from "../SatelliteModal/SatelliteModal";
 import { SatelliteCollection } from "../../api/satellites";
+import SnackBar from "../Dialogs/SnackBar.jsx";
+import FavoritesSwitch from "../css/FavoritesSwitch";
 
 // @material-ui
 import {
@@ -15,7 +18,6 @@ import {
   makeStyles,
   Typography,
   Tooltip,
-  IconButton,
 } from "@material-ui/core";
 import {
   DataGrid,
@@ -26,7 +28,6 @@ import {
   GridToolbarDensitySelector,
 } from "@material-ui/data-grid";
 import Star from "@material-ui/icons/Star";
-import StarBorder from "@material-ui/icons/StarBorder";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -81,6 +82,8 @@ const newSatValues = {
 export const SatellitesTable = ({ roles }) => {
   const classes = useStyles();
 
+  const { setOpenSnack, snack, setSnack } = useContext(HelpersContext);
+
   const [showModal, setShowModal] = useState(false);
   const [newSat, setNewSat] = useState(true);
   const [initialSatValues, setInitialSatValues] = useState(newSatValues);
@@ -92,7 +95,6 @@ export const SatellitesTable = ({ roles }) => {
   const [sortOrbit, setSortOrbit] = useState(0);
   const [selector, setSelector] = useState({});
   const [columns, setColumns] = useState([]);
-  const [newFavorite, setNewFavorite] = useState(false);
 
   function CustomToolbar() {
     return (
@@ -105,24 +107,34 @@ export const SatellitesTable = ({ roles }) => {
     );
   }
 
-  const handleFavorite = (e, values) => {
-    e.preventDefault();
-    Meteor.call("addToFavorites", Meteor.userId(), values, (err, res) => {
-      return [err, res];
-    });
-    setNewFavorite(!newFavorite);
-  };
-
   const handleAddNewSatellite = () => {
     setNewSat(true);
     setShowModal(true);
     setInitialSatValues(newSatValues);
   };
 
-  const handleRowClick = (schemaObject) => {
+  const handleRowDoubleClick = (schemaObject) => {
     setNewSat(false);
     setShowModal(true);
     setInitialSatValues(schemaObject);
+  };
+
+  const handleFavorite = (e, values, name, notFavorite) => {
+    e.preventDefault();
+    Meteor.call("addToFavorites", Meteor.userId(), values, (err, res) => {
+      return [err, res];
+    });
+
+    setTimeout(() => {
+      setOpenSnack(false);
+      setSnack(
+        <span>
+          <strong>{name}</strong>{" "}
+          {!notFavorite ? "added to favorites" : "removed from favorites"}
+        </span>
+      );
+      setOpenSnack(true);
+    }, 100);
   };
 
   const handleFilter = (e) => {
@@ -152,11 +164,8 @@ export const SatellitesTable = ({ roles }) => {
         default:
           setSelector({});
       }
-    } else {
-      alert(
-        `There was a problem with the filter. Please see the following context: ${e}`
-      );
     }
+    return;
   };
 
   const handleSort = (e) => {
@@ -175,9 +184,7 @@ export const SatellitesTable = ({ roles }) => {
           e[0].sort === "asc" ? setSortOrbit(-1) : setSortOrbit(1);
           break;
         default:
-          alert(
-            `There was a problem with the filter. Please see the following context: ${e}`
-          );
+          break;
       }
     } else {
       setSortNorad(0);
@@ -201,14 +208,47 @@ export const SatellitesTable = ({ roles }) => {
     ) : null;
   };
 
-  const favoritesNameShortener = (params) => {
-    const names = params.row.names;
-    if (names) {
-      let index = names.indexOf(",");
-      return index === -1 ? names : names.substr(0, index);
-    } else {
-      return params.id;
-    }
+  const renderFavoriteButton = (params) => {
+    const favoritesNameShortener = () => {
+      const names = params.row.names;
+      if (names) {
+        let index = names.indexOf(",");
+        return index === -1 ? names : names.substr(0, index);
+      } else {
+        return params.id;
+      }
+    };
+
+    const checkIfFavorite = () => {
+      return Meteor.user()?.favorites?.indexOf(params.id) > -1;
+    };
+
+    return (
+      <Tooltip
+        title={`${
+          Meteor.user()?.favorites?.indexOf(params.id) > -1
+            ? `Remove ${favoritesNameShortener()} from favorites`
+            : `Add ${favoritesNameShortener()} to favorites`
+        }`}
+        arrow
+        placement="top"
+      >
+        <span style={{ marginLeft: 10 }}>
+          <FavoritesSwitch
+            color="primary"
+            checked={checkIfFavorite()}
+            onClick={(e) =>
+              handleFavorite(
+                e,
+                params.id,
+                favoritesNameShortener(),
+                checkIfFavorite()
+              )
+            }
+          />
+        </span>
+      </Tooltip>
+    );
   };
 
   useEffect(() => {
@@ -246,36 +286,18 @@ export const SatellitesTable = ({ roles }) => {
     if (Meteor.userId()) {
       columns.unshift({
         field: <Star style={{ marginBottom: -5 }} />,
+        filterable: false,
+        sortable: false,
         minWidth: 50,
         headerAlign: "center",
         renderCell: function favoritesRow(params) {
-          return (
-            <Tooltip
-              title={`Add ${favoritesNameShortener(params)} to favorites`}
-              arrow
-              placement="bottom-start"
-            >
-              <IconButton
-                style={{ marginLeft: 3 }}
-                size="small"
-                onClick={(e) => {
-                  handleFavorite(e, params.id);
-                }}
-              >
-                {Meteor.user()?.favorites?.indexOf(params.id) > -1 ? (
-                  <Star />
-                ) : (
-                  <StarBorder />
-                )}
-              </IconButton>
-            </Tooltip>
-          );
+          return renderFavoriteButton(params);
         },
       });
     }
 
     setColumns(columns);
-  }, [Meteor.userId(), newFavorite]);
+  }, [Meteor.userId()]);
 
   const [rows, count, isLoadingSchemas, isLoadingSats] = useTracker(() => {
     const subSchemas = Meteor.subscribe("satellites");
@@ -307,64 +329,72 @@ export const SatellitesTable = ({ roles }) => {
   });
 
   return (
-    <div className={classes.root}>
-      <Grid container justifyContent="space-between" alignItems="center">
-        <Grid item xs>
-          <Typography variant="h3">Satellites</Typography>
+    <React.Fragment>
+      <SnackBar bodySnackBar={snack} />
+      <div className={classes.root}>
+        <Grid container justifyContent="space-between" alignItems="center">
+          <Grid item xs>
+            <Typography variant="h3">Satellites</Typography>
+          </Grid>
+          {permissionToAddSatellite()}
         </Grid>
-        {permissionToAddSatellite()}
-      </Grid>
-      <Typography gutterBottom variant="body2" className={classes.description}>
-        Each <strong>satellite</strong> in the catalogue contains a number of
-        fields based on schemas defined on the{" "}
-        <Tooltip title="Bring me to the satellites page">
-          <Link to="/schemas" className={classes.link}>
-            next page
-          </Link>
-        </Tooltip>
-        . Click on the <strong>satellite</strong> names in the table to bring up
-        the schemas and data associated with the <strong>satellite</strong>.
-      </Typography>
-      <div className={classes.gridContainer}>
-        <DataGrid
-          className={classes.dataGrid}
-          components={{
-            Toolbar: CustomToolbar,
-          }}
-          rowsPerPageOptions={[5, 10, 15, 20, 50, 100]}
-          columns={columns}
-          rows={rows}
-          rowCount={count}
-          pageSize={limiter}
-          loading={isLoadingSats && isLoadingSchemas}
-          autoHeight={true}
-          pagination
-          paginationMode="server"
-          filterMode="server"
-          onFilterModelChange={(e) => {
-            handleFilter(e);
-          }}
-          onPageSizeChange={(newLimit) => setLimiter(newLimit)}
-          onPageChange={(newPage) => setPage(newPage)}
-          disableSelectionOnClick
-          onRowDoubleClick={(satellite) => {
-            handleRowClick(
-              SatelliteCollection.find({ noradID: satellite.id }).fetch()[0]
-            );
-          }}
-          onSortModelChange={handleSort}
+        <Typography
+          gutterBottom
+          variant="body2"
+          className={classes.description}
+        >
+          Each <strong>satellite</strong> in the catalogue contains a number of
+          fields based on schemas defined on the{" "}
+          <Tooltip title="Bring me to the satellites page">
+            <Link to="/schemas" className={classes.link}>
+              next page
+            </Link>
+          </Tooltip>
+          . Click on the <strong>satellite</strong> names in the table to bring
+          up the schemas and data associated with the <strong>satellite</strong>
+          .
+        </Typography>
+        <div className={classes.gridContainer}>
+          <DataGrid
+            className={classes.dataGrid}
+            components={{
+              Toolbar: CustomToolbar,
+            }}
+            rowsPerPageOptions={[5, 10, 15, 20, 50, 100]}
+            columns={columns}
+            rows={rows}
+            rowCount={count}
+            pageSize={limiter}
+            loading={isLoadingSats && isLoadingSchemas}
+            autoHeight={true}
+            pagination
+            paginationMode="server"
+            filterMode="server"
+            onFilterModelChange={(e) => {
+              handleFilter(e);
+            }}
+            onPageSizeChange={(newLimit) => setLimiter(newLimit)}
+            onPageChange={(newPage) => setPage(newPage)}
+            disableSelectionOnClick
+            onRowDoubleClick={(satellite) => {
+              handleRowDoubleClick(
+                SatelliteCollection.find({ noradID: satellite.id }).fetch()[0]
+              );
+            }}
+            onSortModelChange={handleSort}
+          />
+        </div>
+        <Typography variant="caption" className={classes.gridCaption}>
+          Click to interact with a cell, Double-click to view satellite data
+        </Typography>
+        <SatelliteModal
+          roles={roles}
+          show={showModal}
+          newSat={newSat}
+          initValues={initialSatValues}
+          handleClose={() => setShowModal(false)}
         />
       </div>
-      <Typography variant="caption" className={classes.gridCaption}>
-        Click to interact with a cell, Double-click to view satellite data
-      </Typography>
-      <SatelliteModal
-        roles={roles}
-        show={showModal}
-        newSat={newSat}
-        initValues={initialSatValues}
-        handleClose={() => setShowModal(false)}
-      />
-    </div>
+    </React.Fragment>
   );
 };
