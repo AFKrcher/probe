@@ -238,14 +238,15 @@ export const SatelliteForm = ({
                     (initValues[`${schema.name}`] ? false : true)
                   ) {
                     return (
-                      <MenuItem
-                        className="schemaIndex"
-                        key={schemaIndex}
-                        dense
-                        value={`${schema.name}`}
-                      >
-                        {schema.name}
-                      </MenuItem>
+                      <Tooltip title={schema.description} key={schemaIndex}>
+                        <MenuItem
+                          className="schemaIndex"
+                          dense
+                          value={`${schema.name}`}
+                        >
+                          {schema.name}
+                        </MenuItem>
+                      </Tooltip>
                     );
                   }
                 })}
