@@ -13,14 +13,14 @@ const isValidEmail = (value) => {
 };
 
 Meteor.startup(() => {
-  // console.log("users: ", Meteor.users.find().fetch());
+  // Satellite update methods
+
+  // Account methods
   Roles.createRole("admin", { unlessExists: true });
   Roles.createRole("moderator", { unlessExists: true });
-  // Roles.createRole("user", { unlessExists: true });
   Roles.createRole("dummies", { unlessExists: true });
 
   Accounts.config({
-    // sendVerificationEmail: true,
     sendVerificationEmail: false,
   });
 
@@ -159,6 +159,7 @@ Meteor.startup(() => {
     },
   });
 
+  // Start-up seed data methods
   if (SchemaCollection.find().count() === 0) {
     var jsonObj = [];
 
