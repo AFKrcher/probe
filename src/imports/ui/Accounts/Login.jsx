@@ -44,7 +44,7 @@ export const Login = () => {
 
   let user = useTracker(() => Meteor.user()?.username, []);
   let regex = /[~`!@.#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g;
-  
+
   const redirect = () => {
     setTimeout(() => history.push("/"));
   };
@@ -171,18 +171,30 @@ export const Login = () => {
             >
               Login
             </Button>
-            <Tooltip title="Redirect to the account registration page" placement="right">
+            <Tooltip
+              title="Redirect to the account registration page"
+              placement="right"
+              arrow
+            >
               <Button
                 id="register-instead"
                 className={classes.registerButton}
                 onClick={registerUser}
-                fullWidth
+                size="small"
               >
                 Register New
               </Button>
             </Tooltip>
-            <Tooltip title="Enter a registered email above" placement="right">
-              <Button id="forgot-password" onClick={forgotPassword} fullWidth>
+            <Tooltip
+              title="Enter a registered email above"
+              placement="right"
+              arrow
+            >
+              <Button
+                id="forgot-password"
+                onClick={forgotPassword}
+                size="small"
+              >
                 Forgot Password?
               </Button>
             </Tooltip>

@@ -5,7 +5,7 @@ import { useTracker } from "meteor/react-meteor-data";
 import { useHistory } from "react-router";
 
 // @material-ui
-import { Grid, Button } from "@material-ui/core";
+import { Grid, Button, Tooltip } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
@@ -40,11 +40,13 @@ export const Register = () => {
   const [emailHelper, setEmailHelper] = useState("");
   const [userErr, setUserErr] = useState();
   const [userHelper, setUserHelper] = useState("");
+
   const redirect = () => {
-    history.push("/");
+    setTimeout(history.push("/"));
   };
+
   const loginRedirect = () => {
-    history.push("/login");
+    setTimeout(history.push("/login"));
   };
 
   const [disabled] = useTracker(() => {
@@ -89,11 +91,9 @@ export const Register = () => {
 
   const validateUsername = () => {
     let username = document.getElementById("username")?.value;
+    const regex = /^[a-zA-Z0-9]{4,}$/g;
     if (username) {
-      if (
-        username.length > 3 &&
-        !/[~`!#$@.%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(username)
-      ) {
+      if (regex.test(username)) {
         Meteor.call("userExists", username, function (res, err) {
           if (err) {
             setUserErr(true);
@@ -105,21 +105,24 @@ export const Register = () => {
         });
       } else {
         setUserErr(true);
-        setUserHelper("Needs 4+ length & NO special characters!");
+        setUserHelper(
+          "Must be at least 4 characters long and cannot contain special characters"
+        );
       }
     }
   };
 
-  const validate = () => {
+  const validatePassword = () => {
     let pass = document.getElementById("password").value;
     let confirm = document.getElementById("confirm").value;
-    let regex = new RegExp(
-      "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})"
-    );
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
     if (pass) {
       if (!regex.test(pass)) {
         setPassErr(true);
-        setPassHelper("Needs 8+ length, upper, lower, & special characters!");
+        setPassHelper(
+          "Must be at least 8 characters long, and contain 1 lowercase, 1 uppercase, and 1 special character"
+        );
       } else {
         setPassErr(false);
         setPassHelper("");
@@ -134,18 +137,6 @@ export const Register = () => {
           setConfirmHelper("Passwords do not match!");
         }
       }
-    }
-  };
-
-  let timer;
-  const waitValidate = (arg) => {
-    // Clears any outstanding timer
-    clearTimeout(timer);
-    // Then sets new timer that may or may not get cleared
-    if (arg === "email") {
-      timer = setTimeout(() => validateEmail(), 1000);
-    } else {
-      timer = setTimeout(() => validateUsername(), 1000);
     }
   };
 
@@ -171,7 +162,7 @@ export const Register = () => {
         redirect(<div>You are already logged in.</div>)
       ) : (
         <FormControl className={classes.margin}>
-          <form onSubmit={registerUser} className={classes.flexContainer}>
+          <form onSubmit={registerUser} className={classes.formContainer}>
             <TextField
               id="email"
               error={emailErr}
@@ -179,7 +170,7 @@ export const Register = () => {
               label="Email"
               type="email"
               onBlur={validateEmail}
-              onChange={() => waitValidate("email")}
+              onChange={validateEmail}
               ref={(input) => (email = input)}
               fullWidth
               className={classes.textField}
@@ -190,7 +181,7 @@ export const Register = () => {
               helperText={userHelper}
               label="Username"
               onBlur={validateUsername}
-              onChange={() => waitValidate("username")}
+              onChange={validateUsername}
               ref={(input) => (username = input)}
               fullWidth
               className={classes.textField}
@@ -201,7 +192,7 @@ export const Register = () => {
               type="password"
               error={passErr}
               helperText={passHelper}
-              onChange={validate}
+              onChange={validatePassword}
               ref={(input) => (password = input)}
               fullWidth
               className={classes.textField}
@@ -211,7 +202,7 @@ export const Register = () => {
               id="confirm"
               helperText={confirmHelper}
               label="Confirm password"
-              onChange={validate}
+              onChange={validatePassword}
               type="password"
               fullWidth
               className={classes.textField}
@@ -227,14 +218,16 @@ export const Register = () => {
             >
               Register User
             </Button>
-            <Button
-              id="login-button"
-              fullWidth
-              className={classes.button}
-              onClick={loginRedirect}
-            >
-              Login Instead
-            </Button>
+            <Tooltip title="Redirect to the login page" placement="right" arrow>
+              <Button
+                id="login-button"
+                size="small"
+                className={classes.button}
+                onClick={loginRedirect}
+              >
+                Login Instead
+              </Button>
+            </Tooltip>
           </form>
         </FormControl>
       )}

@@ -178,12 +178,12 @@ export const SatCard = ({ width, height, satellite }) => {
         <CardActions
           className={classes.cardActions}
           style={
-            width < 500
+            width < 1250
               ? { justifyContent: "space-around" }
               : { justifyContent: "space-between" }
           }
         >
-          {width < 900 ? (
+          {width < 1250 ? (
             <React.Fragment>
               <Button
                 variant="outlined"
