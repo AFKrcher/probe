@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
+import useWindowSize from "../Hooks/useWindowSize.jsx";
 
 // Components
 import { SatelliteModal } from "../SatelliteModal/SatelliteModal";
@@ -39,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
   },
   gridContainer: {
     marginBottom: 5,
-    marginLeft: -10,
   },
   dataGrid: {
     backgroundColor: theme.palette.grid.background,
@@ -83,6 +83,8 @@ export const SatellitesTable = ({ roles }) => {
   const classes = useStyles();
 
   const { setOpenSnack, snack, setSnack } = useContext(HelpersContext);
+
+  const [width] = useWindowSize();
 
   const [showModal, setShowModal] = useState(false);
   const [newSat, setNewSat] = useState(true);
@@ -196,7 +198,7 @@ export const SatellitesTable = ({ roles }) => {
 
   const permissionToAddSatellite = () => {
     return Meteor.userId() ? (
-      <Grid container item xs justifyContent="flex-end">
+      <Grid container item xs justifyContent={width > 650 ? "flex-end" : "flex-start"}>
         <Button
           variant="contained"
           color="primary"
@@ -336,8 +338,9 @@ export const SatellitesTable = ({ roles }) => {
           <Grid item xs>
             <Typography variant="h3">Satellites</Typography>
           </Grid>
-          {permissionToAddSatellite()}
+          {width > 650 ? permissionToAddSatellite() : null}
         </Grid>
+          {width < 650 ? <div style={{margin: "10px 0px 20px 0px"}}>{permissionToAddSatellite()}</div> : null}
         <Typography
           gutterBottom
           variant="body2"

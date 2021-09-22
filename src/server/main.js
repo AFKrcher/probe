@@ -7,20 +7,14 @@ import { Roles } from "meteor/alanning:roles";
 import { Accounts } from "meteor/accounts-base";
 var fs = Npm.require("fs");
 
-const isValidEmail = (value) => {
+const isValidEmail = (oldEmail, newEmail) => {
   const schema = Yup.string().email();
-  return schema.isValidSync(value);
+  return schema.isValidSync(newEmail) && oldEmail !== newEmail;
 };
 
-const isValidUsername = (value) => {
+const isValidUsername = (oldUsername, newUsername) => {
   const regex = /^[a-zA-Z0-9]{4,}$/g;
-  return regex.test(value);
-};
-
-const isValidPassword = (value) => {
-  const regex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
-  return regex.test(value);
+  return regex.test(newUsername) && oldUsername !== newUsername;
 };
 
 Meteor.startup(() => {
@@ -39,26 +33,19 @@ Meteor.startup(() => {
     return Meteor.absoluteUrl(`/reset?token=${token}`);
   };
 
+  Accounts.urls.verifyEmail = (token) =>{
+    return Meteor.absoluteUrl(`/verify?token=${token}`)
+  }
+
   Accounts.onCreateUser((options, user) => {
     const username = options.username;
     const email = options.email;
-    const password = options.password;
-    if (
-      !isValidEmail(email) ||
-      !isValidUsername(username) ||
-      !isValidPassword(password)
-    ) {
-      console.log(
-        !isValidEmail(email),
-        !isValidUsername(username),
-        !isValidPassword(password)
-      );
-      return;
+    if (!isValidEmail(email) || !isValidUsername(username)) {
+      return "Invalid username or email";
     } else {
       user.roles = [];
       user.favorites = [];
-      console.log(user);
-      return user;
+      return user
     }
   });
 
@@ -114,12 +101,20 @@ Meteor.startup(() => {
   });
 
   Meteor.methods({
-    addToFavorites: (user, noradid) => {
+    checkIfBanned: (user) => {
+      let userFinder =
+        Accounts.findUserByUsername(user) || Accounts.findUserByEmail(user);
+      return Roles.userIsInRole(userFinder?._id, "dummies");
+    },
+  });
+
+  Meteor.methods({
+    addToFavorites: (user, noradID) => {
       let favorites = Meteor.user().favorites;
-      if (favorites.indexOf(noradid) === -1) {
-        favorites.push(noradid);
+      if (favorites.indexOf(noradID) === -1) {
+        favorites.push(noradID);
       } else {
-        favorites.splice(favorites.indexOf(noradid), 1);
+        favorites.splice(favorites.indexOf(noradID), 1);
       }
       Meteor.users.update(user, { $set: { favorites: favorites } });
       return Meteor.user().favorites;
@@ -129,7 +124,14 @@ Meteor.startup(() => {
   Meteor.methods({
     addUserToRole: (user, role) => {
       if (Roles.userIsInRole(Meteor.userId(), "admin")) {
-        Roles.addUsersToRoles(Accounts.findUserByUsername(user), role);
+        Roles.addUsersToRoles(Accounts.findUserByUsername(user.username), role);
+        if (role === "dummies") {
+          Meteor.users.update(
+            user._id,
+            { $set: { "services.resume.loginTokens": [] } },
+            { multi: true }
+          );
+        }
         return `${user} added to ${role}`;
       }
     },
@@ -138,26 +140,34 @@ Meteor.startup(() => {
   Meteor.methods({
     emailExists: (email) => {
       if (Accounts.findUserByEmail(email)) {
-        return "Email already in use.";
+        return `Email, ${email}, already in use.`;
+      } else {
+        return 
       }
     },
   });
 
   Meteor.methods({
     updateEmail: (id, email, newEmail) => {
-      Accounts.addEmail(id, newEmail);
-      Accounts.sendVerificationEmail(id, newEmail);
-      console.log(`user ${id} email changed from ${email} to ${newEmail}`);
-      return "success";
-      // Accounts.removeEmail(id, email, callback => "Old email removed")
+      if (isValidEmail(email, newEmail)) {
+        Accounts.removeEmail(id, email);
+        Accounts.addEmail(id, newEmail);
+        Accounts.sendVerificationEmail(id, newEmail);
+        return `Your email has been successfully changed from  ${email} to ${newEmail}`;
+      } else {
+        return `The provided email, ${newEmail}, is invalid.`;
+      }
     },
   });
 
   Meteor.methods({
-    updateUsername: (id, newUsername) => {
-      Accounts.setUsername(id, newUsername);
-      console.log(`user ${id} changed name to ${newUsername}`);
-      return "success";
+    updateUsername: (id, user, newUsername) => {
+      if (isValidUsername(user, newUsername)) {
+        Accounts.setUsername(id, newUsername);
+        return `Your username has been successfully changed from  ${user} to ${newUsername}`;
+      } else {
+        return `The provided username, ${newUsername}, is invalid.`;
+      }
     },
   });
 
@@ -168,10 +178,9 @@ Meteor.startup(() => {
         Roles.userIsInRole(Meteor.userId(), "admin")
       ) {
         Meteor.users.remove({ _id: id });
-        console.log(`user ${id} deleted`);
-        return "success";
+        return `User ${id} deleted.`;
       } else {
-        return "nice try";
+        return `Encountered an error while trying to delete user ${id}.`;
       }
     },
   });
@@ -180,6 +189,9 @@ Meteor.startup(() => {
     removeRole: (id, role) => {
       if (Roles.userIsInRole(Meteor.userId(), "admin")) {
         Roles.removeUsersFromRoles(id, role);
+        return `User ${id} added to role ${role}.`;
+      } else {
+        return `Encountered an error while trying to add user ${id} to role ${role}`;
       }
     },
   });

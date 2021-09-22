@@ -65,6 +65,7 @@ export const SatelliteSchemaEntry = ({
   const classes = useStyles();
 
   const [helpers, setHelpers] = useState(null);
+  
   const debounced = useDebouncedCallback((event) => {
     let obj = {};
     obj[`${event.target.name}`] = true;

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Accounts } from "meteor/accounts-base";
 import { useTracker } from "meteor/react-meteor-data";
 import { useHistory } from "react-router";
+import * as Yup from "yup";
 
 // @material-ui
 import { Grid, Button, Tooltip } from "@material-ui/core";
@@ -31,81 +32,56 @@ const useStyles = makeStyles((theme) => ({
 export const Register = () => {
   const classes = useStyles();
   const history = useHistory();
-  // const [disabled, setDisabled] = useState(true);
-  const [passErr, setPassErr] = useState();
-  const [passHelper, setPassHelper] = useState("");
-  const [confirmErr, setConfirmErr] = useState();
-  const [confirmHelper, setConfirmHelper] = useState("");
-  const [emailErr, setEmailErr] = useState();
-  const [emailHelper, setEmailHelper] = useState("");
-  const [userErr, setUserErr] = useState();
-  const [userHelper, setUserHelper] = useState("");
 
-  const redirect = () => {
-    setTimeout(history.push("/"));
-  };
+  const [passErr, setPassErr] = useState();
+  const [confirmErr, setConfirmErr] = useState();
+  const [emailErr, setEmailErr] = useState();
+  const [userErr, setUserErr] = useState();
 
   const loginRedirect = () => {
     setTimeout(history.push("/login"));
   };
 
-  const [disabled] = useTracker(() => {
-    let disabled = true;
-    if (
-      emailErr === false &&
-      userErr === false &&
-      passErr === false &&
-      confirmErr === false
-    ) {
-      disabled = false;
-    } else {
-      disabled = true;
-    }
-    return [disabled];
-  });
+  const isValidEmail = (email) => {
+    const schema = Yup.string().email();
+    return schema.isValidSync(email);
+  };
+
+  const isValidUsername = (username) => {
+    const regex = /^[a-zA-Z0-9]{4,}$/g;
+    return regex.test(username);
+  };
 
   const validateEmail = () => {
     let email = document.getElementById("email")?.value;
     if (email) {
-      if (
-        email.indexOf("@") > 1 &&
-        email.indexOf(".") > 1 &&
-        // !/^[a-zA-Z0-9][a-zA-Z0-9\._-]+@([a-zA-Z0-9\._-]+\.)[a-zA-Z-0-9]{2}/
-        !/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(email)
-      ) {
-        Meteor.call("emailExists", email, (res, err) => {
+      if (isValidEmail(email)) {
+        Meteor.call("emailExists", email, (_, err) => {
           if (err) {
-            setEmailErr(true);
-            setEmailHelper(err);
+            setEmailErr(err);
           } else {
-            setEmailErr(false);
-            setEmailHelper("");
+            setEmailErr(null);
           }
         });
       } else {
-        setEmailErr(true);
-        setEmailHelper("Invalid email address");
+        setEmailErr("Invalid email address");
       }
     }
   };
 
   const validateUsername = () => {
     let username = document.getElementById("username")?.value;
-    const regex = /^[a-zA-Z0-9]{4,}$/g;
     if (username) {
-      if (regex.test(username)) {
-        Meteor.call("userExists", username, function (res, err) {
+      if (isValidUsername(username)) {
+        Meteor.call("userExists", username, function (_, err) {
           if (err) {
-            setUserErr(true);
-            setUserHelper(err);
+            setUserErr(err);
           } else {
-            setUserErr(false);
-            setUserHelper("");
+            setUserErr(null);
           }
         });
       } else {
-        setUserErr(true);
-        setUserHelper(
+        setUserErr(
           "Must be at least 4 characters long and cannot contain special characters"
         );
       }
@@ -119,22 +95,17 @@ export const Register = () => {
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
     if (pass) {
       if (!regex.test(pass)) {
-        setPassErr(true);
-        setPassHelper(
+        setPassErr(
           "Must be at least 8 characters long, and contain 1 lowercase, 1 uppercase, and 1 special character"
         );
       } else {
-        setPassErr(false);
-        setPassHelper("");
+        setPassErr(null);
       }
       if (pass && confirm) {
         if (confirm === pass) {
-          setConfirmErr(false);
-          setConfirmHelper("");
+          setConfirmErr(null);
         } else {
-          // setDisabled(true);
-          setConfirmErr(true);
-          setConfirmHelper("Passwords do not match!");
+          setConfirmErr("Passwords do not match");
         }
       }
     }
@@ -142,95 +113,96 @@ export const Register = () => {
 
   const registerUser = (e) => {
     e.preventDefault();
-    // In server/main.js, Accounts.onCreateUser is called & user is assigned a role.
-    Accounts.createUser(
-      {
-        email: e.target.email.value,
-        username: e.target.username.value,
-        password: e.target.password.value,
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-    redirect();
+    try {
+      Accounts.createUser(
+        {
+          email: e.target.email.value,
+          username: e.target.username.value,
+          password: e.target.password.value,
+        },
+        () => {
+          alert("Welcome to PROBE"); // TODO: use AlertDialog for custom welcome message
+        }
+      );
+      setTimeout(history.push("/"));
+    } catch (err) {
+      alert(
+        "Something went wrong while trying to register your new account. Please try again later."
+      );
+    }
   };
 
   return (
     <Grid container justifyContent="center" alignItems="center">
-      {Meteor.loggingIn() || Meteor.user()?._id ? (
-        redirect(<div>You are already logged in.</div>)
-      ) : (
-        <FormControl className={classes.margin}>
-          <form onSubmit={registerUser} className={classes.formContainer}>
-            <TextField
-              id="email"
-              error={emailErr}
-              helperText={emailHelper}
-              label="Email"
-              type="email"
-              onBlur={validateEmail}
-              onChange={validateEmail}
-              ref={(input) => (email = input)}
-              fullWidth
-              className={classes.textField}
-            />
-            <TextField
-              id="username"
-              error={userErr}
-              helperText={userHelper}
-              label="Username"
-              onBlur={validateUsername}
-              onChange={validateUsername}
-              ref={(input) => (username = input)}
-              fullWidth
-              className={classes.textField}
-            />
-            <TextField
-              id="password"
-              label="Password"
-              type="password"
-              error={passErr}
-              helperText={passHelper}
-              onChange={validatePassword}
-              ref={(input) => (password = input)}
-              fullWidth
-              className={classes.textField}
-            />
-            <TextField
-              error={confirmErr}
-              id="confirm"
-              helperText={confirmHelper}
-              label="Confirm password"
-              onChange={validatePassword}
-              type="password"
-              fullWidth
-              className={classes.textField}
-            />
+      <FormControl className={classes.margin}>
+        <form onSubmit={registerUser} className={classes.formContainer}>
+          <TextField
+            id="email"
+            error={emailErr ? true : false}
+            helperText={emailErr}
+            label="Email"
+            type="email"
+            onBlur={validateEmail}
+            onChange={validateEmail}
+            ref={(input) => (email = input)}
+            fullWidth
+            className={classes.textField}
+          />
+          <TextField
+            id="username"
+            error={userErr ? true : false}
+            helperText={userErr}
+            label="Username"
+            onBlur={validateUsername}
+            onChange={validateUsername}
+            ref={(input) => (username = input)}
+            fullWidth
+            className={classes.textField}
+          />
+          <TextField
+            id="password"
+            label="Password"
+            type="password"
+            error={passErr ? true : false}
+            helperText={passErr}
+            onChange={validatePassword}
+            ref={(input) => (password = input)}
+            fullWidth
+            className={classes.textField}
+          />
+          <TextField
+            error={confirmErr ? true : false}
+            id="confirm"
+            helperText={confirmErr}
+            label="Confirm password"
+            onChange={validatePassword}
+            type="password"
+            fullWidth
+            className={classes.textField}
+          />
+          <Button
+            id="register-button"
+            variant="outlined"
+            color="primary"
+            type="submit"
+            fullWidth
+            disabled={passErr || confirmErr || userErr || emailErr}
+            className={classes.button}
+          >
+            Register User
+          </Button>
+          <Tooltip title="Redirect to the login page" placement="right" arrow>
             <Button
-              id="register-button"
-              variant="outlined"
-              color="primary"
-              type="submit"
-              fullWidth
-              disabled={disabled}
+              id="login-button"
+              size="small"
               className={classes.button}
+              onClick={loginRedirect}
             >
-              Register User
+              Login Instead
             </Button>
-            <Tooltip title="Redirect to the login page" placement="right" arrow>
-              <Button
-                id="login-button"
-                size="small"
-                className={classes.button}
-                onClick={loginRedirect}
-              >
-                Login Instead
-              </Button>
-            </Tooltip>
-          </form>
-        </FormControl>
-      )}
+          </Tooltip>
+        </form>
+      </FormControl>
     </Grid>
   );
 };
