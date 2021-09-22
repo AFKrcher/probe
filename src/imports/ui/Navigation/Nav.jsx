@@ -5,6 +5,7 @@ import useWindowSize from "../Hooks/useWindowSize.jsx";
 import { Link } from "react-router-dom";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import { DropDown } from "../Navigation/DropDown";
+import { SmallNav } from "../Navigation/SmallNav";
 
 // @material-ui
 import {
@@ -64,7 +65,7 @@ export const Nav = ({ theme, toggleTheme }) => {
 
   const classes = useStyles();
 
-  const [width, height] = useWindowSize();
+  const [width] = useWindowSize();
 
   return (
     <div className={classes.root}>
@@ -94,7 +95,7 @@ export const Nav = ({ theme, toggleTheme }) => {
                 <strong>PROBE</strong>
               </Typography>
             </Tooltip>
-            {width > 620 ? (
+            {width > 650 ? (
               <React.Fragment>
                 <Button
                   disableElevation
@@ -151,9 +152,13 @@ export const Nav = ({ theme, toggleTheme }) => {
               </React.Fragment>
             ) : null}
           </div>
-          <div edge="end" className={classes.dropDown}>
-            <DropDown theme={theme} toggleTheme={toggleTheme} />
-          </div>
+          {width > 650 ? (
+            <div edge="end" className={classes.dropDown}>
+              <DropDown theme={theme} toggleTheme={toggleTheme} />
+            </div>
+          ) : (
+            <SmallNav theme={theme} toggleTheme={toggleTheme} />
+          )}
         </Toolbar>
       </AppBar>
     </div>

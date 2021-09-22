@@ -95,7 +95,6 @@ export const DropDown = ({ theme, toggleTheme }) => {
     const roles = Roles.getRolesForUser(Meteor.userId());
     return [user, roles, !subRoles.ready()];
   });
-
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -106,83 +105,86 @@ export const DropDown = ({ theme, toggleTheme }) => {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
+  const handleLogout = (e) => {
+    e.preventDefault();
     Meteor.logout();
     setTimeout(() => history.push("/"));
   };
 
   return (
-    <React.Fragment>
-      <Button onClick={handleClick} id="drop-down" disableElevation>
-        <SettingsIcon fontSize="medium" />
-      </Button>
-      <StyledMenu
-        id="customized-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <StyledMenuItem onClick={toggleTheme}>
-          <ListItemIcon>
-            {theme === themes.dark ? (
-              <Brightness2 aria-label="dark theme" fontSize="small" />
+
+        <React.Fragment>
+          <Button onClick={handleClick} id="drop-down" disableElevation>
+            <SettingsIcon fontSize="medium" />
+          </Button>
+          <StyledMenu
+            id="customized-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <StyledMenuItem onClick={toggleTheme}>
+              <ListItemIcon>
+                {theme === themes.dark ? (
+                  <Brightness2 aria-label="dark theme" fontSize="small" />
+                ) : (
+                  <BrightnessHigh aria-label="light theme" />
+                )}
+              </ListItemIcon>
+              <ListItemText primary="Toggle Theme" fontSize="small" />
+            </StyledMenuItem>
+            {user ? (
+              <div>
+                <StyledMenuItem id="favorites">
+                  <ListItemIcon>
+                    <StarIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText primary="Favorites" />
+                </StyledMenuItem>
+                <StyledMenuItem id="settings" component={Link} to="/settings">
+                  <ListItemIcon>
+                    <AccountCircleIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText primary="Profile" />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                  <ListItemIcon>
+                    <ExitToAppIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText
+                    id="logout"
+                    primary="Logout"
+                    onClick={handleLogout}
+                  />
+                </StyledMenuItem>
+                {roles.indexOf("admin") !== -1 ? (
+                  <StyledMenuItem id="admin" component={Link} to="/admin">
+                    <ListItemIcon>
+                      <SupervisorAccountIcon />
+                    </ListItemIcon>
+                    <ListItemText id="role" primary="Admin Page" />
+                  </StyledMenuItem>
+                ) : null}
+              </div>
             ) : (
-              <BrightnessHigh aria-label="light theme" />
+              <div>
+                <StyledMenuItem id="login" component={Link} to="/login">
+                  <ListItemIcon>
+                    <AccountCircleIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Login" />
+                </StyledMenuItem>
+                <StyledMenuItem id="register" component={Link} to="/register">
+                  <ListItemIcon>
+                    <AccountCircleIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Register" />
+                </StyledMenuItem>
+              </div>
             )}
-          </ListItemIcon>
-          <ListItemText primary="Toggle Theme" fontSize="small" />
-        </StyledMenuItem>
-        {user ? (
-          <div>
-            <StyledMenuItem id="favorites">
-              <ListItemIcon>
-                <StarIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Favorites" />
-            </StyledMenuItem>
-            <StyledMenuItem id="settings" component={Link} to="/settings">
-              <ListItemIcon>
-                <SettingsIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Profile" />
-            </StyledMenuItem>
-            <StyledMenuItem>
-              <ListItemIcon>
-                <ExitToAppIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText
-                id="logout"
-                primary="Logout"
-                onClick={handleLogout}
-              />
-            </StyledMenuItem>
-            {roles.indexOf("admin") !== -1 ? (
-              <StyledMenuItem id="admin" component={Link} to="/admin">
-                <ListItemIcon>
-                  <SupervisorAccountIcon />
-                </ListItemIcon>
-                <ListItemText id="role" primary="Admin Page" />
-              </StyledMenuItem>
-            ) : null}
-          </div>
-        ) : (
-          <div>
-            <StyledMenuItem id="login" component={Link} to="/login">
-              <ListItemIcon>
-                <AccountCircleIcon />
-              </ListItemIcon>
-              <ListItemText primary="Login" />
-            </StyledMenuItem>
-            <StyledMenuItem id="register" component={Link} to="/register">
-              <ListItemIcon>
-                <AccountCircleIcon />
-              </ListItemIcon>
-              <ListItemText primary="Register" />
-            </StyledMenuItem>
-          </div>
-        )}
-      </StyledMenu>
-    </React.Fragment>
+          </StyledMenu>
+        </React.Fragment>
+
   );
 };

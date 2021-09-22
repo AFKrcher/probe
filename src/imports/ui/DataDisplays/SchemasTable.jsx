@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+// Imports
 import { useTracker } from "meteor/react-meteor-data";
+import useWindowSize from "../Hooks/useWindowSize.jsx";
+import { SchemaCollection } from "../../api/schemas";
 
 // Components
-import { SchemaCollection } from "../../api/schemas";
+import { Link } from "react-router-dom";
 import { SchemaModal } from "../SchemaModal/SchemaModal.jsx";
 
 // @material-ui
@@ -28,13 +30,13 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
   },
   description: {
-    marginBottom: 25, 
-    marginTop: 10
+    marginBottom: 25,
+    marginTop: 10,
   },
   table: {
     overflow: "auto",
     height: "100%",
-    backgroundColor: theme.palette.grid.background
+    backgroundColor: theme.palette.grid.background,
   },
   header: {
     paddingTop: 12.5,
@@ -44,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   tableRow: {
     "&:hover": {
       backgroundColor: theme.palette.action.hover,
-      cursor: "pointer"
+      cursor: "pointer",
     },
   },
   spinner: {
@@ -77,6 +79,8 @@ const newSchemaValues = {
 export const SchemasTable = () => {
   const classes = useStyles();
 
+  const [width] = useWindowSize();
+
   const [showModal, setShowModal] = useState(false);
   const [newSchema, setNewSchema] = useState(true);
   const [initialSchemaValues, setInitialSchemaValues] =
@@ -100,88 +104,101 @@ export const SchemasTable = () => {
     setInitialSchemaValues(schemaObject);
   };
 
+  const permissionToAddSchema = () => {
+    return Meteor.userId() ? (
+      <Grid
+        container
+        item
+        xs
+        justifyContent={width > 650 ? "flex-end" : "flex-start"}
+      >
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddNewSchema}
+        >
+          + Add Schema
+        </Button>
+      </Grid>
+    ) : null;
+  };
+
   return (
-      <div className={classes.root}>
-        <Grid container justifyContent="space-between" alignItems="center">
-          <Grid item xs>
-            <Typography variant="h3">Schemas</Typography>
-          </Grid>
-          <Grid container item xs justifyContent="flex-end">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleAddNewSchema}
-            >
-              + Add Schema
-            </Button>
-          </Grid>
+    <div className={classes.root}>
+      <Grid container justifyContent="space-between" alignItems="center">
+        <Grid item xs>
+          <Typography variant="h3">Schemas</Typography>
         </Grid>
-        <Typography gutterBottom variant="body2" className={classes.description}>
-          Each <strong>schema</strong> is built to store sets of data that characterize a satellite. 
-          Please see the satellites on the{" "} 
-          <Tooltip title="Bring me to the schemas page">
-            <Link to="/satellites" className={classes.link}>
-              previous page
-            </Link>
-          </Tooltip>{" "}
-          for usage examples.
-          Each <strong>schema</strong> has a reference for where the data was
-          found, a description describing what the data is, and a number of
-          data fields that contain the actual information.
-          Click on a desired <strong>schema</strong> below to view its details
-          and edit the entry fields.
-        </Typography>
-        <TableContainer component={Paper} className={classes.table}>
-          <Table
-            size="small"
-            aria-label="Schema table"
-          >
-            <TableHead>
-              <TableRow color="secondary">
-                <TableCell className={classes.header}>
-                  <Typography variant="body2">SCHEMA NAME</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant="body2">SCHEMA DESCRIPTION</Typography>
+        <Grid container item xs justifyContent="flex-end">
+          {width > 650 ? permissionToAddSchema() : null}
+        </Grid>
+        {width < 650 ? (
+          <div style={{ margin: "10px 0px 10px 0px" }}>
+            {permissionToAddSchema()}
+          </div>
+        ) : null}
+      </Grid>
+      <Typography gutterBottom variant="body2" className={classes.description}>
+        Each <strong>schema</strong> is built to store sets of data that
+        characterize a satellite. Please see the satellites on the{" "}
+        <Tooltip title="Bring me to the schemas page">
+          <Link to="/satellites" className={classes.link}>
+            previous page
+          </Link>
+        </Tooltip>{" "}
+        for usage examples. Each <strong>schema</strong> has a reference for
+        where the data was found, a description describing what the data is, and
+        a number of data fields that contain the actual information. Click on a
+        desired <strong>schema</strong> below to view its details and edit the
+        entry fields.
+      </Typography>
+      <TableContainer component={Paper} className={classes.table}>
+        <Table size="small" aria-label="Schema table">
+          <TableHead>
+            <TableRow color="secondary">
+              <TableCell className={classes.header}>
+                <Typography variant="body2">SCHEMA NAME</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="body2">SCHEMA DESCRIPTION</Typography>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {isLoading && (
+              <TableRow>
+                <TableCell colSpan={2} align="center">
+                  <CircularProgress className={classes.spinner} />
                 </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {isLoading && (
-                <TableRow>
-                  <TableCell colSpan={2} align="center">
-                    <CircularProgress className={classes.spinner} />
+            )}
+            {!isLoading &&
+              schemas.map((schema, i) => (
+                <TableRow
+                  key={`schema-row-${i}`}
+                  className={classes.tableRow}
+                  onClick={() => handleRowClick(schema)}
+                >
+                  <TableCell
+                    key={`schema-name-${i}`}
+                    className={classes.tableNameCol}
+                  >
+                    {schema.name}
+                  </TableCell>
+                  <TableCell key={`schema-desc-${i}`}>
+                    {schema.description || "N/A"}
                   </TableCell>
                 </TableRow>
-              )}
-              {!isLoading &&
-                schemas.map((schema, i) => (
-                  <TableRow
-                    key={`schema-row-${i}`}
-                    className={classes.tableRow}
-                    onClick={() => handleRowClick(schema)}
-                  >
-                    <TableCell
-                      key={`schema-name-${i}`}
-                      className={classes.tableNameCol}
-                    >
-                      {schema.name}
-                    </TableCell>
-                    <TableCell key={`schema-desc-${i}`}>
-                      {schema.description ||
-                        "N/A"}
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <SchemaModal
-          show={showModal}
-          newSchema={newSchema}
-          initValues={initialSchemaValues}
-          handleClose={() => setShowModal(false)}
-        />
-      </div>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <SchemaModal
+        show={showModal}
+        newSchema={newSchema}
+        initValues={initialSchemaValues}
+        handleClose={() => setShowModal(false)}
+      />
+    </div>
   );
 };

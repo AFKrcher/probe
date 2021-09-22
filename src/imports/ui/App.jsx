@@ -20,6 +20,7 @@ import { ResetPassword } from "./Accounts/ResetPassword";
 import { DropDown } from "./Navigation/DropDown";
 import { Settings } from "./Accounts/Settings";
 import { Admin } from './Accounts/Admin'
+import { Verify } from './Accounts/Verify'
 
 // @material-ui
 import { ThemeProvider } from "@material-ui/core/styles";
@@ -41,8 +42,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 export const App = () => {
-  Meteor.subscribe('roles')
-  const roles = useTracker(() => Roles.getRolesForUser(Meteor.userId()), [])
   const [theme, setTheme] = useState(themes.dark);
   const [openAlert, setOpenAlert] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
@@ -54,8 +53,14 @@ export const App = () => {
   });
   const [snack, setSnack] = useState(""); //snackbar body text
 
-  const classes = useStyles();
+  const [user, roles, isLoading] = useTracker(() => {
+    const sub = Meteor.subscribe("roles");
+    const roles = Roles.getRolesForUser(Meteor.userId());
+    const user = Meteor.user()?.username;
+    return [user, roles, !sub.ready()]
+  })
 
+  const classes = useStyles();
   const toggleTheme = () => {
     setTheme((theme) => (theme === themes.dark ? themes.light : themes.dark));
   };
@@ -84,16 +89,20 @@ export const App = () => {
                   <SatellitesTable roles={roles}/>
                 </Route>
                 <Route exact={true} path="/login">
-                  <Login />
+                  {user || isLoading ? <Home /> : <Login />}
                 </Route>
                 <Route exact={true} path="/register">
-                  <Register />
+                  {user || isLoading ? <Home /> : <Register />}
                 </Route>
                 <Route path="/reset">
-                  <ResetPassword />
+                  {user || isLoading ? <Home /> : <ResetPassword />}
+                </Route>
+                <Route path="/verify">
+                  <Verify />
+                  {/* {user || isLoading ? <Home /> : <Verify />} */}
                 </Route>
                 <Route exact={true} path="/settings">
-                  <Settings />
+                  {!user || isLoading ? <Home /> : <Settings />}
                 </Route>
                 <Route exact={true} path="/menu">
                   <DropDown />

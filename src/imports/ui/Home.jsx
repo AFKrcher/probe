@@ -42,10 +42,7 @@ export const Home = () => {
   const classes = useStyles();
   const [width, height] = useWindowSize();
 
-  const numberOfSkeletons =
-    Math.round(width / 200) > 9 || Math.round(width / 200) <= 3
-      ? 9
-      : Math.round(width / 200);
+  const numberOfSkeletons = width > 1150 ? 16 : 8;
 
   const cardSpace =
     Math.round(height / (width / 5)) > 10

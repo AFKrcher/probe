@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // Imports
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 import { Accounts } from "meteor/accounts-base";
 
@@ -34,47 +34,38 @@ const useStyles = makeStyles((theme) => ({
 
 export const ResetPassword = () => {
   const classes = useStyles();
-  let [disabled, setDisabled] = useState(true);
-  const [passErr, setPassErr] = useState();
-  const [passHelper, setPassHelper] = useState("");
-  const [confirmErr, setConfirmErr] = useState();
-  const [confirmHelper, setConfirmHelper] = useState("");
-
-  let user = useTracker(() => Meteor.user()?.username, []);
+  const [passHelper, setPassHelper] = useState();
+  const [confirmHelper, setConfirmHelper] = useState();
+  const [touched, setTouched] = useState(false);
 
   const location = useLocation();
+  const token = location.search.slice(7, location.search.length);
 
-  let token = location.search.slice(7, location.search.length);
-  
   const handleReset = (newPassword) => {
     Accounts.resetPassword(token, newPassword, (res, err) => {
-      console.log(res, err);
+      if (err) alert(err)
+      if (res) alert(res)
     });
   };
 
-  const validate = () => {
+  const validatePassword = () => {
     let pass = document.getElementById("password").value;
     let confirm = document.getElementById("confirm").value;
-    let regex = new RegExp(
-      "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})"
-    );
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
     if (pass) {
+      setTouched(true);
       if (!regex.test(pass)) {
-        setPassErr(true);
-        setDisabled(true)
-        setPassHelper("Needs 8+ length, upper, lower, & special characters!");
+        setPassHelper(
+          "Must be at least 8 characters long, and contain 1 lowercase, 1 uppercase, and 1 special character"
+        );
       } else {
-        setPassErr(false);
-        setPassHelper("");
+        setPassHelper(null);
       }
       if (pass && confirm) {
         if (confirm === pass) {
-          setConfirmErr(false);
-          setDisabled(false);
-          setConfirmHelper("");
+          setConfirmHelper(null);
         } else {
-          setDisabled(true);
-          setConfirmErr(true);
           setConfirmHelper("Passwords do not match!");
         }
       }
@@ -82,48 +73,42 @@ export const ResetPassword = () => {
   };
 
   return (
-    <>
-      <Grid container justifyContent="center" alignItems="center">
-        {user ? (
-          <div>You are already logged in.</div>
-        ) : (
-          <FormControl className={classes.margin}>
-            <form onSubmit={handleReset} className={classes.formContainer}>
-              <TextField
-                id="password"
-                label="New password"
-                type="password"
-                error={passErr}
-                helperText={passHelper}
-                onChange={validate}
-                ref={(input) => (password = input)}
-                fullWidth
-                className={classes.textField}
-              />
-              <TextField
-                error={confirmErr}
-                id="confirm"
-                helperText={confirmHelper}
-                label="Confirm new password"
-                onChange={validate}
-                type="password"
-                fullWidth
-                className={classes.textField}
-              />
-              <Button
-                disabled={disabled}
-                variant="outlined"
-                className={classes.loginButton}
-                color="primary"
-                type="submit"
-                fullWidth
-              >
-                Reset Password
-              </Button>
-            </form>
-          </FormControl>
-        )}
-      </Grid>
-    </>
+    <Grid container justifyContent="center" alignItems="center">
+      <FormControl className={classes.margin}>
+        <form onSubmit={handleReset} className={classes.formContainer}>
+          <TextField
+            id="password"
+            label="New password"
+            type="password"
+            error={passHelper ? true : false}
+            helperText={passHelper}
+            onChange={validatePassword}
+            ref={(input) => (password = input)}
+            fullWidth
+            className={classes.textField}
+          />
+          <TextField
+            error={confirmHelper ? true : false}
+            id="confirm"
+            helperText={confirmHelper}
+            label="Confirm New password"
+            onChange={validatePassword}
+            type="password"
+            fullWidth
+            className={classes.textField}
+          />
+          <Button
+            disabled={!touched || confirmHelper || passHelper}
+            variant="outlined"
+            className={classes.loginButton}
+            color="primary"
+            type="submit"
+            fullWidth
+          >
+            Reset Password
+          </Button>
+        </form>
+      </FormControl>
+    </Grid>
   );
 };

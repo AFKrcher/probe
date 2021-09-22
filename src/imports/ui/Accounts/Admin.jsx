@@ -167,14 +167,14 @@ export const Admin = () => {
 
             <br />
             <Button
-              onClick={() => addUserToRole(editUser.username, "moderator")}
+              onClick={() => addUserToRole(editUser, "moderator")}
               color="primary"
               autoFocus
             >
               Make Moderator
             </Button>
             <Button
-              onClick={() => addUserToRole(editUser.username, "admin")}
+              onClick={() => addUserToRole(editUser, "admin")}
               color="primary"
               autoFocus
             >
@@ -184,7 +184,7 @@ export const Admin = () => {
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={() => addUserToRole(editUser.username, "dummies")}
+            onClick={() => addUserToRole(editUser, "dummies")}
             color="secondary"
           >
             Ban
