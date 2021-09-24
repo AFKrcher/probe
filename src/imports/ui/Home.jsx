@@ -68,7 +68,7 @@ export const Home = () => {
         </Typography>
         <Typography variant="body1" className={classes.description}>
           <strong>P</strong>ublicly <strong>R</strong>esearched{" "}
-          <strong>OB</strong>s<strong>E</strong>rvatory (PROBE) is seeking to
+          <strong>O</strong>bservatory (PROBE) is seeking to
           become the world&apos;s most complete and easy to use resource for
           satellite data and information.
         </Typography>
@@ -101,25 +101,7 @@ export const Home = () => {
               : [...Array(numberOfSkeletons)].map((_, index) => (
                   <Grid item xs={cardSpace} key={index}>
                     <Skeleton variant="rect" className={classes.skeleton}>
-                      <SatCard
-                        satellite={{
-                          noradID: "skeleton",
-                          names: [
-                            {
-                              reference: "skeleton",
-                              name: "skeleton",
-                            },
-                          ],
-                          descriptionShort: [
-                            {
-                              reference: "skeleton",
-                              descriptionShort: "skeleton",
-                            },
-                          ],
-                        }}
-                        width={width}
-                        height={height}
-                      />
+                      <SatCard satellite={{}} width={width} height={height} />
                     </Skeleton>
                   </Grid>
                 ))}

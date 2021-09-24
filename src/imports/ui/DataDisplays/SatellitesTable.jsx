@@ -5,12 +5,13 @@ import { useTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import useWindowSize from "../Hooks/useWindowSize.jsx";
+import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
 
 // Components
 import { SatelliteModal } from "../SatelliteModal/SatelliteModal";
 import { SatelliteCollection } from "../../api/satellites";
 import SnackBar from "../Dialogs/SnackBar.jsx";
-import FavoritesSwitch from "../css/FavoritesSwitch";
+import FavoritesSwitch from "./FavoritesSwitch";
 
 // @material-ui
 import {
@@ -73,13 +74,20 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 5,
     color: theme.palette.text.disabled,
   },
+  starButton: {
+    marginBottom: -5,
+    cursor: "pointer",
+    "&:hover": {
+      color: theme.palette.info.light,
+    },
+  },
 }));
 
 const newSatValues = {
   noradID: "",
 };
 
-export const SatellitesTable = ({ roles }) => {
+export const SatellitesTable = () => {
   const classes = useStyles();
 
   const { setOpenSnack, snack, setSnack } = useContext(HelpersContext);
@@ -97,6 +105,36 @@ export const SatellitesTable = ({ roles }) => {
   const [sortOrbit, setSortOrbit] = useState(0);
   const [selector, setSelector] = useState({});
   const [columns, setColumns] = useState([]);
+
+  const decideSort = () => {
+    if (sortNames) return { names: sortNames };
+    if (sortNorad) return { noradID: sortNorad };
+    if (sortType) return { type: sortType };
+    if (sortOrbit) return { orbit: sortOrbit };
+  };
+
+  const [rows, count, isLoadingSchemas, isLoadingSats] = useTracker(() => {
+    const subSchemas = Meteor.subscribe("satellites");
+    const subSats = Meteor.subscribe("satellites");
+    const count = SatelliteCollection.find().count();
+    const sats = SatelliteCollection.find(selector, {
+      limit: limiter,
+      skip: page * limiter,
+      sort: decideSort(),
+    }).fetch();
+    const rows = sats.map((sat) => {
+      return {
+        id: sat.noradID,
+        names: sat.names?.map((name) => name.names || name.name).join(", "),
+        type: sat.type ? sat.type[0].type : "N/A",
+        orbit: sat.orbit
+          ? sat.orbit.map((entry) => entry.orbit).join(", ")
+          : "N/A",
+      };
+    });
+    rows.getRows = count;
+    return [rows, count, !subSchemas.ready(), !subSats.ready()];
+  });
 
   function CustomToolbar() {
     return (
@@ -124,19 +162,21 @@ export const SatellitesTable = ({ roles }) => {
   const handleFavorite = (e, values, name, notFavorite) => {
     e.preventDefault();
     Meteor.call("addToFavorites", Meteor.userId(), values, (err, res) => {
-      return [err, res];
+      return res;
     });
 
-    setTimeout(() => {
-      setOpenSnack(false);
-      setSnack(
-        <span>
-          <strong>{name}</strong>{" "}
-          {!notFavorite ? "added to favorites" : "removed from favorites"}
-        </span>
-      );
-      setOpenSnack(true);
-    }, 100);
+    setOpenSnack(false);
+    setSnack(
+      <span>
+        <strong>{name}</strong>{" "}
+        {!notFavorite ? "added to favorites" : "removed from favorites"}
+      </span>
+    );
+    setOpenSnack(true);
+
+    window.onerror = function (msg) {
+      if (msg.includes("e.replace")) return true;
+    };
   };
 
   const handleFilter = (e) => {
@@ -151,6 +191,12 @@ export const SatellitesTable = ({ roles }) => {
         case "names":
           setSelector({
             "names.name": { $regex: `${filterBy.value}`, $options: "i" },
+          });
+          break;
+        // { noradID: { $in: [Meteor.user().favorites] }},
+        case "[object Object]":
+          setSelector({
+            noradID: { $in: Meteor.user().favorites },
           });
           break;
         case "type":
@@ -196,20 +242,6 @@ export const SatellitesTable = ({ roles }) => {
     }
   };
 
-  const permissionToAddSatellite = () => {
-    return Meteor.userId() ? (
-      <Grid container item xs justifyContent={width > 650 ? "flex-end" : "flex-start"}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleAddNewSatellite}
-        >
-          + Add Satellite
-        </Button>
-      </Grid>
-    ) : null;
-  };
-
   const renderFavoriteButton = (params) => {
     const favoritesNameShortener = () => {
       const names = params.row.names;
@@ -253,6 +285,14 @@ export const SatellitesTable = ({ roles }) => {
     );
   };
 
+  const filterFavorites = () => {
+    if (selector?.noradID) {
+      return setSelector({});
+    } else {
+      return setSelector({ noradID: { $in: Meteor.user().favorites } });
+    }
+  };
+
   useEffect(() => {
     const columns = [
       {
@@ -287,7 +327,13 @@ export const SatellitesTable = ({ roles }) => {
 
     if (Meteor.userId()) {
       columns.unshift({
-        field: <Star style={{ marginBottom: -5 }} />,
+        field: (
+          <Tooltip title="Toggle favorites filter" arrow placement="top-start">
+            <span onClick={() => filterFavorites()}>
+              <Star className={classes.starButton} />
+            </span>
+          </Tooltip>
+        ),
         filterable: false,
         sortable: false,
         minWidth: 50,
@@ -299,36 +345,26 @@ export const SatellitesTable = ({ roles }) => {
     }
 
     setColumns(columns);
-  }, [Meteor.userId()]);
+  }, [Meteor.userId(), selector]);
 
-  const [rows, count, isLoadingSchemas, isLoadingSats] = useTracker(() => {
-    const subSchemas = Meteor.subscribe("satellites");
-    const subSats = Meteor.subscribe("satellites");
-    const count = SatelliteCollection.find().count();
-    const sats = SatelliteCollection.find(selector, {
-      limit: limiter,
-      skip: page * limiter,
-      sort: sortNames
-        ? { names: sortNames }
-        : sortNorad
-        ? { noradID: sortNorad }
-        : sortType
-        ? { type: sortType }
-        : { orbit: sortOrbit },
-    }).fetch();
-    const rows = sats.map((sat) => {
-      return {
-        id: sat.noradID,
-        names: sat.names?.map((name) => name.names || name.name).join(", "),
-        type: sat.type ? sat.type[0].type : "N/A",
-        orbit: sat.orbit
-          ? sat.orbit.map((entry) => entry.orbit).join(", ")
-          : "N/A",
-      };
-    });
-    rows.getRows = count;
-    return [rows, count, !subSchemas.ready(), !subSats.ready()];
-  });
+  const AddSatelliteButton = () => {
+    return (
+      <Grid
+        container
+        item
+        xs
+        justifyContent={width > 650 ? "flex-end" : "flex-start"}
+      >
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddNewSatellite}
+        >
+          + Add Satellite
+        </Button>
+      </Grid>
+    );
+  };
 
   return (
     <React.Fragment>
@@ -338,9 +374,21 @@ export const SatellitesTable = ({ roles }) => {
           <Grid item xs>
             <Typography variant="h3">Satellites</Typography>
           </Grid>
-          {width > 650 ? permissionToAddSatellite() : null}
+          {width > 650 ? (
+            <ProtectedFunctionality
+              component={AddSatelliteButton}
+              loginRequired={true}
+            />
+          ) : null}
         </Grid>
-          {width < 650 ? <div style={{margin: "10px 0px 20px 0px"}}>{permissionToAddSatellite()}</div> : null}
+        {width < 650 ? (
+          <div style={{ margin: "10px 0px 20px 0px" }}>
+            <ProtectedFunctionality
+              component={AddSatelliteButton}
+              loginRequired={true}
+            />
+          </div>
+        ) : null}
         <Typography
           gutterBottom
           variant="body2"
@@ -391,7 +439,6 @@ export const SatellitesTable = ({ roles }) => {
           Click to interact with a cell, Double-click to view satellite data
         </Typography>
         <SatelliteModal
-          roles={roles}
           show={showModal}
           newSat={newSat}
           initValues={initialSatValues}

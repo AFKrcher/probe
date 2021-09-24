@@ -68,7 +68,7 @@ export const Settings = () => {
         });
       }
       if (res) {
-        setSnack(res);
+        setSnack("Your account has been successfully deleted");
         setOpenSnack(true);
       }
     });
