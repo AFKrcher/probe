@@ -3,7 +3,7 @@ import React from "react";
 import { useTracker } from "meteor/react-meteor-data";
 
 // @material-ui
-import Skeleton from "@material-ui/lab/Skeleton";
+import { Skeleton } from "@material-ui/lab";
 
 export default function ProtectedFunctionality({
   component: Component,
@@ -28,7 +28,7 @@ export default function ProtectedFunctionality({
   const loginCheck = () => {
     // if login is required, then return the user and isLoading booleans to check for user prior to loading the component
     if (!disableIfLoggedIn) return loginRequired ? user : true;
-    return false
+    return false;
   };
 
   return !isLoading ? (

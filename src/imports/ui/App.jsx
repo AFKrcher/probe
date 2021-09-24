@@ -6,7 +6,6 @@ import ProtectedRoute from "./utils/ProtectedRoute.jsx";
 
 // Components
 import { Admin } from "./Admin/Admin";
-import { Favorites } from "./Accounts/Favorites";
 import { Nav } from "./Navigation/Nav.jsx";
 import { SatellitesTable } from "./DataDisplays/SatellitesTable.jsx";
 import { SchemasTable } from "./DataDisplays/SchemasTable.jsx";
@@ -80,9 +79,6 @@ export const App = () => {
               <Switch>
                 <Route exact={true} path="/satellites">
                   <SatellitesTable />
-                </Route>
-                <Route exact={true} path="/favorites">
-                  <Favorites />
                 </Route>
                 <Route exact={true} path="/login">
                   <ProtectedRoute component={Login} loginRequired={false} />

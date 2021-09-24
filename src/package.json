@@ -16,6 +16,7 @@
     "formik": "^2.2.9",
     "formik-material-ui": "^3.0.1",
     "formik-material-ui-lab": "0.0.8",
+    "helmet": "^4.6.0",
     "jquery": "^3.6.0",
     "meteor": "^2.3.6",
     "meteor-node-stubs": "^1.1.0",

@@ -5,7 +5,15 @@ import { SatelliteCollection } from "/imports/api/satellites";
 import "./routes";
 import { Roles } from "meteor/alanning:roles";
 import { Accounts } from "meteor/accounts-base";
-var fs = Npm.require("fs");
+import helmet from "helmet";
+import { helmetOptions } from "./helmet.js";
+
+const fs = Npm.require("fs");
+
+const self = "'self'";
+const data = "data:";
+const unsafeEval = "'unsafe-eval'";
+const unsafeInline = "'unsafe-inline'";
 
 const isValidEmail = (oldEmail, newEmail) => {
   const schema = Yup.string().email();
@@ -18,6 +26,9 @@ const isValidUsername = (oldUsername, newUsername) => {
 };
 
 Meteor.startup(() => {
+  // See helmet.js for Content Security Policy (CSP) options
+  WebApp.connectHandlers.use(helmet(helmetOptions()));
+
   // Account publications, methods, and seeds
   Roles.createRole("admin", { unlessExists: true });
   Roles.createRole("moderator", { unlessExists: true });

@@ -159,26 +159,6 @@ export const SatellitesTable = () => {
     setInitialSatValues(schemaObject);
   };
 
-  const handleFavorite = (e, values, name, notFavorite) => {
-    e.preventDefault();
-    Meteor.call("addToFavorites", Meteor.userId(), values, (err, res) => {
-      return res;
-    });
-
-    setOpenSnack(false);
-    setSnack(
-      <span>
-        <strong>{name}</strong>{" "}
-        {!notFavorite ? "added to favorites" : "removed from favorites"}
-      </span>
-    );
-    setOpenSnack(true);
-
-    window.onerror = function (msg) {
-      if (msg.includes("e.replace")) return true;
-    };
-  };
-
   const handleFilter = (e) => {
     const filterBy = e.items[0];
     if (filterBy && filterBy.value) {
@@ -193,7 +173,6 @@ export const SatellitesTable = () => {
             "names.name": { $regex: `${filterBy.value}`, $options: "i" },
           });
           break;
-        // { noradID: { $in: [Meteor.user().favorites] }},
         case "[object Object]":
           setSelector({
             noradID: { $in: Meteor.user().favorites },
@@ -240,6 +219,26 @@ export const SatellitesTable = () => {
       setSortType(0);
       setSortOrbit(0);
     }
+  };
+
+  const handleFavorite = (e, values, name, notFavorite) => {
+    e.preventDefault();
+    Meteor.call("addToFavorites", Meteor.userId(), values, (err, res) => {
+      return res;
+    });
+
+    setOpenSnack(false);
+    setSnack(
+      <span>
+        <strong>{name}</strong>{" "}
+        {!notFavorite ? "added to favorites" : "removed from favorites"}
+      </span>
+    );
+    setTimeout(() => setOpenSnack(true), 500);
+
+    window.onerror = function (msg) {
+      if (msg.includes("e.replace")) return true; // gets rid of incorrect internal MUI error
+    };
   };
 
   const renderFavoriteButton = (params) => {
@@ -293,6 +292,7 @@ export const SatellitesTable = () => {
     }
   };
 
+  // Renders Datagrid after each change in the dependency array
   useEffect(() => {
     const columns = [
       {

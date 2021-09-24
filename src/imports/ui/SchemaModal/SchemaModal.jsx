@@ -45,10 +45,19 @@ const useStyles = makeStyles(() => ({
     marginBottom: 15,
     margin: 5,
   },
+  loadingDialog: {
+    textAlign: "center",
+    margin: 50,
+    overflow: "hidden",
+  },
   actions: {
     display: "flex",
     justifyContent: "space-between",
     margin: "5px 20px 5px 20px",
+  },
+  loadingSave: {
+    textAlign: "center",
+    overflow: "hidden",
   },
 }));
 
@@ -80,6 +89,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
           if (res || err) {
             alert(res || err);
           } else {
+            handleClose();
             setOpenSnack(false);
             setSnack(
               <span>
@@ -87,7 +97,6 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
               </span>
             );
             setOpenSnack(true);
-            handleClose();
           }
         });
       } else {
@@ -111,18 +120,18 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
   };
 
   const handleDelete = () => {
-    Meteor.call("deleteSchema", initValues, user, () => {
+    Meteor.call("deleteSchema", initValues, user, (err, res) => {
       if (res || err) {
         alert(res || err);
       } else {
         setOpenAlert(false);
-        handleClose();
         setOpenSnack(false);
         setSnack(
           <span>
             Deleted <strong>{initValues.name}</strong> schema!
           </span>
         );
+        handleClose();
         setOpenSnack(true);
       }
     });
@@ -234,6 +243,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
               setFieldValue,
               initValues,
               dirty,
+              isValidating,
             }) => (
               <Form>
                 {isLoading ? (
@@ -241,7 +251,16 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
                     <CircularProgress size={75} />
                   </DialogContent>
                 ) : (
-                  <DialogContent className={classes.content}>
+                  <DialogContent
+                    className={classes.content}
+                    style={
+                      width < 500
+                        ? width < 350
+                          ? { height: "50vh" }
+                          : { height: "60vh" }
+                        : { height: "75vh" }
+                    }
+                  >
                     <Typography className={classes.description}>
                       Each schema is built to store sets of data that
                       characterize a satellite. Data fields can be added,
@@ -260,37 +279,55 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
                 )}
                 <DialogActions className={classes.actions}>
                   {!newSchema && (
-                    <>
+                    <React.Fragment>
                       {!editing && (
+                        <ProtectedFunctionality
+                          component={() => {
+                            return (
+                              <Button
+                                size={width && width < 500 ? "small" : "medium"}
+                                variant="contained"
+                                color="secondary"
+                                startIcon={
+                                  width && width < 500 ? null : <Delete />
+                                }
+                                onClick={handleDeleteDialog}
+                              >
+                                Delete
+                              </Button>
+                            );
+                          }}
+                          loginRequired={true}
+                          requiredRoles={["admin"]}
+                        />
+                      )}
+                    </React.Fragment>
+                  )}
+                  <ProtectedFunctionality
+                    component={() => {
+                      return (
                         <Button
                           size={width && width < 500 ? "small" : "medium"}
                           variant="contained"
-                          color="secondary"
-                          startIcon={width && width < 500 ? null : <Delete />}
-                          onClick={handleDeleteDialog}
+                          color={editing && dirty ? "secondary" : "default"}
+                          startIcon={
+                            width && width < 500 ? null : editing ? (
+                              dirty ? (
+                                <Delete />
+                              ) : null
+                            ) : (
+                              <Edit />
+                            )
+                          }
+                          onClick={() => handleEdit(setValues, dirty)}
                         >
-                          Delete
+                          {editing ? "Cancel" : "Edit"}
                         </Button>
-                      )}
-                    </>
-                  )}
-                  <Button
-                    size={width && width < 500 ? "small" : "medium"}
-                    variant="contained"
-                    color={editing && dirty ? "secondary" : "default"}
-                    startIcon={
-                      width && width < 500 ? null : editing ? (
-                        dirty ? (
-                          <Delete />
-                        ) : null
-                      ) : (
-                        <Edit />
-                      )
-                    }
-                    onClick={() => handleEdit(setValues, dirty)}
-                  >
-                    {editing ? "Cancel" : "Edit"}
-                  </Button>
+                      );
+                    }}
+                    loginRequired={true}
+                  />
+
                   {!editing && (
                     <Button
                       size={width && width < 500 ? "small" : "medium"}
@@ -309,13 +346,18 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
                       color="primary"
                       startIcon={width && width < 500 ? null : <Save />}
                       disabled={
-                        Object.entries(errors).length > 0 || !dirty
+                        Object.entries(errors).length > 0 ||
+                        !dirty ||
+                        isValidating
                           ? true
                           : false
                       }
                     >
-                      {isSubmitting ? (
-                        <CircularProgress size={24} />
+                      {isSubmitting || isValidating ? (
+                        <CircularProgress
+                          size={24}
+                          className={classes.loadingSave}
+                        />
                       ) : newSchema ? (
                         "Save"
                       ) : (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 // Imports
 import useWindowSize from "./Hooks/useWindowSize.jsx";
 
@@ -9,6 +9,7 @@ import { SatelliteCollection } from "../api/satellites";
 
 // @material-ui
 import {
+  Button,
   Container,
   Grid,
   Typography,
@@ -41,8 +42,10 @@ const useStyles = makeStyles((theme) => ({
 export const Home = () => {
   const classes = useStyles();
   const [width, height] = useWindowSize();
-
-  const numberOfSkeletons = width > 1150 ? 16 : 8;
+  const [page, setPage] = useState(1);
+  const count = SatelliteCollection.find().count();
+  // const limiter = width > 1150 ? 16 : 8;
+  const [limiter, setLimiter] = useState(8)
 
   const cardSpace =
     Math.round(height / (width / 5)) > 10
@@ -55,10 +58,25 @@ export const Home = () => {
     const sub = Meteor.subscribe("satellites");
     const sats = SatelliteCollection.find(
       {},
-      { limit: numberOfSkeletons }
+      {
+        limit: limiter * page,
+        // skip: page * limiter,
+      }
     ).fetch();
     return [sats, !sub.ready()];
   });
+
+  useEffect(() => {}, [page]);
+  window.onscroll = (ev) => {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        handlePage()
+    }
+};
+  const handlePage = (n=1) => {
+    if (limiter <= count + 4) {
+      setPage(page + n);
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -68,9 +86,9 @@ export const Home = () => {
         </Typography>
         <Typography variant="body1" className={classes.description}>
           <strong>P</strong>ublicly <strong>R</strong>esearched{" "}
-          <strong>O</strong>bservatory (PROBE) is seeking to
-          become the world&apos;s most complete and easy to use resource for
-          satellite data and information.
+          <strong>O</strong>bservatory (PROBE) is seeking to become the
+          world&apos;s most complete and easy to use resource for satellite data
+          and information.
         </Typography>
         <Typography variant="subtitle1">
           100% Open Source, 100% Machine Readable.
@@ -98,17 +116,19 @@ export const Home = () => {
                     />
                   </Grid>
                 ))
-              : [...Array(numberOfSkeletons)].map((_, index) => (
+              : [...Array(limiter)].map((_, index) => (
                   <Grid item xs={cardSpace} key={index}>
                     <Skeleton variant="rect" className={classes.skeleton}>
                       <SatCard satellite={{}} width={width} height={height} />
                     </Skeleton>
                   </Grid>
                 ))}
+                <br/>
           </Grid>
         ) : (
           <CircularProgress className={classes.spinner} />
-        )}
+          )}
+        {/* <Button onClick={() => handlePage(4)}>View More</Button> */}
       </Container>
     </div>
   );
