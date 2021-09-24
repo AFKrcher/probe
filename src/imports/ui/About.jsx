@@ -132,11 +132,11 @@ export const About = () => {
         About <strong>PROBE</strong>
       </Typography>
       <p>
-        <strong>P</strong>ublicly <strong>R</strong>esearched{" "}
-        <strong>OB</strong>s<strong>E</strong>rvatory (PROBE) is a web
-        application created by an incredible team of space enthusiasts who got
-        together and gave up their weekend to complete this work during a
-        Hackathon which took place over the 8th - 9th May 2021.
+        <strong>P</strong>ublicly <strong>R</strong>esearched <strong>O</strong>
+        bservatory (PROBE) is a web application created by an incredible team of
+        space enthusiasts who got together and gave up their weekend to complete
+        this work during a Hackathon which took place over the 8th - 9th May
+        2021.
       </p>
       <p>
         Fueled by Pizza and Lofi, we had a lot of fun and hope you find this

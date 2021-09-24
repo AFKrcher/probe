@@ -8,6 +8,7 @@ import {
   emptyDataRemover,
   schemaGenerator,
 } from "../utils/satelliteDataFuncs.js";
+import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
 
 // Components
 import { Formik, Form } from "formik";
@@ -55,7 +56,7 @@ const useStyles = makeStyles(() => ({
   actions: {
     display: "flex",
     justifyContent: "space-between",
-    margin: "5px 20px 5px 20px",
+    margin: "5px 15px 10px 15px",
   },
   loadingSave: {
     textAlign: "center",
@@ -78,12 +79,13 @@ export const SatelliteModal = ({
   const [editing, setEditing] = useState(newSat || false);
   const [satSchema, setSatSchema] = useState(null);
 
-  const [schemas, sats, isLoadingSch, isLoadingSat] = useTracker(() => {
+  const [user, schemas, sats, isLoadingSch, isLoadingSat] = useTracker(() => {
     const subSch = Meteor.subscribe("schemas");
     const subSat = Meteor.subscribe("satellites");
     const schemas = SchemaCollection.find().fetch();
     const sats = SatelliteCollection.find().fetch();
-    return [schemas, sats, !subSch.ready(), !subSat.ready()];
+    const user = Meteor.user();
+    return [user, schemas, sats, !subSch.ready(), !subSat.ready()];
   });
 
   const isUniqueList = (path, field) => {
@@ -116,50 +118,67 @@ export const SatelliteModal = ({
     setSatSchema(schemaGenerator(schemas, initValues, isUniqueList)); // generate new validation schema based on schema changes and the satellite being edited
   }, [initValues, show, isLoadingSch]);
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = (values, { setSubmitting }) => {
     emptyDataRemover(values); // remove schemas that were added by the user but contain no entries
 
     if (newSat) {
-      SatelliteCollection.insert(values);
-      setOpenSnack(false);
-      setSnack(
-        <span>
-          <strong>{values.names[0].name}</strong> saved!
-        </span>
-      );
-      setOpenSnack(true);
-      await handleClose();
+      Meteor.call("addNewSatellite", values, user, (err, res) => {
+        if (res || err) {
+          alert(res || err);
+        } else {
+          setOpenSnack(false);
+          setSnack(
+            <span>
+              <strong>{values.names[0].name}</strong> saved!
+            </span>
+          );
+          setOpenSnack(true);
+          handleClose();
+        }
+      });
     } else {
-      SatelliteCollection.update({ _id: values._id }, values);
-      console.log(values);
-      setOpenSnack(false);
-      setSnack(
-        <span>
-          Changes on{" "}
-          <strong>
-            {values.names && values.names[0] ? values.names[0].name : "N/A"}
-          </strong>{" "}
-          saved!
-        </span>
-      );
-      setOpenSnack(true);
+      Meteor.call("updateSatellite", values, user, (err, res) => {
+        if (res || err) {
+          alert(res || err);
+        } else {
+          setOpenSnack(false);
+          setSnack(
+            <span>
+              Changes on{" "}
+              <strong>
+                {values.names && values.names[0] ? values.names[0].name : "N/A"}
+              </strong>{" "}
+              saved!
+            </span>
+          );
+          setOpenSnack(true);
+        }
+      });
     }
     setSubmitting(false);
     setEditing(false);
   };
 
   const handleDelete = () => {
-    SatelliteCollection.remove(initValues._id);
-    setOpenAlert(false);
-    handleClose();
-    setOpenSnack(false);
-    setSnack(
-      <span>
-        Deleted{" "}
-        <strong>{initValues.names ? initValues.names[0].name : "N/A"}</strong>!
-      </span>
-    );
-    setOpenSnack(true);
+    Meteor.call("deleteSatellite", initValues, user, () => {
+      if (res || err) {
+        alert(res || err);
+      } else {
+        setOpenAlert(false);
+        handleClose();
+        setOpenSnack(false);
+        setSnack(
+          <span>
+            Deleted{" "}
+            <strong>
+              {initValues.names ? initValues.names[0].name : "N/A"}
+            </strong>
+            !
+          </span>
+        );
+        setOpenSnack(true);
+      }
+    });
   };
 
   const handleDeleteDialog = () => {
@@ -201,8 +220,8 @@ export const SatelliteModal = ({
     setEditing(!editing);
   };
 
-  const handleEdit = (setValues, dirty, values) => {
-    if (editing && dirty) {
+  const handleEdit = (setValues, dirty, touched, values) => {
+    if (editing && dirty && Object.keys(touched).length) {
       setAlert({
         title: initValues.names ? (
           <span>
@@ -328,79 +347,50 @@ export const SatelliteModal = ({
                   </DialogContent>
                 )}
                 <DialogActions className={classes.actions}>
-                  {Meteor.userId() ? (
-                    <>
-                      {editing ? (
-                        ""
-                      ) : (
-                        // Deletes the entire satellite and all its data
+                  {editing ? null : (
+                    <ProtectedFunctionality
+                      component={() => {
+                        return (
+                          <Button
+                            size={width && width < 500 ? "small" : "medium"}
+                            variant="contained"
+                            color="secondary"
+                            onClick={handleDeleteDialog}
+                            startIcon={width && width < 500 ? null : <Delete />}
+                          >
+                            Delete
+                          </Button>
+                        );
+                      }}
+                      loginRequired={true}
+                      requiredRoles={["admin"]}
+                    />
+                  )}
+                  <ProtectedFunctionality
+                    component={() => {
+                      return (
                         <Button
                           size={width && width < 500 ? "small" : "medium"}
                           variant="contained"
-                          color="secondary"
-                          onClick={handleDeleteDialog}
-                          startIcon={width && width < 500 ? null : <Delete />}
-                        >
-                          Delete
-                        </Button>
-                      )}
-                      {/* Conditionally renders edit button and changes to a Cancel button that deletes changes made to editing the satellite */}
-                      <Button
-                        size={width && width < 500 ? "small" : "medium"}
-                        variant="contained"
-                        color={editing && dirty ? "secondary" : "default"}
-                        onClick={() => handleEdit(setValues, dirty, values)}
-                        startIcon={
-                          width && width < 500 ? null : editing ? (
-                            dirty ? (
-                              <Delete />
-                            ) : null
-                          ) : (
-                            <Edit />
-                          )
-                        }
-                      >
-                        {editing ? "Cancel" : "Edit"}
-                      </Button>
-                      {editing ? null : (
-                        <Button
-                          size={width && width < 500 ? "small" : "medium"}
-                          variant="contained"
-                          onClick={handleClose}
-                          startIcon={width && width < 500 ? null : <Close />}
-                        >
-                          Close
-                        </Button>
-                      )}
-                      {editing && (
-                        <Button
-                          size={width && width < 500 ? "small" : "medium"}
-                          type="submit"
-                          variant="contained"
-                          color="primary"
-                          startIcon={width && width < 500 ? null : <Save />}
-                          disabled={
-                            Object.entries(errors).length > 0 ||
-                            !dirty ||
-                            Object.entries(touched).length === 0
-                              ? true
-                              : false
+                          color={editing && dirty && Object.keys(touched).length ? "secondary" : "default"}
+                          onClick={() => handleEdit(setValues, dirty, touched, values)}
+                          startIcon={
+                            width && width < 500 ? null : editing ? (
+                              dirty && Object.keys(touched).length ? (
+                                <Delete />
+                              ) : null
+                            ) : (
+                              <Edit />
+                            )
                           }
                         >
-                          {isSubmitting ? (
-                            <CircularProgress
-                              size={25}
-                              className={classes.loadingSave}
-                            />
-                          ) : newSat ? (
-                            "Save"
-                          ) : (
-                            "Save Changes"
-                          )}
+                          {editing ? "Cancel" : "Edit"}
                         </Button>
-                      )}
-                    </>
-                  ) : (
+                      );
+                    }}
+                    loginRequired={true}
+                  />
+                  {editing ? null : (
                     <Button
                       size={width && width < 500 ? "small" : "medium"}
                       variant="contained"
@@ -409,6 +399,40 @@ export const SatelliteModal = ({
                     >
                       Close
                     </Button>
+                  )}
+                  {editing && (
+                    <ProtectedFunctionality
+                      component={() => {
+                        return (
+                          <Button
+                            size={width && width < 500 ? "small" : "medium"}
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            startIcon={width && width < 500 ? null : <Save />}
+                            disabled={
+                              Object.entries(errors).length > 0 ||
+                              !dirty ||
+                              Object.entries(touched).length === 0
+                                ? true
+                                : false
+                            }
+                          >
+                            {isSubmitting ? (
+                              <CircularProgress
+                                size={25}
+                                className={classes.loadingSave}
+                              />
+                            ) : newSat ? (
+                              "Save"
+                            ) : (
+                              "Save Changes"
+                            )}
+                          </Button>
+                        );
+                      }}
+                      loginRequired={true}
+                    />
                   )}
                 </DialogActions>
               </Form>

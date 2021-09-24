@@ -5,6 +5,7 @@ import { Formik, Form } from "formik";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import { schemaValidatorShaper } from "../utils/schemaDataFuncs.js";
 import useWindowSize from "../Hooks/useWindowSize.jsx";
+import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
 
 // Components
 import { SchemaForm } from "./SchemaForm";
@@ -61,57 +62,70 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
 
   const [editing, setEditing] = useState(newSchema || false);
 
-  const [schemas, isLoading] = useTracker(() => {
+  const [schemas, user, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("schemas");
     const schemas = SchemaCollection.find().fetch();
-    return [schemas, !sub.ready()];
+    const user = Meteor.user();
+    return [schemas, user, !sub.ready()];
   });
 
   useEffect(() => {
     setEditing(newSchema || false);
   }, [newSchema, show]);
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = (values, { setSubmitting }) => {
     if (values) {
       if (newSchema) {
-        SchemaCollection.insert(values);
+        Meteor.call("addNewSchema", values, user, (err, res) => {
+          if (res || err) {
+            alert(res || err);
+          } else {
+            setOpenSnack(false);
+            setSnack(
+              <span>
+                New <strong>{values.name}</strong> schema saved!
+              </span>
+            );
+            setOpenSnack(true);
+            handleClose();
+          }
+        });
       } else {
-        SchemaCollection.update({ _id: values._id }, values);
+        Meteor.call("updateSchema", values, user, (err, res) => {
+          if (res || err) {
+            alert(res || err);
+          } else {
+            setOpenSnack(false);
+            setSnack(
+              <span>
+                Changes on <strong>{values.name}</strong> schema saved!
+              </span>
+            );
+            setOpenSnack(true);
+          }
+        });
       }
       setSubmitting(false);
       setEditing(false);
-      if (newSchema) {
-        setOpenSnack(false);
-        setSnack(
-          <span>
-            New <strong>{values.name}</strong> schema saved!
-          </span>
-        );
-        setOpenSnack(true);
-        await handleClose();
-      } else {
-        setOpenSnack(false);
-        setSnack(
-          <span>
-            Changes on <strong>{values.name}</strong> schema saved!
-          </span>
-        );
-        setOpenSnack(true);
-      }
     }
   };
 
   const handleDelete = () => {
-    SchemaCollection.remove(initValues._id);
-    setOpenAlert(false);
-    handleClose();
-    setOpenSnack(false);
-    setSnack(
-      <span>
-        Deleted <strong>{initValues.name}</strong> schema!
-      </span>
-    );
-    setOpenSnack(true);
+    Meteor.call("deleteSchema", initValues, user, () => {
+      if (res || err) {
+        alert(res || err);
+      } else {
+        setOpenAlert(false);
+        handleClose();
+        setOpenSnack(false);
+        setSnack(
+          <span>
+            Deleted <strong>{initValues.name}</strong> schema!
+          </span>
+        );
+        setOpenSnack(true);
+      }
+    });
   };
 
   const handleDeleteDialog = () => {

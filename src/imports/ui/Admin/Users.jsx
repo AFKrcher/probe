@@ -1,15 +1,8 @@
 import React, { useState } from "react";
 import { useTracker } from "meteor/react-meteor-data";
-import { AdminModal } from "./AdminModal";
 
 // @material-ui
-import {
-  Button,
-  Grid,
-  makeStyles,
-  Typography,
-  Tooltip,
-} from "@material-ui/core";
+import { Button, Grid, makeStyles } from "@material-ui/core";
 import {
   DataGrid,
   GridToolbarContainer,
@@ -24,12 +17,46 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
-export const Admin = () => {
-  Meteor.subscribe("roles");
+const useStyles = makeStyles((theme) => ({
+  dataGrid: {
+    margin: "5px 10px 5px 10px",
+    border: "none",
+    backgroundColor: theme.palette.grid.background,
+    overflowY: "auto",
+    resize: "horizontal",
+    "& .MuiDataGrid-cell": {
+      textOverflow: "clip",
+    },
+    "& .MuiCircularProgress-colorPrimary": {
+      color: theme.palette.text.primary,
+    },
+  },
+  toolbar: {
+    color: theme.palette.text.primary,
+    fontWeight: 500,
+    fontSize: "14px",
+  },
+}));
+
+export const Users = () => {
+  const classes = useStyles();
+
   const [open, setOpen] = useState(false);
   const [editUser, setEditUser] = useState([]);
+  const [limiter, setLimiter] = useState(10);
 
-  const [roles, rows, users, loading] = useTracker(() => {
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer className={classes.toolbarContainer}>
+        <GridToolbarColumnsButton className={classes.toolbar} />
+        <GridToolbarFilterButton className={classes.toolbar} />
+        <GridToolbarDensitySelector className={classes.toolbar} />
+        <GridToolbarExport className={classes.toolbar} />
+      </GridToolbarContainer>
+    );
+  }
+
+  const [roles, rows, loading] = useTracker(() => {
     const roles = Roles.getRolesForUser(Meteor.userId());
     const sub = Meteor.subscribe("userList");
     const users = Meteor.users.find({}).fetch();
@@ -44,42 +71,40 @@ export const Admin = () => {
           .join(", "),
       };
     });
-    return [roles, rows, users, !sub.ready()];
+    return [roles, rows, !sub.ready()];
   });
 
   const columns = [
     {
       headerAlign: "center",
       field: "id",
-      headerName: "ID",
-      minWidth: 150,
+      headerName: "USER ID",
+      minWidth: 250,
     },
     {
       headerAlign: "center",
       field: "username",
-      headerName: "Username",
-      minWidth: 300,
+      headerName: "USERNAME",
+      minWidth: 250,
       editable: false,
     },
     {
       headerAlign: "center",
       field: "emails",
-      headerName: "Emails",
-      minWidth: 300,
+      headerName: "EMAIL",
+      minWidth: 250,
       editable: false,
     },
     {
       headerAlign: "center",
       field: "roles",
-      headerName: "Roles",
-      minWidth: 300,
+      headerName: "ROLE(S)",
       editable: false,
+      flex: 1,
     },
   ];
 
-  const handleOpen = (e) => {
-    // setEditUser(e)
-    console.log("edit user", editUser);
+  const handleOpen = () => {
     setOpen(true);
   };
 
@@ -106,37 +131,29 @@ export const Admin = () => {
   };
 
   return (
-    <div>
+    <React.Fragment>
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item xs>
-          {roles?.indexOf("admin") !== -1 ? (
-            <div>
-              <DataGrid
-                // className={classes.dataGrid}
-                // components={{
-                //   Toolbar: CustomToolbar,
-                // }}
-                rowsPerPageOptions={[5, 10, 15, 20, 50, 100]}
-                columns={columns}
-                rows={rows}
-                rowCount={10}
-                loading={loading}
-                autoHeight={true}
-                pagination
-                disableSelectionOnClick
-                onRowClick={(e) => {
-                  handleOpen(e.row);
-                  // setEditUser(e.row)
-                  setEditUser(Meteor.users.find({ _id: e.row.id }).fetch()[0]);
-                  console.log(e.row);
-                }}
-              />
-            </div>
-          ) : (
-            <>{loading}</>
-          )}
+          <DataGrid
+            className={classes.dataGrid}
+            components={{
+              Toolbar: CustomToolbar,
+            }}
+            rowsPerPageOptions={[10, 15, 20, 50, 100]}
+            columns={columns}
+            rows={rows}
+            loading={loading}
+            autoHeight={true}
+            pagination
+            disableSelectionOnClick
+            onRowDoubleClick={(e) => {
+              handleOpen(e.row);
+              setEditUser(Meteor.users.find({ _id: e.row.id }).fetch()[0]);
+            }}
+          />
         </Grid>
       </Grid>
+
       <Dialog
         open={open}
         onClose={handleClose}
@@ -148,11 +165,11 @@ export const Admin = () => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            <b>Roles</b>
+            <span>Roles</span>
             <br />
             {Roles.getRolesForUser(editUser._id).map((role, index) => {
               return (
-                <p key={index}>
+                <span key={index}>
                   {role}
                   <Button
                     onClick={() => removeRole(editUser._id, role)}
@@ -161,7 +178,7 @@ export const Admin = () => {
                   >
                     Remove
                   </Button>
-                </p>
+                </span>
               );
             })}
 
@@ -194,12 +211,6 @@ export const Admin = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <AdminModal
-      // show={open}
-      // newSat={newSat}
-      // initValues={initialSatValues}
-      // handleClose={() => setOpen(false)}
-      />
-    </div>
+    </React.Fragment>
   );
 };

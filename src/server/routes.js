@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import { SatelliteCollection } from "/imports/api/satellites";
 import { SchemaCollection } from "/imports/api/schemas";
 
@@ -12,7 +13,6 @@ WebApp.connectHandlers.use("/api/satellites", async (req, res, next) => {
       const skipper = limiter * page;
       try {
         const result = await SatelliteCollection.find(
-          { "names.name": { $regex: `${req.query.name}*`, $options: "i" } },
           {},
           {
             limit: limiter,

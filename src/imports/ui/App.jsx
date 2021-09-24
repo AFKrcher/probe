@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 // Imports
-import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import HelpersContext from "./Dialogs/HelpersContext.jsx";
-import { useTracker } from "meteor/react-meteor-data";
-import { Accounts } from "meteor/accounts-base";
+import ProtectedRoute from "./utils/ProtectedRoute.jsx";
 
 // Components
+import { Admin } from "./Admin/Admin";
+import { Favorites } from "./Accounts/Favorites";
 import { Nav } from "./Navigation/Nav.jsx";
 import { SatellitesTable } from "./DataDisplays/SatellitesTable.jsx";
 import { SchemasTable } from "./DataDisplays/SchemasTable.jsx";
@@ -19,8 +20,7 @@ import { Register } from "./Accounts/Register";
 import { ResetPassword } from "./Accounts/ResetPassword";
 import { DropDown } from "./Navigation/DropDown";
 import { Settings } from "./Accounts/Settings";
-import { Admin } from './Accounts/Admin'
-import { Verify } from './Accounts/Verify'
+import { Verify } from "./Accounts/Verify";
 
 // @material-ui
 import { ThemeProvider } from "@material-ui/core/styles";
@@ -53,13 +53,6 @@ export const App = () => {
   });
   const [snack, setSnack] = useState(""); //snackbar body text
 
-  const [user, roles, isLoading] = useTracker(() => {
-    const sub = Meteor.subscribe("roles");
-    const roles = Roles.getRolesForUser(Meteor.userId());
-    const user = Meteor.user()?.username;
-    return [user, roles, !sub.ready()]
-  })
-
   const classes = useStyles();
   const toggleTheme = () => {
     setTheme((theme) => (theme === themes.dark ? themes.light : themes.dark));
@@ -86,29 +79,38 @@ export const App = () => {
             <main className={classes.main}>
               <Switch>
                 <Route exact={true} path="/satellites">
-                  <SatellitesTable roles={roles}/>
+                  <SatellitesTable />
+                </Route>
+                <Route exact={true} path="/favorites">
+                  <Favorites />
                 </Route>
                 <Route exact={true} path="/login">
-                  {user || isLoading ? <Home /> : <Login />}
+                  <ProtectedRoute component={Login} loginRequired={false} />
                 </Route>
                 <Route exact={true} path="/register">
-                  {user || isLoading ? <Home /> : <Register />}
+                  <ProtectedRoute component={Register} loginRequired={false} />
                 </Route>
                 <Route path="/reset">
-                  {user || isLoading ? <Home /> : <ResetPassword />}
+                  <ProtectedRoute
+                    component={ResetPassword}
+                    loginRequired={false}
+                  />
                 </Route>
-                <Route path="/verify">
+                <Route exact={true} path="/verify">
                   <Verify />
-                  {/* {user || isLoading ? <Home /> : <Verify />} */}
                 </Route>
                 <Route exact={true} path="/settings">
-                  {!user || isLoading ? <Home /> : <Settings />}
+                  <ProtectedRoute component={Settings} loginRequired={true} />
                 </Route>
                 <Route exact={true} path="/menu">
                   <DropDown />
                 </Route>
                 <Route exact={true} path="/admin">
-                  <Admin />
+                  <ProtectedRoute
+                    component={Admin}
+                    loginRequired={true}
+                    requiredRoles={["admin"]}
+                  />
                 </Route>
                 <Route exact={true} path="/schemas">
                   <SchemasTable />

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useTracker } from "meteor/react-meteor-data";
 import useWindowSize from "../Hooks/useWindowSize.jsx";
 import { SchemaCollection } from "../../api/schemas";
+import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
 
 // Components
 import { Link } from "react-router-dom";
@@ -104,8 +105,8 @@ export const SchemasTable = () => {
     setInitialSchemaValues(schemaObject);
   };
 
-  const permissionToAddSchema = () => {
-    return Meteor.userId() ? (
+  const AddSchemaButton = () => {
+    return (
       <Grid
         container
         item
@@ -120,8 +121,9 @@ export const SchemasTable = () => {
           + Add Schema
         </Button>
       </Grid>
-    ) : null;
+    );
   };
+
 
   return (
     <div className={classes.root}>
@@ -130,11 +132,21 @@ export const SchemasTable = () => {
           <Typography variant="h3">Schemas</Typography>
         </Grid>
         <Grid container item xs justifyContent="flex-end">
-          {width > 650 ? permissionToAddSchema() : null}
+          {width > 650 ? (
+            <ProtectedFunctionality
+              component={AddSchemaButton}
+              loginRequired={true}
+            />
+          ) : null}
         </Grid>
         {width < 650 ? (
           <div style={{ margin: "10px 0px 10px 0px" }}>
-            {permissionToAddSchema()}
+            {
+              <ProtectedFunctionality
+                component={AddSchemaButton}
+                loginRequired={true}
+              />
+            }
           </div>
         ) : null}
       </Grid>
