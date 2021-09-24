@@ -136,12 +136,6 @@ export const DropDown = ({ theme, toggleTheme }) => {
             </StyledMenuItem>
             {user ? (
               <div>
-                <StyledMenuItem id="favorites" component={Link} to="/favorites">
-                  <ListItemIcon>
-                    <StarIcon fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText primary="Favorites" />
-                </StyledMenuItem>
                 <StyledMenuItem id="settings" component={Link} to="/settings">
                   <ListItemIcon>
                     <AccountCircleIcon fontSize="small" />

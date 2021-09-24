@@ -372,8 +372,14 @@ export const SatelliteModal = ({
                         <Button
                           size={width && width < 500 ? "small" : "medium"}
                           variant="contained"
-                          color={editing && dirty && Object.keys(touched).length ? "secondary" : "default"}
-                          onClick={() => handleEdit(setValues, dirty, touched, values)}
+                          color={
+                            editing && dirty && Object.keys(touched).length
+                              ? "secondary"
+                              : "default"
+                          }
+                          onClick={() =>
+                            handleEdit(setValues, dirty, touched, values)
+                          }
                           startIcon={
                             width && width < 500 ? null : editing ? (
                               dirty && Object.keys(touched).length ? (
@@ -401,38 +407,31 @@ export const SatelliteModal = ({
                     </Button>
                   )}
                   {editing && (
-                    <ProtectedFunctionality
-                      component={() => {
-                        return (
-                          <Button
-                            size={width && width < 500 ? "small" : "medium"}
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            startIcon={width && width < 500 ? null : <Save />}
-                            disabled={
-                              Object.entries(errors).length > 0 ||
-                              !dirty ||
-                              Object.entries(touched).length === 0
-                                ? true
-                                : false
-                            }
-                          >
-                            {isSubmitting ? (
-                              <CircularProgress
-                                size={25}
-                                className={classes.loadingSave}
-                              />
-                            ) : newSat ? (
-                              "Save"
-                            ) : (
-                              "Save Changes"
-                            )}
-                          </Button>
-                        );
-                      }}
-                      loginRequired={true}
-                    />
+                    <Button
+                      size={width && width < 500 ? "small" : "medium"}
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      startIcon={width && width < 500 ? null : <Save />}
+                      disabled={
+                        Object.entries(errors).length > 0 ||
+                        !dirty ||
+                        Object.entries(touched).length === 0
+                          ? true
+                          : false
+                      }
+                    >
+                      {isSubmitting ? (
+                        <CircularProgress
+                          size={25}
+                          className={classes.loadingSave}
+                        />
+                      ) : newSat ? (
+                        "Save"
+                      ) : (
+                        "Save Changes"
+                      )}
+                    </Button>
                   )}
                 </DialogActions>
               </Form>

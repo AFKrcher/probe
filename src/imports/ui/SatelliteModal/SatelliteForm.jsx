@@ -22,6 +22,7 @@ import {
   Paper,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import HelpIcon from "@material-ui/icons/Help";
 
 const useStyles = makeStyles((theme) => ({
   accordion: {
@@ -37,6 +38,12 @@ const useStyles = makeStyles((theme) => ({
   noradID: {
     padding: theme.spacing(1),
     backgroundColor: theme.palette.action.hover,
+  },
+  helpIcon: {
+    color: theme.palette.text.disabled,
+    fontSize: "small",
+    marginLeft: 5,
+    marginTop: -5
   },
 }));
 
@@ -238,15 +245,24 @@ export const SatelliteForm = ({
                     (initValues[`${schema.name}`] ? false : true)
                   ) {
                     return (
-                      <Tooltip title={schema.description} key={schemaIndex}>
-                        <MenuItem
-                          className="schemaIndex"
-                          dense
-                          value={`${schema.name}`}
+                      <MenuItem
+                        className="schemaIndex"
+                        dense
+                        value={`${schema.name}`}
+                        key={schemaIndex}
+                      >
+                        {schema.name}
+                        <Tooltip
+                          title={schema.description}
+                          placement="bottom-start"
+                          arrow
                         >
-                          {schema.name}
-                        </MenuItem>
-                      </Tooltip>
+                          <HelpIcon
+                            fontSize="small"
+                            className={classes.helpIcon}
+                          />
+                        </Tooltip>
+                      </MenuItem>
                     );
                   }
                 })}

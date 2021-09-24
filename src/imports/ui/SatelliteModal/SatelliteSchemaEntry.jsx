@@ -95,15 +95,6 @@ export const SatelliteSchemaEntry = ({
     return helper;
   };
 
-  // const onChange = (event) => {
-  //   let obj = {};
-  //   obj[`${event.target.name}`] = true;
-  //   setTouched(obj);
-
-  //   setFieldValue(event.target.name, event.target.value);
-  //   setTimeout(() => setFieldValue(event.target.name, event.target.value));
-  // };
-
   const onBlur = (event) => {
     setFieldValue(event.target.name, event.target.value);
   };
