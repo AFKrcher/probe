@@ -147,7 +147,7 @@ export const About = () => {
         After the Hackathon, a pair of developers, Justin and Archer, continued
         the development of the application from August into November of 2021.
         Features were added to provide better data entry UX/UI and integration
-        into the Saber Astronautics&apos; Space Cockpit for data visualization
+        into the Saber Astronautics' Space Cockpit for data visualization
         and analysis.
       </p>
       <div className={classes.meetTheTeam}>

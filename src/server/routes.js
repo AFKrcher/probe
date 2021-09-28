@@ -153,11 +153,11 @@ WebApp.connectHandlers.use("/api/satellites", async (req, res, next) => {
 });
 
 WebApp.connectHandlers.use("/api/schemas", (req, res, next) => {
-  async function getSchema() {
+  function getSchema() {
     res.setHeader("Content-Type", "application/json");
     try {
       schemaName = req.query.name;
-      if (schemaName !== null && schemaName !== "") {
+      if (schemaName && schemaName !== "") {
         res.writeHead(200);
         res.end(
           JSON.stringify(
@@ -175,4 +175,14 @@ WebApp.connectHandlers.use("/api/schemas", (req, res, next) => {
     }
   }
   getSchema();
+});
+
+WebApp.connectHandlers.use("/api/", (req, res, next) => {
+  res.setHeader("Content-Type", "application/json");
+  res.writeHead(200);
+  res.end(
+    JSON.stringify(
+      "Welcome to the PROBE API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
+    )
+  );
 });

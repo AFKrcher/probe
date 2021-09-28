@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 // Imports
 import { useLocation, useHistory } from "react-router-dom";
-import { useTracker } from "meteor/react-meteor-data";
-import { Accounts } from "meteor/accounts-base";
 
 // @material-ui
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Button } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
-import { Meteor } from "meteor/meteor";
+
 const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(4),
@@ -34,17 +32,26 @@ const useStyles = makeStyles((theme) => ({
 
 export const ResetPassword = () => {
   const classes = useStyles();
-  const [passHelper, setPassHelper] = useState();
-  const [confirmHelper, setConfirmHelper] = useState();
+
+  const [passErr, setPassErr] = useState();
+  const [confirmErr, setConfirmErr] = useState();
   const [touched, setTouched] = useState(false);
 
   const location = useLocation();
+  const history = useHistory();
+
   const token = location.search.slice(7, location.search.length);
 
-  const handleReset = (newPassword) => {
+  useEffect(() => {
+    if (!token) history.push("/");
+  }, []);
+
+  const handleReset = (e) => {
+    e.preventDefault();
+    const newPassword = document.getElementById("password").value;
     Accounts.resetPassword(token, newPassword, (res, err) => {
-      if (err) alert(err)
-      if (res) alert(res)
+      if (err) alert(err);
+      if (res) alert(res);
     });
   };
 
@@ -56,17 +63,17 @@ export const ResetPassword = () => {
     if (pass) {
       setTouched(true);
       if (!regex.test(pass)) {
-        setPassHelper(
+        setPassErr(
           "Must be at least 8 characters long, and contain 1 lowercase, 1 uppercase, and 1 special character"
         );
       } else {
-        setPassHelper(null);
+        setPassErr(null);
       }
       if (pass && confirm) {
         if (confirm === pass) {
-          setConfirmHelper(null);
+          setConfirmErr(null);
         } else {
-          setConfirmHelper("Passwords do not match!");
+          setConfirmErr("Passwords do not match!");
         }
       }
     }
@@ -80,17 +87,17 @@ export const ResetPassword = () => {
             id="password"
             label="New password"
             type="password"
-            error={passHelper ? true : false}
-            helperText={passHelper}
+            error={passErr ? true : false}
+            helperText={passErr}
             onChange={validatePassword}
             ref={(input) => (password = input)}
             fullWidth
             className={classes.textField}
           />
           <TextField
-            error={confirmHelper ? true : false}
+            error={confirmErr ? true : false}
             id="confirm"
-            helperText={confirmHelper}
+            helperText={confirmErr}
             label="Confirm New password"
             onChange={validatePassword}
             type="password"
@@ -98,7 +105,7 @@ export const ResetPassword = () => {
             className={classes.textField}
           />
           <Button
-            disabled={!touched || confirmHelper || passHelper}
+            disabled={!touched || confirmErr || passErr ? true : false}
             variant="outlined"
             className={classes.loginButton}
             color="primary"

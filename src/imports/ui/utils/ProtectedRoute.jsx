@@ -13,15 +13,14 @@ const useStyles = makeStyles((theme) => ({
   },
   spinner: {
     color: theme.palette.text.primary,
-    marginTop: "30vh"
+    marginTop: "30vh",
   },
 }));
 
 export default function ProtectedRoute({
   component: Component,
-  loginRequired: loginRequired,
-  requiredRoles: requiredRoles,
-  ...rest
+  loginRequired,
+  requiredRoles,
 }) {
   const classes = useStyles();
 
@@ -46,7 +45,6 @@ export default function ProtectedRoute({
 
   return !isLoading ? (
     <Route
-      {...rest}
       render={(props) => {
         if (roleCheck() && loginCheck()) {
           return <Component {...props} />;

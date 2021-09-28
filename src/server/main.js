@@ -1,30 +1,37 @@
-import { Meteor } from "meteor/meteor";
+// Dependencies
 import * as Yup from "yup";
-import { SchemaCollection } from "/imports/api/schemas";
-import { SatelliteCollection } from "/imports/api/satellites";
-import "./routes";
+import helmet from "helmet";
+import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Accounts } from "meteor/accounts-base";
-import helmet from "helmet";
-import { helmetOptions } from "./helmet.js";
+
+// Imports
+import { SchemaCollection } from "/imports/api/schemas";
+import { SatelliteCollection } from "/imports/api/satellites";
+import { helmetOptions } from "./helmet";
+import { schemaValidatorShaper } from "./validators/schemaDataFuncs";
+import "./routes";
 
 const fs = Npm.require("fs");
 
-const self = "'self'";
-const data = "data:";
-const unsafeEval = "'unsafe-eval'";
-const unsafeInline = "'unsafe-inline'";
-
 const isValidEmail = (oldEmail, newEmail) => {
+  const oldCheck = oldEmail ? oldEmail !== newEmail : true;
   const schema = Yup.string().email();
-  return schema.isValidSync(newEmail) && oldEmail !== newEmail;
+  return schema.isValidSync(newEmail) && oldCheck && newEmail.length < 128;
 };
 
 const isValidUsername = (oldUsername, newUsername) => {
+  const oldCheck = oldUsername ? oldUsername !== newUsername : true;
   const regex = /^[a-zA-Z0-9]{4,}$/g;
-  return regex.test(newUsername) && oldUsername !== newUsername;
+  return regex.test(newUsername) && oldCheck && newUsername.length < 32;
 };
 
+isValidPassword = (oldPassword, newPassword) => {
+  const oldCheck = oldPassword ? oldPassword !== newPassword : true;
+  const regex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
+  return regex.test(newPassword) && oldCheck && newPassword.length < 128;
+};
 Meteor.startup(() => {
   // See helmet.js for Content Security Policy (CSP) options
   WebApp.connectHandlers.use(helmet(helmetOptions()));
@@ -83,7 +90,7 @@ Meteor.startup(() => {
 
     emailExists: (email) => {
       if (Accounts.findUserByEmail(email)) {
-        return `Email, ${email}, already in use`;
+        return `That email is already in use`;
       } else {
         return;
       }
@@ -100,6 +107,16 @@ Meteor.startup(() => {
           );
         }
         return `${user} added to ${role}`;
+      } else {
+        return "Unauthorized [401]";
+      }
+    },
+
+    getAllUsers: () => {
+      if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+        return Meteor.users.find({}).fetch();
+      } else {
+        return [];
       }
     },
 
@@ -111,47 +128,63 @@ Meteor.startup(() => {
         Meteor.users.remove({ _id: id });
         return `User ${id} has successfully been deleted`;
       } else {
-        return `Encountered an error while trying to delete user ${id}`;
+        return "Unauthorized [401]";
       }
     },
 
     updateUsername: (id, user, newUsername) => {
-      if (isValidUsername(user, newUsername)) {
-        Accounts.setUsername(id, newUsername);
-        return `Your username has been successfully changed from  ${user} to ${newUsername}`;
+      if (Meteor.userId() === id) {
+        if (isValidUsername(user, newUsername)) {
+          Accounts.setUsername(id, newUsername);
+          return `Account changes successfully made`;
+        } else {
+          return `The provided username, ${newUsername}, is invalid`;
+        }
       } else {
-        return `The provided username, ${newUsername}, is invalid`;
+        return "Unauthorized [401]";
       }
     },
 
     updateEmail: (id, email, newEmail) => {
-      if (isValidEmail(email, newEmail)) {
-        Accounts.removeEmail(id, email);
-        Accounts.addEmail(id, newEmail);
-        Accounts.sendVerificationEmail(id, newEmail);
-        return `Your email has been successfully changed from  ${email} to ${newEmail}`;
+      if (Meteor.userId() === id) {
+        if (isValidEmail(email, newEmail)) {
+          Accounts.removeEmail(id, email);
+          Accounts.addEmail(id, newEmail);
+          Accounts.sendVerificationEmail(id, newEmail);
+          return `Account changes successfully made`;
+        } else {
+          return `The provided email, ${newEmail}, is invalid`;
+        }
       } else {
-        return `The provided email, ${newEmail}, is invalid`;
+        return "Unauthorized [401]";
       }
     },
 
     addToFavorites: (user, noradID) => {
-      let favorites = Meteor.user().favorites;
-      if (favorites.indexOf(noradID) === -1) {
-        favorites.push(noradID);
+      if (Meteor.userId) {
+        let favorites = Meteor.user().favorites;
+        if (favorites.indexOf(noradID) === -1) {
+          favorites.push(noradID);
+        } else {
+          favorites.splice(favorites.indexOf(noradID), 1);
+        }
+        Meteor.users.update(user, { $set: { favorites: favorites } });
+        return Meteor.user().favorites;
       } else {
-        favorites.splice(favorites.indexOf(noradID), 1);
+        return ["Unauthorized [401]"];
       }
-      Meteor.users.update(user, { $set: { favorites: favorites } });
-      return Meteor.user().favorites;
     },
 
     removeRole: (id, role) => {
       if (Roles.userIsInRole(Meteor.userId(), "admin")) {
-        Roles.removeUsersFromRoles(id, role);
-        return `User ${id} added to role ${role}`;
+        try {
+          Roles.removeUsersFromRoles(id, role);
+          return `User ${id} added to role ${role}`;
+        } catch (err) {
+          return err;
+        }
       } else {
-        return `Encountered an error while trying to add user ${id} to role ${role}`;
+        return "Unauthorized [401]";
       }
     },
 
@@ -160,21 +193,41 @@ Meteor.startup(() => {
         Accounts.findUserByUsername(user) || Accounts.findUserByEmail(user);
       return Roles.userIsInRole(userFinder?._id, "dummies");
     },
+
     sendEmail: (id, email) => {
-      Accounts.sendVerificationEmail(id, email);
+      if (Meteor.userId() === id) {
+        Accounts.sendVerificationEmail(id, email);
+      } else {
+        return "Unauthorized [401]";
+      }
+    },
+
+    registerUser: (email, username, password) => {
+      if (
+        isValidEmail(null, email) &&
+        isValidUsername(null, username) &&
+        isValidPassword(null, password)
+      ) {
+        try {
+          Accounts.createUser({
+            email: email,
+            username: username,
+            password: password,
+          });
+          return `Welcome to PROBE, ${username}!`;
+        } catch (err) {
+          return err.message;
+        }
+      } else {
+        return "An error occured while creating your account. Please try again later!";
+      }
     },
   });
 
   Accounts.onCreateUser((options, user) => {
-    const username = options.username;
-    const email = options.email;
-    if (!isValidEmail(email) || !isValidUsername(username)) {
-      return "Invalid username or email";
-    } else {
-      user.favorites = [];
-      user.roles = [];
-      return user;
-    }
+    user.favorites = [];
+    user.roles = [];
+    return user;
   });
 
   // Seed admin account for testing
@@ -229,32 +282,63 @@ Meteor.startup(() => {
 
   // Satellite methods
   Meteor.methods({
-    addNewSatellite: (values, user) => {
-      console.log(user);
-      SatelliteCollection.insert(values);
+    addNewSatellite: (values) => {
+      values["isDeleted"] = false;
+      if (Meteor.userId()) {
+        SatelliteCollection.insert(values);
+      } else {
+        return "Unauthorized [401]";
+      }
     },
-    updateSatellite: (values, user) => {
-      console.log(user);
-      SatelliteCollection.update({ _id: values._id }, values);
+    updateSatellite: (values) => {
+      if (Meteor.userId()) {
+        SatelliteCollection.update({ _id: values._id }, values);
+      } else {
+        return "Unauthorized [401]";
+      }
     },
-    deleteSatellite: (values, user) => {
-      console.log(user);
-      SatelliteCollection.remove(initValues._id);
+    deleteSatellite: (values) => {
+      if (Meteor.userId()) {
+        values["isDeleted"] = true;
+        SatelliteCollection.update({ _id: values._id }, values);
+        // SatelliteCollection.remove(values._id);
+      } else {
+        return "Unauthorized [401]";
+      }
     },
   });
 
   // Schema methods
   Meteor.methods({
-    addNewSchema: (values, user) => {
-      console.log(user);
-      SchemaCollection.insert(values);
+    addNewSchema: (initValues, values) => {
+      if (Meteor.userId()) {
+        let error = null;
+        const schemas = SchemaCollection.find().fetch();
+        schemaValidatorShaper(initValues, schemas)
+          .validate(values)
+          .then(() => {
+            return SchemaCollection.insert(values);
+          })
+          .catch((error) => {
+            err = error;
+          });
+        return error;
+      } else {
+        return "Unauthorized [401]";
+      }
     },
-    updateSchema: (values, user) => {
-      console.log(user);
-      SchemaCollection.update({ _id: values._id }, values);
+    updateSchema: (initValues, values) => {
+      let error = null;
+      const schemas = SchemaCollection.find().fetch();
+      schemaValidatorShaper(initValues, schemas)
+        .validate(values)
+        .then(() => {
+          return SchemaCollection.update({ _id: values._id }, values);
+        })
+        .catch((err) => console.err(err));
+      return error;
     },
-    deleteSchema: (values, user) => {
-      console.log(user);
+    deleteSchema: (values) => {
       SchemaCollection.remove(values._id);
     },
   });

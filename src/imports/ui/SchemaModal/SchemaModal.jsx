@@ -78,18 +78,26 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
     return [schemas, user, !sub.ready()];
   });
 
+  const uniqueNames = (initValues, schemas) => {
+    return schemas.map((schema) => {
+      if (initValues.name !== schema.name) {
+        return schema.name;
+      }
+    });
+  };
+
   useEffect(() => {
     setEditing(newSchema || false);
   }, [newSchema, show]);
 
-  const handleSubmit = (values, { setSubmitting }) => {
+  const handleSubmit = async (values, { setSubmitting }) => {
     if (values) {
       if (newSchema) {
-        Meteor.call("addNewSchema", values, user, (err, res) => {
+        handleClose();
+        Meteor.call("addNewSchema", initValues, values, user, (err, res) => {
           if (res || err) {
-            alert(res || err);
+            console.err(res || err);
           } else {
-            handleClose();
             setOpenSnack(false);
             setSnack(
               <span>
@@ -100,9 +108,9 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
           }
         });
       } else {
-        Meteor.call("updateSchema", values, user, (err, res) => {
+        Meteor.call("updateSchema", initValues, values, user, (err, res) => {
           if (res || err) {
-            alert(res || err);
+            console.err(res || err);
           } else {
             setOpenSnack(false);
             setSnack(
@@ -114,15 +122,17 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
           }
         });
       }
-      setSubmitting(false);
-      setEditing(false);
+      setTimeout(() => {
+        setSubmitting(false);
+        setEditing(false);
+      });
     }
   };
 
   const handleDelete = () => {
     Meteor.call("deleteSchema", initValues, user, (err, res) => {
       if (res || err) {
-        alert(res || err);
+        console.err(res || err);
       } else {
         setOpenAlert(false);
         setOpenSnack(false);
@@ -198,7 +208,6 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
             onClick={() => {
               setOpenAlert(false);
               handleToggleEdit(setValues);
-              handleClose();
             }}
           >
             Confirm
@@ -231,7 +240,11 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
           </DialogTitle>
           <Formik
             initialValues={initValues}
-            validationSchema={schemaValidatorShaper(schemas)}
+            validationSchema={schemaValidatorShaper(
+              initValues,
+              uniqueNames,
+              schemas
+            )}
             onSubmit={handleSubmit}
           >
             {({
@@ -298,7 +311,6 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
                             );
                           }}
                           loginRequired={true}
-                          requiredRoles={["admin"]}
                         />
                       )}
                     </React.Fragment>

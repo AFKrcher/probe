@@ -9,6 +9,7 @@ import { Admin } from "./Admin/Admin";
 import { Nav } from "./Navigation/Nav.jsx";
 import { SatellitesTable } from "./DataDisplays/SatellitesTable.jsx";
 import { SchemasTable } from "./DataDisplays/SchemasTable.jsx";
+import { Dashboard } from "./DataDisplays/Dashboard.jsx";
 import { Home } from "./Home.jsx";
 import { About } from "./About.jsx";
 import { Footer } from "./Navigation/Footer.jsx";
@@ -81,10 +82,16 @@ export const App = () => {
                   <SatellitesTable />
                 </Route>
                 <Route exact={true} path="/login">
-                  <ProtectedRoute component={Login} loginRequired={false} />
+                  <ProtectedRoute
+                    component={Login}
+                    loginRequired={false}
+                  />
                 </Route>
                 <Route exact={true} path="/register">
-                  <ProtectedRoute component={Register} loginRequired={false} />
+                  <ProtectedRoute
+                    component={Register}
+                    loginRequired={false}
+                  />
                 </Route>
                 <Route path="/reset">
                   <ProtectedRoute
@@ -122,6 +129,9 @@ export const App = () => {
                 </Route>
                 <Route exact={true} path="/">
                   <Home />
+                </Route>
+                <Route path="/:id">
+                  <Dashboard />
                 </Route>
                 <Route path="*">
                   <Home />
