@@ -1,3 +1,7 @@
+/**
+ * PLEASE ENSURE THAT ANY CHANGES MADE HERE ARE REFLECTED IN SERVER-SIDE VALIDATIONS
+ **/
+
 import * as Yup from "yup";
 
 // Data display functions
@@ -7,9 +11,9 @@ export const getSatName = (satellite) => {
     : "Name not found...";
 };
 
-export const getSatImage = (satellite) => {
+export const getSatImage = (satellite, pic=0) => {
   return satellite && satellite.images && satellite.images.length > 0
-    ? satellite.images[0].link || satellite.images[0].url
+    ? satellite.images.length && satellite.images[pic].link || satellite.images[pic].url
     : "/sat-placeholder.jpg";
 };
 

@@ -65,11 +65,16 @@ export const SatelliteSchemaEntry = ({
   const classes = useStyles();
 
   const [helpers, setHelpers] = useState(null);
-  
+
   const debounced = useDebouncedCallback((event) => {
     let obj = {};
     obj[`${event.target.name}`] = true;
     setTouched(obj);
+    setFieldValue(event.target.name, event.target.value);
+  }, 500);
+
+  const preliminaryDebounced = useDebouncedCallback((event) => {
+    // Needed in order for errors to be properly set or cleared after Formik completes a check on the satellite data
     setFieldValue(event.target.name, event.target.value);
   }, 300);
 
@@ -95,10 +100,6 @@ export const SatelliteSchemaEntry = ({
     return helper;
   };
 
-  const onBlur = (event) => {
-    setFieldValue(event.target.name, event.target.value);
-  };
-
   const handleEntryDelete = async (schemaName, index) => {
     let newEntries = entries.map((entry) => entry);
     newEntries.splice(index, 1);
@@ -117,14 +118,19 @@ export const SatelliteSchemaEntry = ({
         name: `${schema.name}.${entryIndex}.${field.name}`,
         min: field.min,
         max: field.max,
+        maxLength: field.stringMax,
         step: "any",
+        spellCheck: true,
+        autoComplete: "off",
       },
       InputLabelProps: {
         shrink: true,
       },
       defaultValue: entry[`${field.name}`] || "",
-      onChange: debounced,
-      onBlur: onBlur,
+      onChange: (event) => {
+        preliminaryDebounced(event);
+        debounced(event);
+      },
       error: filteredHelper(schema.name, entryIndex, fieldIndex) ? true : false,
       label: field.name,
       margin: "dense",

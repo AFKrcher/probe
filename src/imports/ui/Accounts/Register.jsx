@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // Imports
 import { Accounts } from "meteor/accounts-base";
-import { useTracker } from "meteor/react-meteor-data";
 import { useHistory } from "react-router";
 import * as Yup from "yup";
 
@@ -37,34 +36,52 @@ export const Register = () => {
   const [confirmErr, setConfirmErr] = useState();
   const [emailErr, setEmailErr] = useState();
   const [userErr, setUserErr] = useState();
+  const [disabled, setDisabled] = useState(true);
 
   const loginRedirect = () => {
     setTimeout(history.push("/login"));
   };
 
+  const checkForm = () => {
+    let email = document.getElementById("email")?.value;
+    let username = document.getElementById("username")?.value;
+    let password = document.getElementById("password")?.value;
+    let confirm = document.getElementById("confirm")?.value;
+    if (!email || !username || !password || !confirm) setDisabled(true);
+  };
+
   const isValidEmail = (email) => {
     const schema = Yup.string().email();
-    return schema.isValidSync(email);
+    return schema.isValidSync(email) && email.length <= 128;
   };
 
   const isValidUsername = (username) => {
     const regex = /^[a-zA-Z0-9]{4,}$/g;
-    return regex.test(username);
+    return regex.test(username) && username.length <= 32;
+  };
+
+  isValidPassword = (password) => {
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
+    return regex.test(password) && password.length < 128;
   };
 
   const validateEmail = () => {
     let email = document.getElementById("email")?.value;
     if (email) {
       if (isValidEmail(email)) {
-        Meteor.call("emailExists", email, (_, err) => {
-          if (err) {
-            setEmailErr(err);
+        Meteor.call("emailExists", email, (_, res) => {
+          if (res) {
+            setEmailErr(res);
           } else {
             setEmailErr(null);
+            setDisabled(false);
+            checkForm();
           }
         });
       } else {
         setEmailErr("Invalid email address");
+        setDisabled(true);
       }
     }
   };
@@ -73,39 +90,46 @@ export const Register = () => {
     let username = document.getElementById("username")?.value;
     if (username) {
       if (isValidUsername(username)) {
-        Meteor.call("userExists", username, function (_, err) {
-          if (err) {
-            setUserErr(err);
+        Meteor.call("userExists", username, function (_, res) {
+          if (res) {
+            setUserErr(res);
           } else {
             setUserErr(null);
+            setDisabled(false);
+            checkForm();
           }
         });
       } else {
         setUserErr(
-          "Must be at least 4 characters long and cannot contain special characters"
+          "Must be between 4 and 32 characters long and cannot contain special characters"
         );
+        setDisabled(true);
       }
     }
   };
 
   const validatePassword = () => {
-    let pass = document.getElementById("password").value;
-    let confirm = document.getElementById("confirm").value;
-    const regex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
-    if (pass) {
-      if (!regex.test(pass)) {
+    let confirm = document.getElementById("confirm")?.value;
+    let password = document.getElementById("password")?.value;
+    if (password) {
+      if (!isValidPassword(password)) {
         setPassErr(
-          "Must be at least 8 characters long, and contain 1 lowercase, 1 uppercase, and 1 special character"
+          password.length >= 128
+            ? "Cannot be longer than 128 characters"
+            : "Must be at least 8 characters long, and contain 1 lowercase, 1 uppercase, and 1 special character"
         );
       } else {
         setPassErr(null);
+        setDisabled(false);
       }
-      if (pass && confirm) {
-        if (confirm === pass) {
+      if (password && confirm) {
+        if (confirm === password) {
           setConfirmErr(null);
+          setDisabled(false);
+          checkForm();
         } else {
           setConfirmErr("Passwords do not match");
+          setDisabled(true);
         }
       }
     }
@@ -113,72 +137,87 @@ export const Register = () => {
 
   const registerUser = (e) => {
     e.preventDefault();
-    try {
-      Accounts.createUser(
-        {
-          email: e.target.email.value,
-          username: e.target.username.value,
-          password: e.target.password.value,
-        },
-        () => {
-          alert("Welcome to PROBE"); // TODO: use AlertDialog for custom welcome message
-        }
-      );
-      setTimeout(history.push("/"));
-    } catch (err) {
-      alert(
-        "Something went wrong while trying to register your new account. Please try again later."
-      );
-    }
+    let email = document.getElementById("email")?.value;
+    let username = document.getElementById("username")?.value;
+    let password = document.getElementById("password")?.value;
+
+    Meteor.call("registerUser", email, username, password, (_, res) => {
+      if (res) {
+        Meteor.loginWithPassword(
+          {
+            username: username,
+          },
+          password,
+          (error) => {
+            if (error) alert(error);
+          }
+        );
+      }
+      alert(res);
+      if (!res.includes("error")) history.push("/");
+    });
   };
 
   return (
     <Grid container justifyContent="center" alignItems="center">
       <FormControl className={classes.margin}>
-        <form onSubmit={registerUser} className={classes.formContainer}>
+        <form
+          onSubmit={registerUser}
+          onChange={checkForm}
+          className={classes.formContainer}
+        >
           <TextField
+            autoComplete="off"
             id="email"
             error={emailErr ? true : false}
             helperText={emailErr}
             label="Email"
             type="email"
-            onBlur={validateEmail}
             onChange={validateEmail}
             ref={(input) => (email = input)}
             fullWidth
             className={classes.textField}
+            required
           />
           <TextField
+            autoComplete="off"
             id="username"
             error={userErr ? true : false}
             helperText={userErr}
             label="Username"
-            onBlur={validateUsername}
             onChange={validateUsername}
+            onBlur={checkForm}
             ref={(input) => (username = input)}
             fullWidth
             className={classes.textField}
+            required
           />
           <TextField
+            autoComplete="off"
             id="password"
             label="Password"
             type="password"
             error={passErr ? true : false}
             helperText={passErr}
             onChange={validatePassword}
+            onBlur={checkForm}
             ref={(input) => (password = input)}
             fullWidth
             className={classes.textField}
+            required
           />
           <TextField
+            autoComplete="off"
             error={confirmErr ? true : false}
             id="confirm"
             helperText={confirmErr}
             label="Confirm password"
             onChange={validatePassword}
+            onBlur={checkForm}
             type="password"
             fullWidth
             className={classes.textField}
+            required
           />
           <Button
             id="register-button"
@@ -186,7 +225,7 @@ export const Register = () => {
             color="primary"
             type="submit"
             fullWidth
-            disabled={passErr || confirmErr || userErr || emailErr}
+            disabled={disabled}
             className={classes.button}
           >
             Register User

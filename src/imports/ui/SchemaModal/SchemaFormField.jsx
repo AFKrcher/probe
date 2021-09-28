@@ -75,11 +75,13 @@ export const SchemaFormField = ({
   };
 
   const maxErrorMessage = (message) => {
-    const toIndex = message.indexOf("to ");
-    const to = message.substr(toIndex);
-    const numberIndex = to.indexOf(" ");
-    const number = to.substr(numberIndex);
-    return `Maximum Value must be greater than the Minimum Value of ${number}`;
+    if (message) {
+      const toIndex = message.indexOf("to ");
+      const to = message.substr(toIndex);
+      const numberIndex = to.indexOf(" ");
+      const number = to.substr(numberIndex);
+      return `Maximum Value must be greater than the Minimum Value of ${number}`;
+    }
   };
 
   const handleBlur = () => {
@@ -187,7 +189,7 @@ export const SchemaFormField = ({
                   error={
                     !errors["fields"]
                       ? false
-                      : errors["fields"][index]
+                      : errors["fields"][index]["max"]
                       ? true
                       : false
                   }

@@ -10,9 +10,13 @@ import AlertDialog from "../Dialogs/AlertDialog.jsx";
 import SnackBar from "../Dialogs/SnackBar.jsx";
 
 // @material-ui
-import { Grid, Button } from "@material-ui/core";
-import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
+import {
+  Grid,
+  Button,
+  TextField,
+  FormControl,
+  CircularProgress,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -32,6 +36,14 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginTop: 20,
   },
+  spinnerContainer: {
+    display: "flex",
+    justifyContent: "center",
+  },
+  spinner: {
+    color: theme.palette.text.primary,
+    marginTop: "30vh",
+  },
 }));
 
 export const Settings = () => {
@@ -39,15 +51,12 @@ export const Settings = () => {
   const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } =
     useContext(HelpersContext);
 
-  const [passErr, setPassErr] = useState(false);
-  const [passHelper, setPassHelper] = useState("");
-  const [confirmErr, setConfirmErr] = useState(false);
-  const [confirmHelper, setConfirmHelper] = useState("");
-  const [emailErr, setEmailErr] = useState(false);
-  const [emailHelper, setEmailHelper] = useState("");
-  const [userErr, setUserErr] = useState(false);
-  const [userHelper, setUserHelper] = useState("");
-  const [touched, setTouched] = useState(false);
+  const [passErr, setPassErr] = useState();
+  const [confirmErr, setConfirmErr] = useState();
+  const [emailErr, setEmailErr] = useState();
+  const [userErr, setUserErr] = useState();
+  const [disabled, setDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const [id, user, email] = useTracker(() => {
     const id = Meteor.user()?._id;
@@ -58,6 +67,7 @@ export const Settings = () => {
   });
 
   const deleteAccount = () => {
+    setLoading(true);
     Meteor.call("deleteAccount", id, (err, res) => {
       if (err) {
         setAlert({
@@ -66,10 +76,13 @@ export const Settings = () => {
           actions: null,
           closeAction: "Close",
         });
+        return;
       }
       if (res) {
+        setLoading(false);
         setSnack("Your account has been successfully deleted");
         setOpenSnack(true);
+        return;
       }
     });
   };
@@ -91,77 +104,110 @@ export const Settings = () => {
     });
   };
 
-  const isValidEmail = (newEmail) => {
+  const isValidEmail = () => {
+    let newEmail = document.getElementById("newEmail")?.value;
     const schema = Yup.string().email();
-    return schema.isValidSync(newEmail);
+    return schema.isValidSync(newEmail) && newEmail?.length <= 128;
   };
 
-  const isValidUsername = (newUsername) => {
+  const isValidUsername = () => {
+    let newUsername = document.getElementById("newUsername")?.value;
     const regex = /^[a-zA-Z0-9]{4,}$/g;
-    return regex.test(newUsername);
+    return regex.test(newUsername) && newUsername?.length <= 32;
   };
 
-  const isValidPassword = (oldPassword, newPassword, confirm) => {
+  const isValidPassword = () => {
+    let oldPassword = document.getElementById("oldPassword")?.value;
+    let newPassword = document.getElementById("newPassword")?.value;
+    let confirm = document.getElementById("confirm")?.value;
     const regex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
     return (
       regex.test(newPassword) &&
       newPassword !== oldPassword &&
-      confirm === newPassword
+      confirm === newPassword &&
+      newPassword?.length <= 128
     );
   };
 
+  const validateNameOnly = () => {
+    let newUsername = document.getElementById("newUsername")?.value;
+    let oldPassword = document.getElementById("oldPassword")?.value;
+    let newPassword = document.getElementById("newPassword")?.value;
+    let confirm = document.getElementById("confirm")?.value;
+    user === newUsername && !confirm && !newPassword && !oldPassword
+      ? setDisabled(true)
+      : setDisabled(false);
+  };
+
+  const validateEmailOnly = () => {
+    let newEmail = document.getElementById("newEmail")?.value;
+    let oldPassword = document.getElementById("oldPassword")?.value;
+    let newPassword = document.getElementById("newPassword")?.value;
+    let confirm = document.getElementById("confirm")?.value;
+    email === newEmail && !confirm && !newPassword && !oldPassword
+      ? setDisabled(true)
+      : setDisabled(false);
+  };
+
   const validateForm = () => {
-    const newEmail = document.getElementById("newEmail").value;
-    const newUsername = document.getElementById("newUsername").value;
-    const oldPassword = document.getElementById("oldPassword").value;
-    const newPassword = document.getElementById("newPassword").value;
-    const confirm = document.getElementById("confirm").value;
+    let oldPassword = document.getElementById("oldPassword")?.value;
+    let newPassword = document.getElementById("newPassword")?.value;
+    let confirm = document.getElementById("confirm")?.value;
 
-    if (newEmail !== email || newUsername !== user) {
-      setTouched(true);
+    if (!isValidEmail()) {
+      setEmailErr("Invalid email address");
     } else {
-      setTouched(false);
+      setEmailErr();
+      setDisabled(false);
     }
 
-    if (!isValidEmail(newEmail)) {
-      setEmailHelper("Invalid email address");
-      setEmailErr(true);
-    } else {
-      setEmailHelper("");
-      setEmailErr(false);
-    }
-
-    if (!isValidUsername(newUsername)) {
-      setUserHelper(
-        "Must be at least 4 characters long and cannot contain special characters"
+    if (!isValidUsername()) {
+      setUserErr(
+        "Must be between 4 and 32 characters long and cannot contain special characters"
       );
-      setUserErr(true);
     } else {
-      setUserHelper("");
-      setUserErr(false);
+      setUserErr();
+      setDisabled(false);
     }
 
-    if (newPassword !== confirm) {
-      setConfirmHelper("Passwords do not match");
-      setConfirmErr(true);
+    if (newPassword && !isValidPassword()) {
+      if (newPassword === oldPassword) {
+        setPassErr("Old and new passwords are the same");
+      } else if (newPassword !== confirm) {
+        setPassErr();
+      } else {
+        setPassErr(
+          newPassword.length > 128
+            ? "Cannot be longer than 128 characters"
+            : "Must be at least 8 characters long, and contain 1 lowercase, 1 uppercase, and 1 special character"
+        );
+      }
     } else {
-      setConfirmHelper("");
-      setConfirmErr(false);
+      setPassErr();
+      setDisabled(false);
     }
 
-    if (isValidPassword(oldPassword, newPassword, confirm)) {
-      setPassHelper(
-        "Must be at least 8 characters long, and contain 1 lowercase, 1 uppercase, and 1 special character"
-      );
-      setPassErr(true);
+    if (
+      (confirm && newPassword && newPassword !== confirm) ||
+      (confirm && !newPassword)
+    ) {
+      setConfirmErr("Passwords do not match");
     } else {
-      setPassHelper("");
-      setPassErr(false);
+      setConfirmErr();
+      setDisabled(false);
+    }
+
+    if (newPassword || oldPassword || confirm) {
+      if (newPassword && oldPassword && confirm) {
+        setDisabled(false);
+      } else {
+        setDisabled(true);
+      }
     }
   };
 
-  const updateAccount = () => {
+  const updateAccount = (e) => {
     e.preventDefault();
 
     const newEmail = e.target.newEmail?.value;
@@ -182,46 +228,53 @@ export const Settings = () => {
           setOpenAlert(true);
         }
         if (res) {
-          setSnack(res);
+          setSnack(`Email successfully changed from ${email} to ${oldEmail}`);
           setOpenSnack(true);
+          setDisabled(true);
         }
       });
-    }
-
-    if (isValidUsername(newUsername) && newUsername !== oldUsername) {
+    } else if (isValidUsername(newUsername) && newUsername !== user) {
       Meteor.call("updateUsername", id, user, newUsername, (err, res) => {
         if (err) {
           setAlert({
             title: "Error Encountered",
-            text: err,
+            text: err.message,
             actions: null,
             closeAction: "Close",
           });
           setOpenAlert(true);
         }
         if (res) {
-          setSnack(res);
+          setSnack(`Username successfully changed from ${user} to ${newUsername}`);
           setOpenSnack(true);
+          setDisabled(true);
         }
       });
-    }
-
-    if (isValidPassword(oldPassword, newPassword, confirm)) {
-      Accounts.changePassword(oldPassword, newPassword, (res, err) => {
+    } else if (isValidPassword(oldPassword, newPassword, confirm)) {
+      console.log(oldPassword, newPassword, confirm);
+      Accounts.changePassword(oldPassword, newPassword, (err, res) => {
         if (err) {
           setAlert({
             title: "Error Encountered",
-            text: err,
+            text: err.message,
             actions: null,
             closeAction: "Close",
           });
           setOpenAlert(true);
-        }
-        if (res) {
-          setSnack(res);
+        } else {
+          setSnack("Successfully changed password");
           setOpenSnack(true);
+          setDisabled(true);
         }
       });
+    } else {
+      setAlert({
+        title: "Error Encountered",
+        text: "No changes made. Email, username, and password are the same.",
+        actions: null,
+        closeAction: "Close",
+      });
+      setOpenAlert(true);
     }
   };
 
@@ -229,98 +282,114 @@ export const Settings = () => {
     <React.Fragment>
       <AlertDialog bodyAlert={alert} />
       <SnackBar bodySnackBar={snack} />
-      <Grid container justifyContent="center" alignItems="center">
-        <FormControl className={classes.margin}>
-          <form onSubmit={updateAccount} className={classes.flexContainer}>
-            <TextField
-              id="newEmail"
-              label="Email"
-              type="email"
-              ref={(input) => (newEmail = input)}
-              fullWidth
-              className={classes.textField}
-              onChange={validateForm}
-              defaultValue={email}
-              error={emailErr}
-              helperText={emailHelper}
-            />
-            <TextField
-              id="newUsername"
-              label="Username"
-              type="username"
-              ref={(input) => (newUsername = input)}
-              fullWidth
-              className={classes.textField}
-              onChange={validateForm}
-              defaultValue={user}
-              error={userErr}
-              helperText={userHelper}
-            />
-            <TextField
-              id="oldPassword"
-              label="Current Password"
-              type="password"
-              ref={(input) => (oldPassword = input)}
-              fullWidth
-              className={classes.textField}
-              onChange={validateForm}
-            />
-            <TextField
-              id="newPassword"
-              label="New Password"
-              type="password"
-              ref={(input) => (newPassword = input)}
-              fullWidth
-              className={classes.textField}
-              onChange={validateForm}
-              error={passErr}
-              helperText={passHelper}
-            />
-            <TextField
-              id="confirm"
-              label="Confirm new password"
-              type="password"
-              fullWidth
-              className={classes.textField}
-              onChange={validateForm}
-              error={confirmErr}
-              helperText={confirmHelper}
-            />
-            <Button
-              id="updateButton"
-              variant="outlined"
-              color="primary"
-              type="submit"
-              fullWidth
-              className={classes.button}
-              disabled={
-                userErr || passErr || confirmErr || emailErr || !touched
-              }
-            >
-              Update your account
-            </Button>
-            <Button
-              id="verifyButton"
-              variant="outlined"
-              onClick={sendEmail}
-              fullWidth
-              className={classes.button}
-            >
-              Verify your email
-            </Button>
-            <Button
-              id="deleteButton"
-              variant="outlined"
-              color="secondary"
-              onClick={deleteAccount}
-              fullWidth
-              className={classes.button}
-            >
-              Delete your account
-            </Button>
-          </form>
-        </FormControl>
-      </Grid>
+      {loading ? (
+        <div className={classes.spinnerContainer}>
+          <CircularProgress
+            className={classes.spinner}
+            size={100}
+            thickness={3}
+          />
+        </div>
+      ) : (
+        <Grid container justifyContent="center" alignItems="center">
+          <FormControl className={classes.margin}>
+            <form id="settings" onSubmit={updateAccount} className={classes.flexContainer}>
+              <TextField
+                id="newEmail"
+                label="Email"
+                type="email"
+                ref={(input) => (newEmail = input)}
+                fullWidth
+                className={classes.textField}
+                onChange={() => {
+                  validateForm();
+                  validateEmailOnly();
+                }}
+                defaultValue={email}
+                error={emailErr ? true : false}
+                helperText={emailErr}
+              />
+              <TextField
+                id="newUsername"
+                label="Username"
+                type="username"
+                ref={(input) => (newUsername = input)}
+                fullWidth
+                className={classes.textField}
+                onChange={() => {
+                  validateForm();
+                  validateNameOnly();
+                }}
+                defaultValue={user}
+                error={userErr ? true : false}
+                helperText={userErr}
+              />
+              <TextField
+                id="oldPassword"
+                label="Current Password"
+                type="password"
+                ref={(input) => (oldPassword = input)}
+                fullWidth
+                className={classes.textField}
+                onChange={validateForm}
+              />
+              <TextField
+                id="newPassword"
+                label="New Password"
+                type="password"
+                ref={(input) => (newPassword = input)}
+                fullWidth
+                className={classes.textField}
+                onChange={validateForm}
+                error={passErr ? true : false}
+                helperText={passErr}
+              />
+              <TextField
+                id="confirm"
+                label="Re-Type New Password"
+                type="password"
+                fullWidth
+                className={classes.textField}
+                onChange={validateForm}
+                error={confirmErr ? true : false}
+                helperText={confirmErr}
+              />
+              <Button
+                id="updateButton"
+                variant="outlined"
+                color="primary"
+                type="submit"
+                fullWidth
+                className={classes.button}
+                disabled={
+                  userErr || passErr || confirmErr || emailErr || disabled
+                    ? true
+                    : false
+                }
+              >
+                Update your account
+              </Button>
+              <Button
+                id="verifyButton"
+                onClick={sendEmail}
+                fullWidth
+                className={classes.button}
+              >
+                Verify your email
+              </Button>
+              <Button
+                id="deleteButton"
+                color="secondary"
+                onClick={deleteAccount}
+                fullWidth
+                className={classes.button}
+              >
+                Delete your account
+              </Button>
+            </form>
+          </FormControl>
+        </Grid>
+      )}
     </React.Fragment>
   );
 };

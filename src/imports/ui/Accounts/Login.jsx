@@ -46,7 +46,7 @@ export const Login = () => {
   const usernameRegex = /[~`!@.#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g;
 
   const handleDisable = () => {
-    setError(null)
+    setError(null);
     let username = document.getElementById("username").value;
     let pass = document.getElementById("password").value;
     if (username && pass && !error) {
@@ -128,6 +128,8 @@ export const Login = () => {
     }
   };
 
+  let username = document.getElementById("username")?.value;
+  let pass = document.getElementById("password")?.value;
   return (
     <Grid container justifyContent="center" alignItems="center">
       <FormControl className={classes.margin}>
@@ -159,7 +161,7 @@ export const Login = () => {
             className={classes.loginButton}
             color="primary"
             type="submit"
-            disabled={disabled}
+            disabled={!username || !pass || error ? true : false}
             fullWidth
           >
             Login

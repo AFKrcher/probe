@@ -105,7 +105,7 @@ export const SatelliteForm = ({
           disableElevation
           onClick={() => handleDelete(name)}
         >
-          <DeleteIcon />
+          <DeleteIcon /> Delete
         </Button>
       ),
       closeAction: "Cancel",
@@ -136,6 +136,7 @@ export const SatelliteForm = ({
     component: TextField,
     onChange: onChange,
     disabled: !editing,
+    autoComplete: "off"
   };
 
   return (

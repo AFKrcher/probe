@@ -60,12 +60,12 @@ export const Users = () => {
     const roles = Roles.getRolesForUser(Meteor.userId());
     const sub = Meteor.subscribe("userList");
     const users = Meteor.users.find({}).fetch();
+    console.log(users);
     const rows = users.map((user) => {
       return {
         id: user._id,
         username: user.username,
         emails: user.emails?.map((email) => email.address).join(", "),
-        // roles: user.roles?.map((role) => role).join(", ")
         roles: Roles.getRolesForUser(user._id)
           .map((role) => role)
           .join(", "),
@@ -122,6 +122,7 @@ export const Users = () => {
     Meteor.call("deleteAccount", id, (res, err) => {
       console.log(res, err);
     });
+    setOpen(false);
   };
 
   const removeRole = (id, role) => {

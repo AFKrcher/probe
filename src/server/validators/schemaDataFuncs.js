@@ -4,11 +4,22 @@
 
 import * as Yup from "yup";
 
-export const schemaValidatorShaper = (initValues, uniqueNames, schemas) => {
+const uniqueNames = (initValues, schemas) => {
+  return schemas.map((schema) => {
+    if (initValues.name !== schema.name) {
+      return schema.name;
+    }
+  });
+};
+
+export const schemaValidatorShaper = (initValues, schemas) => {
   return Yup.object().shape({
     _id: Yup.string(),
     name: Yup.string()
-      .notOneOf(uniqueNames(initValues, schemas), (obj) => `The schema name, ${obj.value}, already exists `)
+      .notOneOf(
+        uniqueNames(initValues, schemas),
+        (obj) => `The schema name, ${obj.value}, already exists `
+      )
       .matches(
         /^[a-zA-Z0-9]*$/g,
         "Schema name must be spaceless, camelCase, and only contain letters and numbers"

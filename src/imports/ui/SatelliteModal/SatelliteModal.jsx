@@ -6,6 +6,7 @@ import { SatelliteCollection } from "../../api/satellites";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import {
   emptyDataRemover,
+  getSatImage,
   schemaGenerator,
 } from "../utils/satelliteDataFuncs.js";
 import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
@@ -124,7 +125,7 @@ export const SatelliteModal = ({
     if (newSat) {
       Meteor.call("addNewSatellite", values, user, (err, res) => {
         if (res || err) {
-          alert(res || err);
+          console.err(res || err);
         } else {
           setOpenSnack(false);
           setSnack(
@@ -133,13 +134,12 @@ export const SatelliteModal = ({
             </span>
           );
           setOpenSnack(true);
-          handleClose();
         }
       });
     } else {
       Meteor.call("updateSatellite", values, user, (err, res) => {
         if (res || err) {
-          alert(res || err);
+          console.err(res || err);
         } else {
           setOpenSnack(false);
           setSnack(
@@ -160,9 +160,9 @@ export const SatelliteModal = ({
   };
 
   const handleDelete = () => {
-    Meteor.call("deleteSatellite", initValues, user, () => {
+    Meteor.call("deleteSatellite", initValues, user, (err, res) => {
       if (res || err) {
-        alert(res || err);
+        console.err(res || err);
       } else {
         setOpenAlert(false);
         handleClose();
@@ -269,7 +269,7 @@ export const SatelliteModal = ({
       handleToggleEdit(setValues, values);
     }
   };
-
+  console.log(sats)
   return (
     <>
       <AlertDialog bodyAlert={alert} />
@@ -277,6 +277,7 @@ export const SatelliteModal = ({
       <Dialog open={show} scroll="paper" maxWidth="md">
         <div className={classes.modal}>
           <DialogTitle className={classes.title}>
+            {/* <img src={} style={{width:"50%", height:"50%"}}/> */}
             <Typography className={classes.titleText}>
               {newSat ? (
                 <>
@@ -363,7 +364,6 @@ export const SatelliteModal = ({
                         );
                       }}
                       loginRequired={true}
-                      requiredRoles={["admin"]}
                     />
                   )}
                   <ProtectedFunctionality
