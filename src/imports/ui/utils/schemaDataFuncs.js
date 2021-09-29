@@ -44,7 +44,10 @@ export const schemaValidatorShaper = (initValues, uniqueNames, schemas) => {
             }),
           required: Yup.boolean(),
           isUnique: Yup.boolean(),
-          stringMax: Yup.number().max(20000, "Must not exceed 20,000 characters")
+          stringMax: Yup.number().max(
+            20000,
+            "Must not exceed 20,000 characters"
+          ),
         })
         .notRequired()
     ),

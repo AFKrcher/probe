@@ -62,16 +62,18 @@ The following is a list of notable packages and technologies used to build this 
 
 ### NPM
 
-| Module/Library     | Environment | Description                          |
-| :----------------- | :---------- | :----------------------------------- |
-| material-ui        | Development | Component library                    |
-| formik             | Development | Form management library              |
-| formik-material-ui | Development | Formik + MUI compatability library   |
-| meteor             | Runtime     | App adaptation library for Meteor    |
-| react              | Runtime     | Web-application framework            |
-| react-dom          | Runtime     | DOM renderer for React               |
-| yup                | Runtime     | Object schema and validation library |
-| use-debounce       | Runtime     | React debouncing hook                |
+| Module/Library        | Environment | Description                          |
+| :-------------------- | :---------- | :----------------------------------- |
+| material-ui           | Development | Component library                    |
+| formik                | Development | Form management library              |
+| formik-material-ui    | Development | Formik + MUI compatability library   |
+| react-swipeable-views | Development | Picture gallery component            |
+| meteor                | Runtime     | App adaptation library for Meteor    |
+| react                 | Runtime     | Web-application framework            |
+| react-dom             | Runtime     | DOM renderer for React               |
+| yup                   | Runtime     | Object schema and validation library |
+| use-debounce          | Runtime     | React debouncing hook                |
+| helmet                | Runtime     | CSP and HTTP header security         |
 
 ### Meteor
 

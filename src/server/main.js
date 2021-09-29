@@ -12,6 +12,7 @@ import { UsersCollection } from "/imports/api/users";
 import { ErrorsCollection } from "/imports/api/errors";
 import { helmetOptions } from "./helmet";
 import { schemaValidatorShaper } from "./validators/schemaDataFuncs";
+import { satelliteValidatorShaper } from "./validators/satelliteDataFuncs";
 import "./routes";
 
 const fs = Npm.require("fs");
@@ -222,9 +223,9 @@ Meteor.startup(() => {
     },
   });
 
-  Accounts.onCreateUser((options, user) => {
-    user.favorites = [];
-    user.roles = [];
+  Accounts.onCreateUser((_, user) => {
+    user["favorites"] = [];
+    user["roles"] = [];
     UsersCollection.insert(user);
     return user;
   });
@@ -252,6 +253,7 @@ Meteor.startup(() => {
 
   // Errors publication and seed data
   if (ErrorsCollection.find().count() === 0) {
+    console.log("ErrorsCollection Seeded");
     const errors = {
       user: 00000000000000000,
       time: new Date(),
@@ -260,6 +262,7 @@ Meteor.startup(() => {
       error: {},
     };
     ErrorsCollection.insert(errors);
+    // ErrorsCollection.remove({});
   }
 
   Meteor.publish("errors", () => {
@@ -268,6 +271,7 @@ Meteor.startup(() => {
 
   // Accounts publication and seed data
   if (UsersCollection.find().count() === 0) {
+    console.log("UsersCollection Seeded");
     const users = Meteor.users
       .find({}, { fields: { _id: 1, username: 1, emails: 1, roles: 1 } })
       .fetch();
@@ -282,6 +286,7 @@ Meteor.startup(() => {
   // Satellite and schema publications and seed data
   // Seed schema data
   if (SchemaCollection.find().count() === 0) {
+    console.log("SchemaCollection Seeded");
     var jsonObj = [];
     files = fs.readdirSync("./assets/app/schema");
     files.forEach(function (file) {
@@ -295,6 +300,7 @@ Meteor.startup(() => {
 
   // Seed satellite data
   if (SatelliteCollection.find().count() === 0) {
+    console.log("SatelliteCollection Seeded");
     var jsonObj = [];
     files = fs.readdirSync("./assets/app/satellite");
     files.forEach(function (file) {
@@ -317,28 +323,51 @@ Meteor.startup(() => {
 
   // Satellite methods
   Meteor.methods({
-    addNewSatellite: (values) => {
-      values["isDeleted"] = false;
+    addNewSatellite: (values, initValues) => {
       if (Meteor.userId()) {
+        let error = null;
+        values["isDeleted"] = false;
         values["createdOn"] = new Date();
+        values["createdBy"] = Meteor.user().username;
         values["modifiedOn"] = new Date();
+        values["modifiedBy"] = Meteor.user().username;
         values["adminCheck"] = false;
-        if (Roles.userIsInRole(Meteor.userId(), "admin")) {
-          values["adminCheck"] = true;
-        }
-        SatelliteCollection.insert(values);
+
+        satelliteValidatorShaper(values, initValues)
+          .validate(values)
+          .then(() => {
+            if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+              values["adminCheck"] = true;
+            }
+            SatelliteCollection.insert(values);
+          })
+          .catch((err) => (error = err));
+        return error;
       } else {
         return "Unauthorized [401]";
       }
     },
-    updateSatellite: (values) => {
+    updateSatellite: (values, initValues) => {
       if (Meteor.userId()) {
-        values["modifiedOn"] = new Date();
-        values["adminCheck"] = false;
-        if (Roles.userIsInRole(Meteor.userId(), "admin")) {
-          values["adminCheck"] = true;
+        let error = null;
+        if (!values["createdOn"] || !values["createdBy"]) {
+          values["createdOn"] = new Date();
+          values["createdBy"] = Meteor.user().username;
         }
-        SatelliteCollection.update({ _id: values._id }, values);
+        values["modifiedOn"] = new Date();
+        values["modifiedBy"] = Meteor.user().username;
+        values["adminCheck"] = false;
+
+        satelliteValidatorShaper(values, initValues)
+          .validate(values)
+          .then(() => {
+            if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+              values["adminCheck"] = true;
+            }
+            SatelliteCollection.update({ _id: values._id }, values);
+          })
+          .catch((err) => (error = err));
+        return error;
       } else {
         return "Unauthorized [401]";
       }
@@ -347,6 +376,7 @@ Meteor.startup(() => {
       if (Meteor.userId()) {
         values["isDeleted"] = true;
         values["modifiedOn"] = new Date();
+        values["modifiedBy"] = Meteor.user().username;
         SatelliteCollection.update({ _id: values._id }, values);
       } else {
         return "Unauthorized [401]";
@@ -355,6 +385,16 @@ Meteor.startup(() => {
     actuallyDeleteSatellite: (values) => {
       if (Roles.userIsInRole(Meteor.userId(), "admin")) {
         SatelliteCollection.remove(values._id);
+      } else {
+        return "Unauthorized [401]";
+      }
+    },
+    restoreSatellite: (values) => {
+      if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+        values["isDeleted"] = false;
+        values["modifiedOn"] = new Date();
+        values["modifiedBy"] = Meteor.user().username;
+        SatelliteCollection.update({ _id: values._id }, values);
       } else {
         return "Unauthorized [401]";
       }
@@ -375,12 +415,15 @@ Meteor.startup(() => {
       if (Meteor.userId()) {
         let error = null;
         const schemas = SchemaCollection.find().fetch();
+        values["isDeleted"] = false;
+        values["createdOn"] = new Date();
+        values["createdBy"] = Meteor.user().username;
+        values["modifiedOn"] = new Date();
+        values["modifiedBy"] = Meteor.user().username;
+        values["adminCheck"] = false;
         schemaValidatorShaper(initValues, schemas)
           .validate(values)
           .then(() => {
-            values["createdOn"] = new Date();
-            values["modifiedOn"] = new Date();
-            values["adminCheck"] = false;
             if (Roles.userIsInRole(Meteor.userId(), "admin")) {
               values["adminCheck"] = true;
             }
@@ -398,11 +441,16 @@ Meteor.startup(() => {
       if (Meteor.userId()) {
         let error = null;
         const schemas = SchemaCollection.find().fetch();
+        if (!values["createdOn"] || !values["createdBy"]) {
+          values["createdOn"] = new Date();
+          values["createdBy"] = Meteor.user().username;
+        }
+        values["modifiedOn"] = new Date();
+        values["modifiedBy"] = Meteor.user().username;
+        values["adminCheck"] = false;
         schemaValidatorShaper(initValues, schemas)
           .validate(values)
           .then(() => {
-            values["modifiedOn"] = new Date();
-            values["adminCheck"] = false;
             if (Roles.userIsInRole(Meteor.userId(), "admin")) {
               values["adminCheck"] = true;
             }
@@ -418,8 +466,8 @@ Meteor.startup(() => {
       if (Meteor.userId()) {
         values["isDeleted"] = true;
         values["modifiedOn"] = new Date();
+        values["modifiedBy"] = Meteor.user().username;
         SchemaCollection.update({ _id: values._id }, values);
-        // SchemaCollection.remove(values._id);
       } else {
         return "Unauthorized [401]";
       }
@@ -427,6 +475,16 @@ Meteor.startup(() => {
     actuallyDeleteSchema: (values) => {
       if (Roles.userIsInRole(Meteor.userId(), "admin")) {
         SchemaCollection.remove(values._id);
+      } else {
+        return "Unauthorized [401]";
+      }
+    },
+    restoreSchema: (values) => {
+      if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+        values["isDeleted"] = false;
+        values["modifiedOn"] = new Date();
+        values["modifiedBy"] = Meteor.user().username;
+        SchemaCollection.update({ _id: values._id }, values);
       } else {
         return "Unauthorized [401]";
       }

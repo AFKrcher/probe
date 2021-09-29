@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SatelliteSchemaEntry = ({
+export const DashboardEntry = ({
   entryIndex,
   schema,
   entry,
@@ -131,11 +131,7 @@ export const SatelliteSchemaEntry = ({
     return helper;
   };
 
-  const handleEntryDelete = async (event, schemaName, index) => {
-    let obj = {};
-    obj[`${event.target.name}`] = true;
-    setTouched(obj);
-
+  const handleEntryDelete = async (schemaName, index) => {
     let newEntries = entries.map((entry) => entry);
     newEntries.splice(index, 1);
     await setFieldValue(schemaName, newEntries);
@@ -289,9 +285,7 @@ export const SatelliteSchemaEntry = ({
               <IconButton
                 aria-label="delete field"
                 color="default"
-                onClick={(event) =>
-                  handleEntryDelete(event, schema.name, entryIndex)
-                }
+                onClick={() => handleEntryDelete(schema.name, entryIndex)}
               >
                 <DeleteIcon />
               </IconButton>

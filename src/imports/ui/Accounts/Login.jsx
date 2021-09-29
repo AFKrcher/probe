@@ -92,6 +92,7 @@ export const Login = () => {
       if (err) {
         setDisabled(true);
         setError("This user has been banned.");
+        setLoading(false);
       } else {
         if (usernameRegex.test(username)) {
           Meteor.loginWithPassword(

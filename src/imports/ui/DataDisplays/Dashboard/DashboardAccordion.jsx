@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 // Components
-import { SatelliteSchemaEntry } from "./SatelliteSchemaEntry";
+import { SatelliteSchemaEntry } from "./DashboardSchemaEntry";
 
 // @material-ui
 import {
@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SatelliteSchemaAccordion = ({
+export const DashboardAccordion = ({
   errors,
   schema,
   schemas,

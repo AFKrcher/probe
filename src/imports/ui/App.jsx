@@ -68,7 +68,7 @@ export const App = () => {
       source: source,
       error: error,
     };
-    Meteor.call("addError", obj);
+    // Meteor.call("addError", obj);
     return true;
   };
 
@@ -136,10 +136,10 @@ export const App = () => {
                   <Terms />
                 </Route>
                 <Route exact={true} path="/">
-                  <Home />
+                  <Home/>
                 </Route>
                 <Route path="/:id">
-                  <Dashboard />
+                  <Dashboard/>
                 </Route>
                 <Route path="*">
                   <Home />

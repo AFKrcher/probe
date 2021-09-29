@@ -12,12 +12,14 @@
     {
       "name": "name",
       "type": "string",
-      "allowedValues": []
+      "allowedValues": [],
+      "stringMax": 50
     },
     {
       "name": "description",
       "type": "string",
-      "allowedValues": []
+      "allowedValues": [],
+      "stringMax": 255
     },
     {
       "name": "latitude",

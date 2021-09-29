@@ -14,7 +14,8 @@
       "type": "string",
       "allowedValues": [],
       "required": true,
-      "isUnique": true
+      "isUnique": true,
+      "stringMax": 255
     }
   ]
 }

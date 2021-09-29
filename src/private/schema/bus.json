@@ -10,10 +10,18 @@
       "required": true
     },
     {
-      "name": "bus",
+      "name": "name",
       "type": "string",
       "allowedValues": [],
-      "required": true
+      "required": true,
+      "stringMax": 50
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "allowedValues": [],
+      "required": false,
+      "stringMax": 255
     }
   ]
 }

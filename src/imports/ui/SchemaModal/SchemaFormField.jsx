@@ -219,7 +219,7 @@ export const SchemaFormField = ({
             </Grid>
             {editing && !errors["fields"] ? (
               false
-            ) : edting && errors["fields"][index] ? (
+            ) : editing && errors["fields"][index] ? (
               <FormHelperText className={classes.helpersError}>
                 {maxErrorMessage(errors["fields"][index]["max"])}
               </FormHelperText>

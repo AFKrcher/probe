@@ -20,9 +20,13 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    height: "100%",
+    width: "100%",
+    padding: "15px 10px 15px 10px",
+  },
   dataGrid: {
-    margin: "5px 10px 5px 10px",
-    border: "none",
+    padding: "5px 5px 5px 5px",
     backgroundColor: theme.palette.grid.background,
     overflowY: "auto",
     resize: "horizontal",
@@ -45,7 +49,6 @@ export const Users = () => {
 
   const [open, setOpen] = useState(false);
   const [editUser, setEditUser] = useState([]);
-  const [limiter, setLimiter] = useState(10);
 
   function CustomToolbar() {
     return (
@@ -138,7 +141,12 @@ export const Users = () => {
 
   return (
     <React.Fragment>
-      <Grid container justifyContent="space-between" alignItems="center">
+      <Grid
+        container
+        justifyContent="space-between"
+        alignItems="center"
+        className={classes.root}
+      >
         <Grid item xs>
           <DataGrid
             className={classes.dataGrid}

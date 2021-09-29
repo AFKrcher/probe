@@ -1,5 +1,5 @@
 /** 
- * PLEASE ENSURE THAT ANY CHANGES MADE HERE ARE REFLECTED IN SERVER-SIDE VALIDATIONS
+ * PLEASE ENSURE THAT ANY CHANGES MADE HERE ARE REFLECTED IN CLIENT-SIDE UTILS
 **/
 
 import * as Yup from "yup";
@@ -52,9 +52,17 @@ export const schemaValidatorShaper = (initValues, schemas) => {
             }),
           required: Yup.boolean(),
           isUnique: Yup.boolean(),
-          stringMax: Yup.number().max(20000, "Must not exceed 20,000 characters")
+          stringMax: Yup.number().max(
+            20000,
+            "Must not exceed 20,000 characters"
+          ),
         })
         .notRequired()
     ),
+    adminCheck: Yup.boolean().required(),
+    modifiedOn: Yup.date().required(),
+    modifiedBy: Yup.string().required(),
+    createdOn: Yup.date().required(),
+    createdBy: Yup.string().required(),
   });
 };

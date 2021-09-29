@@ -14,7 +14,8 @@
       "name": "description",
       "type": "string",
       "allowedValues": [],
-      "required": false
+      "required": false,
+      "stringMax": 255
     },
     {
       "name": "type",

@@ -5,7 +5,7 @@ import HelpersContext from "../Dialogs/HelpersContext.jsx";
 // Components
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
 import { Field } from "formik";
-import { SatelliteSchemaAccordion } from "./SatelliteSchemaAccordion";
+import { DashboardAccordion } from "./DashboardAccordion";
 
 // @material-ui
 import { TextField } from "formik-material-ui";
