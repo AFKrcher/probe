@@ -11,7 +11,6 @@ import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
 import { SatelliteModal } from "../SatelliteModal/SatelliteModal";
 import { SatelliteCollection } from "../../api/satellites";
 import SnackBar from "../Dialogs/SnackBar.jsx";
-import FavoritesSwitch from "./FavoritesSwitch";
 
 // @material-ui
 import {
@@ -20,6 +19,7 @@ import {
   makeStyles,
   Typography,
   Tooltip,
+  Switch,
 } from "@material-ui/core";
 import {
   DataGrid,
@@ -122,16 +122,18 @@ export const SatellitesTable = () => {
       skip: page * limiter,
       sort: decideSort(),
     }).fetch();
-    const rows = sats.map((sat) => {
-      return {
-        id: sat.noradID,
-        names: sat.names?.map((name) => name.names || name.name).join(", "),
-        type: sat.type ? sat.type[0].type : "N/A",
-        orbit: sat.orbit
-          ? sat.orbit.map((entry) => entry.orbit).join(", ")
-          : "N/A",
-      };
-    });
+    const rows = sats
+      .filter((sat) => !sat.isDeleted)
+      .map((sat) => {
+        return {
+          id: sat.noradID,
+          names: sat.names?.map((name) => name.names || name.name).join(", "),
+          type: sat.type ? sat.type[0].type : "N/A",
+          orbit: sat.orbit
+            ? sat.orbit.map((entry) => entry.orbit).join(", ")
+            : "N/A",
+        };
+      });
     rows.getRows = count;
     return [rows, count, !subSchemas.ready(), !subSats.ready()];
   });
@@ -262,9 +264,10 @@ export const SatellitesTable = () => {
         arrow
         placement="top"
       >
-        <span style={{ marginLeft: 10 }}>
-          <FavoritesSwitch
+        <span>
+          <Switch
             color="primary"
+            size="medium"
             checked={checkIfFavorite()}
             onClick={(e) =>
               handleFavorite(

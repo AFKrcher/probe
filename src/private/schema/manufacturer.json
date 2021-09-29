@@ -13,12 +13,14 @@
       "name": "name",
       "type": "string",
       "allowedValues": [],
-      "required": true
+      "required": true,
+      "stringMax": 50
     },
     {
       "name": "responsibility",
       "type": "string",
-      "allowedValues": []
+      "allowedValues": [],
+      "stringMax": 255
     }
   ]
 }

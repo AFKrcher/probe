@@ -16,7 +16,8 @@
       "allowedValues": [],
       "required": false,
       "min": null,
-      "max": null
+      "max": null,
+      "stringMax": 255
     },
     {
       "name": "minBand",

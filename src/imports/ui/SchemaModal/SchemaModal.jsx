@@ -29,6 +29,7 @@ import Delete from "@material-ui/icons/Delete";
 import Edit from "@material-ui/icons/Edit";
 import Save from "@material-ui/icons/Save";
 import Check from "@material-ui/icons/Check";
+import RestorePage from "@material-ui/icons/RestorePage";
 
 const useStyles = makeStyles(() => ({
   modal: {
@@ -48,6 +49,7 @@ const useStyles = makeStyles(() => ({
     marginTop: 0,
   },
   description: {
+    marginTop: -20,
     marginBottom: 15,
     margin: 5,
   },
@@ -108,7 +110,7 @@ export const SchemaModal = ({
         handleClose();
         Meteor.call("addNewSchema", initValues, values, user, (err, res) => {
           if (res || err) {
-            console.err(res || err);
+            console.log(res || err);
           } else {
             setOpenSnack(false);
             setSnack(
@@ -122,7 +124,7 @@ export const SchemaModal = ({
       } else {
         Meteor.call("updateSchema", initValues, values, user, (err, res) => {
           if (res || err) {
-            console.err(res || err);
+            console.log(res || err);
           } else {
             setOpenSnack(false);
             setSnack(
@@ -145,7 +147,7 @@ export const SchemaModal = ({
     if (!admin) {
       Meteor.call("deleteSchema", initValues, user, (err, res) => {
         if (res || err) {
-          console.err(res || err);
+          console.log(res || err);
         } else {
           setOpenAlert(false);
           setOpenSnack(false);
@@ -161,7 +163,7 @@ export const SchemaModal = ({
     } else {
       Meteor.call("actuallyDeleteSchema", initValues, user, (err, res) => {
         if (res || err) {
-          console.err(res || err);
+          console.log(res || err);
         } else {
           setOpenAlert(false);
           setOpenSnack(false);
@@ -264,7 +266,7 @@ export const SchemaModal = ({
     if (admin) {
       Meteor.call("adminCheckSchema", initValues, (err, res) => {
         if (res || err) {
-          console.err(res || err);
+          console.log(res || err);
         } else {
           setOpenAlert(false);
           setOpenSnack(false);
@@ -278,6 +280,24 @@ export const SchemaModal = ({
         }
       });
     }
+  };
+
+  const handleRestore = () => {
+    Meteor.call("restoreSchema", initValues, (err, res) => {
+      if (res || err) {
+        console.log(res || err);
+      } else {
+        setOpenAlert(false);
+        setOpenSnack(false);
+        setSnack(
+          <span>
+            Restored <strong>{initValues.name}</strong> schema!
+          </span>
+        );
+        handleClose();
+        setOpenSnack(true);
+      }
+    });
   };
 
   const decideHeight = () => {
@@ -334,9 +354,7 @@ export const SchemaModal = ({
                     style={decideHeight()}
                   >
                     <Typography className={classes.description}>
-                      {admin
-                        ? `Changes last made on: ${values.modifiedOn}`
-                        : null}
+                      {`Changes last made on: ${values.modifiedOn}`}
                     </Typography>
                     <SchemaForm
                       touched={touched}
@@ -356,17 +374,38 @@ export const SchemaModal = ({
                         <ProtectedFunctionality
                           component={() => {
                             return (
-                              <Button
-                                size={width && width < 500 ? "small" : "medium"}
-                                variant="contained"
-                                color="secondary"
-                                startIcon={
-                                  width && width < 500 ? null : <Delete />
-                                }
-                                onClick={handleDeleteDialog}
-                              >
-                                {admin ? "Delete Forever" : "Delete"}
-                              </Button>
+                              <React.Fragment>
+                                <Button
+                                  size={
+                                    width && width < 500 ? "small" : "medium"
+                                  }
+                                  variant="contained"
+                                  color="secondary"
+                                  startIcon={
+                                    width && width < 500 ? null : <Delete />
+                                  }
+                                  onClick={handleDeleteDialog}
+                                >
+                                  {admin ? "Delete Forever" : "Delete"}
+                                </Button>
+                                {admin ? (
+                                  <Button
+                                    size={
+                                      width && width < 500 ? "small" : "medium"
+                                    }
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleRestore}
+                                    startIcon={
+                                      width && width < 500 ? null : (
+                                        <RestorePage />
+                                      )
+                                    }
+                                  >
+                                    Restore
+                                  </Button>
+                                ) : null}
+                              </React.Fragment>
                             );
                           }}
                           loginRequired={true}

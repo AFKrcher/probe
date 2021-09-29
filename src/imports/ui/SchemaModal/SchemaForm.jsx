@@ -84,12 +84,13 @@ export const SchemaForm = ({
             disabled={!editing}
             component={TextField}
             maxLength={255}
+            autoComplete="off"
           />
         </Grid>
 
-          <Typography variant="caption" className={classes.helpers}>
-            {editing ? `${formValues.name.length} / 50` : null}
-          </Typography>
+        <Typography variant="caption" className={classes.helpers}>
+          {editing ? `${formValues.name.length} / 50` : null}
+        </Typography>
         <Grid item xs={12}>
           <Field
             name="description"
@@ -105,6 +106,7 @@ export const SchemaForm = ({
             disabled={!editing}
             component={TextField}
             maxLength={500}
+            autoComplete="off"
           />
           {editing && (
             <Typography variant="caption" className={classes.helpers}>

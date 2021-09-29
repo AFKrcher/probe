@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 // Imports
+import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router";
 import { useTracker } from "meteor/react-meteor-data";
 import { SchemaCollection } from "../../api/schemas";
@@ -72,7 +73,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const SatelliteModal = ({
+export const DashboardModal = ({
   show,
   newSat,
   initValues,
@@ -84,16 +85,28 @@ export const SatelliteModal = ({
   const history = useHistory();
   const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } =
     useContext(HelpersContext);
-
+      
   const [editing, setEditing] = useState(newSat || false);
   const [satSchema, setSatSchema] = useState(null);
-
-
+  const location = useLocation();
+  let path = location.pathname;
+  path = path.substring(1);
+    
   const [user, schemas, sats, isLoadingSch, isLoadingSat] = useTracker(() => {
     const subSch = Meteor.subscribe("schemas");
     const subSat = Meteor.subscribe("satellites");
     const schemas = SchemaCollection.find().fetch();
-    const sats = SatelliteCollection.find().fetch();
+    var sats = []
+    if(path){
+      sats = SatelliteCollection.find(
+        {
+          noradID: path,
+        },
+        {}
+        ).fetch();
+      }else{
+        sats = SatelliteCollection.find().fetch();
+      }
     const user = Meteor.user();
     return [user, schemas, sats, !subSch.ready(), !subSat.ready()];
   });
@@ -334,8 +347,8 @@ export const SatelliteModal = ({
                     className={classes.content}
                     style={decideHeight()}
                   >
-                    <div style={{ display: "flex", justifyContent: "center" }}>
-                      <Gallery initValues={initValues} />
+                    <div style={{display: 'flex', justifyContent: "center"}}>
+                      <Gallery initValues={initValues}/>
                     </div>
                     <Typography className={classes.description}></Typography>
                     <SatelliteForm
@@ -407,7 +420,10 @@ export const SatelliteModal = ({
                     <Button
                       size={width && width < 500 ? "small" : "medium"}
                       variant="contained"
-                      onClick={handleClose}
+                      onClick={() =>{
+                        path ? history.push(`/`) 
+                        : handleClose()
+                      }}
                       startIcon={width && width < 500 ? null : <Close />}
                     >
                       Close

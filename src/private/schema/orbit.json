@@ -18,7 +18,8 @@
     {
       "name": "description",
       "type": "string",
-      "allowedValues": []
+      "allowedValues": [],
+      "stringMax": 255
     }
   ]
 }

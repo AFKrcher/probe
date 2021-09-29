@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // Imports
+// import { useLocation } from "react-router";
 import { useHistory } from "react-router";
 import Clamp from "react-multiline-clamp";
 
@@ -27,6 +28,7 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import Close from "@material-ui/icons/Close";
+import Star from "@material-ui/icons/Star";
 
 const useStyles = makeStyles((theme) => ({
   satCard: {
@@ -67,6 +69,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const SatCard = ({ width, height, satellite }) => {
+  const history = useHistory();
   const [showModal, setShowModal] = useState(false);
   const [openPrompt, setOpenPrompt] = useState(false);
   const [prompt, setPrompt] = useState({
@@ -95,15 +98,14 @@ export const SatCard = ({ width, height, satellite }) => {
     }
   };
 
-  function handleModify(e) {
+  function handleModify(e, sat) {
     e.preventDefault();
     setShowModal(true);
   }
 
-  const history = useHistory();
   function handleDashboard(e, id) {
     e.preventDefault();
-      history.push(`/${id}`);
+    history.push(`/${id}`);
   }
 
   const handleVisualize = (e, url) => {
@@ -153,7 +155,9 @@ export const SatCard = ({ width, height, satellite }) => {
         show={showModal}
         initValues={satellite}
         newSat={false}
-        handleClose={() => setShowModal(false)}
+        handleClose={() => {
+          setShowModal(false);
+        }}
         width={width}
         height={height}
       />
@@ -161,7 +165,7 @@ export const SatCard = ({ width, height, satellite }) => {
         <CardMedia
           className={classes.cardImage}
           image={getSatImage(satellite)}
-          title="Satellite image"
+          title={`${satellite.names ? satellite.names[0].name : "Satellite Image"}`}
         />
         <CardContent className={classes.cardDesc}>
           <Typography variant="h5" component="h2">

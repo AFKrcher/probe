@@ -1,18 +1,13 @@
 import React, { useState } from "react";
 // Imports
 import { useTracker } from "meteor/react-meteor-data";
-import useWindowSize from "../Hooks/useWindowSize.jsx";
 import { SchemaCollection } from "../../api/schemas";
-import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
 
 // Components
-import { Link } from "react-router-dom";
 import { SchemaModal } from "../SchemaModal/SchemaModal.jsx";
 
 // @material-ui
 import {
-  Button,
-  Grid,
   makeStyles,
   Typography,
   Table,
@@ -23,7 +18,6 @@ import {
   TableRow,
   TableCell,
   CircularProgress,
-  Tooltip,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -80,10 +74,7 @@ const newSchemaValues = {
 export const ApproveSchemas = () => {
   const classes = useStyles();
 
-  const [width] = useWindowSize();
-
   const [showModal, setShowModal] = useState(false);
-  const [newSchema, setNewSchema] = useState(true);
   const [initialSchemaValues, setInitialSchemaValues] =
     useState(newSchemaValues);
 
@@ -94,7 +85,6 @@ export const ApproveSchemas = () => {
   });
 
   const handleRowClick = (schemaObject) => {
-    setNewSchema(false);
     setShowModal(true);
     setInitialSchemaValues(schemaObject);
   };
@@ -109,13 +99,16 @@ export const ApproveSchemas = () => {
                 <Typography variant="body2">SCHEMA NAME</Typography>
               </TableCell>
               <TableCell>
-                <Typography variant="body2">NEEDS APPROVAL?</Typography>
+                <Typography variant="body2">APPROVAL</Typography>
               </TableCell>
               <TableCell>
-                <Typography variant="body2">NEEDS DELETION?</Typography>
+                <Typography variant="body2">DELETION</Typography>
               </TableCell>
               <TableCell>
-                <Typography variant="body2">DESCRIPTION</Typography>
+                <Typography variant="body2">MODIFIED ON</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="body2">MODIFIED BY</Typography>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -148,8 +141,11 @@ export const ApproveSchemas = () => {
                     <TableCell key={`schema-delete-${i}`}>
                       {schema.isDeleted ? "TRUE" : "FALSE"}
                     </TableCell>
-                    <TableCell key={`schema-desc-${i}`}>
-                      {schema.description}
+                    <TableCell key={`schema-modOn-${i}`}>
+                      {`${schema.modifiedOn || schema.createdOn}`}
+                    </TableCell>
+                    <TableCell key={`schema-modBy-${i}`}>
+                      {`${schema.modifiedBy || schema.createdBy}`}
                     </TableCell>
                   </TableRow>
                 ) : null;

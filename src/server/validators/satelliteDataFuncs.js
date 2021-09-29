@@ -1,62 +1,31 @@
 /**
- * PLEASE ENSURE THAT ANY CHANGES MADE HERE ARE REFLECTED IN SERVER-SIDE VALIDATIONS
+ * PLEASE ENSURE THAT ANY CHANGES MADE HERE ARE REFLECTED IN CLIENT-SIDE UTILS
  **/
 
 import * as Yup from "yup";
+import { SchemaCollection } from "/imports/api/schemas";
+import { SatelliteCollection } from "/imports/api/satellites";
 
-// Data display functions
-export const getSatName = (satellite) => {
-  return satellite && satellite.names && satellite.names.length > 0
-    ? satellite.names[0].name
-    : "Name not found...";
-};
-
-export const getSatImage = (satellite) => {
-  return satellite && satellite.images && satellite.images.length > 0
-    ? satellite.images[0].link || satellite.images[0].url
-    : "/sat-placeholder.jpg";
-};
-
-export const getSatImages = (satellite) => {
-  return satellite && satellite.images && satellite.images.length > 0
-    ? satellite.images
-    : "/sat-placeholder.jpg";
-};
-
-export const getSatID = (satellite) => {
-  return satellite && satellite.noradID
-    ? satellite.noradID
-    : "NORAD ID not found...";
-};
-
-export const getSatDesc = (satellite) => {
-  return satellite &&
-    satellite.descriptionShort &&
-    satellite.descriptionShort.length > 0
-    ? satellite.descriptionShort[0].descriptionShort
-    : "";
-};
-
-// Data entry functions
-export const emptyDataRemover = (values) => {
-  let tempObj = {};
-  let deleteEmptyArr = [];
-  Object.entries(values).forEach((entryArr) => {
-    return (tempObj[entryArr[0]] = JSON.stringify(entryArr[1]));
-  });
-  for (let key in tempObj) {
-    if (tempObj[key] === "[]" || tempObj[key] === "{}" || tempObj[key] === "") {
-      deleteEmptyArr.push(key);
+const isUniqueList = (initValues, sats, path, field) => {
+  let list = [];
+  if (!path) {
+    for (let sat in sats) {
+      sats[sat][field] === initValues[field]
+        ? null
+        : list.push(sats[sat][field]);
+    }
+  } else if (initValues[path]) {
+    for (let sat in sats) {
+      let satEntries = sats[sat][path];
+      for (let entry in satEntries) {
+        satEntries[entry][field] ===
+        (initValues[path].length > 0 ? initValues[path][entry][field] : false)
+          ? null
+          : list.push(satEntries[entry][field]);
+      }
     }
   }
-
-  deleteEmptyArr.forEach((emptyEntry) => delete values[emptyEntry]);
-  values.names?.length > 0
-    ? null
-    : (values.names = [
-        { reference: "https://www.placeholder.org/", name: "N/A" },
-      ]);
-  return values;
+  return list;
 };
 
 const schemaCleaner = (schemas, values) => {
@@ -87,26 +56,33 @@ const schemaCleaner = (schemas, values) => {
   return schemaObj;
 };
 
-const initialYupShapeGenerator = (isUniqueList) => {
+const initialYupShapeGenerator = (initValues, sats, isUniqueList) => {
   return {
     // NORAD ID and _id are always a part of the yup shape
     _id: Yup.string().notOneOf(
-      isUniqueList(null, "_id"),
+      isUniqueList(initValues, sats, null, "_id"),
       "Something went wrong while assigning _id"
     ),
     noradID: Yup.string()
       .required(`Required`)
       .matches(/^[0-9]+$/g, "Must be a positive number")
       .notOneOf(
-        isUniqueList(null, "noradID"),
+        isUniqueList(initValues, sats, null, "noradID"),
         (obj) =>
           `A satellite with noradID of ${obj.value} already exists in our records.`
       ),
+    adminCheck: Yup.boolean().required(),
+    modifiedOn: Yup.date().required(),
+    modifiedBy: Yup.string().required(),
+    createdOn: Yup.date().required(),
+    createdBy: Yup.string().required(),
   };
 };
 
-export const satelliteValidatorShaper = (schemas, values, isUniqueList) => {
-  let yupShape = initialYupShapeGenerator(isUniqueList); // instantiation of base yupShape
+export const satelliteValidatorShaper = (values, initValues) => {
+  const sats = SatelliteCollection.find().fetch();
+  const schemas = SchemaCollection.find().fetch();
+  let yupShape = initialYupShapeGenerator(initValues, sats, isUniqueList); // instantiation of base yupShape
   const cleanSchema = schemaCleaner(schemas, values); // generates a clean schema object for easier manipulation
 
   Yup.addMethod(Yup.mixed, "checkEachEntry", function (message) {
@@ -159,7 +135,7 @@ export const satelliteValidatorShaper = (schemas, values, isUniqueList) => {
                 : false,
             isUnique: field.isUnique
               ? baseFieldType.notOneOf(
-                  isUniqueList(path, schemaField),
+                  isUniqueList(initValues, sats, path, schemaField),
                   `${path}-${entryCount}-${fieldCount}_A satellite with ${schemaField} of ${value[entryCount][schemaField]} already exists.`
                 )
               : false,

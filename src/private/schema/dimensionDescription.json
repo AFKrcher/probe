@@ -13,7 +13,8 @@
       "name": "dimensionDescription",
       "type": "string",
       "allowedValues": [],
-      "required": true
+      "required": true,
+      "stringMax": 255
     },
     {
       "name": "lengthMeters",

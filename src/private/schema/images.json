@@ -13,7 +13,8 @@
       "name": "description",
       "type": "string",
       "allowedValues": [],
-      "required": true
+      "required": true,
+      "stringMax": 255
     },
     {
       "name": "url",

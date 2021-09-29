@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 // Imports
 import useWindowSize from "./Hooks/useWindowSize.jsx";
+import { useTracker } from "meteor/react-meteor-data";
 
 // Components
 import { SatCard } from "./DataDisplays/SatCard.jsx";
-import { useTracker } from "meteor/react-meteor-data";
 import { SatelliteCollection } from "../api/satellites";
 
 // @material-ui
@@ -30,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
   showcase: {
     marginTop: 30,
   },
+  secondaryShowcase: {
+    marginTop: 35,
+  },
   card: {
     marginTop: -10,
   },
@@ -41,16 +44,17 @@ const useStyles = makeStyles((theme) => ({
   },
   scrollUp: {
     position: "fixed",
-    bottom: 0,
-    right: 0,
+    bottom: 10,
+    right: 10,
   },
 }));
 
 export const Home = () => {
   const classes = useStyles();
+
   const [width, height] = useWindowSize();
   const [page, setPage] = useState(1);
-  const [limiter] = useState(8);
+  const [limiter] = useState(4);
   const [scrolled, setScrolled] = useState(false);
 
   const count = SatelliteCollection.find().count();
@@ -62,29 +66,28 @@ export const Home = () => {
       ? 3
       : Math.round(height / (width / 5));
 
-  const [sats, isLoading, favorites, user] = useTracker(() => {
+  const [sats, otherSats, isLoading, favorites, user] = useTracker(() => {
     const sub = Meteor.subscribe("satellites");
     const user = Meteor.user()?.username;
     const favorites = Meteor.user()?.favorites;
+    const otherSats = SatelliteCollection.find(
+      {},
+      {
+        limit: limiter * page,
+      }
+    )
+      .fetch()
+      .filter((sat) => !sat.isDeleted);
     const sats =
       Meteor.userId() && favorites
         ? // If user is logged in
-          SatelliteCollection.find(
-            {
-              noradID: { $in: favorites },
-            },
-            {
-              limit: limiter * page,
-            }
-          ).fetch()
-        : // If NOT logged in
-          SatelliteCollection.find(
-            {},
-            {
-              limit: limiter * page,
-            }
-          ).fetch();
-    return [sats, !sub.ready(), favorites, user];
+          SatelliteCollection.find({
+            noradID: { $in: favorites },
+          })
+            .fetch()
+            .filter((sat) => !sat.isDeleted)
+        : otherSats;
+    return [sats, otherSats, !sub.ready(), favorites, user];
   });
 
   useEffect(() => {}, [page]);
@@ -120,7 +123,7 @@ export const Home = () => {
     <div className={classes.root}>
       <Container>
         {scrolled ? (
-          <Tooltip title="Scroll back to top" placement="top-end">
+          <Tooltip title="Scroll back to top" placement="top-end" arrow>
             <IconButton className={classes.scrollUp} onClick={handleScrollUp}>
               <ArrowUpwardIcon />
             </IconButton>
@@ -160,7 +163,7 @@ export const Home = () => {
         {cardSpace ? (
           <Grid
             container
-            justifyContent={width > 900 ? "flex-start" : "space-around"}
+            justifyContent={width > 900 ? "flex-start" : "center"}
             spacing={cardSpace}
             className={classes.card}
           >
@@ -187,6 +190,55 @@ export const Home = () => {
         ) : (
           <CircularProgress className={classes.spinner} />
         )}
+        {Meteor.userId() && favorites ? (
+          <div className={classes.secondaryShowcase}>
+            {isLoading ? (
+              <Skeleton variant="rect" className={classes.skeleton}>
+                <Typography variant="h3" gutterBottom>
+                  All Satellites
+                </Typography>
+              </Skeleton>
+            ) : (
+              <Typography variant="h4" gutterBottom>
+                All Satellites
+              </Typography>
+            )}
+            {cardSpace ? (
+              <Grid
+                container
+                justifyContent={width > 900 ? "flex-start" : "center"}
+                spacing={cardSpace}
+                className={classes.card}
+              >
+                {!isLoading
+                  ? otherSats.map((sat, index) => (
+                      <Grid item xs={cardSpace} key={index}>
+                        <SatCard
+                          satellite={sat}
+                          width={width}
+                          height={height}
+                          id={`SatCard-${index}`}
+                        />
+                      </Grid>
+                    ))
+                  : [...Array(limiter)].map((_, index) => (
+                      <Grid item xs={cardSpace} key={index}>
+                        <Skeleton variant="rect" className={classes.skeleton}>
+                          <SatCard
+                            satellite={{}}
+                            width={width}
+                            height={height}
+                          />
+                        </Skeleton>
+                      </Grid>
+                    ))}
+                <br />
+              </Grid>
+            ) : (
+              <CircularProgress className={classes.spinner} />
+            )}
+          </div>
+        ) : null}
       </Container>
     </div>
   );

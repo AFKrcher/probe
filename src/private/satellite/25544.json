@@ -5,16 +5,12 @@
     {
       "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
       "name": "International Space Station"
-    },
-    {
-      "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
-      "name": "ISS"
     }
   ],
   "descriptionShort": [
     {
       "reference": "https://en.wikipedia.org/wiki/International_Space_Station",
-      "descriptionShort": "A modular space station (habitable artificial satellite) in low Earth orbit."
+      "descriptionShort": "The International Space Station is a modular space station in low Earth orbit. It is a multinational collaborative project involving five participating space agencies: NASA, Roscosmos, JAXA, ESA, and CSA."
     }
   ],
   "images": [
