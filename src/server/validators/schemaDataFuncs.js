@@ -24,19 +24,26 @@ export const schemaValidatorShaper = (initValues, schemas) => {
         /^[a-zA-Z0-9]*$/g,
         "Schema name must be spaceless, camelCase, and only contain letters and numbers"
       )
-      .required("Required"),
-    description: Yup.string().required("Required"),
+      .required("Required")
+      .max(50, "Must not exceed 50 characters"),
+    description: Yup.string()
+      .required("Required")
+      .max(500, "Must not exceed 500 characters"),
     fields: Yup.array().of(
       Yup.object()
         .shape({
-          name: Yup.string().required("Required"),
+          name: Yup.string()
+            .required("Required")
+            .max(50, "Must not exceed 50 characters"),
           type: Yup.mixed()
             .oneOf(
               ["string", "number", "date", "url", "changelog"],
               "Invalid input provided"
             )
             .required("Required"),
-          allowedValues: Yup.array().ensure(),
+          allowedValues: Yup.array()
+            .ensure()
+            .max(100, "Must not exceed 100 elements"),
           min: Yup.number().nullable().notRequired(),
           max: Yup.number()
             .nullable()
@@ -45,6 +52,7 @@ export const schemaValidatorShaper = (initValues, schemas) => {
             }),
           required: Yup.boolean(),
           isUnique: Yup.boolean(),
+          stringMax: Yup.number().max(20000, "Must not exceed 20,000 characters")
         })
         .notRequired()
     ),

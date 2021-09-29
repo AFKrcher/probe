@@ -13,10 +13,12 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 14,
     marginTop: 0,
     marginBottom: 4,
+    color: theme.palette.text.disabled,
   },
 }));
 
 export const MultiSelectTextInput = ({
+  editing,
   index,
   allowedValues,
   disabled,
@@ -26,7 +28,7 @@ export const MultiSelectTextInput = ({
   const [inputText, setInputText] = useState("");
 
   const fieldName = `fields.${index}.allowedValues`;
-  
+
   const handleChange = (event, values) => {
     setFieldValue(fieldName, values);
   };
@@ -77,9 +79,12 @@ export const MultiSelectTextInput = ({
         )}
         component={Autocomplete}
       />
-      <FormHelperText className={classes.helpers}>
-        OPTIONAL: Provide a list of allowed values delineated by commas. (E.g. foo, baz, bar)
-      </FormHelperText>
+      {editing && (
+        <FormHelperText className={classes.helpers}>
+          OPTIONAL: Provide a list of allowed values delineated by commas. (E.g.
+          foo, baz, bar)
+        </FormHelperText>
+      )}
     </>
   );
 };

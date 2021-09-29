@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 // Imports
 import { useHistory } from "react-router";
-import { useTracker } from "meteor/react-meteor-data";
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 
@@ -13,6 +12,7 @@ import {
   FormControl,
   TextField,
   Tooltip,
+  CircularProgress,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -35,6 +35,14 @@ const useStyles = makeStyles((theme) => ({
   registerButton: {
     marginTop: 20,
   },
+  spinnerContainer: {
+    display: "flex",
+    justifyContent: "center",
+  },
+  spinner: {
+    color: theme.palette.text.primary,
+    marginTop: "30vh",
+  },
 }));
 
 export const Login = () => {
@@ -42,6 +50,7 @@ export const Login = () => {
   const history = useHistory();
   const [error, setError] = useState();
   const [disabled, setDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const usernameRegex = /[~`!@.#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g;
 
@@ -75,8 +84,11 @@ export const Login = () => {
     e.preventDefault();
     let username = e.target.username.value;
     let password = e.target.password.value;
+
     setError(null);
-    Meteor.call("checkIfBanned", username, (res, err) => {
+    setLoading(true);
+
+    Meteor.call("checkIfBanned", username, (_, err) => {
       if (err) {
         setDisabled(true);
         setError("This user has been banned.");
@@ -89,6 +101,7 @@ export const Login = () => {
             password,
             (error) => {
               handleError(error);
+              setLoading(false);
             }
           );
         } else {
@@ -99,11 +112,9 @@ export const Login = () => {
             password,
             (error) => {
               handleError(error);
+              setLoading(false);
             }
           );
-        }
-        if (Meteor.user()) {
-          history.push("/");
         }
       }
     });
@@ -132,65 +143,79 @@ export const Login = () => {
   let pass = document.getElementById("password")?.value;
   return (
     <Grid container justifyContent="center" alignItems="center">
-      <FormControl className={classes.margin}>
-        <form onSubmit={loginUser} className={classes.formContainer}>
-          <TextField
-            id="username"
-            error={error ? true : false}
-            helperText={error ? error : null}
-            label="Username or Email"
-            onChange={handleDisable}
-            ref={(input) => (username = input)}
-            className={classes.textField}
-            fullWidth
+      {loading ? (
+        <div className={classes.spinnerContainer}>
+          <CircularProgress
+            className={classes.spinner}
+            size={100}
+            thickness={3}
           />
-          <TextField
-            id="password"
-            label="Password"
-            type="password"
-            error={error ? true : false}
-            helperText={error ? error : null}
-            onChange={handleDisable}
-            ref={(input) => (password = input)}
-            className={classes.textField}
-            fullWidth
-          />
-          <Button
-            id="login-button"
-            variant="outlined"
-            className={classes.loginButton}
-            color="primary"
-            type="submit"
-            disabled={!username || !pass || error ? true : false}
-            fullWidth
-          >
-            Login
-          </Button>
-          <Tooltip
-            title="Redirect to the account registration page"
-            placement="right"
-            arrow
-          >
+        </div>
+      ) : (
+        <FormControl className={classes.margin}>
+          <form onSubmit={loginUser} className={classes.formContainer}>
+            <TextField
+              id="username"
+              error={error ? true : false}
+              helperText={error ? error : null}
+              label="Username or Email"
+              onChange={handleDisable}
+              ref={(input) => (username = input)}
+              className={classes.textField}
+              fullWidth
+            />
+            <TextField
+              id="password"
+              label="Password"
+              type="password"
+              error={error ? true : false}
+              helperText={error ? error : null}
+              onChange={handleDisable}
+              ref={(input) => (password = input)}
+              className={classes.textField}
+              fullWidth
+            />
             <Button
-              id="register-instead"
-              className={classes.registerButton}
-              onClick={registerUser}
-              size="small"
+              id="login-button"
+              variant="outlined"
+              className={classes.loginButton}
+              color="primary"
+              type="submit"
+              disabled={disabled}
+              fullWidth
             >
-              Register New
+              Login
             </Button>
-          </Tooltip>
-          <Tooltip
-            title="Enter a registered email above"
-            placement="right"
-            arrow
-          >
-            <Button id="forgot-password" onClick={forgotPassword} size="small">
-              Forgot Password?
-            </Button>
-          </Tooltip>
-        </form>
-      </FormControl>
+            <Tooltip
+              title="Redirect to the account registration page"
+              placement="right"
+              arrow
+            >
+              <Button
+                id="register-instead"
+                className={classes.registerButton}
+                onClick={registerUser}
+                size="small"
+              >
+                Register New
+              </Button>
+            </Tooltip>
+            <Tooltip
+              title="Enter a registered email above"
+              placement="right"
+              arrow
+            >
+              <Button
+                id="forgot-password"
+                onClick={forgotPassword}
+                size="small"
+              >
+                Forgot Password?
+              </Button>
+            </Tooltip>
+          </form>
+        </FormControl>
+      )}
     </Grid>
   );
 };

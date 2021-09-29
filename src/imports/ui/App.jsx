@@ -54,8 +54,22 @@ export const App = () => {
   const [snack, setSnack] = useState(""); //snackbar body text
 
   const classes = useStyles();
+
   const toggleTheme = () => {
     setTheme((theme) => (theme === themes.dark ? themes.light : themes.dark));
+  };
+
+  window.onerror = function (msg, source, _, _, error) {
+    const user = Meteor.userId() || "Not Logged-In";
+    const obj = {
+      user: user,
+      time: new Date(),
+      msg: msg,
+      source: source,
+      error: error,
+    };
+    Meteor.call("addError", obj);
+    return true;
   };
 
   return (
@@ -78,20 +92,11 @@ export const App = () => {
           <Container maxWidth="lg">
             <main className={classes.main}>
               <Switch>
-                <Route exact={true} path="/satellites">
-                  <SatellitesTable />
-                </Route>
                 <Route exact={true} path="/login">
-                  <ProtectedRoute
-                    component={Login}
-                    loginRequired={false}
-                  />
+                  <ProtectedRoute component={Login} loginRequired={false} />
                 </Route>
                 <Route exact={true} path="/register">
-                  <ProtectedRoute
-                    component={Register}
-                    loginRequired={false}
-                  />
+                  <ProtectedRoute component={Register} loginRequired={false} />
                 </Route>
                 <Route path="/reset">
                   <ProtectedRoute
@@ -114,6 +119,9 @@ export const App = () => {
                     loginRequired={true}
                     requiredRoles={["admin"]}
                   />
+                </Route>
+                <Route exact={true} path="/satellites">
+                  <SatellitesTable />
                 </Route>
                 <Route exact={true} path="/schemas">
                   <SchemasTable />

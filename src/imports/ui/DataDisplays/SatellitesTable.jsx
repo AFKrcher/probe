@@ -92,7 +92,7 @@ export const SatellitesTable = () => {
 
   const { setOpenSnack, snack, setSnack } = useContext(HelpersContext);
 
-  const [width] = useWindowSize();
+  const [width, height] = useWindowSize();
 
   const [showModal, setShowModal] = useState(false);
   const [newSat, setNewSat] = useState(true);
@@ -235,10 +235,6 @@ export const SatellitesTable = () => {
       </span>
     );
     setTimeout(() => setOpenSnack(true), 500);
-
-    window.onerror = function (msg) {
-      if (msg.includes("e.replace")) return true; // gets rid of incorrect internal MUI error
-    };
   };
 
   const renderFavoriteButton = (params) => {
@@ -443,6 +439,8 @@ export const SatellitesTable = () => {
           newSat={newSat}
           initValues={initialSatValues}
           handleClose={() => setShowModal(false)}
+          width={width}
+          height={height}
         />
       </div>
     </React.Fragment>

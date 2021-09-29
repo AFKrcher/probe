@@ -251,7 +251,6 @@ export const Settings = () => {
         }
       });
     } else if (isValidPassword(oldPassword, newPassword, confirm)) {
-      console.log(oldPassword, newPassword, confirm);
       Accounts.changePassword(oldPassword, newPassword, (err, res) => {
         if (err) {
           setAlert({

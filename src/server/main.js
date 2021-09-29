@@ -8,6 +8,8 @@ import { Accounts } from "meteor/accounts-base";
 // Imports
 import { SchemaCollection } from "/imports/api/schemas";
 import { SatelliteCollection } from "/imports/api/satellites";
+import { UsersCollection } from "/imports/api/users";
+import { ErrorsCollection } from "/imports/api/errors";
 import { helmetOptions } from "./helmet";
 import { schemaValidatorShaper } from "./validators/schemaDataFuncs";
 import "./routes";
@@ -73,13 +75,6 @@ Meteor.startup(() => {
     }
   });
 
-  Meteor.publish("userList", function () {
-    return Meteor.users.find(
-      {},
-      { fields: { username: 1, emails: 1, roles: 1 } }
-    );
-  });
-
   // Account creation and managment methods
   Meteor.methods({
     userExists: (username) => {
@@ -106,17 +101,13 @@ Meteor.startup(() => {
             { multi: true }
           );
         }
-        return `${user} added to ${role}`;
+        UsersCollection.update(
+          { _id: user._id },
+          Accounts.findUserByUsername(user.username)
+        );
+        return `${user._id} added to ${role}`;
       } else {
         return "Unauthorized [401]";
-      }
-    },
-
-    getAllUsers: () => {
-      if (Roles.userIsInRole(Meteor.userId(), "admin")) {
-        return Meteor.users.find({}).fetch();
-      } else {
-        return [];
       }
     },
 
@@ -126,6 +117,7 @@ Meteor.startup(() => {
         Roles.userIsInRole(Meteor.userId(), "admin")
       ) {
         Meteor.users.remove({ _id: id });
+        UsersCollection.remove(id);
         return `User ${id} has successfully been deleted`;
       } else {
         return "Unauthorized [401]";
@@ -136,6 +128,7 @@ Meteor.startup(() => {
       if (Meteor.userId() === id) {
         if (isValidUsername(user, newUsername)) {
           Accounts.setUsername(id, newUsername);
+          UsersCollection.update({ _id: id }, Meteor.user());
           return `Account changes successfully made`;
         } else {
           return `The provided username, ${newUsername}, is invalid`;
@@ -151,6 +144,7 @@ Meteor.startup(() => {
           Accounts.removeEmail(id, email);
           Accounts.addEmail(id, newEmail);
           Accounts.sendVerificationEmail(id, newEmail);
+          UsersCollection.update({ _id: id }, Meteor.user());
           return `Account changes successfully made`;
         } else {
           return `The provided email, ${newEmail}, is invalid`;
@@ -175,11 +169,15 @@ Meteor.startup(() => {
       }
     },
 
-    removeRole: (id, role) => {
+    removeRole: (user, role) => {
       if (Roles.userIsInRole(Meteor.userId(), "admin")) {
         try {
-          Roles.removeUsersFromRoles(id, role);
-          return `User ${id} added to role ${role}`;
+          Roles.removeUsersFromRoles(user._id, role);
+          UsersCollection.update(
+            { _id: user._id },
+            Accounts.findUserByUsername(user.username)
+          );
+          return `User ${user._id} added to role ${role}`;
         } catch (err) {
           return err;
         }
@@ -227,6 +225,7 @@ Meteor.startup(() => {
   Accounts.onCreateUser((options, user) => {
     user.favorites = [];
     user.roles = [];
+    UsersCollection.insert(user);
     return user;
   });
 
@@ -242,6 +241,42 @@ Meteor.startup(() => {
       });
       Roles.addUsersToRoles(Accounts.findUserByUsername("admin"), "admin");
     }
+  });
+
+  // Error methods
+  Meteor.methods({
+    addError: (obj) => {
+      ErrorsCollection.insert(obj);
+    },
+  });
+
+  // Errors publication and seed data
+  if (ErrorsCollection.find().count() === 0) {
+    const errors = {
+      user: 00000000000000000,
+      time: new Date(),
+      msg: "Database Reset",
+      source: "Test Error",
+      error: {},
+    };
+    ErrorsCollection.insert(errors);
+  }
+
+  Meteor.publish("errors", () => {
+    return ErrorsCollection.find({});
+  });
+
+  // Accounts publication and seed data
+  if (UsersCollection.find().count() === 0) {
+    const users = Meteor.users
+      .find({}, { fields: { _id: 1, username: 1, emails: 1, roles: 1 } })
+      .fetch();
+    // UsersCollection.remove({}); // change the "=== 0" to "> 0" to wipe the userList
+    users.forEach((user) => UsersCollection.insert(user));
+  }
+
+  Meteor.publish("userList", () => {
+    return UsersCollection.find({});
   });
 
   // Satellite and schema publications and seed data
@@ -285,6 +320,12 @@ Meteor.startup(() => {
     addNewSatellite: (values) => {
       values["isDeleted"] = false;
       if (Meteor.userId()) {
+        values["createdOn"] = new Date();
+        values["modifiedOn"] = new Date();
+        values["adminCheck"] = false;
+        if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+          values["adminCheck"] = true;
+        }
         SatelliteCollection.insert(values);
       } else {
         return "Unauthorized [401]";
@@ -292,6 +333,11 @@ Meteor.startup(() => {
     },
     updateSatellite: (values) => {
       if (Meteor.userId()) {
+        values["modifiedOn"] = new Date();
+        values["adminCheck"] = false;
+        if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+          values["adminCheck"] = true;
+        }
         SatelliteCollection.update({ _id: values._id }, values);
       } else {
         return "Unauthorized [401]";
@@ -300,8 +346,23 @@ Meteor.startup(() => {
     deleteSatellite: (values) => {
       if (Meteor.userId()) {
         values["isDeleted"] = true;
+        values["modifiedOn"] = new Date();
         SatelliteCollection.update({ _id: values._id }, values);
-        // SatelliteCollection.remove(values._id);
+      } else {
+        return "Unauthorized [401]";
+      }
+    },
+    actuallyDeleteSatellite: (values) => {
+      if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+        SatelliteCollection.remove(values._id);
+      } else {
+        return "Unauthorized [401]";
+      }
+    },
+    adminCheckSatellite: (values) => {
+      if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+        values["adminCheck"] = true;
+        SatelliteCollection.update({ _id: values._id }, values);
       } else {
         return "Unauthorized [401]";
       }
@@ -317,6 +378,12 @@ Meteor.startup(() => {
         schemaValidatorShaper(initValues, schemas)
           .validate(values)
           .then(() => {
+            values["createdOn"] = new Date();
+            values["modifiedOn"] = new Date();
+            values["adminCheck"] = false;
+            if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+              values["adminCheck"] = true;
+            }
             return SchemaCollection.insert(values);
           })
           .catch((error) => {
@@ -328,18 +395,49 @@ Meteor.startup(() => {
       }
     },
     updateSchema: (initValues, values) => {
-      let error = null;
-      const schemas = SchemaCollection.find().fetch();
-      schemaValidatorShaper(initValues, schemas)
-        .validate(values)
-        .then(() => {
-          return SchemaCollection.update({ _id: values._id }, values);
-        })
-        .catch((err) => console.err(err));
-      return error;
+      if (Meteor.userId()) {
+        let error = null;
+        const schemas = SchemaCollection.find().fetch();
+        schemaValidatorShaper(initValues, schemas)
+          .validate(values)
+          .then(() => {
+            values["modifiedOn"] = new Date();
+            values["adminCheck"] = false;
+            if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+              values["adminCheck"] = true;
+            }
+            return SchemaCollection.update({ _id: values._id }, values);
+          })
+          .catch((err) => console.err(err));
+        return error;
+      } else {
+        return "Unauthorized [401]";
+      }
     },
     deleteSchema: (values) => {
-      SchemaCollection.remove(values._id);
+      if (Meteor.userId()) {
+        values["isDeleted"] = true;
+        values["modifiedOn"] = new Date();
+        SchemaCollection.update({ _id: values._id }, values);
+        // SchemaCollection.remove(values._id);
+      } else {
+        return "Unauthorized [401]";
+      }
+    },
+    actuallyDeleteSchema: (values) => {
+      if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+        SchemaCollection.remove(values._id);
+      } else {
+        return "Unauthorized [401]";
+      }
+    },
+    adminCheckSchema: (values) => {
+      if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+        values["adminCheck"] = true;
+        SchemaCollection.update({ _id: values._id }, values);
+      } else {
+        return "Unauthorized [401]";
+      }
     },
   });
 });

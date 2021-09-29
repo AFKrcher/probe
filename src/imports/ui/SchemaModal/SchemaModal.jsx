@@ -28,20 +28,26 @@ import Close from "@material-ui/icons/Close";
 import Delete from "@material-ui/icons/Delete";
 import Edit from "@material-ui/icons/Edit";
 import Save from "@material-ui/icons/Save";
+import Check from "@material-ui/icons/Check";
 
 const useStyles = makeStyles(() => ({
   modal: {
     width: "auto",
     height: "auto",
   },
+  title: {
+    marginBottom: -5,
+    marginTop: -5,
+  },
   titleText: {
     fontSize: "25px",
   },
   content: {
+    marginTop: -15,
     overflowY: "auto",
+    marginTop: 0,
   },
   description: {
-    marginTop: -10,
     marginBottom: 15,
     margin: 5,
   },
@@ -61,13 +67,19 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
+export const SchemaModal = ({
+  show,
+  newSchema,
+  initValues,
+  handleClose,
+  admin,
+}) => {
   const classes = useStyles();
 
   const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } =
     useContext(HelpersContext);
 
-  const [width] = useWindowSize();
+  const [width, height] = useWindowSize();
 
   const [editing, setEditing] = useState(newSchema || false);
 
@@ -130,31 +142,58 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
   };
 
   const handleDelete = () => {
-    Meteor.call("deleteSchema", initValues, user, (err, res) => {
-      if (res || err) {
-        console.err(res || err);
-      } else {
-        setOpenAlert(false);
-        setOpenSnack(false);
-        setSnack(
-          <span>
-            Deleted <strong>{initValues.name}</strong> schema!
-          </span>
-        );
-        handleClose();
-        setOpenSnack(true);
-      }
-    });
+    if (!admin) {
+      Meteor.call("deleteSchema", initValues, user, (err, res) => {
+        if (res || err) {
+          console.err(res || err);
+        } else {
+          setOpenAlert(false);
+          setOpenSnack(false);
+          setSnack(
+            <span>
+              Deleted <strong>{initValues.name}</strong> schema!
+            </span>
+          );
+          handleClose();
+          setOpenSnack(true);
+        }
+      });
+    } else {
+      Meteor.call("actuallyDeleteSchema", initValues, user, (err, res) => {
+        if (res || err) {
+          console.err(res || err);
+        } else {
+          setOpenAlert(false);
+          setOpenSnack(false);
+          setSnack(
+            <span>
+              Deleted <strong>{initValues.name}</strong> schema forever!
+            </span>
+          );
+          handleClose();
+          setOpenSnack(true);
+        }
+      });
+    }
   };
 
   const handleDeleteDialog = () => {
     setAlert({
-      title: (
+      title: admin ? (
+        <span>
+          Delete <strong>{initValues.name}</strong> Schema Forever?
+        </span>
+      ) : (
         <span>
           Delete <strong>{initValues.name}</strong> Schema?
         </span>
       ),
-      text: (
+      text: admin ? (
+        <span>
+          Are you sure you want to delete the <strong>{initValues.name}</strong>{" "}
+          schema forever?
+        </span>
+      ) : (
         <span>
           Are you sure you want to delete the <strong>{initValues.name}</strong>{" "}
           schema and all of its fields?
@@ -221,13 +260,39 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
     }
   };
 
+  const handleApprove = () => {
+    if (admin) {
+      Meteor.call("adminCheckSchema", initValues, (err, res) => {
+        if (res || err) {
+          console.err(res || err);
+        } else {
+          setOpenAlert(false);
+          setOpenSnack(false);
+          setSnack(
+            <span>
+              Approved <strong>{initValues.name}</strong> schema changes!
+            </span>
+          );
+          handleClose();
+          setOpenSnack(true);
+        }
+      });
+    }
+  };
+
+  const decideHeight = () => {
+    let decidedHeight = `${0.043 * height + 36}vh`;
+    if (height > 1000) decidedHeight = "80vh";
+    return { height: decidedHeight };
+  };
+
   return (
     <>
       <AlertDialog bodyAlert={alert} />
       <SnackBar bodySnackBar={snack} />
       <Dialog open={show} scroll="paper" maxWidth="md">
         <div className={classes.modal}>
-          <DialogTitle>
+          <DialogTitle className={classes.title}>
             <Typography className={classes.titleText}>
               {newSchema ? (
                 "Create New Schema"
@@ -266,18 +331,12 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
                 ) : (
                   <DialogContent
                     className={classes.content}
-                    style={
-                      width < 500
-                        ? width < 350
-                          ? { height: "50vh" }
-                          : { height: "60vh" }
-                        : { height: "75vh" }
-                    }
+                    style={decideHeight()}
                   >
                     <Typography className={classes.description}>
-                      Each schema is built to store sets of data that
-                      characterize a satellite. Data fields can be added,
-                      modified, or deleted below.
+                      {admin
+                        ? `Changes last made on: ${values.modifiedOn}`
+                        : null}
                     </Typography>
                     <SchemaForm
                       touched={touched}
@@ -306,7 +365,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
                                 }
                                 onClick={handleDeleteDialog}
                               >
-                                Delete
+                                {admin ? "Delete Forever" : "Delete"}
                               </Button>
                             );
                           }}
@@ -340,6 +399,19 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose }) => {
                     loginRequired={true}
                   />
 
+                  {!editing &&
+                    admin &&
+                    (!values.isDeleted || !values.adminCheck) && (
+                      <Button
+                        size={width && width < 500 ? "small" : "medium"}
+                        variant="contained"
+                        color="primary"
+                        onClick={handleApprove}
+                        startIcon={width && width < 500 ? null : <Check />}
+                      >
+                        Approve
+                      </Button>
+                    )}
                   {!editing && (
                     <Button
                       size={width && width < 500 ? "small" : "medium"}

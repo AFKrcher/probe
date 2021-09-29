@@ -40,7 +40,7 @@ export default function ProtectedRoute({
 
   const loginCheck = () => {
     // if login is required, then return the user and isLoading booleans to check for user prior to loading the component
-    return loginRequired ? user : true;
+    return loginRequired ? user : user ? false : true
   };
 
   return !isLoading ? (

@@ -10,11 +10,12 @@ import {
   Button,
   IconButton,
   makeStyles,
+  Typography,
 } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   alert: {
     width: "100%",
   },
@@ -27,6 +28,12 @@ const useStyles = makeStyles(() => ({
   },
   addFieldContainer: {
     textAlign: "center",
+  },
+  helpers: {
+    marginLeft: 14,
+    marginTop: 0,
+    marginBottom: 8,
+    color: theme.palette.text.disabled,
   },
 }));
 
@@ -76,8 +83,13 @@ export const SchemaForm = ({
             variant="outlined"
             disabled={!editing}
             component={TextField}
+            maxLength={255}
           />
         </Grid>
+
+          <Typography variant="caption" className={classes.helpers}>
+            {editing ? `${formValues.name.length} / 50` : null}
+          </Typography>
         <Grid item xs={12}>
           <Field
             name="description"
@@ -92,7 +104,13 @@ export const SchemaForm = ({
             rows={4}
             disabled={!editing}
             component={TextField}
+            maxLength={500}
           />
+          {editing && (
+            <Typography variant="caption" className={classes.helpers}>
+              {editing ? `${formValues.description.length} / 255` : null}
+            </Typography>
+          )}
         </Grid>
       </Grid>
       <FieldArray

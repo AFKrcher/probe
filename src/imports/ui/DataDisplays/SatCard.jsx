@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 // Imports
+import { useHistory } from "react-router";
 import Clamp from "react-multiline-clamp";
 
 // Components
@@ -99,11 +100,10 @@ export const SatCard = ({ width, height, satellite }) => {
     setShowModal(true);
   }
 
-  function handleDashboard(e) {
+  const history = useHistory();
+  function handleDashboard(e, id) {
     e.preventDefault();
-    return alert(
-      "Future Feature: Provide a prettier, full-page view for each satellite!"
-    );
+      history.push(`/${id}`);
   }
 
   const handleVisualize = (e, url) => {
@@ -155,6 +155,7 @@ export const SatCard = ({ width, height, satellite }) => {
         newSat={false}
         handleClose={() => setShowModal(false)}
         width={width}
+        height={height}
       />
       <Card className={classes.satCard} elevation={4} raised={true}>
         <CardMedia
@@ -220,7 +221,7 @@ export const SatCard = ({ width, height, satellite }) => {
                 <MenuItem
                   dense
                   onClick={(e) => {
-                    handleDashboard(e, satellite);
+                    handleDashboard(e, satellite.noradID);
                     handleClose(e);
                   }}
                 >
@@ -262,7 +263,7 @@ export const SatCard = ({ width, height, satellite }) => {
                 size="medium"
                 variant="outlined"
                 className={classes.cardButton}
-                onClick={(e) => handleDashboard(e, satellite)}
+                onClick={(e) => handleDashboard(e, satellite.noradID)}
               >
                 <strong
                   style={{
