@@ -25,13 +25,19 @@ const useStyles = makeStyles((theme) => ({
   helpers: {
     marginLeft: 14,
     marginTop: 0,
-    marginBottom: 4,
+    marginBottom: 8,
   },
   helpersError: {
     marginLeft: 14,
     marginTop: 0,
-    marginBottom: 4,
+    marginBottom: 8,
     color: theme.palette.error.main,
+  },
+  helpers: {
+    marginLeft: 14,
+    marginTop: 0,
+    marginBottom: 8,
+    color: theme.palette.text.disabled,
   },
 }));
 
@@ -108,11 +114,18 @@ export const SchemaFormField = ({
             component={TextField}
             onBlur={handleBlur}
             error={nameErrors === "Required" && touched ? true : false}
+            maxLength={255}
           />
-          {nameErrors === "Required" && touched ? (
-            <Typography variant="caption" className={classes.helpersError}>
-              {nameErrors}
-            </Typography>
+          {editing ? (
+            nameErrors === "Required" && touched ? (
+              <Typography variant="caption" className={classes.helpersError}>
+                {nameErrors}
+              </Typography>
+            ) : (
+              <Typography variant="caption" className={classes.helpers}>
+                {`${field.name.length} / 50`}
+              </Typography>
+            )
           ) : null}
         </Grid>
         <Grid item xs>
@@ -148,7 +161,7 @@ export const SchemaFormField = ({
               <MenuItem value="url">URL</MenuItem>
             </Field>
           </FormControl>
-          {typeErrors === "Required" && touched ? (
+          {editing && typeErrors === "Required" && touched ? (
             <Typography variant="caption" className={classes.helpersError}>
               {typeErrors}
             </Typography>
@@ -204,9 +217,9 @@ export const SchemaFormField = ({
                 />
               </Grid>
             </Grid>
-            {!errors["fields"] ? (
+            {editing && !errors["fields"] ? (
               false
-            ) : errors["fields"][index] ? (
+            ) : edting && errors["fields"][index] ? (
               <FormHelperText className={classes.helpersError}>
                 {maxErrorMessage(errors["fields"][index]["max"])}
               </FormHelperText>
@@ -226,6 +239,7 @@ export const SchemaFormField = ({
                   allowedValues={field.allowedValues}
                   disabled={!editing}
                   setFieldValue={setFieldValue}
+                  editing={editing}
                 />
               </Grid>
               <Grid item xs>
@@ -242,12 +256,15 @@ export const SchemaFormField = ({
                   type="number"
                   step="any"
                   variant="outlined"
+                  max={20000}
                   disabled={!editing}
                   component={TextField}
                 />
-                <FormHelperText className={classes.helpers}>
-                  OPTIONAL: Provide a maximum string length
-                </FormHelperText>
+                {editing && (
+                  <FormHelperText className={classes.helpers}>
+                    OPTIONAL: Provide a maximum string length
+                  </FormHelperText>
+                )}
               </Grid>
             </Grid>
             <div className={classes.field}>

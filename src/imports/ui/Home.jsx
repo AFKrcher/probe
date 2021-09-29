@@ -131,9 +131,9 @@ export const Home = () => {
         </Typography>
         <Typography variant="body1" className={classes.description}>
           <strong>P</strong>ublicly <strong>R</strong>esearched{" "}
-          <strong>O</strong>bservatory (PROBE) is seeking to become the
-          world's most complete and easy to use resource for satellite data
-          and information.
+          <strong>O</strong>bservatory (PROBE) is seeking to become the world's
+          most complete and easy to use resource for satellite data and
+          information.
         </Typography>
         <Typography variant="subtitle1">
           100% Open Source, 100% Machine Readable.
@@ -160,7 +160,7 @@ export const Home = () => {
         {cardSpace ? (
           <Grid
             container
-            justifyContent="flex-start"
+            justifyContent={width > 900 ? "flex-start" : "space-around"}
             spacing={cardSpace}
             className={classes.card}
           >

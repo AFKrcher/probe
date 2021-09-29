@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
   meetTheTeam: {
     marginTop: 30,
-    marginBottom: 40,
+    marginBottom: 30,
   },
   imgContainer: {
     width: "225px",

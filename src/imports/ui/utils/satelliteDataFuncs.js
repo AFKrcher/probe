@@ -11,9 +11,15 @@ export const getSatName = (satellite) => {
     : "Name not found...";
 };
 
-export const getSatImage = (satellite, pic=0) => {
+export const getSatImage = (satellite) => {
   return satellite && satellite.images && satellite.images.length > 0
-    ? satellite.images.length && satellite.images[pic].link || satellite.images[pic].url
+    ? satellite.images[0].link || satellite.images[0].url
+    : "/sat-placeholder.jpg";
+};
+
+export const getSatImages = (satellite) => {
+  return satellite && satellite.images && satellite.images.length > 0
+    ? satellite.images
     : "/sat-placeholder.jpg";
 };
 
@@ -160,21 +166,21 @@ export const schemaGenerator = (schemas, values, isUniqueList) => {
             min:
               field.type === "number" && field.max
                 ? baseFieldType.min(
-                    parseInt(field.min),
+                    field.min,
                     `${path}-${entryCount}-${fieldCount}_Must be no less than ${field.min}`
                   )
                 : false,
             max:
               field.type === "number" && field.max
                 ? baseFieldType.max(
-                    parseInt(field.max),
+                    field.max,
                     `${path}-${entryCount}-${fieldCount}_Must be no greater than ${field.max}`
                   )
                 : false,
             stringMax:
               field.type === "string" && field.stringMax
                 ? baseFieldType.max(
-                    parseInt(field.max),
+                    field.stringMax,
                     `${path}-${entryCount}-${fieldCount}_Must not exceed ${field.stringMax} characters.`
                   )
                 : false,

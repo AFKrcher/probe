@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+// Imports
 import { useTracker } from "meteor/react-meteor-data";
+import { UsersCollection } from "../../api/users";
 
 // @material-ui
 import { Button, Grid, makeStyles } from "@material-ui/core";
@@ -59,8 +61,8 @@ export const Users = () => {
   const [roles, rows, loading] = useTracker(() => {
     const roles = Roles.getRolesForUser(Meteor.userId());
     const sub = Meteor.subscribe("userList");
-    const users = Meteor.users.find({}).fetch();
-    console.log(users);
+    let users = UsersCollection.find().fetch();
+    if (!Meteor.userId()) users = [];
     const rows = users.map((user) => {
       return {
         id: user._id,
@@ -113,21 +115,24 @@ export const Users = () => {
   };
 
   const addUserToRole = (user, role) => {
-    Meteor.call("addUserToRole", user, role, (res, err) =>
-      console.log(res, err)
+    Meteor.call(
+      "addUserToRole",
+      user,
+      role,
+      (res, err) => console.log(res, err) // TODO: Use snackbar and alert
     );
   };
 
   const deleteAccount = (id) => {
     Meteor.call("deleteAccount", id, (res, err) => {
-      console.log(res, err);
+      console.log(res, err); // TODO: Use snackbar and alert
     });
     setOpen(false);
   };
 
-  const removeRole = (id, role) => {
-    Meteor.call("removeRole", id, role, (res, err) => {
-      console.log(res, err);
+  const removeRole = (user, role) => {
+    Meteor.call("removeRole", user, role, (res, err) => {
+      console.log(res, err); // TODO: Use snackbar and alert
     });
   };
 
@@ -173,7 +178,7 @@ export const Users = () => {
                 <span key={index}>
                   {role}
                   <Button
-                    onClick={() => removeRole(editUser._id, role)}
+                    onClick={() => removeRole(editUser, role)}
                     color="primary"
                     autoFocus
                   >

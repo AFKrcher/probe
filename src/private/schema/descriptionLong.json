@@ -13,7 +13,8 @@
       "name": "descriptionLong",
       "type": "string",
       "allowedValues": [],
-      "required": true
+      "required": true,
+      "stringMax": 20000
     }
   ]
 }

@@ -124,7 +124,6 @@ export const SchemasTable = () => {
     );
   };
 
-
   return (
     <div className={classes.root}>
       <Grid container justifyContent="space-between" alignItems="center">
@@ -185,23 +184,25 @@ export const SchemasTable = () => {
               </TableRow>
             )}
             {!isLoading &&
-              schemas.map((schema, i) => (
-                <TableRow
-                  key={`schema-row-${i}`}
-                  className={classes.tableRow}
-                  onClick={() => handleRowClick(schema)}
-                >
-                  <TableCell
-                    key={`schema-name-${i}`}
-                    className={classes.tableNameCol}
+              schemas.map((schema, i) => {
+                return !schema.isDeleted ? (
+                  <TableRow
+                    key={`schema-row-${i}`}
+                    className={classes.tableRow}
+                    onClick={() => handleRowClick(schema)}
                   >
-                    {schema.name}
-                  </TableCell>
-                  <TableCell key={`schema-desc-${i}`}>
-                    {schema.description || "N/A"}
-                  </TableCell>
-                </TableRow>
-              ))}
+                    <TableCell
+                      key={`schema-name-${i}`}
+                      className={classes.tableNameCol}
+                    >
+                      {schema.name}
+                    </TableCell>
+                    <TableCell key={`schema-desc-${i}`}>
+                      {schema.description || "N/A"}
+                    </TableCell>
+                  </TableRow>
+                ) : null;
+              })}
           </TableBody>
         </Table>
       </TableContainer>

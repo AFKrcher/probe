@@ -13,7 +13,8 @@
       "name": "descriptionShort",
       "type": "string",
       "allowedValues": [],
-      "required": true
+      "required": true,
+      "stringMax": 255
     }
   ]
 }

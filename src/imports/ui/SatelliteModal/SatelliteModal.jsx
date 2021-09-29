@@ -16,6 +16,7 @@ import { Formik, Form } from "formik";
 import { SatelliteForm } from "./SatelliteForm";
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
 import SnackBar from "../Dialogs/SnackBar.jsx";
+import { Gallery } from "../DataDisplays/Gallery.jsx";
 
 // @material-ui
 import {
@@ -38,14 +39,20 @@ const useStyles = makeStyles(() => ({
     width: "auto",
     height: "auto",
   },
+  title: {
+    marginBottom: -5,
+    marginTop: 0,
+  },
   titleText: {
     fontSize: "25px",
   },
   content: {
+    marginTop: -15,
     overflowY: "auto",
+    marginTop: 0,
   },
   description: {
-    marginTop: -10,
+    marginTop: 15,
     marginBottom: 15,
     margin: 5,
   },
@@ -57,7 +64,7 @@ const useStyles = makeStyles(() => ({
   actions: {
     display: "flex",
     justifyContent: "space-between",
-    margin: "5px 15px 10px 15px",
+    margin: "5px 15px 5px 15px",
   },
   loadingSave: {
     textAlign: "center",
@@ -71,6 +78,7 @@ export const SatelliteModal = ({
   initValues,
   handleClose,
   width,
+  height,
 }) => {
   const classes = useStyles();
 
@@ -269,7 +277,13 @@ export const SatelliteModal = ({
       handleToggleEdit(setValues, values);
     }
   };
-  console.log(sats)
+
+  const decideHeight = () => {
+    let decidedHeight = `${0.043 * height + 36}vh`;
+    if (height > 1000) decidedHeight = "80vh";
+    return { height: decidedHeight };
+  };
+
   return (
     <>
       <AlertDialog bodyAlert={alert} />
@@ -277,7 +291,6 @@ export const SatelliteModal = ({
       <Dialog open={show} scroll="paper" maxWidth="md">
         <div className={classes.modal}>
           <DialogTitle className={classes.title}>
-            {/* <img src={} style={{width:"50%", height:"50%"}}/> */}
             <Typography className={classes.titleText}>
               {newSat ? (
                 <>
@@ -318,19 +331,10 @@ export const SatelliteModal = ({
                 ) : (
                   <DialogContent
                     className={classes.content}
-                    style={
-                      width < 500
-                        ? width < 350
-                          ? { height: "50vh" }
-                          : { height: "60vh" }
-                        : { height: "75vh" }
-                    }
+                    style={decideHeight()}
                   >
-                    <Typography className={classes.description}>
-                      Each satellite in the catalogue contains a number of
-                      fields based on schemas. Schemas can be added, deleted,
-                      and modified below.
-                    </Typography>
+                    <Gallery initValues={initValues} />
+                    <Typography className={classes.description}></Typography>
                     <SatelliteForm
                       errors={errors}
                       values={values}

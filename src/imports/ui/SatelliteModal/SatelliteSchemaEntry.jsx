@@ -28,9 +28,11 @@ const useStyles = makeStyles((theme) => ({
   },
   fieldContainer: {
     marginBottom: "10px",
+    resize: "both",
   },
   field: {
     marginBottom: 4,
+    resize: "both",
   },
   inputAdornment: {
     cursor: "pointer",
@@ -42,6 +44,10 @@ const useStyles = makeStyles((theme) => ({
   helpersError: {
     marginLeft: 14,
     color: theme.palette.error.main,
+  },
+  helpers: {
+    marginLeft: 14,
+    color: theme.palette.text.disabled,
   },
   lastBuffer: {
     marginTop: -10,
@@ -100,6 +106,29 @@ export const SatelliteSchemaEntry = ({
     return helper;
   };
 
+  const helper = (field) => {
+    let helper = null;
+    if (field.min || field.max) {
+      if (field.min && field.max)
+        helper = `Minimum Value: ${field.min}, Maximum Value: ${field.max}`;
+      if (field.min && !field.max)
+        helper = `Minimum Value: ${field.min}, Maximum Value: N/A`;
+      if (!field.min && field.max)
+        helper = `Minimum Value: N/A, Maximum Value: ${field.max}`;
+    }
+    if (field.stringMax) {
+      helper = `${entry[field.name].length || 0} / ${field.stringMax}`;
+    }
+    if (field.allowedValues.length > 0) {
+      if (field.allowedValues.length === 2) {
+        helper = `Allowed Values: ${field.allowedValues.join(" or ")}`;
+      } else {
+        helper = `Allowed Values: ${field.allowedValues.join(", ")}`;
+      }
+    }
+    return helper;
+  };
+
   const handleEntryDelete = async (schemaName, index) => {
     let newEntries = entries.map((entry) => entry);
     newEntries.splice(index, 1);
@@ -126,7 +155,11 @@ export const SatelliteSchemaEntry = ({
       InputLabelProps: {
         shrink: true,
       },
-      defaultValue: entry[`${field.name}`] || "",
+      defaultValue: entry[`${field.name}`]
+        ? entry[`${field.name}`]
+        : field.allowedValues.length > 0
+        ? field.allowedValues[0]
+        : "",
       onChange: (event) => {
         preliminaryDebounced(event);
         debounced(event);
@@ -137,12 +170,18 @@ export const SatelliteSchemaEntry = ({
       required: field.required,
       fullWidth: true,
       variant: "outlined",
+      multiline: field.stringMax > 255,
+      rows:
+        (!field.stringMax && field.type !== "url") || field.stringMax > 255
+          ? 5
+          : 1,
       component: editing
         ? TextField
         : (props) => linkAdornment(props, entry[`${field.name}`], field.type),
 
       type: field.type === "date" ? "datetime-local" : field.type,
       disabled: !editing,
+      autoComplete: "off",
     };
   };
 
@@ -216,14 +255,18 @@ export const SatelliteSchemaEntry = ({
                       </Field>
                     </FormControl>
                   )}
-                  <Typography
-                    variant="caption"
-                    className={
-                      !editing ? classes.helpers : classes.helpersError
-                    }
-                  >
-                    {filteredHelper(schema.name, entryIndex, fieldIndex)}
-                  </Typography>
+                  {filteredHelper(schema.name, entryIndex, fieldIndex) ? (
+                    <Typography
+                      variant="caption"
+                      className={classes.helpersError}
+                    >
+                      {filteredHelper(schema.name, entryIndex, fieldIndex)}
+                    </Typography>
+                  ) : editing ? (
+                    <Typography variant="caption" className={classes.helpers}>
+                      {helper(field)}
+                    </Typography>
+                  ) : null}
                 </div>
               );
             })}
