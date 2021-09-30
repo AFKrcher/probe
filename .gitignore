@@ -3,6 +3,7 @@
 
 # Node artifact files
 node_modules/
+*package-lock*
 
 # Secrets
 *.env*
