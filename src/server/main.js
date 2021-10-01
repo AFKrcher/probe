@@ -10,7 +10,7 @@ import { SchemaCollection } from "/imports/api/schemas";
 import { SatelliteCollection } from "/imports/api/satellites";
 import { UsersCollection } from "/imports/api/users";
 import { ErrorsCollection } from "/imports/api/errors";
-import { helmetOptions } from "./helmet";
+//import { helmetOptions } from "./helmet";
 import { schemaValidatorShaper } from "./validators/schemaDataFuncs";
 import { satelliteValidatorShaper } from "./validators/satelliteDataFuncs";
 import "./routes";
@@ -39,7 +39,7 @@ Meteor.startup(() => {
 
   console.log("============PROBE server is running============")
   // See helmet.js for Content Security Policy (CSP) options
-  WebApp.connectHandlers.use(helmet(helmetOptions()));
+  //WebApp.connectHandlers.use(helmet(helmetOptions()));
 
   // Account publications, methods, and seeds
   Roles.createRole("admin", { unlessExists: true });
