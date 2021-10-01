@@ -56,11 +56,13 @@ Login to the EC2 instance using ec2-user and run the following commands to build
 
 ```
 cd /app
+sudo mkdir builds
+sudo chown -R ec2-user:ec2-user builds
 git clone https://github.com/AFKrcher/probe.git
 cd /app/probe/src
 meteor npm install
 ulimit -H -a
-meteor build /app/builds
+meteor build /app/builds --verbose
 sudo tar xzf src.gz -C /var/www/html
 cd /var/www/html
 export PORT=3000
