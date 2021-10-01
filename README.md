@@ -44,29 +44,31 @@ The main focus of this application is data entry experience, data validation, an
 
 1. Meteor must be running
 2. In the command prompt run
-   `meteor mongo`
-   `show collections`
-   `db.<collection name>.find()`
+```
+meteor mongo
+show collections
+db.<collection name>.find()
+```
 
 ### Deployment
 
 Login to the EC2 instance using ec2-user and run the following commands to build the latest project.
 
-`cd /app
+```
+cd /app
 git clone https://github.com/AFKrcher/probe.git
 cd /app/probe/src
 meteor npm install
 ulimit -H -a
 meteor build /app/builds
-tar xzf src.gz -C /var/www/html 
+sudo tar xzf src.gz -C /var/www/html
 cd /var/www/html
 export PORT=3000
 export MONGO_URL='mongodb+srv://<username>:<password>@<your_mongo_db_url>'
 export ROOT_URL=''
 export MAIL_URL=''
-node main.js`
-
-
+node main.js
+```
 
 ## Libraries
 
