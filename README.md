@@ -52,6 +52,8 @@ db.<collection name>.find()
 
 ### Deployment
 
+Note: Meteor only runs with NodeJS 14.17.1
+so you need to install nvm and run `nvm install 14.17.1`
 Login to the EC2 instance using ec2-user and run the following commands to build the latest project.
 
 ```
@@ -65,6 +67,11 @@ ulimit -H -a
 meteor build /app/builds --verbose
 sudo tar xzf src.tar.gz -C /var/www/html
 cd /var/www/html
+sudo mv bundle/* .
+sudo rm -rf bundle
+cd programs/server
+sudo chmod -R 777 /var/html/www
+npm install --production
 export PORT=3000
 export MONGO_URL='mongodb+srv://<username>:<password>@<your_mongo_db_url>'
 export ROOT_URL=''
