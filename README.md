@@ -50,11 +50,23 @@ The main focus of this application is data entry experience, data validation, an
 
 ### Deployment
 
-Deployment is done using Meteor Cloud. To deploy to the free cluster, all you have to do is call:
+Login to the EC2 instance using ec2-user and run the following commands to build the latest project.
 
-`meteor deploy probe.meteorapp.com --free --mongo`
+`cd /app
+git clone https://github.com/AFKrcher/probe.git
+cd /app/probe/src
+meteor npm install
+ulimit -H -a
+meteor build /app/builds
+tar xzf src.gz -C /var/www/html 
+cd /var/www/html
+export PORT=3000
+export MONGO_URL='mongodb+srv://<username>:<password>@<your_mongo_db_url>'
+export ROOT_URL=''
+export MAIL_URL=''
+node main.js`
 
-Deployment is reserved for core contributors. If your feature is reviewed, successfully merged with the main/master branch, and tested in staging, then at the next release, a core contributor will deploy the build to the production deployment endpoint on Meteor.
+
 
 ## Libraries
 
