@@ -35,9 +35,9 @@ WebApp.connectHandlers.use("/api/satellites", async (req, res, next) => {
         res.writeHead(500);
         res.end(JSON.stringify(error));
       }
-    } else if (req.query.noradID) {
+    } else if (req.query.noradID || req.query.id || req.query.noradid) {
       try {
-        const noradID = req.query.noradID;
+        const noradID = req.query.noradID || req.query.id || req.query.noradid;
         const result = await SatelliteCollection.find({
           noradID: { $regex: noradID },
         }).fetch();
@@ -47,7 +47,7 @@ WebApp.connectHandlers.use("/api/satellites", async (req, res, next) => {
         } else {
           error = {
             error:
-              "Could not fetch sat based on noradID - non-existent noradID",
+              "Could not fetch sat based on noradID - non-existent noradID.",
           };
           res.writeHead(500);
           res.end(JSON.stringify(error));
@@ -61,20 +61,29 @@ WebApp.connectHandlers.use("/api/satellites", async (req, res, next) => {
       let result = null;
       try {
         const target = req.query.name;
-        sats.fetch().forEach((sat) => {
-          let bool = sat.names.find((name) => {
-            return name.names || name.name === target ? true : false;
-          });
-          if (bool) {
-            result = sat;
-          }
-        });
-        if (result) {
+        const result = SatelliteCollection.find({
+          "names.name": { $regex: `${target}`, $options: "i" },
+        }).fetch();
+        if (result.length > 0 && result[0] !== undefined) {
+          console.log('result ', result[0])
           res.writeHead(200);
           res.end(JSON.stringify(result));
-        } else {
+        }
+        // sats.fetch().forEach((sat) => {
+        //   let bool = sat.names.find((name) => {
+        //     return name.names || name.name === target ? true : false;
+        //   });
+        //   if (bool) {
+        //     result = sat;
+        //   }
+        // });
+        // if (result) {
+        //   res.writeHead(200);
+        //   res.end(JSON.stringify(result));
+        // } 
+        else {
           error = {
-            error: "Could not fetch sat based on name - non-existent name",
+            error: "Could not fetch sat based on name - non-existent name. And I should know. I invented satellites.",
           };
           res.writeHead(500);
           res.end(JSON.stringify(error));

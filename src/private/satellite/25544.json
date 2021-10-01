@@ -79,11 +79,6 @@
   "manufacturer": [
     {
       "reference": "https://en.wikipedia.org/wiki/Manufacturing_of_the_International_Space_Station",
-      "manufacturers": "NASA, European Space Agency, Roscosmos, JAXA, Boeing, Canadian Space Agency, Nanoracks, Thales Alenia Space, Khartron",
-      "name": "NASA"
-    },
-    {
-      "reference": "https://en.wikipedia.org/wiki/Manufacturing_of_the_International_Space_Station",
       "name": "JAXA",
       "responsibility": ""
     },
@@ -110,12 +105,6 @@
       "lengthMeters": "73",
       "widthMeters": "109",
       "heightMeters": ""
-    }
-  ],
-  "news": [
-    {
-      "reference": "https://blogs.nasa.gov/spacestation/",
-      "news": "Sep 3, 2021: Russian cosmonauts Oleg Novitskiy and Pyotr Dubrov of Roscosmos concluded their spacewalk at 6:35 p.m. EDT after 7 hours and 54 minutes. It is the first of up to 11 spacewalks to prepare the new Nauka multipurpose laboratory module for operations in space."
     }
   ],
   "status": [

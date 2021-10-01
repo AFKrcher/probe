@@ -9,6 +9,8 @@ export default function ProtectedFunctionality({
   component: Component,
   loginRequired,
   requiredRoles,
+  iconButton,
+  skeleton,
 }) {
   const [user, roles, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("roles");
@@ -33,9 +35,12 @@ export default function ProtectedFunctionality({
     roleCheck() && loginCheck() ? (
       <Component />
     ) : null
-  ) : (
-    <Skeleton variant="rect" style={{ borderRadius: 5 }}>
+  ) : skeleton || skeleton === undefined ? (
+    <Skeleton
+      variant={iconButton ? "circle" : "rect"}
+      style={iconButton ? {} : { borderRadius: 5 }}
+    >
       <Component />
     </Skeleton>
-  );
+  ) : null;
 }

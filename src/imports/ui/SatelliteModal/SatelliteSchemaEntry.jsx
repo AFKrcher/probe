@@ -60,6 +60,7 @@ export const SatelliteSchemaEntry = ({
   entry,
   setFieldValue,
   editing,
+  editingSchema,
   errors,
   entries,
   setSatSchema,
@@ -166,11 +167,7 @@ export const SatelliteSchemaEntry = ({
       InputLabelProps: {
         shrink: true,
       },
-      defaultValue: entry[`${field.name}`]
-        ? entry[`${field.name}`]
-        : field.allowedValues?.length > 0
-        ? field.allowedValues[0]
-        : "",
+      defaultValue: entry[`${field.name}`] || "",
       onChange: (event) => {
         charCounter(event);
         preliminaryDebounced(event);
@@ -187,12 +184,13 @@ export const SatelliteSchemaEntry = ({
         (!field.stringMax && field.type !== "url") || field.stringMax > 255
           ? 5
           : 1,
-      component: editing
-        ? TextField
-        : (props) => linkAdornment(props, entry[`${field.name}`], field.type),
+      component:
+        editing || editingSchema
+          ? TextField
+          : (props) => linkAdornment(props, entry[`${field.name}`], field.type),
 
       type: field.type === "date" ? "datetime-local" : field.type,
-      disabled: !editing,
+      disabled: !editingSchema,
       autoComplete: "off",
     };
   };
@@ -233,7 +231,7 @@ export const SatelliteSchemaEntry = ({
     <Grid item xs={12}>
       <Paper className={classes.entryPaper}>
         <Grid container spacing={0}>
-          <Grid item xs={editing ? 11 : 12} className={classes.allFields}>
+          <Grid item xs={editingSchema ? 11 : 12} className={classes.allFields}>
             {schema.fields.map((field, fieldIndex) => {
               return (
                 <div key={fieldIndex} className={classes.fieldContainer}>
@@ -242,7 +240,7 @@ export const SatelliteSchemaEntry = ({
                   ) : (
                     <FormControl
                       className={classes.field}
-                      disabled={!editing}
+                      disabled={!editingSchema}
                       variant="outlined"
                       margin="dense"
                       required
@@ -274,7 +272,7 @@ export const SatelliteSchemaEntry = ({
                     >
                       {filteredHelper(schema.name, entryIndex, fieldIndex)}
                     </Typography>
-                  ) : editing ? (
+                  ) : editingSchema ? (
                     <Typography variant="caption" className={classes.helpers}>
                       {helper(field)}
                     </Typography>
@@ -284,8 +282,13 @@ export const SatelliteSchemaEntry = ({
             })}
             <div className={classes.lastBuffer} />
           </Grid>
-          {editing && (
-            <Grid container item xs={editing ? 1 : 0} alignContent="center">
+          {editing || editingSchema ? (
+            <Grid
+              container
+              item
+              xs={editingSchema ? 1 : 0}
+              alignContent="center"
+            >
               <IconButton
                 aria-label="delete field"
                 color="default"
@@ -296,7 +299,7 @@ export const SatelliteSchemaEntry = ({
                 <DeleteIcon />
               </IconButton>
             </Grid>
-          )}
+          ) : null}
         </Grid>
       </Paper>
     </Grid>

@@ -29,6 +29,11 @@ const useStyles = makeStyles((theme) => ({
   divider: {
     margin: 10,
   },
+  contentContainer: {
+    marginBottom: 5,
+    minWidth: "100vh",
+    maxWidth: "200vh",
+  },
   gridCaption: {
     marginLeft: 5,
     color: theme.palette.text.disabled,
@@ -94,8 +99,18 @@ export const Admin = () => {
         </Toolbar>
       </AppBar>
       <div className={toggleState === 1 ? "tabs active-tabs" : "inactive-tabs"}>
-        <Paper elevation={3}>
+        <Paper elevation={3}
+        className={classes.contentContainer}>
           <Users />
+        </Paper>
+        <Typography variant="caption" className={classes.gridCaption}>
+          Click to interact with a cell, Double-click to view user data
+        </Typography>
+      </div>
+      <div className={toggleState === 2 ? "tabs active-tabs" : "inactive-tabs"}>
+        <Paper elevation={3}
+        className={classes.contentContainer}>
+          <ApproveSatellites />
         </Paper>
         <Typography variant="caption" className={classes.gridCaption}>
           Click to interact with a cell, Double-click to view user data
@@ -103,12 +118,7 @@ export const Admin = () => {
       </div>
       <Paper
         elevation={3}
-        className={toggleState === 2 ? "tabs active-tabs" : "inactive-tabs"}
-      >
-        <ApproveSatellites />
-      </Paper>
-      <Paper
-        elevation={3}
+        className={classes.contentContainer}
         className={toggleState === 3 ? "tabs active-tabs" : "inactive-tabs"}
       >
         <ApproveSchemas />
