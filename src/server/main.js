@@ -36,6 +36,8 @@ isValidPassword = (oldPassword, newPassword) => {
   return regex.test(newPassword) && oldCheck && newPassword.length < 128;
 };
 Meteor.startup(() => {
+
+  console.log("============PROBE server is running============")
   // See helmet.js for Content Security Policy (CSP) options
   WebApp.connectHandlers.use(helmet(helmetOptions()));
 
