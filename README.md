@@ -17,7 +17,7 @@ The main focus of this application is data entry experience, data validation, an
 - Client: ReactJS
 - Server: Meteor/WebApp
 - Repository: [GitHub](https://github.com/AFKrcher/PSRA)
-- Staging Deployment: [Meteor](http://psra.meteorapp.com/)
+- Staging Deployment: [Meteor](http://probe.meteorapp.com/)
 - Production Deployment: [Meteor](**COMING SOON**)
 
 ## How To Contribute
@@ -52,7 +52,7 @@ The main focus of this application is data entry experience, data validation, an
 
 Deployment is done using Meteor Cloud. To deploy to the free cluster, all you have to do is call:
 
-`meteor deploy psra.meteorapp.com --free --mongo`
+`meteor deploy probe.meteorapp.com --free --mongo`
 
 Deployment is reserved for core contributors. If your feature is reviewed, successfully merged with the main/master branch, and tested in staging, then at the next release, a core contributor will deploy the build to the production deployment endpoint on Meteor.
 
