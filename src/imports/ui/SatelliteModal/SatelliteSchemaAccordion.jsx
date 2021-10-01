@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 // Components
 import { SatelliteSchemaEntry } from "./SatelliteSchemaEntry";
 import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
+import useWindowSize from "../Hooks/useWindowSize.jsx";
 
 // @material-ui
 import {
@@ -44,6 +45,18 @@ const useStyles = makeStyles((theme) => ({
   iconButtons: {
     display: "flex",
     pointerEvents: "auto",
+  },
+  editIcon: {
+    padding: 6,
+    margin: "-2px 5px -2px -15px",
+  },
+  closeIcon: {
+    padding: 6,
+    margin: "-2px 20px -2px -15px",
+  },
+  saveIcon: {
+    padding: 6,
+    margin: "-2px 0px -2px -15px",
   },
   accordianDetails: {
     marginTop: -15,
@@ -88,6 +101,8 @@ export const SatelliteSchemaAccordion = ({
   const [editingSchema, setEditingSchema] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
+  const [width] = useWindowSize();
+
   useEffect(() => {
     if (!entries) setFieldValue(schema.name, []);
   }, [entries]);
@@ -115,7 +130,7 @@ export const SatelliteSchemaAccordion = ({
   };
 
   const handleExpand = () => {
-    if (accordionBeingEdited !== schemaIndex) setExpanded(!expanded);
+    setExpanded(!expanded);
   };
 
   const handleSubmit = (values) => {
@@ -130,7 +145,8 @@ export const SatelliteSchemaAccordion = ({
             {" in "}
             <strong>
               {values.names && values.names[0] ? values.names[0].name : "N/A"}
-            </strong>{" saved!"}
+            </strong>
+            {" saved!"}
           </span>
         );
         setOpenSnack(true);
@@ -162,6 +178,7 @@ export const SatelliteSchemaAccordion = ({
               </Tooltip>
             </Grid>
             {!editing &&
+            width > 800 &&
             (accordionBeingEdited === schemaIndex ||
               accordionBeingEdited === -1) ? (
               <Grid item className={classes.iconButtons}>
@@ -179,10 +196,7 @@ export const SatelliteSchemaAccordion = ({
                           arrow
                         >
                           <IconButton
-                            style={{
-                              padding: 6,
-                              margin: "-2px 5px -2px -15px",
-                            }}
+                            className={classes.editIcon}
                             onClick={handleEditSchema}
                           >
                             <EditIcon fontSize="small" />
@@ -198,10 +212,7 @@ export const SatelliteSchemaAccordion = ({
                   <React.Fragment>
                     <Tooltip title="Cancel Changes" placement="top" arrow>
                       <IconButton
-                        style={{
-                          padding: 6,
-                          margin: "-2px 20px -2px -15px",
-                        }}
+                        className={classes.closeIcon}
                         onClick={handleEditSchema}
                       >
                         <CloseIcon fontSize="small" />
@@ -210,7 +221,7 @@ export const SatelliteSchemaAccordion = ({
                     <Tooltip title="Save Changes" placement="top" arrow>
                       <span>
                         <IconButton
-                          style={{ padding: 6, margin: "-2px 0px -2px -15px" }}
+                          className={classes.saveIcon}
                           disabled={!dirty}
                           onClick={() => {
                             handleSubmit(values);

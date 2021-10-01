@@ -5,14 +5,41 @@ import { autoPlay } from "react-swipeable-views-utils";
 import { getSatImages } from "../utils/satelliteDataFuncs.js";
 
 // @material-ui
-import { Grid, MobileStepper, Box, Paper, Button } from "@material-ui/core";
+import {
+  MobileStepper,
+  Box,
+  Button,
+  makeStyles,
+} from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 
+const useStyles = makeStyles(() => ({
+  root: {
+    maxWidth: 500,
+    flexGrow: 1,
+  },
+  imageContainer: {
+    height: "300px",
+    width: "100%",
+    display: "block",
+    objectFit: "cover",
+    overflow: "hidden",
+  },
+  mobileStepper: {
+    backgroundColor: "transparent",
+    zIndex: "1",
+    position: "relative",
+    marginTop: "-10%",
+  },
+}));
+
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-export const Gallery = ({ initValues }) => {
+export const Gallery = ({ initValues, autoplay = true, width = 1000 }) => {
+  const classes = useStyles();
+
   const [activeStep, setActiveStep] = useState(0);
   const images = getSatImages(initValues);
   const theme = useTheme();
@@ -31,24 +58,9 @@ export const Gallery = ({ initValues }) => {
   };
 
   return (
-    <Box
-      sx={{
-        maxWidth: 500,
-        flexGrow: 1,
-      }}
-    >
-      <Paper
-        square
-        elevation={0}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          height: 50,
-          pl: 2,
-          bgcolor: "background.default",
-        }}
-      />
+    <Box className={classes.root}>
       <AutoPlaySwipeableViews
+        autoplay={autoplay}
         interval={5000}
         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
         index={activeStep}
@@ -61,13 +73,7 @@ export const Gallery = ({ initValues }) => {
               {Math.abs(activeStep - index) <= 2 ? (
                 <Box
                   component="img"
-                  sx={{
-                    height: "255px",
-                    display: "block",
-                    objectFit: "cover",
-                    overflow: "hidden",
-                    width: "100%",
-                  }}
+                  className={classes.imageContainer}
                   src={step.url}
                   alt={step.description}
                 />
@@ -77,41 +83,42 @@ export const Gallery = ({ initValues }) => {
         ) : (
           <Box
             component="img"
-            sx={{
-              height: "255px",
-              display: "block",
-              objectFit: "cover",
-              overflow: "hidden",
-              width: "100%",
-            }}
+            className={classes.imageContainer}
             src={images}
             alt="Satellite Placeholder"
           />
         )}
       </AutoPlaySwipeableViews>
       <MobileStepper
-        style={{
-          backgroundColor: "transparent",
-          zIndex: "1",
-          position: "relative",
-          marginTop: "-12%",
-        }}
+        className={classes.mobileStepper}
         steps={maxSteps}
         position="static"
         activeStep={activeStep}
         nextButton={
-          <Button
-            size="medium"
-            onClick={handleNext}
-            disabled={activeStep === maxSteps - 1}
-          >
-            <KeyboardArrowRight />
-          </Button>
+          width < 1000 ? (
+            <div />
+          ) : (
+            <Button
+              size="small"
+              onClick={handleNext}
+              disabled={activeStep === maxSteps - 1}
+            >
+              <KeyboardArrowRight />
+            </Button>
+          )
         }
         backButton={
-          <Button size="medium" onClick={handleBack} disabled={activeStep === 0}>
-            <KeyboardArrowLeft />
-          </Button>
+          width < 1000 ? (
+            <div />
+          ) : (
+            <Button
+              size="small"
+              onClick={handleBack}
+              disabled={activeStep === 0}
+            >
+              <KeyboardArrowLeft />
+            </Button>
+          )
         }
       />
     </Box>

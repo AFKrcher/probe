@@ -41,7 +41,7 @@ const useStyles = makeStyles(() => ({
   gallery: {
     display: "flex",
     justifyContent: "center",
-    marginTop: -20,
+    marginTop: -15,
   },
   title: {
     marginBottom: -5,
@@ -408,7 +408,7 @@ export const SatelliteModal = ({
                               )
                             }
                           >
-                            {editing ? "Cancel" : "Edit All Entries"}
+                            {editing ? "Cancel" : "Edit"}
                           </Button>
                         );
                       }}

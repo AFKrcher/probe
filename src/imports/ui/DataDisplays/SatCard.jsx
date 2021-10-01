@@ -29,7 +29,6 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import Close from "@material-ui/icons/Close";
-import Star from "@material-ui/icons/Star";
 
 const useStyles = makeStyles((theme) => ({
   satCard: {
@@ -39,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.grid.background,
   },
   satName: {
-    marginBottom: 5
+    marginBottom: 5,
   },
   cardImage: {
     width: "100%",
@@ -166,20 +165,27 @@ export const SatCard = ({ width, height, satellite }) => {
       />
       <Card className={classes.satCard} elevation={4} raised={true}>
         <CardMedia className={classes.cardImage}>
-          <Gallery initValues={satellite} />
+          <Gallery initValues={satellite} autoplay={false} width={width} />
         </CardMedia>
         <CardContent className={classes.cardDesc}>
-          <Typography variant="h5" className={classes.satName}>
+          <Typography
+            variant={width < 1000 ? "h6" : "h5"}
+            className={classes.satName}
+          >
             <strong>{getSatName(satellite)}</strong>
           </Typography>
-          <Typography gutterBottom variant="body1">
-            COSPAR ID: {satellite.cosparID ? satellite.cosparID[0].cosparID : "N/A"}
+          <Typography gutterBottom variant={width < 1000 ? "body2" : "body1"}>
+            COSPAR ID:{" "}
+            {satellite.cosparID ? satellite.cosparID[0].cosparID : "N/A"}
           </Typography>
-          <Typography gutterBottom variant="body1">
+          <Typography gutterBottom variant={width < 1000 ? "body2" : "body1"}>
             NORAD ID: {getSatID(satellite)}
           </Typography>
-          <Typography color="textSecondary" variant="body1">
-              {getSatDesc(satellite)}
+          <Typography
+            color="textSecondary"
+            variant={width < 1000 ? "body2" : "body1"}
+          >
+            {getSatDesc(satellite)}
           </Typography>
         </CardContent>
         <CardActions
