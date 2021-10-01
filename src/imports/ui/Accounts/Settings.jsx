@@ -228,7 +228,7 @@ export const Settings = () => {
           setOpenAlert(true);
         }
         if (res) {
-          setSnack(`Email successfully changed from ${email} to ${oldEmail}`);
+          setSnack(`Email successfully changed from ${email} to ${newEmail}`);
           setOpenSnack(true);
           setDisabled(true);
         }

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 // Imports
-import { useHistory } from "react-router";
 import { useTracker } from "meteor/react-meteor-data";
 import { SchemaCollection } from "../../api/schemas";
 import { SatelliteCollection } from "../../api/satellites";
@@ -29,15 +28,20 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import Delete from "@material-ui/icons/Delete";
-import Edit from "@material-ui/icons/Edit";
-import Save from "@material-ui/icons/Save";
-import Close from "@material-ui/icons/Close";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import SaveIcon from "@material-ui/icons/Save";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles(() => ({
   modal: {
     width: "auto",
     height: "auto",
+  },
+  gallery: {
+    display: "flex",
+    justifyContent: "center",
+    marginTop: -20,
   },
   title: {
     marginBottom: -5,
@@ -64,7 +68,7 @@ const useStyles = makeStyles(() => ({
   actions: {
     display: "flex",
     justifyContent: "space-between",
-    margin: "5px 15px 5px 15px",
+    margin: "10px 15px 5px 15px",
   },
   loadingSave: {
     textAlign: "center",
@@ -81,13 +85,12 @@ export const SatelliteModal = ({
   height,
 }) => {
   const classes = useStyles();
-  const history = useHistory();
   const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } =
     useContext(HelpersContext);
 
   const [editing, setEditing] = useState(newSat || false);
+  const [editingOne, setEditingOne] = useState(false);
   const [satSchema, setSatSchema] = useState(null);
-
 
   const [user, schemas, sats, isLoadingSch, isLoadingSat] = useTracker(() => {
     const subSch = Meteor.subscribe("schemas");
@@ -286,7 +289,7 @@ export const SatelliteModal = ({
   };
 
   return (
-    <>
+    <React.Fragment>
       <AlertDialog bodyAlert={alert} />
       <SnackBar bodySnackBar={snack} />
       <Dialog open={show} scroll="paper" maxWidth="md">
@@ -334,11 +337,15 @@ export const SatelliteModal = ({
                     className={classes.content}
                     style={decideHeight()}
                   >
-                    <div style={{ display: "flex", justifyContent: "center" }}>
+                    <div className={classes.gallery}>
                       <Gallery initValues={initValues} />
                     </div>
                     <Typography className={classes.description}></Typography>
                     <SatelliteForm
+                      setOpenSnack={setOpenSnack}
+                      setSnack={setSnack}
+                      editingOne={editingOne}
+                      setEditingOne={setEditingOne}
                       errors={errors}
                       values={values}
                       schemas={schemas}
@@ -351,11 +358,12 @@ export const SatelliteModal = ({
                       isUniqueList={isUniqueList}
                       satelliteValidatorShaper={satelliteValidatorShaper}
                       setTouched={setTouched}
+                      dirty={dirty}
                     />
                   </DialogContent>
                 )}
                 <DialogActions className={classes.actions}>
-                  {editing ? null : (
+                  {editing || editingOne ? null : (
                     <ProtectedFunctionality
                       component={() => {
                         return (
@@ -364,7 +372,9 @@ export const SatelliteModal = ({
                             variant="contained"
                             color="secondary"
                             onClick={handleDeleteDialog}
-                            startIcon={width && width < 500 ? null : <Delete />}
+                            startIcon={
+                              width && width < 500 ? null : <DeleteIcon />
+                            }
                           >
                             Delete
                           </Button>
@@ -373,42 +383,44 @@ export const SatelliteModal = ({
                       loginRequired={true}
                     />
                   )}
-                  <ProtectedFunctionality
-                    component={() => {
-                      return (
-                        <Button
-                          size={width && width < 500 ? "small" : "medium"}
-                          variant="contained"
-                          color={
-                            editing && dirty && Object.keys(touched).length
-                              ? "secondary"
-                              : "default"
-                          }
-                          onClick={() =>
-                            handleEdit(setValues, dirty, touched, values)
-                          }
-                          startIcon={
-                            width && width < 500 ? null : editing ? (
-                              dirty && Object.keys(touched).length ? (
-                                <Delete />
-                              ) : null
-                            ) : (
-                              <Edit />
-                            )
-                          }
-                        >
-                          {editing ? "Cancel" : "Edit"}
-                        </Button>
-                      );
-                    }}
-                    loginRequired={true}
-                  />
+                  {!editingOne ? (
+                    <ProtectedFunctionality
+                      component={() => {
+                        return (
+                          <Button
+                            size={width && width < 500 ? "small" : "medium"}
+                            variant="contained"
+                            color={
+                              editing && dirty && Object.keys(touched).length
+                                ? "secondary"
+                                : "default"
+                            }
+                            onClick={() =>
+                              handleEdit(setValues, dirty, touched, values)
+                            }
+                            startIcon={
+                              width && width < 500 ? null : editing ? (
+                                dirty && Object.keys(touched).length ? (
+                                  <DeleteIcon />
+                                ) : null
+                              ) : (
+                                <EditIcon />
+                              )
+                            }
+                          >
+                            {editing ? "Cancel" : "Edit All Entries"}
+                          </Button>
+                        );
+                      }}
+                      loginRequired={true}
+                    />
+                  ) : null}
                   {editing ? null : (
                     <Button
                       size={width && width < 500 ? "small" : "medium"}
                       variant="contained"
                       onClick={handleClose}
-                      startIcon={width && width < 500 ? null : <Close />}
+                      startIcon={width && width < 500 ? null : <CloseIcon />}
                     >
                       Close
                     </Button>
@@ -419,7 +431,7 @@ export const SatelliteModal = ({
                       type="submit"
                       variant="contained"
                       color="primary"
-                      startIcon={width && width < 500 ? null : <Save />}
+                      startIcon={width && width < 500 ? null : <SaveIcon />}
                       disabled={
                         Object.entries(errors).length > 0 ||
                         !dirty ||
@@ -446,6 +458,6 @@ export const SatelliteModal = ({
           </Formik>
         </div>
       </Dialog>
-    </>
+    </React.Fragment>
   );
 };

@@ -13,6 +13,7 @@ import {
   getSatDesc,
   getSatImage,
 } from "../utils/satelliteDataFuncs";
+import { Gallery } from "./Gallery";
 
 // @material-ui
 import {
@@ -37,13 +38,15 @@ const useStyles = makeStyles((theme) => ({
     overflowWrap: "hidden",
     backgroundColor: theme.palette.grid.background,
   },
+  satName: {
+    marginBottom: 5
+  },
   cardImage: {
-    minHeight: "180px",
-    maxHeight: "180px",
+    width: "100%",
   },
   cardDesc: {
-    minHeight: `330px`,
-    maxHeight: `330px`,
+    minHeight: `340px`,
+    maxHeight: `340px`,
   },
   cardActions: {
     position: "relative",
@@ -149,7 +152,7 @@ export const SatCard = ({ width, height, satellite }) => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <VisualizeDialog bodyPrompt={prompt} open={openPrompt} />
       <SatelliteModal
         show={showModal}
@@ -162,22 +165,21 @@ export const SatCard = ({ width, height, satellite }) => {
         height={height}
       />
       <Card className={classes.satCard} elevation={4} raised={true}>
-        <CardMedia
-          className={classes.cardImage}
-          image={getSatImage(satellite)}
-          title={`${satellite.names ? satellite.names[0].name : "Satellite Image"}`}
-        />
+        <CardMedia className={classes.cardImage}>
+          <Gallery initValues={satellite} />
+        </CardMedia>
         <CardContent className={classes.cardDesc}>
-          <Typography variant="h5" component="h2">
+          <Typography variant="h5" className={classes.satName}>
             <strong>{getSatName(satellite)}</strong>
+          </Typography>
+          <Typography gutterBottom variant="body1">
+            COSPAR ID: {satellite.cosparID ? satellite.cosparID[0].cosparID : "N/A"}
           </Typography>
           <Typography gutterBottom variant="body1">
             NORAD ID: {getSatID(satellite)}
           </Typography>
-          <Typography color="textSecondary" variant="body2">
-            <Clamp lines={Math.round(height / 100) + 1}>
+          <Typography color="textSecondary" variant="body1">
               {getSatDesc(satellite)}
-            </Clamp>
           </Typography>
         </CardContent>
         <CardActions
@@ -295,6 +297,6 @@ export const SatCard = ({ width, height, satellite }) => {
           )}
         </CardActions>
       </Card>
-    </>
+    </React.Fragment>
   );
 };

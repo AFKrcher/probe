@@ -18,6 +18,9 @@ import {
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%"
+  },
   navbar: {
     backgroundColor: theme.palette.navigation.main,
   },

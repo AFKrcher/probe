@@ -34,18 +34,20 @@ import Star from "@material-ui/icons/Star";
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
+    width: "100%",
   },
   description: {
     marginBottom: 25,
     marginTop: 10,
   },
   gridContainer: {
+    display: "flex",
+    height: "100%",
+    width: "100%",
     marginBottom: 5,
   },
   dataGrid: {
     backgroundColor: theme.palette.grid.background,
-    overflowY: "auto",
-    resize: "horizontal",
     "& .MuiDataGrid-cell": {
       textOverflow: "clip",
     },
@@ -413,7 +415,7 @@ export const SatellitesTable = () => {
             rowsPerPageOptions={[5, 10, 15, 20, 50, 100]}
             columns={columns}
             rows={rows}
-            rowCount={count}
+            rowCount={rows.length}
             pageSize={limiter}
             loading={isLoadingSats && isLoadingSchemas}
             autoHeight={true}

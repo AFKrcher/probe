@@ -54,7 +54,7 @@ export const Home = () => {
 
   const [width, height] = useWindowSize();
   const [page, setPage] = useState(1);
-  const [limiter] = useState(4);
+  const [limiter] = useState(3);
   const [scrolled, setScrolled] = useState(false);
 
   const count = SatelliteCollection.find().count();
@@ -62,8 +62,8 @@ export const Home = () => {
   const cardSpace =
     Math.round(height / (width / 5)) > 10
       ? 10
-      : height < 1000 && width > 1000
-      ? 3
+      : width > 1000
+      ? 4
       : Math.round(height / (width / 5));
 
   const [sats, otherSats, isLoading, favorites, user] = useTracker(() => {
@@ -151,19 +151,19 @@ export const Home = () => {
           </Skeleton>
         ) : (
           <Typography variant="h4" gutterBottom>
-            {favorites ? (
+            {favorites?.length > 0 ? (
               <React.Fragment>
-                <strong>{user.toUpperCase()}</strong>'s Favorite Satellites
+                <strong>{user}</strong>'s Favorite Satellites
               </React.Fragment>
             ) : (
-              "Satellite Data Cards"
+              <div style={{ marginBottom: -40 }}></div>
             )}
           </Typography>
         )}
         {cardSpace ? (
           <Grid
             container
-            justifyContent={width > 900 ? "flex-start" : "center"}
+            justifyContent={width > 1000 ? "flex-start" : "center"}
             spacing={cardSpace}
             className={classes.card}
           >
@@ -200,7 +200,9 @@ export const Home = () => {
               </Skeleton>
             ) : (
               <Typography variant="h4" gutterBottom>
-                All Satellites
+                {favorites?.length > 1
+                  ? "Satellite Data Cards"
+                  : "All Satellites"}
               </Typography>
             )}
             {cardSpace ? (

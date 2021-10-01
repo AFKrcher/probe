@@ -4,7 +4,16 @@ import { useTracker } from "meteor/react-meteor-data";
 import { UsersCollection } from "../../api/users";
 
 // @material-ui
-import { Button, Grid, makeStyles } from "@material-ui/core";
+import {
+  Button,
+  Grid,
+  makeStyles,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core";
 import {
   DataGrid,
   GridToolbarContainer,
@@ -13,14 +22,10 @@ import {
   GridToolbarExport,
   GridToolbarDensitySelector,
 } from "@material-ui/data-grid";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: "flex",
     height: "100%",
     width: "100%",
     padding: "15px 10px 15px 10px",
@@ -29,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
     padding: "5px 5px 5px 5px",
     backgroundColor: theme.palette.grid.background,
     overflowY: "auto",
-    resize: "horizontal",
     "& .MuiDataGrid-cell": {
       textOverflow: "clip",
     },
@@ -61,8 +65,7 @@ export const Users = () => {
     );
   }
 
-  const [roles, rows, loading] = useTracker(() => {
-    const roles = Roles.getRolesForUser(Meteor.userId());
+  const [rows, loading] = useTracker(() => {
     const sub = Meteor.subscribe("userList");
     let users = UsersCollection.find().fetch();
     if (!Meteor.userId()) users = [];
@@ -76,7 +79,7 @@ export const Users = () => {
           .join(", "),
       };
     });
-    return [roles, rows, !sub.ready()];
+    return [rows, !sub.ready()];
   });
 
   const columns = [
@@ -122,20 +125,20 @@ export const Users = () => {
       "addUserToRole",
       user,
       role,
-      (res, err) => console.log(res, err) // TODO: Use snackbar and alert
+      (err, res) => console.log(err, res) // TODO: Use snackbar and alert
     );
   };
 
   const deleteAccount = (id) => {
-    Meteor.call("deleteAccount", id, (res, err) => {
-      console.log(res, err); // TODO: Use snackbar and alert
+    Meteor.call("deleteAccount", id, (err, res) => {
+      console.log(err, res); // TODO: Use snackbar and alert
     });
     setOpen(false);
   };
 
   const removeRole = (user, role) => {
-    Meteor.call("removeRole", user, role, (res, err) => {
-      console.log(res, err); // TODO: Use snackbar and alert
+    Meteor.call("removeRole", user, role, (err, res) => {
+      console.log(err, res); // TODO: Use snackbar and alert
     });
   };
 
@@ -158,8 +161,10 @@ export const Users = () => {
             rows={rows}
             loading={loading}
             autoHeight={true}
+            rowCount={rows.length}
             pagination
             disableSelectionOnClick
+            autoHeight
             onRowDoubleClick={(e) => {
               handleOpen(e.row);
               setEditUser(Meteor.users.find({ _id: e.row.id }).fetch()[0]);
@@ -168,24 +173,19 @@ export const Users = () => {
         </Grid>
       </Grid>
 
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          Manage {editUser.username}
+      <Dialog open={open} onClose={handleClose} minWidth="md">
+        <DialogTitle>
+          Managing User: <strong>{editUser.username}</strong>
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText>
             <span>Roles</span>
-            <br />
             {Roles.getRolesForUser(editUser._id).map((role, index) => {
               return (
                 <span key={index}>
                   {role}
                   <Button
+                    variant="contained"
                     onClick={() => removeRole(editUser, role)}
                     color="primary"
                     autoFocus
@@ -195,32 +195,38 @@ export const Users = () => {
                 </span>
               );
             })}
-
-            <br />
-            <Button
-              onClick={() => addUserToRole(editUser, "moderator")}
-              color="primary"
-              autoFocus
-            >
-              Make Moderator
-            </Button>
-            <Button
-              onClick={() => addUserToRole(editUser, "admin")}
-              color="primary"
-              autoFocus
-            >
-              Make Admin
-            </Button>
           </DialogContentText>
         </DialogContent>
+
         <DialogActions>
           <Button
+            variant="contained"
+            onClick={() => addUserToRole(editUser, "moderator")}
+            color="primary"
+            autoFocus
+          >
+            Make Moderator
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => addUserToRole(editUser, "admin")}
+            color="primary"
+            autoFocus
+          >
+            Make Admin
+          </Button>
+          <Button
+            variant="contained"
             onClick={() => addUserToRole(editUser, "dummies")}
             color="secondary"
           >
             Ban
           </Button>
-          <Button onClick={() => deleteAccount(editUser._id)} color="secondary">
+          <Button
+            variant="contained"
+            onClick={() => deleteAccount(editUser._id)}
+            color="secondary"
+          >
             Delete
           </Button>
         </DialogActions>

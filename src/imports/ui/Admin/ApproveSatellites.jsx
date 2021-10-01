@@ -33,17 +33,16 @@ import Star from "@material-ui/icons/Star";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100%",
-    width: "100%",
     padding: "15px 10px 15px 10px",
   },
   gridContainer: {
+    display: "flex",
     marginBottom: 5,
+    height: "100%",
+    width: "100%",
   },
   dataGrid: {
     backgroundColor: theme.palette.grid.background,
-    overflowY: "auto",
-    resize: "horizontal",
     "& .MuiDataGrid-cell": {
       textOverflow: "clip",
     },
@@ -371,6 +370,7 @@ export const ApproveSatellites = () => {
       <div className={classes.root}>
         <div className={classes.gridContainer}>
           <DataGrid
+            autoHeight
             className={classes.dataGrid}
             components={{
               Toolbar: CustomToolbar,
@@ -378,7 +378,7 @@ export const ApproveSatellites = () => {
             rowsPerPageOptions={[5, 10, 15, 20, 50, 100]}
             columns={columns}
             rows={rows}
-            rowCount={count}
+            rowCount={rows.length}
             pageSize={limiter}
             loading={isLoadingSats && isLoadingSchemas}
             autoHeight={true}
@@ -399,9 +399,6 @@ export const ApproveSatellites = () => {
             onSortModelChange={handleSort}
           />
         </div>
-        <Typography variant="caption" className={classes.gridCaption}>
-          Click to interact with a cell, Double-click to view satellite data
-        </Typography>
         <SatelliteModal
           show={showModal}
           newSat={newSat}
