@@ -63,7 +63,7 @@ cd /app/probe/src
 meteor npm install
 ulimit -H -a
 meteor build /app/builds --verbose
-sudo tar xzf src.gz -C /var/www/html
+sudo tar xzf src.tar.gz -C /var/www/html
 cd /var/www/html
 export PORT=3000
 export MONGO_URL='mongodb+srv://<username>:<password>@<your_mongo_db_url>'
