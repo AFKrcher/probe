@@ -52,9 +52,9 @@ db.<collection name>.find()
 
 ### Deployment
 
-Note: Meteor only runs with NodeJS 14.17.1
-so you need to install nvm and run `nvm install 14.17.1`
-Login to the EC2 instance using ec2-user and run the following commands to build the latest project.
+**Note**: Meteor only runs with NodeJS 14.17.1, so you need to install nvm and run `nvm install 14.17.1`
+
+Login to the EC2 instance using ec2-user and run the following commands to build the latest project:
 
 ```
 cd /app
