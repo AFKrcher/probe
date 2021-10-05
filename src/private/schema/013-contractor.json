@@ -1,26 +1,27 @@
 {
-  "name": "ownership",
-  "description": "Entitles  that are considered owners of the satellite and/or its parts.",
+  "name": "contractor",
+  "description": "Independent entity who supplied services, goods, materials, equipment, or personnel towards any part of the acquisition cycle of the satellite and/or its parts.",
   "fields": [
     {
       "name": "reference",
-      "description": "Provide a source or rationale for the provided data",
+      "hidden": true,
       "type": "url",
       "allowedValues": [],
       "required": true
     },
     {
-      "name": "type",
+      "name": "verified",
+      "hidden": true,
+      "description": "",
       "type": "string",
-      "allowedValues": ["country", "company", "organization"],
-      "required": true
+      "allowedValues": ["true", "false"]
     },
     {
       "name": "name",
       "type": "string",
       "allowedValues": [],
       "required": true,
-      "stringMax": 255
+      "stringMax": 50
     },
     {
       "name": "responsibility",

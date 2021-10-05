@@ -31,7 +31,7 @@ const useStyles = makeStyles(() => ({
     backgroundColor: "transparent",
     zIndex: "1",
     position: "relative",
-    marginTop: "-10%",
+    marginTop: "-12%",
   },
 }));
 

@@ -64,6 +64,7 @@ export const SatelliteForm = ({
   setEditingOne,
   setOpenSnack,
   setSnack,
+  newSat,
 }) => {
   const { setOpenAlert, alert, setAlert } = useContext(HelpersContext);
   const [schemaAddition, setSchemaAddition] = useState(false);
@@ -162,6 +163,14 @@ export const SatelliteForm = ({
 
   const onChange = (event) => {
     setFieldValue(event.target.name, event.target.value);
+    if (newSat) {
+      let obj = {};
+      obj[event.target.name] = true;
+      setTouched(obj);
+    }
+    if (event.target.value?.length === 0) {
+      setTouched({});
+    }
   };
 
   const onSchemaChange = (e) => {
@@ -182,6 +191,7 @@ export const SatelliteForm = ({
     variant: "outlined",
     component: TextField,
     onChange: onChange,
+    onInput: onChange,
     disabled: !editing,
     autoComplete: "off",
   };
@@ -199,7 +209,9 @@ export const SatelliteForm = ({
         {schemas.map((schema, schemaIndex) => {
           // this first map forces "names" schema to always be on top
           // the second map below this one renders the rest of the schemas in a created-by order
-          return schema.name === "names" ? renderAccordion(schema, schemaIndex) : [];
+          return schema.name === "names"
+            ? renderAccordion(schema, schemaIndex)
+            : [];
         })}
         {schemas.map((schema, schemaIndex) => {
           return initValues[schema.name] && schema.name !== "names"

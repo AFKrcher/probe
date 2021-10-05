@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
     paddingTop: 5,
-    paddingBottom: 5
+    paddingBottom: 5,
   },
   table: {
     margin: "10px 10px 10px 10px",
@@ -78,10 +78,13 @@ export const ApproveSchemas = () => {
   const [initialSchemaValues, setInitialSchemaValues] =
     useState(newSchemaValues);
 
-  const [schemas, isLoading] = useTracker(() => {
+  const [schemasDeleted, schemasModified, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("schemas");
-    const schemas = SchemaCollection.find().fetch();
-    return [schemas, !sub.ready()];
+    const schemasDeleted = SchemaCollection.find({ isDeleted: true }).fetch();
+    const schemasModified = SchemaCollection.find({
+      adminCheck: false,
+    }).fetch();
+    return [schemasDeleted, schemasModified, !sub.ready()];
   });
 
   const handleRowClick = (schemaObject) => {
@@ -121,9 +124,8 @@ export const ApproveSchemas = () => {
               </TableRow>
             )}
             {!isLoading &&
-              schemas.map((schema, i) => {
-                return schema.isDeleted ||
-                  (!schema.adminCheck && schema.adminCheck !== undefined) ? (
+              schemasDeleted.map((schema, i) => {
+                return (
                   <TableRow
                     key={`schema-row-${i}`}
                     className={classes.tableRow}
@@ -148,7 +150,36 @@ export const ApproveSchemas = () => {
                       {`${schema.modifiedBy || schema.createdBy}`}
                     </TableCell>
                   </TableRow>
-                ) : null;
+                );
+              })}
+            {!isLoading &&
+              schemasModified.map((schema, i) => {
+                return (
+                  <TableRow
+                    key={`schema-row-${i}`}
+                    className={classes.tableRow}
+                    onClick={() => handleRowClick(schema)}
+                  >
+                    <TableCell
+                      key={`schema-name-${i}`}
+                      className={classes.tableNameCol}
+                    >
+                      {schema.name}
+                    </TableCell>
+                    <TableCell key={`schema-approve-${i}`}>
+                      {!schema.adminCheck ? "TRUE" : "FALSE"}
+                    </TableCell>
+                    <TableCell key={`schema-delete-${i}`}>
+                      {schema.isDeleted ? "TRUE" : "FALSE"}
+                    </TableCell>
+                    <TableCell key={`schema-modOn-${i}`}>
+                      {`${schema.modifiedOn || schema.createdOn}`}
+                    </TableCell>
+                    <TableCell key={`schema-modBy-${i}`}>
+                      {`${schema.modifiedBy || schema.createdBy}`}
+                    </TableCell>
+                  </TableRow>
+                );
               })}
           </TableBody>
         </Table>

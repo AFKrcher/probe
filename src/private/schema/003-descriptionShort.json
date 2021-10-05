@@ -4,10 +4,17 @@
   "fields": [
     {
       "name": "reference",
+      "hidden": true,
       "type": "url",
-      "description": "Provide a source or rationale for the provided data",
       "allowedValues": [],
       "required": true
+    },
+    {
+      "name": "verified",
+      "hidden": true,
+      "description": "",
+      "type": "string",
+      "allowedValues": ["true", "false"]
     },
     {
       "name": "descriptionShort",

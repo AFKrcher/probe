@@ -24,12 +24,12 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
-import Close from "@material-ui/icons/Close";
-import Delete from "@material-ui/icons/Delete";
-import Edit from "@material-ui/icons/Edit";
-import Save from "@material-ui/icons/Save";
-import Check from "@material-ui/icons/Check";
-import RestorePage from "@material-ui/icons/RestorePage";
+import CloseIcon from "@material-ui/icons/Close";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import SaveIcon from "@material-ui/icons/Save";
+import CheckIcon from "@material-ui/icons/Check";
+import RestorePageIcon from "@material-ui/icons/RestorePage";
 
 const useStyles = makeStyles(() => ({
   modal: {
@@ -61,7 +61,7 @@ const useStyles = makeStyles(() => ({
   actions: {
     display: "flex",
     justifyContent: "space-between",
-    margin: "5px 20px 5px 20px",
+    margin: "5px 10px 5px 10px",
   },
   loadingSave: {
     textAlign: "center",
@@ -92,7 +92,7 @@ export const SchemaModal = ({
     return [schemas, user, !sub.ready()];
   });
 
-  const uniqueNames = (initValues, schemas) => {
+  const isUniqueList = (initValues, schemas) => {
     return schemas.map((schema) => {
       if (initValues.name !== schema.name) {
         return schema.name;
@@ -108,7 +108,7 @@ export const SchemaModal = ({
     if (values) {
       if (newSchema) {
         handleClose();
-        Meteor.call("addNewSchema", initValues, values, user, (err, res) => {
+        Meteor.call("addNewSchema", initValues, values, (err, res) => {
           if (res || err) {
             console.log(res || err);
           } else {
@@ -122,7 +122,7 @@ export const SchemaModal = ({
           }
         });
       } else {
-        Meteor.call("updateSchema", initValues, values, user, (err, res) => {
+        Meteor.call("updateSchema", initValues, values, (err, res) => {
           if (res || err) {
             console.log(res || err);
           } else {
@@ -145,7 +145,7 @@ export const SchemaModal = ({
 
   const handleDelete = () => {
     if (!admin) {
-      Meteor.call("deleteSchema", initValues, user, (err, res) => {
+      Meteor.call("deleteSchema", initValues, (err, res) => {
         if (res || err) {
           console.log(res || err);
         } else {
@@ -161,7 +161,7 @@ export const SchemaModal = ({
         }
       });
     } else {
-      Meteor.call("actuallyDeleteSchema", initValues, user, (err, res) => {
+      Meteor.call("actuallyDeleteSchema", initValues, (err, res) => {
         if (res || err) {
           console.log(res || err);
         } else {
@@ -307,7 +307,7 @@ export const SchemaModal = ({
   };
 
   return (
-    <>
+    <React.Fragment>
       <AlertDialog bodyAlert={alert} />
       <SnackBar bodySnackBar={snack} />
       <Dialog open={show} scroll="paper" maxWidth="md">
@@ -317,9 +317,9 @@ export const SchemaModal = ({
               {newSchema ? (
                 "Create New Schema"
               ) : (
-                <>
+                <React.Fragment>
                   Editing <strong>{initValues.name || "N/A"}</strong>
-                </>
+                </React.Fragment>
               )}
             </Typography>
           </DialogTitle>
@@ -327,7 +327,7 @@ export const SchemaModal = ({
             initialValues={initValues}
             validationSchema={schemaValidatorShaper(
               initValues,
-              uniqueNames,
+              isUniqueList,
               schemas
             )}
             onSubmit={handleSubmit}
@@ -354,7 +354,14 @@ export const SchemaModal = ({
                     style={decideHeight()}
                   >
                     <Typography className={classes.description}>
-                      {`Changes last made on: ${values.modifiedOn}`}
+                      Last change made by{" "}
+                      <strong>{`${values.modifiedBy || user.username}`}</strong>{" "}
+                      on{" "}
+                      <strong>
+                        {values.modifiedOn
+                          ? `${values.modifiedOn}`
+                          : `${new Date()}`}
+                      </strong>
                     </Typography>
                     <SchemaForm
                       touched={touched}
@@ -382,11 +389,13 @@ export const SchemaModal = ({
                                   variant="contained"
                                   color="secondary"
                                   startIcon={
-                                    width && width < 500 ? null : <Delete />
+                                    width && width < 500 ? null : <DeleteIcon />
                                   }
                                   onClick={handleDeleteDialog}
                                 >
-                                  {admin ? "Delete Forever" : "Delete"}
+                                  {admin && width > 825
+                                    ? "Delete Forever"
+                                    : "Delete"}
                                 </Button>
                                 {admin ? (
                                   <Button
@@ -398,7 +407,7 @@ export const SchemaModal = ({
                                     onClick={handleRestore}
                                     startIcon={
                                       width && width < 500 ? null : (
-                                        <RestorePage />
+                                        <RestorePageIcon />
                                       )
                                     }
                                   >
@@ -423,10 +432,10 @@ export const SchemaModal = ({
                           startIcon={
                             width && width < 500 ? null : editing ? (
                               dirty ? (
-                                <Delete />
+                                <DeleteIcon />
                               ) : null
                             ) : (
-                              <Edit />
+                              <EditIcon />
                             )
                           }
                           onClick={() => handleEdit(setValues, dirty)}
@@ -438,25 +447,23 @@ export const SchemaModal = ({
                     loginRequired={true}
                   />
 
-                  {!editing &&
-                    admin &&
-                    (!values.isDeleted || !values.adminCheck) && (
-                      <Button
-                        size={width && width < 500 ? "small" : "medium"}
-                        variant="contained"
-                        color="primary"
-                        onClick={handleApprove}
-                        startIcon={width && width < 500 ? null : <Check />}
-                      >
-                        Approve
-                      </Button>
-                    )}
+                  {!editing && admin && !values.isDeleted && (
+                    <Button
+                      size={width && width < 500 ? "small" : "medium"}
+                      variant="contained"
+                      color="primary"
+                      onClick={handleApprove}
+                      startIcon={width && width < 500 ? null : <CheckIcon />}
+                    >
+                      Approve
+                    </Button>
+                  )}
                   {!editing && (
                     <Button
                       size={width && width < 500 ? "small" : "medium"}
                       variant="contained"
                       onClick={handleClose}
-                      startIcon={width && width < 500 ? null : <Close />}
+                      startIcon={width && width < 500 ? null : <CloseIcon />}
                     >
                       Close
                     </Button>
@@ -467,7 +474,7 @@ export const SchemaModal = ({
                       type="submit"
                       variant="contained"
                       color="primary"
-                      startIcon={width && width < 500 ? null : <Save />}
+                      startIcon={width && width < 500 ? null : <SaveIcon />}
                       disabled={
                         Object.entries(errors).length > 0 ||
                         !dirty ||
@@ -494,6 +501,6 @@ export const SchemaModal = ({
           </Formik>
         </div>
       </Dialog>
-    </>
+    </React.Fragment>
   );
 };

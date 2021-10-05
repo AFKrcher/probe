@@ -28,16 +28,21 @@ import { themes } from "./css/Themes.jsx";
 import { CssBaseline, Container, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
+  body: {
+    minHeight: "calc(100vh - 120px)",
+  },
   main: {
-    position: "relative",
-    marginTop: 30,
-    marginBottom: 40,
-    minHeight: "85vh",
+    marginTop: 100,
+    marginBottom: 40
+  },
+  bottom: {
+    display: "flex",
+    justifyContent: "center",
+    width: "100%",
   },
   footer: {
     position: "relative",
-    bottom: 0,
-    height: 0,
+    bottom: 5
   },
 }));
 
@@ -89,7 +94,7 @@ export const App = () => {
         <CssBaseline />
         <Router>
           <Nav theme={theme} toggleTheme={toggleTheme} />
-          <Container maxWidth="lg">
+          <Container maxWidth="lg" className={classes.body}>
             <main className={classes.main}>
               <Switch>
                 <Route exact={true} path="/login">
@@ -117,7 +122,7 @@ export const App = () => {
                   <ProtectedRoute
                     component={Admin}
                     loginRequired={true}
-                    requiredRoles={["admin"]}
+                    requiredRoles={["admin", "moderator"]}
                   />
                 </Route>
                 <Route exact={true} path="/satellites">
@@ -146,10 +151,12 @@ export const App = () => {
                 </Route>
               </Switch>
             </main>
+          </Container>
+          <div className={classes.bottom}>
             <footer className={classes.footer}>
               <Footer />
             </footer>
-          </Container>
+          </div>
         </Router>
       </ThemeProvider>
     </HelpersContext.Provider>

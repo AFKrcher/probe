@@ -19,7 +19,10 @@ import {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%"
+    zIndex: 10,
+    width: "100%",
+    position: "fixed",
+    top: 0,
   },
   navbar: {
     backgroundColor: theme.palette.navigation.main,

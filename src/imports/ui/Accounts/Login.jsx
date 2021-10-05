@@ -164,6 +164,7 @@ export const Login = () => {
               ref={(input) => (username = input)}
               className={classes.textField}
               fullWidth
+              autoComplete="off"
             />
             <TextField
               id="password"
@@ -175,6 +176,7 @@ export const Login = () => {
               ref={(input) => (password = input)}
               className={classes.textField}
               fullWidth
+              autoComplete="off"
             />
             <Button
               id="login-button"

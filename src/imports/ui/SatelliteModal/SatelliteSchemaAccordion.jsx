@@ -183,31 +183,24 @@ export const SatelliteSchemaAccordion = ({
               accordionBeingEdited === -1) ? (
               <Grid item className={classes.iconButtons}>
                 {!editingSchema ? (
-                  <ProtectedFunctionality
-                    component={() => {
-                      return (
-                        <Tooltip
-                          title={
-                            <React.Fragment>
-                              Edit <strong>{schema.name}</strong> entry
-                            </React.Fragment>
-                          }
-                          placement="top-end"
-                          arrow
-                        >
-                          <IconButton
-                            className={classes.editIcon}
-                            onClick={handleEditSchema}
-                          >
-                            <EditIcon fontSize="small" />
-                          </IconButton>
-                        </Tooltip>
-                      );
-                    }}
-                    loginRequired={true}
-                    iconButton={true}
-                    skeleton={false}
-                  />
+                  Meteor.userId() ? ( // not using ProtectedFunctionality on this due to slow load times on .map() of accordions
+                    <Tooltip
+                      title={
+                        <React.Fragment>
+                          Edit <strong>{schema.name}</strong> entry
+                        </React.Fragment>
+                      }
+                      placement="top-end"
+                      arrow
+                    >
+                      <IconButton
+                        className={classes.editIcon}
+                        onClick={handleEditSchema}
+                      >
+                        <EditIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                  ) : null
                 ) : (
                   <React.Fragment>
                     <Tooltip title="Cancel Changes" placement="top" arrow>

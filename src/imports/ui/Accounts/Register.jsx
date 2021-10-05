@@ -61,9 +61,10 @@ export const Register = () => {
   };
 
   isValidPassword = (password) => {
-    const regex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
-    return regex.test(password) && password.length < 128;
+    // This regex test does not accurately detect special characters like #s :(
+    // const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
+    return password.length >= 8 && password.length < 128
+    // && regex.test(password)
   };
 
   const validateEmail = () => {
@@ -116,7 +117,7 @@ export const Register = () => {
         setPassErr(
           password.length >= 128
             ? "Cannot be longer than 128 characters"
-            : "Must be at least 8 characters long, and contain 1 lowercase, 1 uppercase, and 1 special character"
+            : "Must be at least 8 characters long. Recommended lowercase, uppercase, and special characters"
         );
       } else {
         setPassErr(null);
@@ -177,7 +178,6 @@ export const Register = () => {
             ref={(input) => (email = input)}
             fullWidth
             className={classes.textField}
-            required
           />
           <TextField
             autoComplete="off"
@@ -190,7 +190,6 @@ export const Register = () => {
             ref={(input) => (username = input)}
             fullWidth
             className={classes.textField}
-            required
           />
           <TextField
             autoComplete="off"
@@ -204,7 +203,6 @@ export const Register = () => {
             ref={(input) => (password = input)}
             fullWidth
             className={classes.textField}
-            required
           />
           <TextField
             autoComplete="off"
@@ -217,7 +215,6 @@ export const Register = () => {
             type="password"
             fullWidth
             className={classes.textField}
-            required
           />
           <Button
             id="register-button"

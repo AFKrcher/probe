@@ -67,12 +67,17 @@ const newSchemaValues = {
   fields: [
     {
       name: "reference",
-      description: "",
+      hidden: true,
       type: "url",
       allowedValues: [],
-      min: null,
-      max: null,
       required: true,
+    },
+    {
+      name: "verified",
+      hidden: true,
+      description: "",
+      type: "string",
+      allowedValues: ["true", "false"],
     },
   ],
 };

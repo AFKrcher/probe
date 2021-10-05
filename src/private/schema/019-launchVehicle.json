@@ -1,26 +1,31 @@
 {
-  "name": "bus",
-  "description": "Bus that provides infrastructure to the spacecraft, usually providing locations for the payload.",
+  "name": "launchVehicle",
+  "description": "Name and/or description of the launch vehicle used by the satellite and/or its parts.",
   "fields": [
     {
       "name": "reference",
-      "description": "Provide a source or rationale for the provided data",
+      "hidden": true,
       "type": "url",
       "allowedValues": [],
       "required": true
     },
     {
+      "name": "verified",
+      "hidden": true,
+      "description": "",
+      "type": "string",
+      "allowedValues": ["true", "false"]
+    },
+    {
       "name": "name",
       "type": "string",
       "allowedValues": [],
-      "required": true,
       "stringMax": 50
     },
     {
       "name": "description",
       "type": "string",
       "allowedValues": [],
-      "required": false,
       "stringMax": 255
     }
   ]

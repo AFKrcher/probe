@@ -1,13 +1,20 @@
 {
-  "name": "launchVehicle",
-  "description": "Name and/or description of the launch vehicle used by the satellite and/or its parts.",
+  "name": "payload",
+  "description": "Description of the history, origin, mission, and technical details of the payload(s) on the satellite.",
   "fields": [
     {
       "name": "reference",
-      "description": "Provide a source or rationale for the provided data",
+      "hidden": true,
       "type": "url",
       "allowedValues": [],
       "required": true
+    },
+    {
+      "name": "verified",
+      "hidden": true,
+      "description": "",
+      "type": "string",
+      "allowedValues": ["true", "false"]
     },
     {
       "name": "name",

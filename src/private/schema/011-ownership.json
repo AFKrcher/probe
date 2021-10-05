@@ -1,0 +1,39 @@
+{
+  "name": "ownership",
+  "description": "Entitles  that are considered owners of the satellite and/or its parts.",
+  "fields": [
+    {
+      "name": "reference",
+      "hidden": true,
+      "type": "url",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "verified",
+      "hidden": true,
+      "description": "",
+      "type": "string",
+      "allowedValues": ["true", "false"]
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "allowedValues": ["country", "company", "organization"],
+      "required": true
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "allowedValues": [],
+      "required": true,
+      "stringMax": 255
+    },
+    {
+      "name": "responsibility",
+      "type": "string",
+      "allowedValues": [],
+      "stringMax": 255
+    }
+  ]
+}

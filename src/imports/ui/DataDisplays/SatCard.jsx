@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 // Imports
-// import { useLocation } from "react-router";
 import { useHistory } from "react-router";
-import Clamp from "react-multiline-clamp";
 
 // Components
 import { SatelliteModal } from "../SatelliteModal/SatelliteModal";
 import VisualizeDialog from "../Dialogs/VisualizeDialog";
-import {
-  getSatID,
-  getSatName,
-  getSatDesc,
-  getSatImage,
-} from "../utils/satelliteDataFuncs";
+import { getSatID, getSatName, getSatDesc } from "../utils/satelliteDataFuncs";
 import { Gallery } from "./Gallery";
 
 // @material-ui
@@ -27,6 +20,7 @@ import {
   Typography,
   Menu,
   MenuItem,
+  Tooltip,
 } from "@material-ui/core";
 import Close from "@material-ui/icons/Close";
 
@@ -56,9 +50,6 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid",
     filter: `drop-shadow(2px 2px 5px ${theme.palette.button.shadow})`,
   },
-  iframe: {
-    border: "none",
-  },
   modalButton: {
     marginTop: -2.5,
   },
@@ -73,12 +64,7 @@ const useStyles = makeStyles((theme) => ({
 export const SatCard = ({ width, height, satellite }) => {
   const history = useHistory();
   const [showModal, setShowModal] = useState(false);
-  const [openPrompt, setOpenPrompt] = useState(false);
-  const [prompt, setPrompt] = useState({
-    title: "", // dialog title
-    text: "", // dialog body text
-    actions: "", // dialog actions
-  });
+  const [prompt, setPrompt] = useState();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -115,21 +101,21 @@ export const SatCard = ({ width, height, satellite }) => {
     setPrompt({
       title: (
         <div className={classes.modalHeader}>
-          <Typography>
-            Visualizing <strong>{satellite.names[0].name}</strong> in Space
-            Cockpit by Saber Astronautics
-          </Typography>
+          <Tooltip title="Click to open Space Cockpit in a new tab" placement="right" arrow>
+            <Typography
+              onClick={() => window.open(url, "_blank").focus()}
+              style={{ cursor: "pointer" }}
+            >
+              Visualizing <strong>{satellite.names[0].name}</strong> in Space
+              Cockpit by Saber Astronautics
+            </Typography>
+          </Tooltip>
           <IconButton
             size="small"
             className={classes.modalButton}
             id="exitVisualize"
             onClick={() => {
-              setOpenPrompt(false);
-              setPrompt({
-                title: "", //dialog title
-                text: "", //dialog body text
-                actions: "", //dialog actions
-              });
+              setPrompt(null);
             }}
           >
             <Close />
@@ -142,17 +128,15 @@ export const SatCard = ({ width, height, satellite }) => {
           height="99%"
           width="100%"
           title="SpaceCockpit"
-          className={classes.iframe}
         />
       ),
       actions: "",
     });
-    setOpenPrompt(true);
   };
 
   return (
     <React.Fragment>
-      <VisualizeDialog bodyPrompt={prompt} open={openPrompt} />
+      <VisualizeDialog bodyPrompt={prompt} open={prompt ? true : false} />
       <SatelliteModal
         show={showModal}
         initValues={satellite}
@@ -169,21 +153,27 @@ export const SatCard = ({ width, height, satellite }) => {
         </CardMedia>
         <CardContent className={classes.cardDesc}>
           <Typography
-            variant={width < 1000 ? "h6" : "h5"}
+            variant={width > 1000 ? "h5" : width > 350 ? "h6" : "body1"}
             className={classes.satName}
           >
             <strong>{getSatName(satellite)}</strong>
           </Typography>
-          <Typography gutterBottom variant={width < 1000 ? "body2" : "body1"}>
+          <Typography
+            gutterBottom
+            variant={width > 1000 ? "body1" : width > 350 ? "body2" : "caption"}
+          >
             COSPAR ID:{" "}
             {satellite.cosparID ? satellite.cosparID[0].cosparID : "N/A"}
           </Typography>
-          <Typography gutterBottom variant={width < 1000 ? "body2" : "body1"}>
+          <Typography
+            gutterBottom
+            variant={width > 1000 ? "body1" : width > 350 ? "body2" : "caption"}
+          >
             NORAD ID: {getSatID(satellite)}
           </Typography>
           <Typography
             color="textSecondary"
-            variant={width < 1000 ? "body2" : "body1"}
+            variant={width > 1000 ? "body1" : width > 350 ? "body2" : "caption"}
           >
             {getSatDesc(satellite)}
           </Typography>
