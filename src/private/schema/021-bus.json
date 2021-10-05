@@ -1,24 +1,33 @@
 {
-  "name": "payload",
-  "description": "Description of the history, origin, mission, and technical details of the payload(s) on the satellite.",
+  "name": "bus",
+  "description": "Bus that provides infrastructure to the spacecraft, usually providing locations for the payload.",
   "fields": [
     {
       "name": "reference",
-      "description": "Provide a source or rationale for the provided data",
+      "hidden": true,
       "type": "url",
       "allowedValues": [],
       "required": true
     },
     {
+      "name": "verified",
+      "hidden": true,
+      "description": "",
+      "type": "string",
+      "allowedValues": ["true", "false"]
+    },
+    {
       "name": "name",
       "type": "string",
       "allowedValues": [],
+      "required": true,
       "stringMax": 50
     },
     {
       "name": "description",
       "type": "string",
       "allowedValues": [],
+      "required": false,
       "stringMax": 255
     }
   ]

@@ -11,6 +11,7 @@ import SnackBar from "../Dialogs/SnackBar.jsx";
 
 // @material-ui
 import {
+  Container,
   Grid,
   Button,
   TextField,
@@ -20,15 +21,16 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
-  margin: {
-    margin: theme.spacing(4),
-    width: "300px",
+  root: {
+    marginBottom: -100,
   },
   formContainer: {
+    marginTop: 30,
     display: "flex",
     flexFlow: "column wrap",
     justifyContent: "center",
     alignItems: "center",
+    width: "300px",
   },
   textField: {
     marginBottom: 10,
@@ -120,13 +122,14 @@ export const Settings = () => {
     let oldPassword = document.getElementById("oldPassword")?.value;
     let newPassword = document.getElementById("newPassword")?.value;
     let confirm = document.getElementById("confirm")?.value;
-    const regex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
+    // const regex =
+    //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
     return (
-      regex.test(newPassword) &&
+      // regex.test(newPassword) &&
       newPassword !== oldPassword &&
       confirm === newPassword &&
-      newPassword?.length <= 128
+      newPassword?.length <= 128 &&
+      newPassword?.length >= 8
     );
   };
 
@@ -278,21 +281,30 @@ export const Settings = () => {
   };
 
   return (
-    <React.Fragment>
+    <Container className={classes.root}>
       <AlertDialog bodyAlert={alert} />
       <SnackBar bodySnackBar={snack} />
       {loading ? (
-        <div className={classes.spinnerContainer}>
+        <Container className={classes.spinnerContainer}>
           <CircularProgress
             className={classes.spinner}
             size={100}
             thickness={3}
           />
-        </div>
+        </Container>
       ) : (
-        <Grid container justifyContent="center" alignItems="center">
-          <FormControl className={classes.margin}>
-            <form id="settings" onSubmit={updateAccount} className={classes.flexContainer}>
+        <Grid
+          container
+          justifyContent="center"
+          alignItems="center"
+          className={classes.root}
+        >
+          <FormControl className={classes.formContainer}>
+            <form
+              id="settings"
+              onSubmit={updateAccount}
+              className={classes.flexContainer}
+            >
               <TextField
                 id="newEmail"
                 label="Email"
@@ -389,6 +401,6 @@ export const Settings = () => {
           </FormControl>
         </Grid>
       )}
-    </React.Fragment>
+    </Container>
   );
 };

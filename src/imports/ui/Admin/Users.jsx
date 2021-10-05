@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import HelpersContext from "../Dialogs/HelpersContext.jsx";
 // Imports
 import { useTracker } from "meteor/react-meteor-data";
 import { UsersCollection } from "../../api/users";
+import SnackBar from "../Dialogs/SnackBar.jsx";
+import AlertDialog from "../Dialogs/AlertDialog.jsx";
 
 // @material-ui
 import {
@@ -13,15 +16,18 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  IconButton,
+  Typography,
+  Divider,
 } from "@material-ui/core";
 import {
   DataGrid,
   GridToolbarContainer,
   GridToolbarColumnsButton,
   GridToolbarFilterButton,
-  GridToolbarExport,
   GridToolbarDensitySelector,
 } from "@material-ui/data-grid";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,9 +37,11 @@ const useStyles = makeStyles((theme) => ({
     padding: "15px 10px 15px 10px",
   },
   dataGrid: {
-    padding: "5px 5px 5px 5px",
     backgroundColor: theme.palette.grid.background,
     overflowY: "auto",
+    "& .MuiDataGrid-row": {
+      cursor: "pointer",
+    },
     "& .MuiDataGrid-cell": {
       textOverflow: "clip",
     },
@@ -45,6 +53,35 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
     fontWeight: 500,
     fontSize: "14px",
+  },
+  modalHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignContent: "center",
+    margin: "-15px -25px 10px -25px",
+  },
+  rolesTitle:{
+    marginBottom: 10
+  },
+  rolesContainer: {
+    margin: 5,
+  },
+  rolesRow: {
+    marginBottom: 10,
+    marginTop: 10,
+  },
+  divider: {
+    margin: 10,
+  },
+  actions: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  actionButton: {
+    marginRight: 10,
+    marginLeft: 10,
   },
 }));
 
@@ -60,7 +97,6 @@ export const Users = () => {
         <GridToolbarColumnsButton className={classes.toolbar} />
         <GridToolbarFilterButton className={classes.toolbar} />
         <GridToolbarDensitySelector className={classes.toolbar} />
-        <GridToolbarExport className={classes.toolbar} />
       </GridToolbarContainer>
     );
   }
@@ -142,14 +178,45 @@ export const Users = () => {
     });
   };
 
+  const { alert, setAlert, setOpenAlert } = useContext(HelpersContext);
+  const verifyChange = (user, role) => {
+    setAlert({
+      title: <span>{role === "dummies" ? "Ban user" : "Delete user"}</span>,
+      text: (
+        <span>
+          {role === "dummies"
+            ? `Are you sure you want to ban ${user.username}?`
+            : `Are you sure you want to permanently delete ${user.username}?`}
+        </span>
+      ),
+      actions: (
+        <Button
+          variant="outlined"
+          size="small"
+          color="secondary"
+          disableElevation
+          onClick={() => {
+            role === "dummies"
+              ? (addUserToRole(user, role), setOpenAlert(false))
+              : (deleteAccount(user._id), setOpenAlert(false));
+          }}
+        >
+          Confirm
+        </Button>
+      ),
+      closeAction: (
+        <Button variant="outlined" size="small">
+          Cancel
+        </Button>
+      ),
+    });
+    setOpenAlert(true);
+  };
+
   return (
     <React.Fragment>
-      <Grid
-        container
-        justifyContent="space-between"
-        alignItems="center"
-        className={classes.root}
-      >
+      <AlertDialog bodyAlert={alert} />
+      <Grid container justifyContent="space-between" className={classes.root}>
         <Grid item xs>
           <DataGrid
             className={classes.dataGrid}
@@ -173,33 +240,95 @@ export const Users = () => {
         </Grid>
       </Grid>
 
-      <Dialog open={open} onClose={handleClose} minWidth="md">
-        <DialogTitle>
-          Managing User: <strong>{editUser.username}</strong>
-        </DialogTitle>
+      <Dialog open={open} onClose={handleClose} maxWidth="md">
         <DialogContent>
-          <DialogContentText>
-            <span>Roles</span>
-            {Roles.getRolesForUser(editUser._id).map((role, index) => {
-              return (
-                <span key={index}>
-                  {role}
-                  <Button
-                    variant="contained"
-                    onClick={() => removeRole(editUser, role)}
-                    color="primary"
-                    autoFocus
-                  >
-                    Remove
-                  </Button>
-                </span>
-              );
-            })}
+          <DialogTitle>
+            <div className={classes.modalHeader}>
+              <Typography variant="h5">
+                Managing <strong>{editUser.username}</strong>
+              </Typography>
+              <IconButton size="small" onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
+            </div>
+          </DialogTitle>
+          <DialogContentText className={classes.rolesContainer}>
+            <Typography variant="h6">
+              <Grid
+                container
+                display="flex"
+                justifyContent="flex-end"
+                alignItems="center"
+              >
+                <Grid item xs={12} className={classes.rolesTitle}>
+                  <strong>Roles:</strong>
+                </Grid>
+                <Grid item xs={12}>
+                  <Divider
+                    className={classes.divider}
+                    variant="inset"
+                    orientation="horizontal"
+                  />
+                </Grid>
+                {Roles.getRolesForUser(editUser._id).map((role, index) => {
+                  return (
+                    <React.Fragment>
+                      <Grid
+                        item
+                        xs={5}
+                        key={index}
+                        className={classes.rolesRow}
+                      >
+                        {role}
+                      </Grid>
+                      <Grid
+                        item
+                        xs={7}
+                        key={index}
+                        className={classes.rolesRow}
+                      >
+                        <Button
+                          variant="contained"
+                          onClick={() => removeRole(editUser, role)}
+                          color="secondary"
+                          size="small"
+                        >
+                          Remove
+                        </Button>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Divider
+                          className={classes.divider}
+                          variant="inset"
+                          orientation="horizontal"
+                        />
+                      </Grid>
+                    </React.Fragment>
+                  );
+                })}
+              </Grid>
+            </Typography>
           </DialogContentText>
         </DialogContent>
-
-        <DialogActions>
+        <DialogActions className={classes.actions}>
           <Button
+            className={classes.actionButton}
+            variant="contained"
+            onClick={() => verifyChange(editUser, "dummies")}
+            color="secondary"
+          >
+            Ban
+          </Button>
+          <Button
+            className={classes.actionButton}
+            variant="contained"
+            onClick={() => verifyChange(editUser, "delete")}
+            color="secondary"
+          >
+            Delete
+          </Button>
+          <Button
+            className={classes.actionButton}
             variant="contained"
             onClick={() => addUserToRole(editUser, "moderator")}
             color="primary"
@@ -208,26 +337,13 @@ export const Users = () => {
             Make Moderator
           </Button>
           <Button
+            className={classes.actionButton}
             variant="contained"
             onClick={() => addUserToRole(editUser, "admin")}
             color="primary"
             autoFocus
           >
             Make Admin
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => addUserToRole(editUser, "dummies")}
-            color="secondary"
-          >
-            Ban
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => deleteAccount(editUser._id)}
-            color="secondary"
-          >
-            Delete
           </Button>
         </DialogActions>
       </Dialog>

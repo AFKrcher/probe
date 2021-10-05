@@ -18,6 +18,8 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import LinkIcon from "@material-ui/icons/Link";
+import CheckBoxIcon from "@material-ui/icons/CheckBoxOutlined";
+import ReportIcon from "@material-ui/icons/ReportOutlined";
 
 const useStyles = makeStyles((theme) => ({
   entryPaper: {
@@ -34,12 +36,21 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 4,
     resize: "both",
   },
-  inputAdornment: {
+  urlAdornment: {
     cursor: "pointer",
     color: theme.palette.text.primary,
+    filter: "drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4))",
     "&:hover": {
       color: theme.palette.info.main,
     },
+  },
+  verifiedAdornment: {
+    color: theme.palette.success.main,
+    filter: "drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4))",
+  },
+  notVerifiedAdornment: {
+    color: theme.palette.warning.main,
+    filter: "drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4))",
   },
   helpersError: {
     marginLeft: 14,
@@ -73,19 +84,20 @@ export const SatelliteSchemaEntry = ({
   const classes = useStyles();
 
   const [helpers, setHelpers] = useState(null);
-  const [charCount, setCharCount] = useState(null);
-
-  const debounced = useDebouncedCallback((event) => {
+  const debounced = useDebouncedCallback((event, verifiedField) => {
     let obj = {};
     obj[`${event.target.name}`] = true;
     setTouched(obj);
+
     setFieldValue(event.target.name, event.target.value);
-  }, 500);
+    // set verified to false if a field is modified and subsequently saved
+    setFieldValue(verifiedField, false);
+  }, 300);
 
   const preliminaryDebounced = useDebouncedCallback((event) => {
     // Needed in order for errors to be properly set or cleared after Formik completes a check on the satellite data
     setFieldValue(event.target.name, event.target.value);
-  }, 300);
+  }, 800);
 
   const refreshHelpers = () => {
     if (JSON.stringify(errors) !== "{}") {
@@ -120,14 +132,7 @@ export const SatelliteSchemaEntry = ({
         helper = `Minimum Value: N/A, Maximum Value: ${field.max}`;
     }
     if (field.stringMax) {
-      helper = `${charCount || entry[field.name]?.length} / ${field.stringMax}`;
-    }
-    if (field.allowedValues?.length > 0) {
-      if (field.allowedValues?.length === 2) {
-        helper = `Allowed Values: ${field.allowedValues.join(" or ")}`;
-      } else {
-        helper = `Allowed Values: ${field.allowedValues.join(", ")}`;
-      }
+      helper = `${entry[`${field.name}`]?.length || 0} / ${field.stringMax}`;
     }
     return helper;
   };
@@ -147,12 +152,7 @@ export const SatelliteSchemaEntry = ({
     window.open(url, "_blank").focus();
   };
 
-  const charCounter = (event) => {
-    if (typeof event.target.value === "string")
-      setCharCount(event.target.value.length);
-  };
-
-  const fieldProps = (classes, field, fieldIndex) => {
+  const fieldProps = (classes, field, fieldIndex, verified) => {
     return {
       className: classes.field,
       inputProps: {
@@ -169,9 +169,16 @@ export const SatelliteSchemaEntry = ({
       },
       defaultValue: entry[`${field.name}`] || "",
       onChange: (event) => {
-        charCounter(event);
         preliminaryDebounced(event);
-        debounced(event);
+        debounced(event, `${schema.name}.${entryIndex}.verified`);
+      },
+      onBlur: (event) => {
+        preliminaryDebounced(event);
+        debounced(event, `${schema.name}.${entryIndex}.verified`);
+      },
+      onInput: (event) => {
+        preliminaryDebounced(event);
+        debounced(event, `${schema.name}.${entryIndex}.verified`);
       },
       error: filteredHelper(schema.name, entryIndex, fieldIndex) ? true : false,
       label: field.name,
@@ -187,7 +194,13 @@ export const SatelliteSchemaEntry = ({
       component:
         editing || editingSchema
           ? TextField
-          : (props) => linkAdornment(props, entry[`${field.name}`], field.type),
+          : (props) =>
+              linkAdornment(
+                props,
+                entry[`${field.name}`],
+                field.type,
+                verified
+              ),
 
       type: field.type === "date" ? "datetime-local" : field.type,
       disabled: !editingSchema,
@@ -195,20 +208,20 @@ export const SatelliteSchemaEntry = ({
     };
   };
 
-  const linkAdornment = (props, field, type) => {
+  const linkAdornment = (props, field, type, verified) => {
     return (
       <TextField
         InputProps={
-          type === "url"
+          type === "url" // adornment for URLs
             ? {
                 endAdornment: (
                   <Tooltip
-                    title={"Open URL in a new tab"}
+                    title="Open URL in a new tab"
                     arrow
                     placement="top-end"
                   >
                     <InputAdornment
-                      className={classes.inputAdornment}
+                      className={classes.urlAdornment}
                       position="end"
                       onClick={(e) => {
                         e.preventDefault();
@@ -216,6 +229,26 @@ export const SatelliteSchemaEntry = ({
                       }}
                     >
                       <LinkIcon />
+                    </InputAdornment>
+                  </Tooltip>
+                ),
+              }
+            : field && field.length > 0 // only have verification adornment if there is data
+            ? {
+                endAdornment: (
+                  <Tooltip
+                    title={verified ? "Verified" : "Unverified"}
+                    placement="top"
+                  >
+                    <InputAdornment
+                      className={
+                        verified
+                          ? classes.verifiedAdornment
+                          : classes.notVerifiedAdornment
+                      }
+                      position="end"
+                    >
+                      {verified ? <CheckBoxIcon /> : <ReportIcon />}
                     </InputAdornment>
                   </Tooltip>
                 ),
@@ -233,10 +266,17 @@ export const SatelliteSchemaEntry = ({
         <Grid container spacing={0}>
           <Grid item xs={editingSchema ? 11 : 12} className={classes.allFields}>
             {schema.fields.map((field, fieldIndex) => {
-              return (
+              return !field.hidden || field.name === "reference" ? (
                 <div key={fieldIndex} className={classes.fieldContainer}>
                   {field.allowedValues?.length === 0 ? (
-                    <Field {...fieldProps(classes, field, fieldIndex)} />
+                    <Field
+                      {...fieldProps(
+                        classes,
+                        field,
+                        fieldIndex,
+                        entry["verified"]
+                      )}
+                    />
                   ) : (
                     <FormControl
                       className={classes.field}
@@ -251,7 +291,15 @@ export const SatelliteSchemaEntry = ({
                           : false
                       }
                     >
-                      <Field {...fieldProps(classes, field, fieldIndex)} select>
+                      <Field
+                        {...fieldProps(
+                          classes,
+                          field,
+                          fieldIndex,
+                          entry["verified"]
+                        )}
+                        select
+                      >
                         <MenuItem value="" disabled>
                           <em>Allowed Values</em>
                         </MenuItem>
@@ -278,7 +326,7 @@ export const SatelliteSchemaEntry = ({
                     </Typography>
                   ) : null}
                 </div>
-              );
+              ) : null;
             })}
             <div className={classes.lastBuffer} />
           </Grid>

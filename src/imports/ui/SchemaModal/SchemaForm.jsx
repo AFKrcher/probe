@@ -119,7 +119,7 @@ export const SchemaForm = ({
         name="fields"
         render={() =>
           formValues.fields.map((field, i) => {
-            return (
+            return !field.hidden ? (
               <React.Fragment key={`fragment-${i}`}>
                 <Grid
                   key={`divider-${i}`}
@@ -152,7 +152,7 @@ export const SchemaForm = ({
                   </Grid>
                 )}
               </React.Fragment>
-            );
+            ) : null;
           })
         }
       />

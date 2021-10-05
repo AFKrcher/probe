@@ -1,0 +1,45 @@
+{
+  "_id": "d9naDSJHjLqs4kvEo",
+  "noradID": "41765",
+  "names": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Tiangong-2",
+      "verified": false,
+      "name": "Tiangong-2"
+    },
+    {
+      "reference": "https://en.wikipedia.org/wiki/Tiangong-2",
+      "verified": false,
+      "name": "Celestial Palace 2"
+    }
+  ],
+  "images": [
+    {
+      "reference": "https://www.space.com/40990-china-tiangong-2-space-lab-maneuver-mystery.html",
+      "verified": false,
+      "description": "Tiangong-2 Space Lab",
+      "url": "https://cdn.mos.cms.futurecdn.net/byVyz7j2meiBG9Lns8QyM9.jpeg",
+      "entireSatellite": "true"
+    }
+  ],
+  "cosparID": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Tiangong-2",
+      "verified": false,
+      "cosparID": "2016-057A"
+    }
+  ],
+  "descriptionShort": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Tiangong-2",
+      "verified": false,
+      "descriptionShort": "Chinese space lab intended as a testbed for key technologies used in the Tiangong station (Chinese large modular space station) of which the first module launched on the 29th April 2021 and the remaining modules of which are planned for launch in 2022."
+    }
+  ],
+  "isDeleted": false,
+  "createdOn": "2021-10-05T16:50:21.192Z",
+  "createdBy": "admin",
+  "modifiedOn": "2021-10-05T16:50:21.193Z",
+  "modifiedBy": "admin",
+  "adminCheck": true
+}

@@ -10,7 +10,7 @@ import { SchemaCollection } from "/imports/api/schemas";
 import { SatelliteCollection } from "/imports/api/satellites";
 import { UsersCollection } from "/imports/api/users";
 import { ErrorsCollection } from "/imports/api/errors";
-//import { helmetOptions } from "./helmet";
+import { helmetOptions } from "./helmet";
 import { schemaValidatorShaper } from "./validators/schemaDataFuncs";
 import { satelliteValidatorShaper } from "./validators/satelliteDataFuncs";
 import "./routes";
@@ -29,17 +29,10 @@ const isValidUsername = (oldUsername, newUsername) => {
   return regex.test(newUsername) && oldCheck && newUsername.length < 32;
 };
 
-isValidPassword = (oldPassword, newPassword) => {
-  const oldCheck = oldPassword ? oldPassword !== newPassword : true;
-  const regex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
-  return regex.test(newPassword) && oldCheck && newPassword.length < 128;
-};
 Meteor.startup(() => {
-
-  console.log("============PROBE server is running============")
+  console.log("> PROBE server is starting-up...");
   // See helmet.js for Content Security Policy (CSP) options
-  //WebApp.connectHandlers.use(helmet(helmetOptions()));
+  WebApp.connectHandlers.use(helmet(helmetOptions()));
 
   // Account publications, methods, and seeds
   Roles.createRole("admin", { unlessExists: true });
@@ -204,11 +197,7 @@ Meteor.startup(() => {
     },
 
     registerUser: (email, username, password) => {
-      if (
-        isValidEmail(null, email) &&
-        isValidUsername(null, username) &&
-        isValidPassword(null, password)
-      ) {
+      if (isValidEmail(null, email) && isValidUsername(null, username)) {
         try {
           Accounts.createUser({
             email: email,
@@ -238,7 +227,7 @@ Meteor.startup(() => {
       return;
     } else {
       Accounts.createUser({
-        email: "admin@gmail.com",
+        email: "admin@saberastro.com",
         username: "admin",
         password: "12345678aA!",
       });
@@ -307,6 +296,7 @@ Meteor.startup(() => {
     files = fs.readdirSync("./assets/app/satellite");
     files.forEach(function (file) {
       data = fs.readFileSync("./assets/app/satellite/" + file, "ascii");
+      console.log(file)
       jsonObj.push(JSON.parse(data));
     });
     jsonObj.forEach(function (data) {
@@ -385,14 +375,20 @@ Meteor.startup(() => {
       }
     },
     actuallyDeleteSatellite: (values) => {
-      if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+      if (
+        Roles.userIsInRole(Meteor.userId(), "admin") ||
+        Roles.userIsInRole(Meteor.userId(), "moderator")
+      ) {
         SatelliteCollection.remove(values._id);
       } else {
         return "Unauthorized [401]";
       }
     },
     restoreSatellite: (values) => {
-      if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+      if (
+        Roles.userIsInRole(Meteor.userId(), "admin") ||
+        Roles.userIsInRole(Meteor.userId(), "moderator")
+      ) {
         values["isDeleted"] = false;
         values["modifiedOn"] = new Date();
         values["modifiedBy"] = Meteor.user().username;
@@ -402,8 +398,16 @@ Meteor.startup(() => {
       }
     },
     adminCheckSatellite: (values) => {
-      if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+      if (
+        Roles.userIsInRole(Meteor.userId(), "admin") ||
+        Roles.userIsInRole(Meteor.userId(), "moderator")
+      ) {
         values["adminCheck"] = true;
+        values.forEach((value) =>
+          value.forEach((field) => {
+            if (field) field.verified = true;
+          })
+        );
         SatelliteCollection.update({ _id: values._id }, values);
       } else {
         return "Unauthorized [401]";
@@ -475,14 +479,20 @@ Meteor.startup(() => {
       }
     },
     actuallyDeleteSchema: (values) => {
-      if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+      if (
+        Roles.userIsInRole(Meteor.userId(), "admin") ||
+        Roles.userIsInRole(Meteor.userId(), "moderator")
+      ) {
         SchemaCollection.remove(values._id);
       } else {
         return "Unauthorized [401]";
       }
     },
     restoreSchema: (values) => {
-      if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+      if (
+        Roles.userIsInRole(Meteor.userId(), "admin") ||
+        Roles.userIsInRole(Meteor.userId(), "moderator")
+      ) {
         values["isDeleted"] = false;
         values["modifiedOn"] = new Date();
         values["modifiedBy"] = Meteor.user().username;
@@ -492,12 +502,21 @@ Meteor.startup(() => {
       }
     },
     adminCheckSchema: (values) => {
-      if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+      if (
+        Roles.userIsInRole(Meteor.userId(), "admin") ||
+        Roles.userIsInRole(Meteor.userId(), "moderator")
+      ) {
         values["adminCheck"] = true;
+        values.forEach((value) =>
+          value.forEach((field) => {
+            if (field) field.verified = true;
+          })
+        );
         SchemaCollection.update({ _id: values._id }, values);
       } else {
         return "Unauthorized [401]";
       }
     },
   });
+  console.log("> PROBE server is running!");
 });

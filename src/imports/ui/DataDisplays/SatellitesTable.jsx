@@ -8,6 +8,7 @@ import useWindowSize from "../Hooks/useWindowSize.jsx";
 import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
 
 // Components
+import VisualizeDialog from "../Dialogs/VisualizeDialog";
 import { SatelliteModal } from "../SatelliteModal/SatelliteModal";
 import { SatelliteCollection } from "../../api/satellites";
 import SnackBar from "../Dialogs/SnackBar.jsx";
@@ -19,17 +20,21 @@ import {
   makeStyles,
   Typography,
   Tooltip,
-  Switch,
+  IconButton,
 } from "@material-ui/core";
 import {
   DataGrid,
   GridToolbarContainer,
   GridToolbarColumnsButton,
   GridToolbarFilterButton,
-  GridToolbarExport,
+  getGridStringOperators,
   GridToolbarDensitySelector,
 } from "@material-ui/data-grid";
 import Star from "@material-ui/icons/Star";
+import StarBorderIcon from "@material-ui/icons/StarBorder";
+import PublicIcon from "@material-ui/icons/Public";
+import Close from "@material-ui/icons/Close";
+import ReadMoreIcon from "@material-ui/icons/More";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -76,12 +81,37 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 5,
     color: theme.palette.text.disabled,
   },
-  starButton: {
-    marginBottom: -5,
+  actions: {
+    display: "flex",
+    marginLeft: 0,
+  },
+  actionIconButton: {
+    padding: 7,
+    marginLeft: 15,
+  },
+  starIconButton: {
+    marginLeft: 15,
+  },
+  starButtonFilled: {
     cursor: "pointer",
+    fill: "gold",
     "&:hover": {
       color: theme.palette.info.light,
     },
+  },
+  starButtonHeader: {
+    cursor: "pointer",
+    fill: "gold",
+    marginBottom: -5,
+  },
+  modalButton: {
+    marginTop: -2.5,
+  },
+  modalHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignContent: "center",
+    margin: "0px 5px -15px 5px",
   },
 }));
 
@@ -107,6 +137,7 @@ export const SatellitesTable = () => {
   const [sortOrbit, setSortOrbit] = useState(0);
   const [selector, setSelector] = useState({});
   const [columns, setColumns] = useState([]);
+  const [prompt, setPrompt] = useState();
 
   const decideSort = () => {
     if (sortNames) return { names: sortNames };
@@ -115,7 +146,7 @@ export const SatellitesTable = () => {
     if (sortOrbit) return { orbit: sortOrbit };
   };
 
-  const [rows, count, isLoadingSchemas, isLoadingSats] = useTracker(() => {
+  const [rows, isLoadingSchemas, isLoadingSats] = useTracker(() => {
     const subSchemas = Meteor.subscribe("satellites");
     const subSats = Meteor.subscribe("satellites");
     const count = SatelliteCollection.find().count();
@@ -137,7 +168,7 @@ export const SatellitesTable = () => {
         };
       });
     rows.getRows = count;
-    return [rows, count, !subSchemas.ready(), !subSats.ready()];
+    return [rows, !subSchemas.ready(), !subSats.ready()];
   });
 
   function CustomToolbar() {
@@ -146,21 +177,20 @@ export const SatellitesTable = () => {
         <GridToolbarColumnsButton className={classes.toolbar} />
         <GridToolbarFilterButton className={classes.toolbar} />
         <GridToolbarDensitySelector className={classes.toolbar} />
-        <GridToolbarExport className={classes.toolbar} />
       </GridToolbarContainer>
     );
   }
 
   const handleAddNewSatellite = () => {
+    setInitialSatValues(newSatValues);
     setNewSat(true);
     setShowModal(true);
-    setInitialSatValues(newSatValues);
   };
 
   const handleRowDoubleClick = (schemaObject) => {
+    setInitialSatValues(schemaObject);
     setNewSat(false);
     setShowModal(true);
-    setInitialSatValues(schemaObject);
   };
 
   const handleFilter = (e) => {
@@ -266,21 +296,24 @@ export const SatellitesTable = () => {
         arrow
         placement="top"
       >
-        <span>
-          <Switch
-            color="primary"
-            size="medium"
-            checked={checkIfFavorite()}
-            onClick={(e) =>
-              handleFavorite(
-                e,
-                params.id,
-                favoritesNameShortener(),
-                checkIfFavorite()
-              )
-            }
-          />
-        </span>
+        <IconButton
+          size="small"
+          className={classes.starIconButton}
+          onClick={(e) =>
+            handleFavorite(
+              e,
+              params.id,
+              favoritesNameShortener(),
+              checkIfFavorite()
+            )
+          }
+        >
+          {checkIfFavorite() ? (
+            <Star className={classes.starButtonFilled} />
+          ) : (
+            <StarBorderIcon className={classes.starButtonEmpty} />
+          )}
+        </IconButton>
       </Tooltip>
     );
   };
@@ -300,21 +333,26 @@ export const SatellitesTable = () => {
         headerAlign: "left",
         field: "id",
         headerName: "NORAD ID",
-        minWidth: 170,
+        minWidth: 160,
+        filterOperators: getGridStringOperators().filter(
+          (operator) => operator.value === "contains"
+        ),
       },
       {
         headerAlign: "left",
         field: "type",
         headerName: "TYPE",
-        minWidth: 150,
+        minWidth: 130,
         editable: false,
+        filterable: false,
       },
       {
         headerAlign: "left",
         field: "orbit",
         headerName: "ORBIT(S)",
-        minWidth: 200,
+        minWidth: 150,
         editable: false,
+        filterable: false,
       },
       {
         headerAlign: "left",
@@ -323,6 +361,51 @@ export const SatellitesTable = () => {
         minWidth: 250,
         flex: 1,
         editable: false,
+        filterOperators: getGridStringOperators().filter(
+          (operator) => operator.value === "contains"
+        ),
+      },
+      {
+        headerAlign: "center",
+        filterable: false,
+        sortable: false,
+        field: "actions",
+        headerName: "ACTIONS",
+        width: 150,
+        align: "left",
+        renderCell: (satellite) => {
+          return (
+            <span className={classes.actions}>
+              <Tooltip title="View satellite data" arrow placement="top">
+                <IconButton
+                  className={classes.actionIconButton}
+                  onClick={() =>
+                    handleRowDoubleClick(
+                      SatelliteCollection.find({
+                        noradID: satellite.id,
+                      }).fetch()[0]
+                    )
+                  }
+                >
+                  <ReadMoreIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Visualize satellite" arrow placement="top">
+                <IconButton
+                  className={classes.actionIconButton}
+                  onClick={() => {
+                    handleVisualize(
+                      satellite.row.names,
+                      `https://spacecockpit.saberastro.com/?SID=${satellite.id}&FS=${satellite.id}`
+                    );
+                  }}
+                >
+                  <PublicIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </span>
+          );
+        },
       },
     ];
 
@@ -331,7 +414,7 @@ export const SatellitesTable = () => {
         field: (
           <Tooltip title="Toggle favorites filter" arrow placement="top-start">
             <span onClick={() => filterFavorites()}>
-              <Star className={classes.starButton} />
+              <Star className={classes.starButtonHeader} />
             </span>
           </Tooltip>
         ),
@@ -367,8 +450,53 @@ export const SatellitesTable = () => {
     );
   };
 
+  const handleVisualize = (satNames, url) => {
+    setPrompt({
+      title: (
+        <div className={classes.modalHeader}>
+          <Tooltip
+            title="Click to open Space Cockpit in a new tab"
+            placement="right"
+            arrow
+          >
+            <Typography
+              onClick={() => window.open(url, "_blank").focus()}
+              style={{
+                cursor: "pointer",
+              }}
+            >
+              Visualizing <strong>{satNames}</strong> in Space Cockpit by Saber
+              Astronautics
+            </Typography>
+          </Tooltip>
+          <IconButton
+            size="small"
+            className={classes.modalButton}
+            id="exitVisualize"
+            onClick={() => {
+              setPrompt(null);
+            }}
+          >
+            <Close />
+          </IconButton>
+        </div>
+      ),
+      text: (
+        <iframe
+          src={url}
+          height="99%"
+          width="100%"
+          title="SpaceCockpit"
+          className={classes.iframe}
+        />
+      ),
+      actions: "",
+    });
+  };
+
   return (
     <React.Fragment>
+      <VisualizeDialog bodyPrompt={prompt} open={prompt ? true : false} />
       <SnackBar bodySnackBar={snack} />
       <div className={classes.root}>
         <Grid container justifyContent="space-between" alignItems="center">

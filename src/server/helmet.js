@@ -22,11 +22,11 @@ export const helmetOptions = () => {
       blockAllMixedContent: true,
       directives: {
         defaultSrc: [self, unsafeInline],
-        scriptSrc: ["*"],
+        scriptSrc: [self, unsafeInline],
         childSrc: [self, unsafeInline],
         connectSrc: connectSrc.concat(allowedOrigins),
         fontSrc: [self, data, unsafeInline],
-        formAction: [self],
+        formAction: [self, unsafeInline],
         frameAncestors: [self],
         frameSrc: ["*"],
         imgSrc: ["*"],

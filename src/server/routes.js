@@ -58,7 +58,6 @@ WebApp.connectHandlers.use("/api/satellites", async (req, res, next) => {
         res.end(JSON.stringify(error));
       }
     } else if (req.query.name) {
-      let result = null;
       try {
         const target = req.query.name;
         const result = SatelliteCollection.find({
@@ -69,18 +68,6 @@ WebApp.connectHandlers.use("/api/satellites", async (req, res, next) => {
           res.writeHead(200);
           res.end(JSON.stringify(result));
         }
-        // sats.fetch().forEach((sat) => {
-        //   let bool = sat.names.find((name) => {
-        //     return name.names || name.name === target ? true : false;
-        //   });
-        //   if (bool) {
-        //     result = sat;
-        //   }
-        // });
-        // if (result) {
-        //   res.writeHead(200);
-        //   res.end(JSON.stringify(result));
-        // } 
         else {
           error = {
             error: "Could not fetch sat based on name - non-existent name. And I should know. I invented satellites.",

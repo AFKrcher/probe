@@ -4,12 +4,12 @@
 
 import * as Yup from "yup";
 
-export const schemaValidatorShaper = (initValues, uniqueNames, schemas) => {
+export const schemaValidatorShaper = (initValues, isUniqueList, schemas) => {
   return Yup.object().shape({
     _id: Yup.string(),
     name: Yup.string()
       .notOneOf(
-        uniqueNames(initValues, schemas),
+        isUniqueList(initValues, schemas),
         (obj) => `The schema name, ${obj.value}, already exists `
       )
       .matches(

@@ -4,7 +4,7 @@
 
 import * as Yup from "yup";
 
-const uniqueNames = (initValues, schemas) => {
+const isUniqueList = (initValues, schemas) => {
   return schemas.map((schema) => {
     if (initValues.name !== schema.name) {
       return schema.name;
@@ -17,7 +17,7 @@ export const schemaValidatorShaper = (initValues, schemas) => {
     _id: Yup.string(),
     name: Yup.string()
       .notOneOf(
-        uniqueNames(initValues, schemas),
+        isUniqueList(initValues, schemas),
         (obj) => `The schema name, ${obj.value}, already exists `
       )
       .matches(
