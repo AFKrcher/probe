@@ -1,0 +1,92 @@
+{
+  "_id": "w2AHNkKxATCFrByJb",
+  "noradID": "47097",
+  "isDeleted": false,
+  "names": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Chang%27e_5",
+      "verified": false,
+      "name": "Chang'e 5"
+    }
+  ],
+  "cosparID": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Chang%27e_5",
+      "verified": false,
+      "cosparID": "2020-087A"
+    }
+  ],
+  "ownership": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Chang%27e_5",
+      "verified": false,
+      "type": "country",
+      "name": "People's Republic of China",
+      "responsibility": ""
+    }
+  ],
+  "manufacturer": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Chang%27e_5",
+      "verified": false,
+      "name": "China Academy of Space Technology (CAST)",
+      "responsibility": ""
+    }
+  ],
+  "launchSites": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Chang%27e_5",
+      "verified": false,
+      "name": "Wenchang Space Launch Site",
+      "description": "Hainan, China",
+      "latitude": "",
+      "longitude": ""
+    }
+  ],
+  "descriptionShort": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Chang%27e_5",
+      "verified": false,
+      "descriptionShort": "5th lunar exploration mission of the Chinese Lunar Exploration Program, and China's 1st lunar sample-return mission."
+    }
+  ],
+  "images": [
+    {
+      "reference": "https://upload.wikimedia.org/wikipedia/commons/2/2d/Chang-e-5-assembly-CG-1-Cropped.jpg",
+      "verified": false,
+      "description": "Chang'e 5 probe separating from the launcher (artist's impression)",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/2/2d/Chang-e-5-assembly-CG-1-Cropped.jpg",
+      "entireSatellite": "false"
+    }
+  ],
+  "launchMassKg": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2020-087A",
+      "verified": false,
+      "launchMassKg": "8200"
+    }
+  ],
+  "launchVehicle": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2020-087A",
+      "verified": false,
+      "name": "Long March 5",
+      "description": ""
+    }
+  ],
+  "missionDuration": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2020-087A",
+      "verified": false,
+      "start": "2020-11-23T15:30",
+      "plannedMissionDuration": "14",
+      "actualMissionDuration": "8",
+      "durationScale": "days"
+    }
+  ],
+  "createdOn": "2021-10-06T00:23:16.556Z",
+  "createdBy": "admin",
+  "modifiedOn": "2021-10-06T00:23:16.557Z",
+  "modifiedBy": "admin",
+  "adminCheck": true
+}

@@ -1,0 +1,96 @@
+{
+  "_id": "MGsmA4KdK52g79WRn",
+  "noradID": "41838",
+  "names": [
+    {
+      "reference": "https://www.n2yo.com/satellite/?s=41838",
+      "verified": false,
+      "name": "Shijian-17"
+    }
+  ],
+  "ownership": [
+    {
+      "reference": "https://www.n2yo.com/satellite/?s=41838",
+      "verified": false,
+      "type": "country",
+      "name": "People's Republic of China",
+      "responsibility": ""
+    }
+  ],
+  "launchSites": [
+    {
+      "reference": "https://www.n2yo.com/satellite/?s=41838",
+      "verified": false,
+      "name": "Wenchang Satellite Launch Center (WSC)",
+      "description": "",
+      "latitude": "",
+      "longitude": ""
+    }
+  ],
+  "descriptionShort": [
+    {
+      "reference": "https://www.n2yo.com/satellite/?s=41838",
+      "verified": false,
+      "descriptionShort": "An experimental satellite that carries an electric thruster test package, a type of propulsion system that could give the spacecraft great maneuverability to efficiently adjust its orbit and move around the geostationary belt."
+    }
+  ],
+  "cosparID": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2016-065A",
+      "verified": false,
+      "cosparID": "2016-065A"
+    }
+  ],
+  "manufacturer": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2016-065A",
+      "verified": false,
+      "name": "China Academy of Space Technology (CAST)",
+      "responsibility": ""
+    }
+  ],
+  "orbit": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2016-065A",
+      "verified": false,
+      "orbit": "GEO",
+      "description": ""
+    }
+  ],
+  "bus": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2016-065A",
+      "verified": false,
+      "name": "DFH-3B",
+      "description": ""
+    }
+  ],
+  "power": [
+    {
+      "reference": "https://space.skyrocket.de/doc_sdat/sj-17.htm",
+      "verified": false,
+      "source": "solar",
+      "sourceStatus": "",
+      "voltage": "",
+      "voltageScale": "",
+      "current": "",
+      "currentScale": "",
+      "description": "2 deployable solar arrays plus batteries"
+    }
+  ],
+  "isDeleted": false,
+  "createdOn": "2021-10-05T21:10:07.454Z",
+  "createdBy": "admin",
+  "modifiedOn": "2021-10-05T22:18:52.812Z",
+  "modifiedBy": "admin",
+  "adminCheck": true,
+  "images": [
+    {
+      "reference": "https://space.skyrocket.de/doc_sdat/sj-17.htm",
+      "verified": false,
+      "description": "Artist rendering of satellite from/for CNTV",
+      "url": "https://space.skyrocket.de/img_sat/sj-17__1.jpg",
+      "entireSatellite": "true"
+    }
+  ]
+}
