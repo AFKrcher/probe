@@ -33,7 +33,7 @@
     { "name": "thrust", "type": "number", "allowedValues": [] },
     {
       "name": "thrustScale",
-      "type": "number",
+      "type": "string",
       "allowedValues": ["newtons", "millinewtons"]
     },
     {

@@ -32,7 +32,7 @@ const useStyles = makeStyles(() => ({
     minHeight: "calc(100vh - 120px)",
   },
   main: {
-    marginTop: 100,
+    marginTop: 95,
     marginBottom: 40
   },
   bottom: {
@@ -73,7 +73,7 @@ export const App = () => {
       source: source,
       error: error,
     };
-    // Meteor.call("addError", obj);
+    Meteor.call("addError", obj);
     return true;
   };
 

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Users } from "./Users";
 import { ApproveSatellites } from "./ApproveSatellites";
 import { ApproveSchemas } from "./ApproveSchemas";
+import { ErrorLog } from "./ErrorLog";
 
 // @material-ui
 import {
@@ -95,6 +96,22 @@ export const Admin = () => {
           >
             Approve Schemas
           </Button>
+          <Divider
+            orientation="vertical"
+            className={classes.divider}
+            flexItem
+          />
+          <Button
+            size="medium"
+            className={
+              ("tabButton", toggleState === 4 ? "tabs active-tabs" : "tabs")
+            }
+            onClick={() => {
+              toggleTab(4);
+            }}
+          >
+            Error Log
+          </Button>
         </Toolbar>
       </AppBar>
       <div className={toggleState === 1 ? "tabs active-tabs" : "inactive-tabs"}>
@@ -118,6 +135,13 @@ export const Admin = () => {
         className={toggleState === 3 ? "tabs active-tabs" : "inactive-tabs"}
       >
         <ApproveSchemas />
+      </Paper>
+      <Paper
+        elevation={3}
+        className={classes.contentContainer}
+        className={toggleState === 4 ? "tabs active-tabs" : "inactive-tabs"}
+      >
+        <ErrorLog />
       </Paper>
     </React.Fragment>
   );

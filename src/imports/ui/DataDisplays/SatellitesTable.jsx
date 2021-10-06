@@ -32,9 +32,9 @@ import {
 } from "@material-ui/data-grid";
 import Star from "@material-ui/icons/Star";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
-import PublicIcon from "@material-ui/icons/Public";
-import Close from "@material-ui/icons/Close";
-import ReadMoreIcon from "@material-ui/icons/More";
+import VisualizeIcon from "@material-ui/icons/ThreeDRotation";
+import CloseIcon from "@material-ui/icons/Close";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -117,6 +117,7 @@ const useStyles = makeStyles((theme) => ({
 
 const newSatValues = {
   noradID: "",
+  isDeleted: false
 };
 
 export const SatellitesTable = () => {
@@ -140,16 +141,16 @@ export const SatellitesTable = () => {
   const [prompt, setPrompt] = useState();
 
   const decideSort = () => {
-    if (sortNames) return { names: sortNames };
-    if (sortNorad) return { noradID: sortNorad };
-    if (sortType) return { type: sortType };
-    if (sortOrbit) return { orbit: sortOrbit };
+    if (sortNames) return { names: sortNames, isDeleted: false };
+    if (sortNorad) return { noradID: sortNorad, isDeleted: false };
+    if (sortType) return { type: sortType, isDeleted: false };
+    if (sortOrbit) return { orbit: sortOrbit, isDeleted: false };
   };
 
-  const [rows, isLoadingSchemas, isLoadingSats] = useTracker(() => {
+  const [rows, isLoadingSchemas, isLoadingSats, count] = useTracker(() => {
     const subSchemas = Meteor.subscribe("satellites");
     const subSats = Meteor.subscribe("satellites");
-    const count = SatelliteCollection.find().count();
+    const count = SatelliteCollection.find({ isDeleted: false }).count();
     const sats = SatelliteCollection.find(selector, {
       limit: limiter,
       skip: page * limiter,
@@ -161,14 +162,14 @@ export const SatellitesTable = () => {
         return {
           id: sat.noradID,
           names: sat.names?.map((name) => name.names || name.name).join(", "),
-          type: sat.type ? sat.type[0].type : "N/A",
+          type: sat.type ? sat.type[0]?.type : "N/A",
           orbit: sat.orbit
             ? sat.orbit.map((entry) => entry.orbit).join(", ")
             : "N/A",
         };
       });
     rows.getRows = count;
-    return [rows, !subSchemas.ready(), !subSats.ready()];
+    return [rows, !subSchemas.ready(), !subSats.ready(), count];
   });
 
   function CustomToolbar() {
@@ -387,7 +388,7 @@ export const SatellitesTable = () => {
                     )
                   }
                 >
-                  <ReadMoreIcon fontSize="small" />
+                  <VisibilityIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Visualize satellite" arrow placement="top">
@@ -400,7 +401,7 @@ export const SatellitesTable = () => {
                     );
                   }}
                 >
-                  <PublicIcon fontSize="small" />
+                  <VisualizeIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
             </span>
@@ -477,7 +478,7 @@ export const SatellitesTable = () => {
               setPrompt(null);
             }}
           >
-            <Close />
+            <CloseIcon />
           </IconButton>
         </div>
       ),
@@ -543,7 +544,7 @@ export const SatellitesTable = () => {
             rowsPerPageOptions={[5, 10, 15, 20, 50, 100]}
             columns={columns}
             rows={rows}
-            rowCount={rows.length}
+            rowCount={count}
             pageSize={limiter}
             loading={isLoadingSats && isLoadingSchemas}
             autoHeight={true}
@@ -571,7 +572,10 @@ export const SatellitesTable = () => {
           show={showModal}
           newSat={newSat}
           initValues={initialSatValues}
-          handleClose={() => setShowModal(false)}
+          handleClose={() => {
+            setShowModal(false);
+            setInitialSatValues(newSatValues);
+          }}
           width={width}
           height={height}
         />

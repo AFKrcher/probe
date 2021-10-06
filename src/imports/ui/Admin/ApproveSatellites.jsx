@@ -48,12 +48,6 @@ const useStyles = makeStyles((theme) => ({
   spinner: {
     color: theme.palette.text.primary,
   },
-  link: {
-    color: theme.palette.text.primary,
-    "&:hover": {
-      color: theme.palette.info.light,
-    },
-  },
 }));
 
 const newSatValues = {

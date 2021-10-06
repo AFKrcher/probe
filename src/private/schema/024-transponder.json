@@ -37,7 +37,7 @@
     {
       "name": "maxBand",
       "type": "number",
-      "allowedValues": ["Ghz", "Mhz", "Khz", "Hz"],
+      "allowedValues": [],
       "required": false,
       "min": null,
       "max": null
