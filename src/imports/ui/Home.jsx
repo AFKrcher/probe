@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 30,
   },
   secondaryShowcase: {
-    marginTop: 35,
+    marginTop: 30,
   },
   card: {
     marginTop: -10,
@@ -141,78 +141,36 @@ export const Home = () => {
           100% Open Source, 100% Machine Readable.
         </Typography>
       </Container>
+
       <Container className={classes.showcase}>
-        {isLoading ? (
-          <Skeleton variant="rect" className={classes.skeleton}>
-            <Typography variant="h3" gutterBottom>
-              Satellite Data Cards
-            </Typography>
-          </Skeleton>
-        ) : (
-          <Typography variant="h4" gutterBottom>
-            {favorites?.length > 0 ? (
-              <React.Fragment>
-                <strong>{user}</strong>'s Favorite Satellites
-              </React.Fragment>
-            ) : (
-              <div style={{ marginBottom: -40 }}></div>
-            )}
-          </Typography>
-        )}
-        {cardSpace ? (
-          <Grid
-            container
-            justifyContent={width > 1000 ? "flex-start" : "center"}
-            spacing={cardSpace}
-            className={classes.card}
-          >
-            {!isLoading
-              ? sats.map((sat, index) => (
-                  <Grid item xs={cardSpace} key={index}>
-                    <SatCard
-                      satellite={sat}
-                      width={width}
-                      height={height}
-                      id={`SatCard-${index}`}
-                    />
-                  </Grid>
-                ))
-              : [...Array(limiter)].map((_, index) => (
-                  <Grid item xs={cardSpace} key={index}>
-                    <Skeleton variant="rect" className={classes.skeleton}>
-                      <SatCard satellite={{}} width={width} height={height} />
-                    </Skeleton>
-                  </Grid>
-                ))}
-            <br />
-          </Grid>
-        ) : (
-          <CircularProgress className={classes.spinner} />
-        )}
-        {Meteor.userId() && favorites ? (
-          <div className={classes.secondaryShowcase}>
+        {Meteor.userId() && favorites?.length > 0 ? (
+          <React.Fragment>
             {isLoading ? (
               <Skeleton variant="rect" className={classes.skeleton}>
                 <Typography variant="h3" gutterBottom>
-                  All Satellites
+                  Satellite Data Cards
                 </Typography>
               </Skeleton>
             ) : (
               <Typography variant="h4" gutterBottom>
-                {favorites?.length > 1
-                  ? "Satellite Data Cards"
-                  : "All Satellites"}
+                {favorites?.length > 0 ? (
+                  <React.Fragment>
+                    <strong>{user}</strong>'s Favorite Satellites
+                  </React.Fragment>
+                ) : (
+                  <div style={{ marginBottom: -40 }}></div>
+                )}
               </Typography>
             )}
             {cardSpace ? (
               <Grid
                 container
-                justifyContent={width > 900 ? "flex-start" : "center"}
+                justifyContent={width > 1000 ? "flex-start" : "center"}
                 spacing={cardSpace}
                 className={classes.card}
               >
                 {!isLoading
-                  ? otherSats.map((sat, index) => (
+                  ? sats.map((sat, index) => (
                       <Grid item xs={cardSpace} key={index}>
                         <SatCard
                           satellite={sat}
@@ -237,9 +195,55 @@ export const Home = () => {
               </Grid>
             ) : (
               <CircularProgress className={classes.spinner} />
-            )}
-          </div>
+            )}{" "}
+          </React.Fragment>
         ) : null}
+
+        <div className={classes.secondaryShowcase}>
+          {isLoading ? (
+            <Skeleton variant="rect" className={classes.skeleton}>
+              <Typography variant="h3" gutterBottom>
+                Satellite Data Cards
+              </Typography>
+            </Skeleton>
+          ) : (
+            <Typography variant="h4" gutterBottom>
+              {favorites?.length > 1
+                ? "All Satellites"
+                : "Satellite Data Cards"}
+            </Typography>
+          )}
+          {cardSpace ? (
+            <Grid
+              container
+              justifyContent={width > 900 ? "flex-start" : "center"}
+              spacing={cardSpace}
+              className={classes.card}
+            >
+              {!isLoading
+                ? otherSats.map((sat, index) => (
+                    <Grid item xs={cardSpace} key={index}>
+                      <SatCard
+                        satellite={sat}
+                        width={width}
+                        height={height}
+                        id={`SatCard-${index}`}
+                      />
+                    </Grid>
+                  ))
+                : [...Array(limiter)].map((_, index) => (
+                    <Grid item xs={cardSpace} key={index}>
+                      <Skeleton variant="rect" className={classes.skeleton}>
+                        <SatCard satellite={{}} width={width} height={height} />
+                      </Skeleton>
+                    </Grid>
+                  ))}
+              <br />
+            </Grid>
+          ) : (
+            <CircularProgress className={classes.spinner} />
+          )}
+        </div>
       </Container>
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 // Imports
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
@@ -33,8 +33,8 @@ import {
 import Star from "@material-ui/icons/Star";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import VisualizeIcon from "@material-ui/icons/ThreeDRotation";
-import CloseIcon from "@material-ui/icons/Close";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import DashboardIcon from "@material-ui/icons/Dashboard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 5,
   },
   dataGrid: {
+    padding: "5px 5px 0px 5px",
     backgroundColor: theme.palette.grid.background,
     "& .MuiDataGrid-cell": {
       textOverflow: "clip",
@@ -117,13 +118,16 @@ const useStyles = makeStyles((theme) => ({
 
 const newSatValues = {
   noradID: "",
-  isDeleted: false
+  isDeleted: false,
 };
 
 export const SatellitesTable = () => {
   const classes = useStyles();
 
-  const { setOpenSnack, snack, setSnack } = useContext(HelpersContext);
+  const history = useHistory();
+
+  const { setOpenSnack, snack, setSnack, setOpenVisualize } =
+    useContext(HelpersContext);
 
   const [width, height] = useWindowSize();
 
@@ -372,7 +376,7 @@ export const SatellitesTable = () => {
         sortable: false,
         field: "actions",
         headerName: "ACTIONS",
-        width: 150,
+        width: 200,
         align: "left",
         renderCell: (satellite) => {
           return (
@@ -389,6 +393,16 @@ export const SatellitesTable = () => {
                   }
                 >
                   <VisibilityIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Satellite Dashboard" arrow placement="top">
+                <IconButton
+                  className={classes.actionIconButton}
+                  onClick={(e) => {
+                    handleDashboard(e, satellite.id);
+                  }}
+                >
+                  <DashboardIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Visualize satellite" arrow placement="top">
@@ -432,6 +446,19 @@ export const SatellitesTable = () => {
     setColumns(columns);
   }, [Meteor.userId(), selector]);
 
+  const handleVisualize = (satellite, url) => {
+    setPrompt({
+      url: url,
+      satellite: satellite,
+    });
+    setOpenVisualize(true);
+  };
+
+  function handleDashboard(e, id) {
+    e.preventDefault();
+    history.push(`/${id}`);
+  }
+
   const AddSatelliteButton = () => {
     return (
       <Grid
@@ -451,53 +478,9 @@ export const SatellitesTable = () => {
     );
   };
 
-  const handleVisualize = (satNames, url) => {
-    setPrompt({
-      title: (
-        <div className={classes.modalHeader}>
-          <Tooltip
-            title="Click to open Space Cockpit in a new tab"
-            placement="right"
-            arrow
-          >
-            <Typography
-              onClick={() => window.open(url, "_blank").focus()}
-              style={{
-                cursor: "pointer",
-              }}
-            >
-              Visualizing <strong>{satNames}</strong> in Space Cockpit by Saber
-              Astronautics
-            </Typography>
-          </Tooltip>
-          <IconButton
-            size="small"
-            className={classes.modalButton}
-            id="exitVisualize"
-            onClick={() => {
-              setPrompt(null);
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </div>
-      ),
-      text: (
-        <iframe
-          src={url}
-          height="99%"
-          width="100%"
-          title="SpaceCockpit"
-          className={classes.iframe}
-        />
-      ),
-      actions: "",
-    });
-  };
-
   return (
     <React.Fragment>
-      <VisualizeDialog bodyPrompt={prompt} open={prompt ? true : false} />
+      <VisualizeDialog body={prompt} />
       <SnackBar bodySnackBar={snack} />
       <div className={classes.root}>
         <Grid container justifyContent="space-between" alignItems="center">
