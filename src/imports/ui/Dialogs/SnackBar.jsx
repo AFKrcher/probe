@@ -26,7 +26,7 @@ export default function SimpleSnackbar({ bodySnackBar }) {
           horizontal: "left",
         }}
         open={openSnack}
-        autoHideDuration={6000}
+        autoHideDuration={3000}
         onClose={handleClose}
         message={bodySnackBar}
         action={

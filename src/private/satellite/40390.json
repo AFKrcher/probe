@@ -4,28 +4,28 @@
   "names": [
     {
       "reference": "https://en.wikipedia.org/wiki/Deep_Space_Climate_Observatory",
-      "verified": false,
+      "verified": true,
       "name": "Deep Space Climate Observatory"
     }
   ],
   "cosparID": [
     {
       "reference": "https://en.wikipedia.org/wiki/Deep_Space_Climate_Observatory",
-      "verified": false,
+      "verified": true,
       "cosparID": "2015-007A"
     }
   ],
   "descriptionShort": [
     {
       "reference": "https://en.wikipedia.org/wiki/Deep_Space_Climate_Observatory",
-      "verified": false,
+      "verified": true,
       "descriptionShort": "A National Oceanic and Atmospheric Administration (NOAA) space weather, space climate, and Earth observation satellite. It was launched by SpaceX on Febuary 11, 2015."
     }
   ],
   "images": [
     {
       "reference": "https://en.wikipedia.org/wiki/Deep_Space_Climate_Observatory",
-      "verified": false,
+      "verified": true,
       "description": "An artist's rendering of DSCOVR satellite",
       "url": "https://upload.wikimedia.org/wikipedia/commons/3/3f/DSCOVR_spacecraft_model.png",
       "entireSatellite": "true"

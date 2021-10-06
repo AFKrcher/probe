@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 // Imports
 import { useTracker } from "meteor/react-meteor-data";
-import useWindowSize from "../Hooks/useWindowSize.jsx";
 import { SchemaCollection } from "../../api/schemas";
 import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
+import useWindowSize from "../Hooks/useWindowSize.jsx";
 
 // Components
+import { SearchBar } from "./SearchBar.jsx";
 import { Link } from "react-router-dom";
 import { SchemaModal } from "../SchemaModal/SchemaModal.jsx";
 
@@ -15,16 +16,15 @@ import {
   Grid,
   makeStyles,
   Typography,
-  Table,
-  TableContainer,
-  Paper,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  CircularProgress,
   Tooltip,
+  IconButton,
+  TextField,
+  Snackbar,
+  Paper,
 } from "@material-ui/core";
+import { DataGrid } from "@material-ui/data-grid";
+import SearchIcon from "@material-ui/icons/Search";
+import ClearIcon from "@material-ui/icons/Clear";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,21 +34,21 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 25,
     marginTop: 10,
   },
-  table: {
-    overflow: "auto",
-    height: "100%",
+  dataGrid: {
     backgroundColor: theme.palette.grid.background,
-  },
-  header: {
-    paddingTop: 12.5,
-    paddingBottom: 12.5,
-    width: "25%",
-  },
-  tableRow: {
-    "&:hover": {
-      backgroundColor: theme.palette.action.hover,
+    marginBottom: 5,
+    "& .MuiDataGrid-cell": {
+      textOverflow: "ellipse",
+      marginLeft: 7,
       cursor: "pointer",
     },
+    "& .MuiCircularProgress-colorPrimary": {
+      color: theme.palette.text.primary,
+    },
+  },
+  gridCaption: {
+    marginLeft: 5,
+    color: theme.palette.text.disabled,
   },
   spinner: {
     color: theme.palette.text.primary,
@@ -58,6 +58,17 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: theme.palette.info.light,
     },
+  },
+  textField: {
+    marginBottom: 20,
+    backgroundColor: theme.palette.grid.background,
+  },
+  popper: {
+    width: "80vw",
+    backgroundColor: theme.palette.popper.background,
+    color: theme.palette.popper.text,
+    border: `1px solid ${theme.palette.text.disabled}`,
+    padding: 10,
   },
 }));
 
@@ -87,15 +98,39 @@ export const SchemasTable = () => {
 
   const [width] = useWindowSize();
 
+  const [popperBody, setPopperBody] = useState(null);
+  const [showPopper, setShowPopper] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
   const [newSchema, setNewSchema] = useState(true);
+  const [filter, setFilter] = useState("");
   const [initialSchemaValues, setInitialSchemaValues] =
     useState(newSchemaValues);
 
-  const [schemas, isLoading] = useTracker(() => {
+  function escapeRegExp(value) {
+    return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+  }
+
+  const [rows, schemas, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("schemas");
     const schemas = SchemaCollection.find().fetch();
-    return [schemas, !sub.ready()];
+    const searchRegex = new RegExp(escapeRegExp(filter), "i");
+    const rows = schemas
+      .filter((schema) =>
+        filter
+          ? Object.keys(schema).some((field) => {
+              return searchRegex.test(schema[field].toString());
+            })
+          : schema
+      )
+      .map((schema) => {
+        return {
+          id: schema._id,
+          name: schema.name,
+          description: schema.description,
+        };
+      });
+    return [rows, schemas, !sub.ready()];
   });
 
   const handleAddNewSchema = () => {
@@ -108,6 +143,16 @@ export const SchemasTable = () => {
     setNewSchema(false);
     setShowModal(true);
     setInitialSchemaValues(schemaObject);
+  };
+
+  const handleCellExpand = (cell) => {
+    if (
+      cell.field === "description" &&
+      cell.colDef.computedWidth / cell.value.length < 6.3
+    ) {
+      setPopperBody(cell.value);
+      setShowPopper(true);
+    }
   };
 
   const AddSchemaButton = () => {
@@ -128,6 +173,23 @@ export const SchemasTable = () => {
       </Grid>
     );
   };
+
+  const columns = [
+    {
+      headerAlign: "left",
+      field: "name",
+      headerName: "SCHEMA NAME",
+      width: 200,
+      editable: false,
+    },
+    {
+      headerAlign: "left",
+      field: "description",
+      headerName: "SCHEMA DESCRIPTION",
+      flex: 1,
+      editable: false,
+    },
+  ];
 
   return (
     <div className={classes.root}>
@@ -168,51 +230,28 @@ export const SchemasTable = () => {
         desired <strong>schema</strong> below to view its details and edit the
         entry fields.
       </Typography>
-      <TableContainer component={Paper} className={classes.table}>
-        <Table size="small" aria-label="Schema table">
-          <TableHead>
-            <TableRow color="secondary">
-              <TableCell className={classes.header}>
-                <Typography variant="body2">SCHEMA NAME</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography variant="body2">SCHEMA DESCRIPTION</Typography>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {isLoading && (
-              <TableRow>
-                <TableCell colSpan={2} align="center">
-                  <CircularProgress className={classes.spinner} />
-                </TableCell>
-              </TableRow>
-            )}
-            {!isLoading &&
-              schemas.map((schema, i) => {
-                return !schema.isDeleted ? (
-                  <TableRow
-                    key={`schema-row-${i}`}
-                    className={classes.tableRow}
-                    onClick={() => {
-                      handleRowClick(schema);
-                    }}
-                  >
-                    <TableCell
-                      key={`schema-name-${i}`}
-                      className={classes.tableNameCol}
-                    >
-                      {schema.name}
-                    </TableCell>
-                    <TableCell key={`schema-desc-${i}`}>
-                      {schema.description || "N/A"}
-                    </TableCell>
-                  </TableRow>
-                ) : null;
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <SearchBar filter={filter} setFilter={setFilter} />
+      <DataGrid
+        className={classes.dataGrid}
+        columns={columns}
+        rows={rows}
+        loading={isLoading}
+        autoHeight={true}
+        disableSelectionOnClick
+        onRowClick={(row) => {
+          handleRowClick(schemas.find((item) => item._id === row.row.id));
+        }}
+        onCellOver={(cell, event) => handleCellExpand(cell, event)}
+        onCellOut={() => setShowPopper(false)}
+      />
+      <Typography variant="caption" className={classes.gridCaption}>
+        Hover over a cell to view full-contents, click to view schema data
+      </Typography>
+      <Snackbar open={showPopper} onClose={() => setShowPopper(false)}>
+        <Paper className={classes.popper} elevation={5}>
+          <Typography>{popperBody}</Typography>
+        </Paper>
+      </Snackbar>
       <SchemaModal
         show={showModal}
         newSchema={newSchema}

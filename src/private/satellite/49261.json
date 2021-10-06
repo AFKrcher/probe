@@ -1,0 +1,78 @@
+{
+  "_id": "6eHmD6FAKRi4NKPCY",
+  "noradID": "49261",
+  "launchSites": [
+    {
+      "reference": "https://www.n2yo.com/satellite/?s=49261",
+      "verified": true,
+      "name": "Air Force Western Test Range (AFWTR)",
+      "description": "",
+      "latitude": "",
+      "longitude": ""
+    }
+  ],
+  "descriptionShort": [
+    {
+      "reference": "https://fezatr.com/eng/object/49261/",
+      "verified": true,
+      "descriptionShort": "Rocket body or debris"
+    }
+  ],
+  "cosparID": [
+    {
+      "reference": "https://fezatr.com/eng/object/49261/",
+      "verified": true,
+      "cosparID": "2021-088B"
+    }
+  ],
+  "names": [
+    {
+      "reference": "https://fezatr.com/eng/object/49261/",
+      "verified": true,
+      "name": "Object B"
+    }
+  ],
+  "missionDuration": [
+    {
+      "reference": "https://isstracker.pl/en/satelity/49261",
+      "verified": true,
+      "start": "2021-09-27T12:00",
+      "plannedMissionDuration": "",
+      "actualMissionDuration": "",
+      "durationScale": ""
+    }
+  ],
+  "isDeleted": false,
+  "createdOn": "2021-10-05T21:39:46.567Z",
+  "createdBy": "admin",
+  "modifiedOn": "2021-10-05T22:47:00.888Z",
+  "modifiedBy": "admin",
+  "adminCheck": true,
+  "type": [
+    {
+      "reference": "https://platform.leolabs.space/catalog/L124784",
+      "verified": true,
+      "type": "unknown",
+      "description": "Possible rocket body or debris"
+    }
+  ],
+  "dimensionDescription": [
+    {
+      "reference": "https://platform.leolabs.space/catalog/L124784",
+      "verified": true,
+      "dimensionDescription": "Hard Body Radius",
+      "lengthMeters": "",
+      "widthMeters": "2.5",
+      "heightMeters": ""
+    }
+  ],
+  "images": [
+    {
+      "reference": "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fspaceflightnow.com%2Fwp-content%2Fuploads%2F2016%2F11%2Fav_gpsiif12_l1125201660005PM63.jpg&f=1&nofb=1",
+      "verified": true,
+      "description": "Generic launch of an Atlas V to represent rocket body or debris from USSF Western Range.",
+      "url": "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fspaceflightnow.com%2Fwp-content%2Fuploads%2F2016%2F11%2Fav_gpsiif12_l1125201660005PM63.jpg&f=1&nofb=1",
+      "entireSatellite": "false"
+    }
+  ]
+}

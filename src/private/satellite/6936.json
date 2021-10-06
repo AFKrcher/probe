@@ -1,17 +1,17 @@
 {
   "_id": "RnBWq62wdCD6YEya3",
-  "noradID": "06936",
+  "noradID": "6936",
   "names": [
     {
       "reference": "https://en.wikipedia.org/wiki/Skylab",
-      "verified": false,
+      "verified": true,
       "name": "Skylab"
     }
   ],
   "cosparID": [
     {
       "reference": "https://en.wikipedia.org/wiki/Skylab",
-      "verified": false,
+      "verified": true,
       "cosparID": "1973-090A"
     }
   ],
@@ -24,14 +24,14 @@
   "descriptionShort": [
     {
       "reference": "https://en.wikipedia.org/wiki/Skylab_4",
-      "verified": false,
+      "verified": true,
       "descriptionShort": "The third crewed Skylab mission and placed the third and final crew aboard the first American space station."
     }
   ],
   "images": [
     {
       "reference": "https://en.wikipedia.org/wiki/Skylab_4",
-      "verified": false,
+      "verified": true,
       "description": "was the third crewed Skylab mission and placed the third and final crew aboard the first American space station.",
       "url": "https://upload.wikimedia.org/wikipedia/commons/9/92/Skylab_and_Earth_Limb_-_GPN-2000-001055.jpg",
       "entireSatellite": "true"
