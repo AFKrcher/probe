@@ -1,0 +1,55 @@
+{
+  "_id": "frocKDSwjSwMcGxR5",
+  "noradID": "42874",
+  "names": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=FLOCK2K43",
+      "verified": true,
+      "name": "FLOCK 2K 43"
+    },
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=FLOCK2K43",
+      "verified": true,
+      "name": "Dove 1056"
+    }
+  ],
+  "launchSites": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=FLOCK2K43",
+      "verified": true,
+      "name": "Baikonur COsmodrome",
+      "description": "Tyuratam, Kazakhstan",
+      "latitude": "",
+      "longitude": ""
+    }
+  ],
+  "descriptionShort": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=FLOCK2K43",
+      "verified": true,
+      "descriptionShort": "Flock-2k CubeSats form part of a large constellation of small, short-lifespan satellites which Planet Labs are using for commercial Earth imaging, at resolutions of up to three meters (10 feet)."
+    }
+  ],
+  "cosparID": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=FLOCK2K43",
+      "verified": true,
+      "cosparID": "2017-042BB"
+    }
+  ],
+  "isDeleted": false,
+  "createdOn": "2021-10-05T21:22:53.121Z",
+  "createdBy": "admin",
+  "modifiedOn": "2021-10-05T22:16:59.107Z",
+  "modifiedBy": "admin",
+  "adminCheck": true,
+  "images": [
+    {
+      "reference": "https://space.skyrocket.de/doc_sdat/flock-1.htm",
+      "verified": true,
+      "description": "Similar FLOCK-## satellites",
+      "url": "https://space.skyrocket.de/img_sat/flock-1__2.jpg",
+      "entireSatellite": "true"
+    }
+  ]
+}

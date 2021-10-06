@@ -1,0 +1,68 @@
+{
+  "_id": "xoecq6tGZhdJairAm",
+  "noradID": "49127",
+  "launchSites": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2021-081A",
+      "verified": true,
+      "name": "Plesetsk, Russia",
+      "description": "No detailed trajectory information available.",
+      "latitude": "",
+      "longitude": ""
+    }
+  ],
+  "descriptionShort": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2021-081A",
+      "verified": true,
+      "descriptionShort": "Cosmos 2551 is a classified Russian military satellite, possibly designed with a new miniature reconnaissance camera."
+    }
+  ],
+  "cosparID": [
+    {
+      "reference": "https://www.fezatr.com/eng/object/49127/",
+      "verified": true,
+      "cosparID": "2021-081A"
+    }
+  ],
+  "names": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2021-081A",
+      "verified": true,
+      "name": "Cosmos 2551"
+    },
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2021-081A",
+      "verified": true,
+      "name": "Razbeg"
+    },
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2021-081A",
+      "verified": true,
+      "name": "Kosmos 2551"
+    }
+  ],
+  "launchVehicle": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/displayTrajectory.action?id=2021-081A",
+      "verified": true,
+      "name": "Soyuz-2.1b",
+      "description": ""
+    }
+  ],
+  "images": [
+    {
+      "reference": "https://upload.wikimedia.org/wikipedia/commons/a/af/Strela-2M.jpg",
+      "verified": true,
+      "description": "A similar Strela-2M communication satellite",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/a/af/Strela-2M.jpg",
+      "entireSatellite": "false"
+    }
+  ],
+  "isDeleted": false,
+  "createdOn": "2021-10-05T21:33:05.258Z",
+  "createdBy": "admin",
+  "modifiedOn": "2021-10-05T21:33:05.260Z",
+  "modifiedBy": "admin",
+  "adminCheck": true
+}
