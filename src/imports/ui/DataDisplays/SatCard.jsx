@@ -20,7 +20,10 @@ import {
   Typography,
   Menu,
   MenuItem,
+  Tooltip,
 } from "@material-ui/core";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import DashboardIcon from "@material-ui/icons/Dashboard";
 
 const useStyles = makeStyles((theme) => ({
   satCard: {
@@ -82,9 +85,9 @@ export const SatCard = ({ width, height, satellite }) => {
   const adjustableFontSize = (width) => {
     switch (width) {
       case width < 900:
-        return 16;
+        return 25;
       default:
-        return 12;
+        return 25;
     }
   };
 
@@ -156,7 +159,11 @@ export const SatCard = ({ width, height, satellite }) => {
           style={
             width < 1250
               ? { justifyContent: "space-around" }
-              : { justifyContent: "space-between" }
+              : {
+                  justifyContent: "space-between",
+                  marginLeft: 5,
+                  marginRight: 5,
+                }
           }
         >
           {width < 1250 ? (
@@ -188,7 +195,7 @@ export const SatCard = ({ width, height, satellite }) => {
                     handleClose(e);
                   }}
                 >
-                  Data
+                  Data View
                 </MenuItem>
                 <MenuItem
                   dense
@@ -197,7 +204,7 @@ export const SatCard = ({ width, height, satellite }) => {
                     handleClose(e);
                   }}
                 >
-                  Dashboard
+                  Dashboard View
                 </MenuItem>
                 <MenuItem
                   dense
@@ -209,59 +216,62 @@ export const SatCard = ({ width, height, satellite }) => {
                     handleClose(e);
                   }}
                 >
-                  Visualize
+                  Visualize in Space Cockpit
                 </MenuItem>
               </Menu>
             </React.Fragment>
           ) : (
             <React.Fragment>
-              <Button
-                size="medium"
-                variant="outlined"
-                className={classes.cardButton}
-                onClick={(e) => handleModify(e, satellite)}
-              >
-                <strong
-                  style={{
-                    fontSize: adjustableFontSize(width),
-                  }}
+              <Tooltip title="Satellite Data View" arrow placement="top">
+                <Button
+                  size="medium"
+                  variant="outlined"
+                  className={classes.cardButton}
+                  onClick={(e) => handleModify(e, satellite)}
                 >
-                  Data
-                </strong>
-              </Button>
-              <Button
-                size="medium"
-                variant="outlined"
-                className={classes.cardButton}
-                onClick={(e) => handleDashboard(e, satellite.noradID)}
-              >
-                <strong
-                  style={{
-                    fontSize: adjustableFontSize(width),
-                  }}
+                  <VisibilityIcon
+                    style={{
+                      fontSize: adjustableFontSize(width),
+                    }}
+                  />
+                </Button>
+              </Tooltip>
+              <Tooltip title="Satellite Dashboard View" arrow placement="top">
+                <Button
+                  size="medium"
+                  variant="outlined"
+                  className={classes.cardButton}
+                  onClick={(e) => handleDashboard(e, satellite.noradID)}
                 >
-                  Dashboard
-                </strong>
-              </Button>
-              <Button
-                size="medium"
-                variant="outlined"
-                className={classes.cardButton}
-                onClick={(e) =>
-                  handleVisualize(
-                    e,
-                    `https://spacecockpit.saberastro.com/?SID=${satellite.noradID}&FS=${satellite.noradID}`
-                  )
-                }
+                  <DashboardIcon
+                    style={{
+                      fontSize: adjustableFontSize(width),
+                    }}
+                  />
+                </Button>
+              </Tooltip>
+              <Tooltip
+                title="Visualize satellite in Space Cockpit"
+                arrow
+                placement="top"
               >
-                <strong
-                  style={{
-                    fontSize: adjustableFontSize(width),
-                  }}
+                <Button
+                  size="medium"
+                  variant="outlined"
+                  className={classes.cardButton}
+                  onClick={(e) =>
+                    handleVisualize(
+                      e,
+                      `https://spacecockpit.saberastro.com/?SID=${satellite.noradID}&FS=${satellite.noradID}`
+                    )
+                  }
                 >
-                  Visualize
-                </strong>
-              </Button>
+                  <img
+                    src="/saberastro.png"
+                    width={`${adjustableFontSize(width) + 2.5}px`}
+                  />
+                </Button>
+              </Tooltip>
             </React.Fragment>
           )}
         </CardActions>

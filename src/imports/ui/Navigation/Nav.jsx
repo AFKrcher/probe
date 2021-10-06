@@ -33,13 +33,11 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   logo: {
-    color: theme.palette.text.primary,
+    color: theme.palette.tertiary.main,
     textDecoration: "none",
     marginRight: 0,
     fontSize: "30px",
-    "&:hover": {
-      color: theme.palette.text.primary,
-    },
+    filter: `drop-shadow(3px 2px 2px ${theme.palette.tertiary.shadow})`,
   },
   links: {
     display: "flex",
@@ -81,8 +79,7 @@ export const Nav = ({ theme, toggleTheme }) => {
             <Tooltip
               title={
                 <Typography color="inherit" variant="body2">
-                  <strong>P</strong>ublically <strong>R</strong>esearched{" "}
-                  <strong>OB</strong>s<strong>E</strong>rvatory
+                  To Home Page
                 </Typography>
               }
               arrow

@@ -27,6 +27,7 @@ import {
   CircularProgress,
   makeStyles,
   Typography,
+  IconButton,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
@@ -51,6 +52,8 @@ const useStyles = makeStyles(() => ({
   },
   titleText: {
     fontSize: "25px",
+    display: "flex",
+    justifyContent: "space-between",
   },
   content: {
     marginTop: -15,
@@ -289,7 +292,6 @@ export const SatelliteModal = ({
         ),
         actions: (
           <Button
-            size={width && width < 500 ? "small" : "medium"}
             variant="contained"
             size="small"
             color="secondary"
@@ -366,20 +368,25 @@ export const SatelliteModal = ({
         <div className={classes.modal}>
           <DialogTitle className={classes.title}>
             <Typography className={classes.titleText}>
-              {newSat || dashboard ? (
-                <React.Fragment>
-                  Creating <strong>New Satellite</strong>
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  Editing{" "}
-                  <strong>
-                    {initValues.names && initValues.names[0]
-                      ? initValues.names[0].name
-                      : "N/A"}
-                  </strong>
-                </React.Fragment>
-              )}
+              <span>
+                {newSat ? (
+                  <React.Fragment>
+                    Creating <strong>New Satellite</strong>
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    Editing{" "}
+                    <strong>
+                      {initValues.names && initValues.names[0]
+                        ? initValues.names[0].name
+                        : "New Satellite"}
+                    </strong>
+                  </React.Fragment>
+                )}
+              </span>
+              <IconButton size="small" id="exitVisualize" onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
             </Typography>
           </DialogTitle>
           <Formik
@@ -440,7 +447,6 @@ export const SatelliteModal = ({
                       satelliteValidatorShaper={satelliteValidatorShaper}
                       setTouched={setTouched}
                       dirty={dirty}
-                      newSat={newSat}
                     />
                   </DialogContent>
                 )}
