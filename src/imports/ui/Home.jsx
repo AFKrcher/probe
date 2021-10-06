@@ -24,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
   },
+  title: {
+    color: theme.palette.tertiary.main,
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
+  },
   description: {
     marginTop: 10,
   },
@@ -129,7 +133,7 @@ export const Home = () => {
           </Tooltip>
         ) : null}
         <Typography variant="h3">
-          Welcome to <strong>PROBE</strong>!
+          Welcome to <strong className={classes.title}>PROBE</strong>!
         </Typography>
         <Typography variant="body1" className={classes.description}>
           <strong>P</strong>ublicly <strong>R</strong>esearched{" "}

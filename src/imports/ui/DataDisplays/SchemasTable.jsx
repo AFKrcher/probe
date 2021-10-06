@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 // Imports
 import { useTracker } from "meteor/react-meteor-data";
-import useWindowSize from "../Hooks/useWindowSize.jsx";
 import { SchemaCollection } from "../../api/schemas";
 import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
+import useWindowSize from "../Hooks/useWindowSize.jsx";
 
 // Components
+import { SearchBar } from "./SearchBar.jsx";
 import { Link } from "react-router-dom";
 import { SchemaModal } from "../SchemaModal/SchemaModal.jsx";
 
@@ -18,6 +19,8 @@ import {
   Tooltip,
   IconButton,
   TextField,
+  Snackbar,
+  Paper,
 } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import SearchIcon from "@material-ui/icons/Search";
@@ -32,15 +35,20 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
   },
   dataGrid: {
-    paddingLeft: 5,
-    paddingRight: 5,
     backgroundColor: theme.palette.grid.background,
+    marginBottom: 5,
     "& .MuiDataGrid-cell": {
-      textOverflow: "clip",
+      textOverflow: "ellipse",
+      marginLeft: 7,
+      cursor: "pointer",
     },
     "& .MuiCircularProgress-colorPrimary": {
       color: theme.palette.text.primary,
     },
+  },
+  gridCaption: {
+    marginLeft: 5,
+    color: theme.palette.text.disabled,
   },
   spinner: {
     color: theme.palette.text.primary,
@@ -54,6 +62,13 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     marginBottom: 20,
     backgroundColor: theme.palette.grid.background,
+  },
+  popper: {
+    width: "80vw",
+    backgroundColor: theme.palette.popper.background,
+    color: theme.palette.popper.text,
+    border: `1px solid ${theme.palette.text.disabled}`,
+    padding: 10,
   },
 }));
 
@@ -83,8 +98,12 @@ export const SchemasTable = () => {
 
   const [width] = useWindowSize();
 
+  const [popperBody, setPopperBody] = useState(null);
+  const [showPopper, setShowPopper] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
   const [newSchema, setNewSchema] = useState(true);
+  const [filter, setFilter] = useState("");
   const [initialSchemaValues, setInitialSchemaValues] =
     useState(newSchemaValues);
 
@@ -92,8 +111,7 @@ export const SchemasTable = () => {
     return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
   }
 
-  const [filter, setFilter] = useState("");
-  const [rows, isLoading] = useTracker(() => {
+  const [rows, schemas, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("schemas");
     const schemas = SchemaCollection.find().fetch();
     const searchRegex = new RegExp(escapeRegExp(filter), "i");
@@ -112,7 +130,7 @@ export const SchemasTable = () => {
           description: schema.description,
         };
       });
-    return [rows, !sub.ready()];
+    return [rows, schemas, !sub.ready()];
   });
 
   const handleAddNewSchema = () => {
@@ -125,6 +143,16 @@ export const SchemasTable = () => {
     setNewSchema(false);
     setShowModal(true);
     setInitialSchemaValues(schemaObject);
+  };
+
+  const handleCellExpand = (cell) => {
+    if (
+      cell.field === "description" &&
+      cell.colDef.computedWidth / cell.value.length < 6.3
+    ) {
+      setPopperBody(cell.value);
+      setShowPopper(true);
+    }
   };
 
   const AddSchemaButton = () => {
@@ -202,28 +230,7 @@ export const SchemasTable = () => {
         desired <strong>schema</strong> below to view its details and edit the
         entry fields.
       </Typography>
-      <TextField
-        variant="outlined"
-        placeholder="Search Schemas…"
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-        className={classes.textField}
-        InputProps={{
-          startAdornment: (
-            <SearchIcon fontSize="small" style={{ marginRight: 5 }} />
-          ),
-          endAdornment: (
-            <IconButton
-              title="Clear"
-              aria-label="Clear"
-              size="small"
-              onClick={() => setFilter("")}
-            >
-              <ClearIcon fontSize="small" />
-            </IconButton>
-          ),
-        }}
-      />
+      <SearchBar filter={filter} setFilter={setFilter} />
       <DataGrid
         className={classes.dataGrid}
         columns={columns}
@@ -231,10 +238,20 @@ export const SchemasTable = () => {
         loading={isLoading}
         autoHeight={true}
         disableSelectionOnClick
-        onRowClick={(schema) => {
-          handleRowClick(schema.row.columns);
+        onRowClick={(row) => {
+          handleRowClick(schemas.find((item) => item._id === row.row.id));
         }}
+        onCellOver={(cell, event) => handleCellExpand(cell, event)}
+        onCellOut={() => setShowPopper(false)}
       />
+      <Typography variant="caption" className={classes.gridCaption}>
+        Hover over a cell to view full-contents, click to view schema data
+      </Typography>
+      <Snackbar open={showPopper} onClose={() => setShowPopper(false)}>
+        <Paper className={classes.popper} elevation={5}>
+          <Typography>{popperBody}</Typography>
+        </Paper>
+      </Snackbar>
       <SchemaModal
         show={showModal}
         newSchema={newSchema}

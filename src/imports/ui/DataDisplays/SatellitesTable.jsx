@@ -8,6 +8,7 @@ import useWindowSize from "../Hooks/useWindowSize.jsx";
 import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
 
 // Components
+import { SearchBar } from "./SearchBar.jsx";
 import VisualizeDialog from "../Dialogs/VisualizeDialog";
 import { SatelliteModal } from "../SatelliteModal/SatelliteModal";
 import { SatelliteCollection } from "../../api/satellites";
@@ -32,7 +33,6 @@ import {
 } from "@material-ui/data-grid";
 import Star from "@material-ui/icons/Star";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
-import VisualizeIcon from "@material-ui/icons/ThreeDRotation";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 
@@ -56,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.grid.background,
     "& .MuiDataGrid-cell": {
       textOverflow: "clip",
+      cursor: "pointer",
     },
     "& .MuiCircularProgress-colorPrimary": {
       color: theme.palette.text.primary,
@@ -130,7 +131,7 @@ export const SatellitesTable = () => {
     useContext(HelpersContext);
 
   const [width, height] = useWindowSize();
-
+  const [filter, setFilter] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [newSat, setNewSat] = useState(true);
   const [initialSatValues, setInitialSatValues] = useState(newSatValues);
@@ -230,8 +231,9 @@ export const SatellitesTable = () => {
         default:
           setSelector({});
       }
+    } else {
+      setSelector({});
     }
-    return;
   };
 
   const handleSort = (e) => {
@@ -335,6 +337,62 @@ export const SatellitesTable = () => {
   useEffect(() => {
     const columns = [
       {
+        headerAlign: "center",
+        filterable: false,
+        sortable: false,
+        field: "actions",
+        headerName: "ACTIONS",
+        width: 200,
+        align: "left",
+        renderCell: function renderCellButtons(satellite) {
+          return (
+            <span className={classes.actions}>
+              <Tooltip title="Satellite Data View" arrow placement="top">
+                <IconButton
+                  className={classes.actionIconButton}
+                  onClick={() =>
+                    handleRowDoubleClick(
+                      SatelliteCollection.find({
+                        noradID: satellite.id,
+                      }).fetch()[0]
+                    )
+                  }
+                >
+                  <VisibilityIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Satellite Dashboard View" arrow placement="top">
+                <IconButton
+                  className={classes.actionIconButton}
+                  onClick={(e) => {
+                    handleDashboard(e, satellite.id);
+                  }}
+                >
+                  <DashboardIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip
+                title="Visualize satellite in Space Cockpit"
+                arrow
+                placement="top"
+              >
+                <IconButton
+                  className={classes.actionIconButton}
+                  onClick={() => {
+                    handleVisualize(
+                      satellite.row.names,
+                      `https://spacecockpit.saberastro.com/?SID=${satellite.id}&FS=${satellite.id}`
+                    );
+                  }}
+                >
+                  <img src="/saberastro.png" width="24px" />
+                </IconButton>
+              </Tooltip>
+            </span>
+          );
+        },
+      },
+      {
         headerAlign: "left",
         field: "id",
         headerName: "NORAD ID",
@@ -369,58 +427,6 @@ export const SatellitesTable = () => {
         filterOperators: getGridStringOperators().filter(
           (operator) => operator.value === "contains"
         ),
-      },
-      {
-        headerAlign: "center",
-        filterable: false,
-        sortable: false,
-        field: "actions",
-        headerName: "ACTIONS",
-        width: 200,
-        align: "left",
-        renderCell: (satellite) => {
-          return (
-            <span className={classes.actions}>
-              <Tooltip title="View satellite data" arrow placement="top">
-                <IconButton
-                  className={classes.actionIconButton}
-                  onClick={() =>
-                    handleRowDoubleClick(
-                      SatelliteCollection.find({
-                        noradID: satellite.id,
-                      }).fetch()[0]
-                    )
-                  }
-                >
-                  <VisibilityIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Satellite Dashboard" arrow placement="top">
-                <IconButton
-                  className={classes.actionIconButton}
-                  onClick={(e) => {
-                    handleDashboard(e, satellite.id);
-                  }}
-                >
-                  <DashboardIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Visualize satellite" arrow placement="top">
-                <IconButton
-                  className={classes.actionIconButton}
-                  onClick={() => {
-                    handleVisualize(
-                      satellite.row.names,
-                      `https://spacecockpit.saberastro.com/?SID=${satellite.id}&FS=${satellite.id}`
-                    );
-                  }}
-                >
-                  <VisualizeIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-            </span>
-          );
-        },
       },
     ];
 
@@ -518,6 +524,12 @@ export const SatellitesTable = () => {
           up the schemas and data associated with the <strong>satellite</strong>
           .
         </Typography>
+        <SearchBar
+          filter={filter}
+          setFilter={setFilter}
+          selector={selector}
+          setSelector={setSelector}
+        />
         <div className={classes.gridContainer}>
           <DataGrid
             className={classes.dataGrid}

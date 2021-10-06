@@ -10,6 +10,7 @@ import { SatelliteSchemaAccordion } from "./SatelliteSchemaAccordion";
 // @material-ui
 import { TextField } from "formik-material-ui";
 import {
+  Box,
   Grid,
   Button,
   makeStyles,
@@ -21,6 +22,8 @@ import {
   Tooltip,
   Paper,
 } from "@material-ui/core";
+import MuiTextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import DeleteIcon from "@material-ui/icons/Delete";
 import HelpIcon from "@material-ui/icons/Help";
 import SearchIcon from "@material-ui/icons/Search";
@@ -74,6 +77,7 @@ export const SatelliteForm = ({
   const [accordionBeingEdited, setAccordionBeingEdited] = useState(-1);
   const [flag, setFlag] = useState(true);
   const classes = useStyles();
+  const [filter, setFilter] = useState("");
 
   const renderAccordion = (schema, schemaIndex) => {
     return (
@@ -175,8 +179,8 @@ export const SatelliteForm = ({
     }
   };
 
-  const onSchemaChange = (e) => {
-    setAddSchema(e.target.value);
+  const onSchemaChange = (optionName) => {
+    setAddSchema(optionName);
   };
 
   const toggleAddSchema = () => {
@@ -197,6 +201,7 @@ export const SatelliteForm = ({
     disabled: !editing,
     autoComplete: "off",
   };
+
   return (
     <Grid container spacing={1}>
       <AlertDialog bodyAlert={alert} />
@@ -224,77 +229,14 @@ export const SatelliteForm = ({
       {editing && schemaAddition && (
         <Grid item container xs={12} className={classes.addItem}>
           <Grid item xs={10}>
-            <FormControl variant="outlined" margin="dense" fullWidth>
-              <InputLabel htmlFor={`satellite-field`}>
-                Available Schemas
-              </InputLabel>
-              <Field
-                label="Available Schemas"
-                inputProps={{
-                  id: `satellite-field`,
-                  name: `satellite-field`,
-                }}
-                component={Select}
-                value={addSchema}
-                onChange={onSchemaChange}
-              >
-                <MenuItem disabled value={""}>
-                  <em>Available Schemas</em>
-                  <TextField
-                    variant="outlined"
-                    placeholder="Search Schemas…"
-                    value={filter}
-                    onChange={(e) => setFilter(e.target.value)}
-                    className={classes.textField}
-                    InputProps={{
-                      startAdornment: (
-                        <SearchIcon
-                          fontSize="small"
-                          style={{ marginRight: 5 }}
-                        />
-                      ),
-                      endAdornment: (
-                        <IconButton
-                          title="Clear"
-                          aria-label="Clear"
-                          size="small"
-                          onClick={() => setFilter("")}
-                        >
-                          <ClearIcon fontSize="small" />
-                        </IconButton>
-                      ),
-                    }}
-                  />
-                </MenuItem>
-                {schemas.map((schema, schemaIndex) => {
-                  if (
-                    schema.name !== "name" &&
-                    (initValues[`${schema.name}`] ? false : true)
-                  ) {
-                    return (
-                      <MenuItem
-                        className="schemaIndex"
-                        dense
-                        value={`${schema.name}`}
-                        key={schemaIndex}
-                      >
-                        {schema.name}
-                        <Tooltip
-                          title={schema.description}
-                          placement="bottom-start"
-                          arrow
-                        >
-                          <HelpIcon
-                            fontSize="small"
-                            className={classes.helpIcon}
-                          />
-                        </Tooltip>
-                      </MenuItem>
-                    );
-                  }
-                })}
-              </Field>
-            </FormControl>
+            <Autocomplete
+              options={schemas}
+              onChange={(e, option) => onSchemaChange(option.name)}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => (
+                <MuiTextField {...params} label="Available Schemas" />
+              )}
+            />
           </Grid>
           <Grid item xs style={{ marginLeft: 10, marginTop: 5 }}>
             <Button
