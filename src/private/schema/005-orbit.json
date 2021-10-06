@@ -1,6 +1,6 @@
 {
   "name": "orbit",
-  "description": "Satellite's orbit classification and/or description.",
+  "description": "Satellite's orbit classification and/or description. Period is measured in years",
   "fields": [
     {
       "name": "reference",
@@ -27,6 +27,11 @@
       "type": "string",
       "allowedValues": [],
       "stringMax": 255
+    },
+    {
+      "name": "period",
+      "type": "number",
+      "allowedValues": []
     }
   ]
 }

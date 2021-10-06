@@ -272,11 +272,10 @@ export const Users = () => {
                 </Grid>
                 {Roles.getRolesForUser(editUser._id).map((role, index) => {
                   return (
-                    <React.Fragment>
+                    <React.Fragment key={index}>
                       <Grid
                         item
                         xs={5}
-                        key={index}
                         className={classes.rolesRow}
                       >
                         {role}
@@ -284,7 +283,6 @@ export const Users = () => {
                       <Grid
                         item
                         xs={7}
-                        key={index}
                         className={classes.rolesRow}
                       >
                         <Button

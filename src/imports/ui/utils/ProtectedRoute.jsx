@@ -33,14 +33,15 @@ export default function ProtectedRoute({
 
   const roleCheck = () => {
     // ensure that every role that is required to access the component is present in the user's roles
+
     return requiredRoles
-      ? requiredRoles.every((role) => roles.includes(role))
+      ? requiredRoles.map((role) => roles.includes(role)).includes(true)
       : true;
   };
 
   const loginCheck = () => {
     // if login is required, then return the user and isLoading booleans to check for user prior to loading the component
-    return loginRequired ? user : user ? false : true
+    return loginRequired ? user : user ? false : true;
   };
 
   return !isLoading ? (

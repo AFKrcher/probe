@@ -240,6 +240,9 @@ Meteor.startup(() => {
     addError: (obj) => {
       ErrorsCollection.insert(obj);
     },
+    deleteError: (id) => {
+      ErrorsCollection.remove(id);
+    }
   });
 
   // Errors publication and seed data
@@ -253,7 +256,6 @@ Meteor.startup(() => {
       error: {},
     };
     ErrorsCollection.insert(errors);
-    // ErrorsCollection.remove({});
   }
 
   Meteor.publish("errors", () => {
@@ -346,10 +348,10 @@ Meteor.startup(() => {
           values["createdOn"] = new Date();
           values["createdBy"] = Meteor.user().username;
         }
+        values["isDeleted"] = false;
         values["modifiedOn"] = new Date();
         values["modifiedBy"] = Meteor.user().username;
         values["adminCheck"] = false;
-
         satelliteValidatorShaper(values, initValues)
           .validate(values)
           .then(() => {
@@ -451,6 +453,7 @@ Meteor.startup(() => {
           values["createdOn"] = new Date();
           values["createdBy"] = Meteor.user().username;
         }
+        values["isDeleted"] = false;
         values["modifiedOn"] = new Date();
         values["modifiedBy"] = Meteor.user().username;
         values["adminCheck"] = false;

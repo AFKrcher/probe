@@ -344,7 +344,7 @@ export const SatelliteModal = ({
         setOpenSnack(false);
         setSnack(
           <span>
-            Restored <strong>{initValues.name}</strong> schema!
+            Restored <strong>{initValues.name}</strong>!
           </span>
         );
         handleClose();

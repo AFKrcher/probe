@@ -100,7 +100,7 @@ const initialYupShapeGenerator = (isUniqueList) => {
       .notOneOf(
         isUniqueList(null, "noradID"),
         (obj) =>
-          `A satellite with noradID of ${obj.value} already exists in our records.`
+          `A satellite with noradID of ${obj.value} already exists in our records or has been temporarily archived.`
       ),
   };
 };

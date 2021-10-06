@@ -153,6 +153,7 @@ export const SatelliteSchemaAccordion = ({
         setEditingSchema(false);
         setAccordionBeingEdited(-1);
       }
+      setEditingOne(false);
     });
   };
 

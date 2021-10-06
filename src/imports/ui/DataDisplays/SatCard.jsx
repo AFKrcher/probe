@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cardImage: {
     width: "100%",
+    marginBottom: "3%"
   },
   cardDesc: {
     minHeight: `340px`,

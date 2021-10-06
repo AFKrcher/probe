@@ -85,16 +85,15 @@ export const SatelliteSchemaEntry = ({
 
   const [helpers, setHelpers] = useState(null);
   const debounced = useDebouncedCallback((event, verifiedField) => {
-    let obj = {};
-    obj[`${event.target.name}`] = true;
-    setTouched(obj);
-
     setFieldValue(event.target.name, event.target.value);
     // set verified to false if a field is modified and subsequently saved
     setFieldValue(verifiedField, false);
   }, 300);
 
   const preliminaryDebounced = useDebouncedCallback((event) => {
+    let obj = {};
+    obj[`${event.target.name}`] = true;
+    setTouched(obj);
     // Needed in order for errors to be properly set or cleared after Formik completes a check on the satellite data
     setFieldValue(event.target.name, event.target.value);
   }, 800);

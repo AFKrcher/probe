@@ -194,7 +194,9 @@ export const SchemasTable = () => {
                   <TableRow
                     key={`schema-row-${i}`}
                     className={classes.tableRow}
-                    onClick={() => handleRowClick(schema)}
+                    onClick={() => {
+                      handleRowClick(schema);
+                    }}
                   >
                     <TableCell
                       key={`schema-name-${i}`}
