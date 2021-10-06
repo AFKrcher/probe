@@ -160,7 +160,7 @@ export const SatelliteSchemaEntry = ({
         max: field.max,
         maxLength: field.stringMax,
         step: "any",
-        spellCheck: true,
+        spellCheck: field.type === "string",
         autoComplete: "off",
       },
       InputLabelProps: {

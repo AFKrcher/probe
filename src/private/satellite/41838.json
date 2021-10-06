@@ -4,14 +4,14 @@
   "names": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=41838",
-      "verified": false,
+      "verified": true,
       "name": "Shijian-17"
     }
   ],
   "ownership": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=41838",
-      "verified": false,
+      "verified": true,
       "type": "country",
       "name": "People's Republic of China",
       "responsibility": ""
@@ -20,7 +20,7 @@
   "launchSites": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=41838",
-      "verified": false,
+      "verified": true,
       "name": "Wenchang Satellite Launch Center (WSC)",
       "description": "",
       "latitude": "",
@@ -30,21 +30,21 @@
   "descriptionShort": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=41838",
-      "verified": false,
+      "verified": true,
       "descriptionShort": "An experimental satellite that carries an electric thruster test package, a type of propulsion system that could give the spacecraft great maneuverability to efficiently adjust its orbit and move around the geostationary belt."
     }
   ],
   "cosparID": [
     {
       "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2016-065A",
-      "verified": false,
+      "verified": true,
       "cosparID": "2016-065A"
     }
   ],
   "manufacturer": [
     {
       "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2016-065A",
-      "verified": false,
+      "verified": true,
       "name": "China Academy of Space Technology (CAST)",
       "responsibility": ""
     }
@@ -52,7 +52,7 @@
   "orbit": [
     {
       "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2016-065A",
-      "verified": false,
+      "verified": true,
       "orbit": "GEO",
       "description": ""
     }
@@ -60,7 +60,7 @@
   "bus": [
     {
       "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2016-065A",
-      "verified": false,
+      "verified": true,
       "name": "DFH-3B",
       "description": ""
     }
@@ -68,7 +68,7 @@
   "power": [
     {
       "reference": "https://space.skyrocket.de/doc_sdat/sj-17.htm",
-      "verified": false,
+      "verified": true,
       "source": "solar",
       "sourceStatus": "",
       "voltage": "",
@@ -87,7 +87,7 @@
   "images": [
     {
       "reference": "https://space.skyrocket.de/doc_sdat/sj-17.htm",
-      "verified": false,
+      "verified": true,
       "description": "Artist rendering of satellite from/for CNTV",
       "url": "https://space.skyrocket.de/img_sat/sj-17__1.jpg",
       "entireSatellite": "true"

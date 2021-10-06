@@ -55,7 +55,6 @@ const useStyles = makeStyles(() => ({
   content: {
     marginTop: -15,
     overflowY: "auto",
-    marginTop: 0,
   },
   description: {
     marginTop: 25,
@@ -86,7 +85,7 @@ export const SatelliteModal = ({
   width,
   height,
   admin,
-  path,
+  dashboard,
 }) => {
   const classes = useStyles();
   const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } =
@@ -128,7 +127,7 @@ export const SatelliteModal = ({
   };
 
   useEffect(() => {
-    setEditing(path ? true : newSat || false); // ensures that Add Satellite always opens as a new instance in edit-mode
+    setEditing(dashboard ? newSat : newSat || false); // ensures that Add Satellite always opens as a new instance in edit-mode
   }, [newSat, show]);
 
   useEffect(() => {
@@ -367,7 +366,7 @@ export const SatelliteModal = ({
         <div className={classes.modal}>
           <DialogTitle className={classes.title}>
             <Typography className={classes.titleText}>
-              {newSat || path ? (
+              {newSat || dashboard ? (
                 <React.Fragment>
                   Creating <strong>New Satellite</strong>
                 </React.Fragment>

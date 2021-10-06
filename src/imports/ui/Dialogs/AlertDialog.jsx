@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 // Imports
 import HelpersContext from "./HelpersContext.jsx";
 
@@ -19,26 +19,22 @@ export default function AlertDialog({ bodyAlert }) {
 
   return (
     <div>
-      <Dialog
-        open={openAlert}
-        onClose={handleCancelAlert}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {bodyAlert ? bodyAlert.title : "empty title"}
-        </DialogTitle>
+      <Dialog open={openAlert} onClose={handleCancelAlert}>
+        <DialogTitle>{bodyAlert ? bodyAlert.title : "empty title"}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText>
             {bodyAlert ? bodyAlert.text : "empty text"}
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            margin: "0px 15px 10px 15px",
+          }}
+        >
           {bodyAlert ? bodyAlert.actions : "empty actions"}
-          <Button
-            size="small"
-            onClick={handleCancelAlert}
-          >
+          <Button size="small" variant="contained" onClick={handleCancelAlert}>
             {bodyAlert?.closeAction || "Close"}
           </Button>
         </DialogActions>

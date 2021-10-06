@@ -25,7 +25,7 @@
     },
     {
       "reference": "https://cdn.mos.cms.futurecdn.net/mPFET8wxkZENQazxvRg7K5.jpg",
-      "verified": false,
+      "verified": true,
       "description": "ISS",
       "url": "https://cdn.mos.cms.futurecdn.net/mPFET8wxkZENQazxvRg7K5.jpg",
       "entireSatellite": "true"
@@ -34,7 +34,7 @@
   "cosparID": [
     {
       "reference": "https://en.wikipedia.org/",
-      "verified": false,
+      "verified": true,
       "description": "The International Space Station is featured in this image including the six iROSA solar arrays in the planned configuration that will augment the power drawn from the existing arrays on the Station. the first of the six iROSA was attached to the station around 9 am UTC on 20 June 2021 which were brought to ISS by Cargo Dragon C209 in its unpressurized trunk during its SpaceX CRS-22 mission, with the others arriving in mid and last quarter of 2021.",
       "url": "https://upload.wikimedia.org/wikipedia/commons/0/04/International_Space_Station_after_undocking_of_STS-132.jpg",
       "entireSatellite": "true",

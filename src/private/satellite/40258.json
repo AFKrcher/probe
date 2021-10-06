@@ -4,19 +4,19 @@
   "names": [
     {
       "reference": "https://spaceflight101.com/spacecraft/olymp/",
-      "verified": false,
+      "verified": true,
       "name": "Luch"
     },
     {
       "reference": "https://spaceflight101.com/spacecraft/olymp/",
-      "verified": false,
+      "verified": true,
       "name": "Olymp-K"
     }
   ],
   "bus": [
     {
       "reference": "https://en.wikipedia.org/wiki/Olymp-K",
-      "verified": false,
+      "verified": true,
       "name": "Express-2000",
       "description": "Highly flexible satellite bus designed and manufactured by ISS Reshetnev."
     }
@@ -24,14 +24,14 @@
   "cosparID": [
     {
       "reference": "https://en.wikipedia.org/wiki/Olymp-K",
-      "verified": false,
+      "verified": true,
       "cosparID": "2014-058A"
     }
   ],
   "manufacturer": [
     {
       "reference": "https://en.wikipedia.org/wiki/Olymp-K",
-      "verified": false,
+      "verified": true,
       "name": "JSC Information Satellite Systems",
       "responsibility": ""
     }
@@ -45,7 +45,7 @@
   "images": [
     {
       "reference": "https://spaceflight101.com/spacecraft/olymp/",
-      "verified": false,
+      "verified": true,
       "description": "Ekspress-2000 Satellite",
       "url": "https://spaceflight101.com/spacecraft/wp-content/uploads/sites/18/2015/09/9646451_orig-1024x337.jpg",
       "entireSatellite": "false"
@@ -54,21 +54,21 @@
   "descriptionShort": [
     {
       "reference": "https://en.wikipedia.org/wiki/Olymp-K",
-      "verified": false,
+      "verified": true,
       "descriptionShort": "A Russian geostationary satellite built for the Russian Ministry of Defence and Federal Security Service (FSB). The satellite is also referred to as \"Luch\". It is believed to be a signals intelligence satellite."
     }
   ],
   "descriptionLong": [
     {
       "reference": "https://en.wikipedia.org/wiki/Olymp-K",
-      "verified": false,
+      "verified": true,
       "descriptionLong": "Olymp-K is a Russian geostationary satellite built for the Russian Ministry of Defence and Federal Security Service (FSB). The satellite is also referred to as \"Luch\". It is believed to be a signals intelligence satellite. Olymp-K was launched on 28 September 2014. \nThe Proton-M rocket with a Briz-M upper stage launched from Baikonur Cosmodrome launchpad 81/24 in Kazakhstan at 20:23 UTC. After four burns of the Briz-M upper stage it was placed into geosynchronous transfer orbit.[4][1] In a press release on 28 September 2014, Roscosmos referred to the satellite as \"Luch\"."
     }
   ],
   "ownership": [
     {
       "reference": "https://en.wikipedia.org/wiki/Olymp-K",
-      "verified": false,
+      "verified": true,
       "type": "country",
       "name": "Russia",
       "responsibility": ""

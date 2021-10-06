@@ -4,7 +4,7 @@
   "names": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=43917",
-      "verified": false,
+      "verified": true,
       "name": "TJS-3 AKM"
     }
   ],
@@ -17,7 +17,7 @@
   "type": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=43917",
-      "verified": false,
+      "verified": true,
       "type": "manMade",
       "description": "Rocket Body"
     }
@@ -25,7 +25,7 @@
   "ownership": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=43917",
-      "verified": false,
+      "verified": true,
       "type": "country",
       "name": "People's Republic of China (PRC)",
       "responsibility": ""
@@ -34,7 +34,7 @@
   "launchSites": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=43917",
-      "verified": false,
+      "verified": true,
       "name": "Xichang Space Center, China (XSC)",
       "description": "",
       "latitude": "28.2409423696",
@@ -44,7 +44,7 @@
   "orbit": [
     {
       "reference": "https://in-the-sky.org/spacecraft.php?id=43917",
-      "verified": false,
+      "verified": true,
       "orbit": "GEO",
       "description": ""
     }
@@ -52,7 +52,7 @@
   "images": [
     {
       "reference": "https://forum.nasaspaceflight.com/assets/46903.0/1535633.jpg",
-      "verified": false,
+      "verified": true,
       "description": "Image of the intact rocket during launch",
       "url": "https://forum.nasaspaceflight.com/assets/46903.0/1535633.jpg",
       "entireSatellite": "true"
@@ -61,7 +61,7 @@
   "descriptionShort": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=43917",
-      "verified": false,
+      "verified": true,
       "descriptionShort": "Rocket body or debris"
     }
   ]

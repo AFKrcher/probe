@@ -23,6 +23,8 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import HelpIcon from "@material-ui/icons/Help";
+import SearchIcon from "@material-ui/icons/Search";
+import ClearIcon from "@material-ui/icons/Clear";
 
 const useStyles = makeStyles((theme) => ({
   accordion: {
@@ -238,6 +240,31 @@ export const SatelliteForm = ({
               >
                 <MenuItem disabled value={""}>
                   <em>Available Schemas</em>
+                  <TextField
+                    variant="outlined"
+                    placeholder="Search Schemas…"
+                    value={filter}
+                    onChange={(e) => setFilter(e.target.value)}
+                    className={classes.textField}
+                    InputProps={{
+                      startAdornment: (
+                        <SearchIcon
+                          fontSize="small"
+                          style={{ marginRight: 5 }}
+                        />
+                      ),
+                      endAdornment: (
+                        <IconButton
+                          title="Clear"
+                          aria-label="Clear"
+                          size="small"
+                          onClick={() => setFilter("")}
+                        >
+                          <ClearIcon fontSize="small" />
+                        </IconButton>
+                      ),
+                    }}
+                  />
                 </MenuItem>
                 {schemas.map((schema, schemaIndex) => {
                   if (

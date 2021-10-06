@@ -4,12 +4,12 @@
   "names": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=44835",
-      "verified": false,
+      "verified": true,
       "name": "Cosmos 2543"
     },
     {
       "reference": "https://www.n2yo.com/satellite/?s=44835",
-      "verified": false,
+      "verified": true,
       "name": "Kosmos 2543"
     }
   ],
@@ -22,14 +22,14 @@
   "cosparID": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=44835",
-      "verified": false,
+      "verified": true,
       "cosparID": "2019-079D"
     }
   ],
   "ownership": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=44835",
-      "verified": false,
+      "verified": true,
       "type": "country",
       "name": "Commonwealth of Independent States (former USSR) (CIS)",
       "responsibility": ""
@@ -38,7 +38,7 @@
   "launchSites": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=44835",
-      "verified": false,
+      "verified": true,
       "name": "PLESETSK MISSILE AND SPACE COMPLEX (PKMTR)",
       "description": "",
       "latitude": "62.925556",
@@ -48,14 +48,14 @@
   "descriptionShort": [
     {
       "reference": "https://taskandpurpose.com/news/russian-satellite-space-weapon/",
-      "verified": false,
+      "verified": true,
       "descriptionShort": "Potential Russian ASAT sub-satellite that was launched from Cosmos 2542."
     }
   ],
   "type": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=44835",
-      "verified": false,
+      "verified": true,
       "type": "manMade",
       "description": ""
     }
@@ -63,7 +63,7 @@
   "images": [
     {
       "reference": "https://1.bp.blogspot.com/-jOrzsCmBYTs/XzHtUlSj5PI/AAAAAAAARm0/I4ASvqiugDUpCGgYPDNCugg9aqJgeboXgCLcBGAsYHQ/s1600/31124260-0-image-a-43_1595602155513.jpg",
-      "verified": false,
+      "verified": true,
       "description": "Cosmos 2542 and 2543 working in tandem as an intel and ASAT satellite combo",
       "url": "https://1.bp.blogspot.com/-jOrzsCmBYTs/XzHtUlSj5PI/AAAAAAAARm0/I4ASvqiugDUpCGgYPDNCugg9aqJgeboXgCLcBGAsYHQ/s1600/31124260-0-image-a-43_1595602155513.jpg",
       "entireSatellite": "true"
