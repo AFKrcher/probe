@@ -4,7 +4,34 @@
   "launchSites": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=49261",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "Air Force Western Test Range (AFWTR)",
       "description": "",
       "latitude": "",
@@ -14,28 +41,136 @@
   "descriptionShort": [
     {
       "reference": "https://fezatr.com/eng/object/49261/",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "descriptionShort": "Rocket body or debris"
     }
   ],
   "cosparID": [
     {
       "reference": "https://fezatr.com/eng/object/49261/",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "cosparID": "2021-088B"
     }
   ],
   "names": [
     {
       "reference": "https://fezatr.com/eng/object/49261/",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "Object B"
     }
   ],
   "missionDuration": [
     {
       "reference": "https://isstracker.pl/en/satelity/49261",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "start": "2021-09-27T12:00",
       "plannedMissionDuration": "",
       "actualMissionDuration": "",
@@ -51,7 +186,34 @@
   "type": [
     {
       "reference": "https://platform.leolabs.space/catalog/L124784",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "type": "unknown",
       "description": "Possible rocket body or debris"
     }
@@ -59,7 +221,34 @@
   "dimensionDescription": [
     {
       "reference": "https://platform.leolabs.space/catalog/L124784",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "dimensionDescription": "Hard Body Radius",
       "lengthMeters": "",
       "widthMeters": "2.5",
@@ -69,7 +258,34 @@
   "images": [
     {
       "reference": "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fspaceflightnow.com%2Fwp-content%2Fuploads%2F2016%2F11%2Fav_gpsiif12_l1125201660005PM63.jpg&f=1&nofb=1",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "description": "Generic launch of an Atlas V to represent rocket body or debris from USSF Western Range.",
       "url": "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fspaceflightnow.com%2Fwp-content%2Fuploads%2F2016%2F11%2Fav_gpsiif12_l1125201660005PM63.jpg&f=1&nofb=1",
       "entireSatellite": "false"
