@@ -19,7 +19,7 @@ export default function SimpleSnackbar({ bodySnackBar }) {
   };
 
   return (
-    <>
+    <React.Fragment>
       <Snackbar
         anchorOrigin={{
           vertical: "bottom",
@@ -42,6 +42,6 @@ export default function SimpleSnackbar({ bodySnackBar }) {
           </React.Fragment>
         }
       />
-    </>
+    </React.Fragment>
   );
 }

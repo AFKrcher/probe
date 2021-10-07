@@ -257,8 +257,8 @@ export const SatelliteModal = ({
 
   const handleToggleEdit = (setValues, values) => {
     emptyDataRemover(values);
-    if (editing) setValues(initValues);
     if (newSat && editing) handleClose();
+    if (editing) setValues(initValues);
     setEditing(!editing);
   };
 
@@ -469,7 +469,7 @@ export const SatelliteModal = ({
                                 ? "Delete Forever"
                                 : "Delete"}
                             </Button>
-                            {admin ? (
+                            {admin && values.isDeleted ? (
                               <Button
                                 size={width && width < 500 ? "small" : "medium"}
                                 variant="contained"
