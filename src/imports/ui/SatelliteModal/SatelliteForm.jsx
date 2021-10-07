@@ -20,6 +20,7 @@ import {
 import MuiTextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import DeleteIcon from "@material-ui/icons/Delete";
+import HelpIcon from "@material-ui/icons/Help";
 
 const useStyles = makeStyles((theme) => ({
   accordion: {
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.disabled,
     fontSize: "small",
     marginLeft: 5,
-    marginTop: -5,
+    marginTop: -10,
   },
 }));
 
@@ -225,6 +226,21 @@ export const SatelliteForm = ({
               options={schemas.filter((schema) => !initValues[schema.name])}
               onChange={(e, option) => onSchemaChange(option.name)}
               getOptionLabel={(option) => option.name}
+              renderOption={(option) => (
+                <span>
+                  {option.name}
+                  <Tooltip
+                    title={`${option.description}`}
+                    arrow
+                    placement="right"
+                  >
+                    <HelpIcon className={classes.helpIcon} />
+                  </Tooltip>
+                </span>
+              )}
+              autoComplete
+              autoHighlight
+              autoSelect
               renderInput={(params) => (
                 <MuiTextField
                   {...params}
