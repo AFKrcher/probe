@@ -4,14 +4,68 @@
   "names": [
     {
       "reference": "https://en.wikipedia.org/wiki/Skylab",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "Skylab"
     }
   ],
   "cosparID": [
     {
       "reference": "https://en.wikipedia.org/wiki/Skylab",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "cosparID": "1973-090A"
     }
   ],
@@ -24,14 +78,68 @@
   "descriptionShort": [
     {
       "reference": "https://en.wikipedia.org/wiki/Skylab_4",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "descriptionShort": "The third crewed Skylab mission and placed the third and final crew aboard the first American space station."
     }
   ],
   "images": [
     {
       "reference": "https://en.wikipedia.org/wiki/Skylab_4",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "description": "was the third crewed Skylab mission and placed the third and final crew aboard the first American space station.",
       "url": "https://upload.wikimedia.org/wikipedia/commons/9/92/Skylab_and_Earth_Limb_-_GPN-2000-001055.jpg",
       "entireSatellite": "true"

@@ -4,7 +4,34 @@
   "names": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=43917",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "TJS-3 AKM"
     }
   ],
@@ -17,7 +44,34 @@
   "type": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=43917",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "type": "manMade",
       "description": "Rocket Body"
     }
@@ -25,7 +79,34 @@
   "ownership": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=43917",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "type": "country",
       "name": "People's Republic of China (PRC)",
       "responsibility": ""
@@ -34,7 +115,34 @@
   "launchSites": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=43917",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "Xichang Space Center, China (XSC)",
       "description": "",
       "latitude": "28.2409423696",
@@ -44,7 +152,34 @@
   "orbit": [
     {
       "reference": "https://in-the-sky.org/spacecraft.php?id=43917",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "orbit": "GEO",
       "description": ""
     }
@@ -52,7 +187,34 @@
   "images": [
     {
       "reference": "https://forum.nasaspaceflight.com/assets/46903.0/1535633.jpg",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "description": "Image of the intact rocket during launch",
       "url": "https://forum.nasaspaceflight.com/assets/46903.0/1535633.jpg",
       "entireSatellite": "true"
@@ -61,7 +223,34 @@
   "descriptionShort": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=43917",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "descriptionShort": "Rocket body or debris"
     }
   ]

@@ -18,7 +18,7 @@ The main focus of this application is data entry experience, data validation, an
 - Server: Meteor/WebApp
 - Repository: [GitHub](https://github.com/AFKrcher/PSRA)
 - Staging Deployment: [Meteor](http://probe.meteorapp.com/)
-- Production Deployment: [Meteor](**COMING SOON**)
+- Production Deployment: [PROBE](https://probe.saberastro.com)
 
 ## How To Contribute
 

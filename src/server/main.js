@@ -413,11 +413,6 @@ Meteor.startup(() => {
         Roles.userIsInRole(Meteor.userId(), "moderator")
       ) {
         values["adminCheck"] = true;
-        values.forEach((value) =>
-          value.forEach((field) => {
-            if (field) field.verified = true;
-          })
-        );
         SatelliteCollection.update({ _id: values._id }, values);
       } else {
         return "Unauthorized [401]";
@@ -518,11 +513,6 @@ Meteor.startup(() => {
         Roles.userIsInRole(Meteor.userId(), "moderator")
       ) {
         values["adminCheck"] = true;
-        values.forEach((value) =>
-          value.forEach((field) => {
-            if (field) field.verified = true;
-          })
-        );
         SchemaCollection.update({ _id: values._id }, values);
       } else {
         return "Unauthorized [401]";

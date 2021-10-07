@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 // Components
 import { SatelliteSchemaEntry } from "./SatelliteSchemaEntry";
-import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
 import useWindowSize from "../Hooks/useWindowSize.jsx";
 
 // @material-ui

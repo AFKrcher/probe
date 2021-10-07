@@ -1,6 +1,6 @@
-/** 
+/**
  * PLEASE ENSURE THAT ANY CHANGES MADE HERE ARE REFLECTED IN CLIENT-SIDE UTILS
-**/
+ **/
 
 import * as Yup from "yup";
 
@@ -37,7 +37,15 @@ export const schemaValidatorShaper = (initValues, schemas) => {
             .max(50, "Must not exceed 50 characters"),
           type: Yup.mixed()
             .oneOf(
-              ["string", "number", "date", "url", "changelog"],
+              [
+                "string",
+                "number",
+                "date",
+                "url",
+                "changelog",
+                "verified",
+                "validated",
+              ],
               "Invalid input provided"
             )
             .required("Required"),

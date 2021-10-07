@@ -4,28 +4,136 @@
   "names": [
     {
       "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "International Space Station"
     }
   ],
   "descriptionShort": [
     {
       "reference": "https://en.wikipedia.org/wiki/International_Space_Station",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "descriptionShort": "The International Space Station is a modular space station in low Earth orbit. It is a multinational collaborative project involving five participating space agencies: NASA, Roscosmos, JAXA, ESA, and CSA."
     }
   ],
   "images": [
     {
       "reference": "https://en.wikipedia.org/wiki/File:International_Space_Station_after_undocking_of_STS-132.jpg",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "description": "The International Space Station is featured in this image including the six iROSA solar arrays in the planned configuration that will augment the power drawn from the existing arrays on the Station.",
       "url": "https://upload.wikimedia.org/wikipedia/commons/0/04/International_Space_Station_after_undocking_of_STS-132.jpg",
       "entireSatellite": "true"
     },
     {
       "reference": "https://cdn.mos.cms.futurecdn.net/mPFET8wxkZENQazxvRg7K5.jpg",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "description": "ISS",
       "url": "https://cdn.mos.cms.futurecdn.net/mPFET8wxkZENQazxvRg7K5.jpg",
       "entireSatellite": "true"
@@ -34,7 +142,34 @@
   "cosparID": [
     {
       "reference": "https://en.wikipedia.org/",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "description": "The International Space Station is featured in this image including the six iROSA solar arrays in the planned configuration that will augment the power drawn from the existing arrays on the Station. the first of the six iROSA was attached to the station around 9 am UTC on 20 June 2021 which were brought to ISS by Cargo Dragon C209 in its unpressurized trunk during its SpaceX CRS-22 mission, with the others arriving in mid and last quarter of 2021.",
       "url": "https://upload.wikimedia.org/wikipedia/commons/0/04/International_Space_Station_after_undocking_of_STS-132.jpg",
       "entireSatellite": "true",
@@ -44,7 +179,34 @@
   "propulsion": [
     {
       "reference": "https://www.nasa.gov/vision/space/travelinginspace/future_propulsion.html#:~:text=In%20the%20less-distant%20future%2C%20VASIMR%20could%20even%20help,source%20is%20used%20to%20ionize%20fuel%20into%20plasma.",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "type": "chemical",
       "thrust": "",
       "thrustScale": "",
@@ -55,14 +217,68 @@
   "orbit": [
     {
       "reference": "https://en.wikipedia.org/wiki/Low_Earth_orbit",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "orbit": "LEO"
     }
   ],
   "launchSites": [
     {
       "reference": "https://en.wikipedia.org/wiki/Baikonur_Cosmodrome",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "Baikonur Cosmodrome",
       "latitude": "45.965",
       "longitude": "63.305"
@@ -71,21 +287,102 @@
   "type": [
     {
       "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "type": "manMade"
     }
   ],
   "mission": [
     {
       "reference": "https://www.pbs.org/spacestation/station/purpose.html",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "description": "To enable long-term exploration of space and provide benefits to people on Earth. "
     }
   ],
   "ownership": [
     {
       "reference": "https://en.wikipedia.org/wiki/International_Space_Station#:~:text=Although%20it%20was%20built%20by,owned%20by%20the%20United%20States.",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "country": "United States",
       "company": "",
       "organization": "NASA",
@@ -96,25 +393,133 @@
   "manufacturer": [
     {
       "reference": "https://en.wikipedia.org/wiki/Manufacturing_of_the_International_Space_Station",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "JAXA",
       "responsibility": ""
     },
     {
       "reference": "https://en.wikipedia.org/wiki/Manufacturing_of_the_International_Space_Station",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "ESA",
       "responsibility": ""
     },
     {
       "reference": "https://en.wikipedia.org/wiki/Manufacturing_of_the_International_Space_Station",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "Roscosmos",
       "responsibility": ""
     },
     {
       "reference": "https://en.wikipedia.org/wiki/Manufacturing_of_the_International_Space_Station",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "CSA",
       "responsibility": ""
     }
@@ -122,7 +527,34 @@
   "dimensionDescription": [
     {
       "reference": "https://www.nasa.gov/feature/facts-and-figures",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "dimensionDescription": "Overall length and width.",
       "lengthMeters": "73",
       "widthMeters": "109",
@@ -132,14 +564,68 @@
   "status": [
     {
       "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "status": "operational"
     }
   ],
   "missionDuration": [
     {
       "reference": "https://en.wikipedia.org/wiki/International_Space_Station",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "start": "1998-11-20T09:46",
       "plannedMissionDuration": "27",
       "actualMissionDuration": ""
@@ -148,30 +634,165 @@
   "organization": [
     {
       "reference": "https://www.nasa.gov/mission_pages/station/cooperation/index.html",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "organization": "NASA"
     },
     {
       "reference": "https://www.nasa.gov/mission_pages/station/cooperation/index.html",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "organization": "JAXA",
       "responsibility": ""
     },
     {
       "reference": "https://www.nasa.gov/mission_pages/station/cooperation/index.html",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "organization": "ESA",
       "responsibility": ""
     },
     {
       "reference": "https://www.nasa.gov/mission_pages/station/cooperation/index.html",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "organization": "Roscosmos",
       "responsibility": ""
     },
     {
       "reference": "https://www.nasa.gov/mission_pages/station/cooperation/index.html",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "organization": "CSA",
       "responsibility": ""
     }
@@ -179,14 +800,68 @@
   "dimensionVolumeM3": [
     {
       "reference": "https://www.nasa.gov/pdf/167128main_Facts.pdf",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "cubicMeters": "935"
     }
   ],
   "power": [
     {
       "reference": "https://en.wikipedia.org/wiki/Electrical_system_of_the_International_Space_Station#:~:text=The%20ISS%20electrical%20system%20uses,solar%20power%20is%20called%20photovoltaics.",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "source": "solar",
       "sourceStatus": "",
       "voltage": "160",
@@ -198,55 +873,298 @@
   "payload": [
     {
       "reference": "https://en.wikipedia.org/wiki/Assembly_of_the_International_Space_Station",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "description": "20 November 1998",
       "name": "Zarya"
     },
     {
       "reference": "https://en.wikipedia.org/wiki/Assembly_of_the_International_Space_Station",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "Unity",
       "description": "4 December 1998, also known as Node 1"
     },
     {
       "reference": "https://en.wikipedia.org/wiki/Assembly_of_the_International_Space_Station",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "Zvezda",
       "description": "12 July 2000"
     },
     {
       "reference": "https://en.wikipedia.org/wiki/Assembly_of_the_International_Space_Station",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "Destiny",
       "description": " 7 February 2001"
     },
     {
       "reference": "https://en.wikipedia.org/wiki/Assembly_of_the_International_Space_Station",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "Harmony",
       "description": "23 October 2007"
     },
     {
       "reference": "https://en.wikipedia.org/wiki/Assembly_of_the_International_Space_Station",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "Columbus",
       "description": "7 February 2008"
     },
     {
       "reference": "https://en.wikipedia.org/wiki/Assembly_of_the_International_Space_Station",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "Kibo",
       "description": "multiple flights between 2008-2009"
     },
     {
       "reference": "https://en.wikipedia.org/wiki/Assembly_of_the_International_Space_Station",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "Truss and Solarpanels",
       "description": "multiple flights between 2000-2009"
     },
     {
       "reference": "https://en.wikipedia.org/wiki/Assembly_of_the_International_Space_Station",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "Nauka",
       "description": "21 July 2021"
     }
@@ -254,7 +1172,34 @@
   "launchMassKg": [
     {
       "reference": "https://en.wikipedia.org/wiki/International_Space_Station",
-      "verified": "true",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "launchMassKg": "419289"
     }
   ],
@@ -269,6 +1214,5 @@
   "createdBy": "admin",
   "modifiedOn": "2021-10-05T19:31:08.144Z",
   "modifiedBy": "admin",
-  "adminCheck": true,
-  "isDeleted": false
+  "adminCheck": true
 }

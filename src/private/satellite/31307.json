@@ -4,7 +4,34 @@
   "names": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=31307",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "name": "GALAXY 17"
     }
   ],
@@ -17,7 +44,34 @@
   "type": [
     {
       "reference": "https://en.wikipedia.org/wiki/Galaxy_17",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "type": "manMade",
       "description": ""
     }
@@ -25,14 +79,81 @@
   "descriptionShort": [
     {
       "reference": "https://en.wikipedia.org/wiki/Galaxy_17",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
       "descriptionShort": "Galaxy 17 is a communications satellite owned by Intelsat to be located at 91° West longitude, serving the North American market."
     }
   ],
   "images": [
     {
       "reference": "https://www.arianespace.com/wp-content/uploads/2016/11/missionup_17apr07_sm.jpg",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": [
+            {
+              "method": "user",
+              "name": "admin",
+              "verified": true,
+              "verifiedOn": "2021-10-07T00:00:00.000Z"
+            },
+            {
+              "method": "machine",
+              "name": "Layer8",
+              "verified": false,
+              "verifiedOn": ""
+            }
+          ],
+          "validated": [
+            {
+              "method": "user",
+              "name": "admin",
+              "validated": true,
+              "validatedOn": "2021-10-07T00:00:00.000Z"
+            },
+            {
+              "method": "machine",
+              "name": "Layer8",
+              "validated": false,
+              "validatedOn": ""
+            }
+          ],
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
       "description": "Galaxy 17 is \"topped off\" in the Spaceport's S5 payload preparation building",
       "url": "https://www.arianespace.com/wp-content/uploads/2016/11/missionup_17apr07_sm.jpg",
       "entireSatellite": "true"
@@ -41,7 +162,47 @@
   "transponder": [
     {
       "reference": "https://www.arianespace.com/mission-update/galaxy-17-is-topped-off-in-the-spaceports-s5-payload-preparation-building/",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": [
+            {
+              "method": "user",
+              "name": "admin",
+              "verified": true,
+              "verifiedOn": "2021-10-07T00:00:00.000Z"
+            },
+            {
+              "method": "machine",
+              "name": "Layer8",
+              "verified": false,
+              "verifiedOn": ""
+            }
+          ],
+          "validated": [
+            {
+              "method": "user",
+              "name": "admin",
+              "validated": true,
+              "validatedOn": "2021-10-07T00:00:00.000Z"
+            },
+            {
+              "method": "machine",
+              "name": "Layer8",
+              "validated": false,
+              "validatedOn": ""
+            }
+          ],
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
       "description": "24 C-Band transponders",
       "minBand": "4",
       "maxBand": "8",
@@ -50,7 +211,47 @@
     },
     {
       "reference": "https://www.arianespace.com/mission-update/galaxy-17-is-topped-off-in-the-spaceports-s5-payload-preparation-building/",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": [
+            {
+              "method": "user",
+              "name": "admin",
+              "verified": true,
+              "verifiedOn": "2021-10-07T00:00:00.000Z"
+            },
+            {
+              "method": "machine",
+              "name": "Layer8",
+              "verified": false,
+              "verifiedOn": ""
+            }
+          ],
+          "validated": [
+            {
+              "method": "user",
+              "name": "admin",
+              "validated": true,
+              "validatedOn": "2021-10-07T00:00:00.000Z"
+            },
+            {
+              "method": "machine",
+              "name": "Layer8",
+              "validated": false,
+              "validatedOn": ""
+            }
+          ],
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
       "description": "24 Ku-Band transponders",
       "minBand": "12",
       "maxBand": "18",
@@ -61,7 +262,47 @@
   "orbit": [
     {
       "reference": "https://www.arianespace.com/mission-update/galaxy-17-is-topped-off-in-the-spaceports-s5-payload-preparation-building/",
-      "verified": true,
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": [
+            {
+              "method": "user",
+              "name": "admin",
+              "verified": true,
+              "verifiedOn": "2021-10-07T00:00:00.000Z"
+            },
+            {
+              "method": "machine",
+              "name": "Layer8",
+              "verified": false,
+              "verifiedOn": ""
+            }
+          ],
+          "validated": [
+            {
+              "method": "user",
+              "name": "admin",
+              "validated": true,
+              "validatedOn": "2021-10-07T00:00:00.000Z"
+            },
+            {
+              "method": "machine",
+              "name": "Layer8",
+              "validated": false,
+              "validatedOn": ""
+            }
+          ],
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
       "orbit": "GEO",
       "description": ""
     }
