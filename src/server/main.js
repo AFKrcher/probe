@@ -306,7 +306,6 @@ Meteor.startup(() => {
     files = fs.readdirSync("./assets/app/satellite");
     files.forEach(function (file) {
       data = fs.readFileSync("./assets/app/satellite/" + file, "ascii");
-      console.log(file);
       jsonObj.push(JSON.parse(data));
     });
     jsonObj.forEach(function (data) {

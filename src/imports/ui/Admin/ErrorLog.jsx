@@ -88,11 +88,11 @@ export const ErrorLog = () => {
       <Typography variant="caption">
         Error Log only shows the last 50 errors encountered by PROBE users
       </Typography>
-      <TableContainer component={Paper} className={classes.table}>
+      <TableContainer component={Paper} className={classes.table} elevation={5}>
         <Table size="small" aria-label="Schema table">
-          <TableHead className={classes.header}>
+          <TableHead>
             <TableRow color="secondary">
-              <TableCell>
+              <TableCell className={classes.header}>
                 <Typography variant="body2">MESSAGE</Typography>
               </TableCell>
               <TableCell>

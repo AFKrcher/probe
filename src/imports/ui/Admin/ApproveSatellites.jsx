@@ -37,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
   header: {
     paddingTop: 12.5,
     paddingBottom: 12.5,
-    width: "25%",
   },
   tableRow: {
     "&:hover": {
@@ -78,17 +77,15 @@ export const ApproveSatellites = () => {
 
   return (
     <div className={classes.root}>
-      <TableContainer component={Paper} className={classes.table}>
+      <TableContainer component={Paper} className={classes.table} elevation={5}>
         <Table size="small" aria-label="Schema table">
           <TableHead>
             <TableRow color="secondary">
-              <TableCell>
+              <TableCell className={classes.header}>
                 <Typography variant="body2">NORAD ID</Typography>
               </TableCell>
               <TableCell>
-                <Typography variant="body2" className={classes.header}>
-                  NAME(S)
-                </Typography>
+                <Typography variant="body2">NAME(S)</Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="body2">APPROVAL</Typography>

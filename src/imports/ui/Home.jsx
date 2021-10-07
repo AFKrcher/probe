@@ -20,6 +20,8 @@ import {
 } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import FlipCameraIcon from "@material-ui/icons/FlipCameraIos";
+import FlipCameraOutlinedIcon from "@material-ui/icons/FlipCameraIosOutlined";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,12 +50,21 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
   },
   scrollUp: {
+    color: theme.palette.tertiary.main,
     position: "fixed",
     bottom: 10,
+    right: 10,
+    zIndex: 20,
+  },
+  toggleInfinite: {
+    color: theme.palette.tertiary.main,
+    position: "fixed",
+    bottom: 60,
     right: 10,
   },
   loadMoreContainer: {
     marginTop: 40,
+    marginBottom: -25,
     filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
   },
   loadMore: {
@@ -72,6 +83,7 @@ export const Home = () => {
   const [page, setPage] = useState(1);
   const [limiter] = useState(3);
   const [scrolled, setScrolled] = useState(false);
+  const [infiniteMode, setInfiniteMode] = useState(true);
 
   const count = SatelliteCollection.find().count();
 
@@ -109,7 +121,10 @@ export const Home = () => {
   useEffect(() => {}, [page]);
 
   window.onscroll = () => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+    if (
+      window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+      infiniteMode
+    ) {
       handleInfiniteScroll();
       setScrolled(true);
     }
@@ -125,12 +140,6 @@ export const Home = () => {
 
   const handleInfiniteScroll = (n = 1) => {
     if (limiter <= count + 4) {
-      setPage(page + n);
-    }
-  };
-
-  const handleLoadMore = (n = 1) => {
-    if (limiter <= count + 3) {
       setPage(page + n);
     }
   };
@@ -155,11 +164,21 @@ export const Home = () => {
     <div className={classes.root}>
       <Container>
         {scrolled ? (
-          <Tooltip title="Scroll back to top" placement="top-end" arrow>
-            <IconButton className={classes.scrollUp} onClick={handleScrollUp}>
-              <ArrowUpwardIcon />
-            </IconButton>
-          </Tooltip>
+          <React.Fragment>
+            <Tooltip title="Scroll back to top" placement="left" arrow>
+              <IconButton className={classes.scrollUp} onClick={handleScrollUp}>
+                <ArrowUpwardIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Toggle infinite scroll" placement="left" arrow>
+              <IconButton
+                className={classes.toggleInfinite}
+                onClick={() => setInfiniteMode(!infiniteMode)}
+              >
+                {infiniteMode ? <FlipCameraIcon /> : <FlipCameraOutlinedIcon />}
+              </IconButton>
+            </Tooltip>
+          </React.Fragment>
         ) : null}
         <Typography variant="h3">
           Welcome to <strong className={classes.title}>PROBE</strong>!
@@ -228,7 +247,7 @@ export const Home = () => {
               </Grid>
             ) : (
               <CircularProgress className={classes.spinner} />
-            )}{" "}
+            )}
           </React.Fragment>
         ) : null}
 
@@ -289,7 +308,7 @@ export const Home = () => {
                 <Typography
                   variant={width > 1000 ? "body1" : "caption"}
                   className={classes.loadMore}
-                  onClick={handleLoadMore}
+                  onClick={() => setPage(page + 1)}
                 >
                   Load More Satellites
                 </Typography>
@@ -298,7 +317,28 @@ export const Home = () => {
                 <Divider />
               </Grid>
             </Grid>
-          ) : null}
+          ) : (
+            <Grid
+              container
+              alignItems="center"
+              className={classes.loadMoreContainer}
+            >
+              <Grid item xs={5}>
+                <Divider />
+              </Grid>
+              <Grid item xs={2} container justifyContent="center">
+                <Typography
+                  variant={width > 1000 ? "body1" : "caption"}
+                  className={classes.loadMore}
+                >
+                  No More Satellites
+                </Typography>
+              </Grid>
+              <Grid item xs={5}>
+                <Divider />
+              </Grid>
+            </Grid>
+          )}
         </div>
       </Container>
     </div>

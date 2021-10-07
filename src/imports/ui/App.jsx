@@ -33,7 +33,7 @@ const useStyles = makeStyles(() => ({
   },
   main: {
     marginTop: 95,
-    marginBottom: 40,
+    marginBottom: 60,
   },
   bottom: {
     display: "flex",
@@ -42,7 +42,8 @@ const useStyles = makeStyles(() => ({
   },
   footer: {
     position: "relative",
-    bottom: 5,
+    bottom: 0,
+    width: "100%",
   },
 }));
 

@@ -1,6 +1,12 @@
 {
   "_id": "qHKnDMEFsTaEHBcHK",
   "noradID": "44484",
+  "isDeleted": false,
+  "createdOn": "2021-10-05T21:01:00.949Z",
+  "createdBy": "admin",
+  "modifiedOn": "2021-10-05T21:56:16.441Z",
+  "modifiedBy": "admin",
+  "adminCheck": true,
   "names": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=44484",
@@ -67,12 +73,6 @@
       "name": "DougSat"
     }
   ],
-  "isDeleted": false,
-  "createdOn": "2021-10-05T21:01:00.949Z",
-  "createdBy": "admin",
-  "modifiedOn": "2021-10-05T21:56:16.441Z",
-  "modifiedBy": "admin",
-  "adminCheck": true,
   "cosparID": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=44484",
