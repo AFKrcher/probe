@@ -96,7 +96,7 @@ export const SatelliteSchemaEntry = ({
     setTouched(obj);
     // Needed in order for errors to be properly set or cleared after Formik completes a check on the satellite data
     setFieldValue(event.target.name, event.target.value);
-  }, 800);
+  }, 400);
 
   const refreshHelpers = () => {
     if (JSON.stringify(errors) !== "{}") {
