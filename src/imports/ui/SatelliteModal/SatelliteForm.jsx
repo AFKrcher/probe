@@ -10,14 +10,9 @@ import { SatelliteSchemaAccordion } from "./SatelliteSchemaAccordion";
 // @material-ui
 import { TextField } from "formik-material-ui";
 import {
-  Box,
   Grid,
   Button,
   makeStyles,
-  Select,
-  FormControl,
-  InputLabel,
-  MenuItem,
   IconButton,
   Tooltip,
   Paper,
@@ -25,9 +20,6 @@ import {
 import MuiTextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import DeleteIcon from "@material-ui/icons/Delete";
-import HelpIcon from "@material-ui/icons/Help";
-import SearchIcon from "@material-ui/icons/Search";
-import ClearIcon from "@material-ui/icons/Clear";
 
 const useStyles = makeStyles((theme) => ({
   accordion: {
@@ -35,10 +27,11 @@ const useStyles = makeStyles((theme) => ({
   },
   addSchemaContainer: {
     textAlign: "center",
-    margin: 10,
+    margin: 15,
   },
   addItem: {
     alignItems: "center",
+    marginTop: 10,
   },
   noradID: {
     padding: theme.spacing(1),
@@ -77,7 +70,6 @@ export const SatelliteForm = ({
   const [accordionBeingEdited, setAccordionBeingEdited] = useState(-1);
   const [flag, setFlag] = useState(true);
   const classes = useStyles();
-  const [filter, setFilter] = useState("");
 
   const renderAccordion = (schema, schemaIndex) => {
     return (
@@ -230,15 +222,20 @@ export const SatelliteForm = ({
         <Grid item container xs={12} className={classes.addItem}>
           <Grid item xs={10}>
             <Autocomplete
-              options={schemas}
+              options={schemas.filter((schema) => !initValues[schema.name])}
               onChange={(e, option) => onSchemaChange(option.name)}
               getOptionLabel={(option) => option.name}
               renderInput={(params) => (
-                <MuiTextField {...params} label="Available Schemas" />
+                <MuiTextField
+                  {...params}
+                  label="Available Schemas"
+                  variant="outlined"
+                  size="small"
+                />
               )}
             />
           </Grid>
-          <Grid item xs style={{ marginLeft: 10, marginTop: 5 }}>
+          <Grid item xs style={{ marginLeft: 10 }}>
             <Button
               id="add-schema"
               variant="contained"

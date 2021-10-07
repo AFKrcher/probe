@@ -4,11 +4,13 @@ import { useTracker } from "meteor/react-meteor-data";
 import { SchemaCollection } from "../../api/schemas";
 import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
 import useWindowSize from "../Hooks/useWindowSize.jsx";
+import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
 
 // Components
 import { SearchBar } from "./SearchBar.jsx";
 import { Link } from "react-router-dom";
 import { SchemaModal } from "../SchemaModal/SchemaModal.jsx";
+import { Popper } from "../Dialogs/Popper.jsx";
 
 // @material-ui
 import {
@@ -18,13 +20,15 @@ import {
   Typography,
   Tooltip,
   IconButton,
-  TextField,
-  Snackbar,
-  Paper,
 } from "@material-ui/core";
-import { DataGrid } from "@material-ui/data-grid";
-import SearchIcon from "@material-ui/icons/Search";
-import ClearIcon from "@material-ui/icons/Clear";
+import {
+  DataGrid,
+  GridToolbarContainer,
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+  GridToolbarDensitySelector,
+} from "@material-ui/data-grid";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,20 +39,34 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
   },
   dataGrid: {
+    padding: "5px 5px 0px 5px",
     backgroundColor: theme.palette.grid.background,
-    marginBottom: 5,
+    marginTop: 5,
     "& .MuiDataGrid-cell": {
       textOverflow: "ellipse",
-      marginLeft: 7,
       cursor: "pointer",
     },
     "& .MuiCircularProgress-colorPrimary": {
       color: theme.palette.text.primary,
     },
   },
+  toolbarContainer: {
+    margin: 5,
+  },
+  toolbar: {
+    color: theme.palette.text.primary,
+    fontWeight: 500,
+    fontSize: "14px",
+  },
   gridCaption: {
-    marginLeft: 5,
     color: theme.palette.text.disabled,
+  },
+  actions: {
+    display: "flex",
+  },
+  actionIconButton: {
+    padding: 7,
+    marginLeft: 37.5,
   },
   spinner: {
     color: theme.palette.text.primary,
@@ -62,13 +80,6 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     marginBottom: 20,
     backgroundColor: theme.palette.grid.background,
-  },
-  popper: {
-    width: "80vw",
-    backgroundColor: theme.palette.popper.background,
-    color: theme.palette.popper.text,
-    border: `1px solid ${theme.palette.text.disabled}`,
-    padding: 10,
   },
 }));
 
@@ -100,12 +111,23 @@ export const SchemasTable = () => {
 
   const [popperBody, setPopperBody] = useState(null);
   const [showPopper, setShowPopper] = useState(false);
-
   const [showModal, setShowModal] = useState(false);
   const [newSchema, setNewSchema] = useState(true);
   const [filter, setFilter] = useState("");
   const [initialSchemaValues, setInitialSchemaValues] =
     useState(newSchemaValues);
+
+  const debounced = useDebouncedCallback((cell) => {
+    if (
+      cell.field === "description" &&
+      cell.colDef.computedWidth / cell.value.length < 6.3
+    ) {
+      setShowPopper(true);
+      setPopperBody(cell.value);
+    } else {
+      setShowPopper(false);
+    }
+  }, 300);
 
   function escapeRegExp(value) {
     return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
@@ -113,7 +135,16 @@ export const SchemasTable = () => {
 
   const [rows, schemas, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("schemas");
-    const schemas = SchemaCollection.find().fetch();
+    const schemas = SchemaCollection.find({
+      $or: [
+        {
+          isDeleted: false,
+        },
+        {
+          isDeleted: undefined,
+        },
+      ],
+    }).fetch();
     const searchRegex = new RegExp(escapeRegExp(filter), "i");
     const rows = schemas
       .filter((schema) =>
@@ -133,26 +164,25 @@ export const SchemasTable = () => {
     return [rows, schemas, !sub.ready()];
   });
 
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer className={classes.toolbarContainer}>
+        <GridToolbarColumnsButton className={classes.toolbar} />
+        <GridToolbarFilterButton className={classes.toolbar} />
+        <GridToolbarDensitySelector className={classes.toolbar} />
+      </GridToolbarContainer>
+    );
+  }
   const handleAddNewSchema = () => {
     setNewSchema(true);
     setShowModal(true);
     setInitialSchemaValues(newSchemaValues);
   };
 
-  const handleRowClick = (schemaObject) => {
+  const handleRowDoubleClick = (schemaObject) => {
     setNewSchema(false);
     setShowModal(true);
     setInitialSchemaValues(schemaObject);
-  };
-
-  const handleCellExpand = (cell) => {
-    if (
-      cell.field === "description" &&
-      cell.colDef.computedWidth / cell.value.length < 6.3
-    ) {
-      setPopperBody(cell.value);
-      setShowPopper(true);
-    }
   };
 
   const AddSchemaButton = () => {
@@ -176,6 +206,35 @@ export const SchemasTable = () => {
 
   const columns = [
     {
+      headerAlign: "center",
+      filterable: false,
+      sortable: false,
+      field: "actions",
+      headerName: "ACTIONS",
+      width: 150,
+      align: "left",
+      renderCell: function renderCellButtons(schema) {
+        return (
+          <span className={classes.actions}>
+            <Tooltip title="View Schema" arrow placement="top">
+              <IconButton
+                className={classes.actionIconButton}
+                onClick={() =>
+                  handleRowDoubleClick(
+                    SchemaCollection.find({
+                      _id: schema.id,
+                    }).fetch()[0]
+                  )
+                }
+              >
+                <VisibilityIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          </span>
+        );
+      },
+    },
+    {
       headerAlign: "left",
       field: "name",
       headerName: "SCHEMA NAME",
@@ -187,6 +246,7 @@ export const SchemasTable = () => {
       field: "description",
       headerName: "SCHEMA DESCRIPTION",
       flex: 1,
+      minWidth: 200,
       editable: false,
     },
   ];
@@ -226,11 +286,20 @@ export const SchemasTable = () => {
         </Tooltip>{" "}
         for usage examples. Each <strong>schema</strong> has a reference for
         where the data was found, a description describing what the data is, and
-        a number of data fields that contain the actual information. Click on a
-        desired <strong>schema</strong> below to view its details and edit the
-        entry fields.
+        a number of data fields that contain the actual information.
+        Double-click on a desired <strong>schema</strong> below to view its
+        details and edit the entry fields.
       </Typography>
-      <SearchBar filter={filter} setFilter={setFilter} />
+      <SearchBar
+        placeholder={"Search by name..."}
+        filter={filter}
+        setFilter={setFilter}
+      />
+      <br />
+      <Typography variant="caption" className={classes.gridCaption}>
+        Hover to view schema description, Click to interact with a cell,
+        Double-click to view schema data
+      </Typography>
       <DataGrid
         className={classes.dataGrid}
         columns={columns}
@@ -238,20 +307,16 @@ export const SchemasTable = () => {
         loading={isLoading}
         autoHeight={true}
         disableSelectionOnClick
-        onRowClick={(row) => {
-          handleRowClick(schemas.find((item) => item._id === row.row.id));
+        components={{
+          Toolbar: CustomToolbar,
         }}
-        onCellOver={(cell, event) => handleCellExpand(cell, event)}
-        onCellOut={() => setShowPopper(false)}
+        onRowDoubleClick={(row) => {
+          handleRowDoubleClick(schemas.find((item) => item._id === row.row.id));
+        }}
+        onCellOver={debounced}
+        onRowOut={() => debounced(false)}
       />
-      <Typography variant="caption" className={classes.gridCaption}>
-        Hover over a cell to view full-contents, click to view schema data
-      </Typography>
-      <Snackbar open={showPopper} onClose={() => setShowPopper(false)}>
-        <Paper className={classes.popper} elevation={5}>
-          <Typography>{popperBody}</Typography>
-        </Paper>
-      </Snackbar>
+      <Popper open={showPopper} value={popperBody} />
       <SchemaModal
         show={showModal}
         newSchema={newSchema}

@@ -16,6 +16,7 @@ import {
   makeStyles,
   CircularProgress,
   Tooltip,
+  Divider,
 } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
@@ -50,6 +51,17 @@ const useStyles = makeStyles((theme) => ({
     position: "fixed",
     bottom: 10,
     right: 10,
+  },
+  loadMoreContainer: {
+    marginTop: 40,
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
+  },
+  loadMore: {
+    cursor: "pointer",
+    color: theme.palette.text.disabled,
+    "&:hover": {
+      color: theme.palette.info.light,
+    },
   },
 }));
 
@@ -114,6 +126,23 @@ export const Home = () => {
   const handleInfiniteScroll = (n = 1) => {
     if (limiter <= count + 4) {
       setPage(page + n);
+    }
+  };
+
+  const handleLoadMore = (n = 1) => {
+    if (limiter <= count + 3) {
+      setPage(page + n);
+    }
+  };
+
+  const showLoadMore = () => {
+    if (
+      otherSats.length !==
+      SatelliteCollection.find({ isDeleted: false }).count()
+    ) {
+      return true;
+    } else {
+      return false;
     }
   };
 
@@ -247,6 +276,29 @@ export const Home = () => {
           ) : (
             <CircularProgress className={classes.spinner} />
           )}
+          {showLoadMore() ? (
+            <Grid
+              container
+              alignItems="center"
+              className={classes.loadMoreContainer}
+            >
+              <Grid item xs={5}>
+                <Divider />
+              </Grid>
+              <Grid item xs={2} container justifyContent="center">
+                <Typography
+                  variant={width > 1000 ? "body1" : "caption"}
+                  className={classes.loadMore}
+                  onClick={handleLoadMore}
+                >
+                  Load More Satellites
+                </Typography>
+              </Grid>
+              <Grid item xs={5}>
+                <Divider />
+              </Grid>
+            </Grid>
+          ) : null}
         </div>
       </Container>
     </div>

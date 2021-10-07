@@ -354,14 +354,20 @@ export const SchemaModal = ({
                     style={decideHeight()}
                   >
                     <Typography className={classes.description}>
-                      Last change made by{" "}
-                      <strong>{`${values.modifiedBy || user.username}`}</strong>{" "}
-                      on{" "}
-                      <strong>
-                        {values.modifiedOn
-                          ? `${values.modifiedOn}`
-                          : `${new Date()}`}
-                      </strong>
+                      {user ? (
+                        <React.Fragment>
+                          Last change made by{" "}
+                          <strong>{`${
+                            values.modifiedBy || user.username
+                          }`}</strong>{" "}
+                          on{" "}
+                          <strong>
+                            {values.modifiedOn
+                              ? `${values.modifiedOn}`
+                              : `${new Date()}`}
+                          </strong>
+                        </React.Fragment>
+                      ) : null}
                     </Typography>
                     <SchemaForm
                       touched={touched}
@@ -383,13 +389,11 @@ export const SchemaModal = ({
                             return (
                               <React.Fragment>
                                 <Button
-                                  size={
-                                    width && width < 500 ? "small" : "medium"
-                                  }
+                                  size={width < 500 ? "small" : "medium"}
                                   variant="contained"
                                   color="secondary"
                                   startIcon={
-                                    width && width < 500 ? null : <DeleteIcon />
+                                    width < 500 ? null : <DeleteIcon />
                                   }
                                   onClick={handleDeleteDialog}
                                 >
@@ -399,16 +403,12 @@ export const SchemaModal = ({
                                 </Button>
                                 {admin ? (
                                   <Button
-                                    size={
-                                      width && width < 500 ? "small" : "medium"
-                                    }
+                                    size={width < 500 ? "small" : "medium"}
                                     variant="contained"
                                     color="primary"
                                     onClick={handleRestore}
                                     startIcon={
-                                      width && width < 500 ? null : (
-                                        <RestorePageIcon />
-                                      )
+                                      width < 500 ? null : <RestorePageIcon />
                                     }
                                   >
                                     Restore
@@ -426,11 +426,11 @@ export const SchemaModal = ({
                     component={() => {
                       return (
                         <Button
-                          size={width && width < 500 ? "small" : "medium"}
+                          size={width < 500 ? "small" : "medium"}
                           variant="contained"
                           color={editing && dirty ? "secondary" : "default"}
                           startIcon={
-                            width && width < 500 ? null : editing ? (
+                            width < 500 ? null : editing ? (
                               dirty ? (
                                 <DeleteIcon />
                               ) : null
@@ -449,32 +449,32 @@ export const SchemaModal = ({
 
                   {!editing && admin && !values.isDeleted && (
                     <Button
-                      size={width && width < 500 ? "small" : "medium"}
+                      size={width < 500 ? "small" : "medium"}
                       variant="contained"
                       color="primary"
                       onClick={handleApprove}
-                      startIcon={width && width < 500 ? null : <CheckIcon />}
+                      startIcon={width < 500 ? null : <CheckIcon />}
                     >
                       Approve
                     </Button>
                   )}
                   {!editing && (
                     <Button
-                      size={width && width < 500 ? "small" : "medium"}
+                      size={width < 500 ? "small" : "medium"}
                       variant="contained"
                       onClick={handleClose}
-                      startIcon={width && width < 500 ? null : <CloseIcon />}
+                      startIcon={width < 500 ? null : <CloseIcon />}
                     >
                       Close
                     </Button>
                   )}
                   {editing && (
                     <Button
-                      size={width && width < 500 ? "small" : "medium"}
+                      size={width < 500 ? "small" : "medium"}
                       type="submit"
                       variant="contained"
                       color="primary"
-                      startIcon={width && width < 500 ? null : <SaveIcon />}
+                      startIcon={width < 500 ? null : <SaveIcon />}
                       disabled={
                         Object.entries(errors).length > 0 ||
                         !dirty ||

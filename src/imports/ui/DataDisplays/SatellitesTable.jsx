@@ -6,6 +6,7 @@ import { Meteor } from "meteor/meteor";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import useWindowSize from "../Hooks/useWindowSize.jsx";
 import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
+import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
 
 // Components
 import { SearchBar } from "./SearchBar.jsx";
@@ -13,6 +14,7 @@ import VisualizeDialog from "../Dialogs/VisualizeDialog";
 import { SatelliteModal } from "../SatelliteModal/SatelliteModal";
 import { SatelliteCollection } from "../../api/satellites";
 import SnackBar from "../Dialogs/SnackBar.jsx";
+import { Popper } from "../Dialogs/Popper.jsx";
 
 // @material-ui
 import {
@@ -49,13 +51,14 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     height: "100%",
     width: "100%",
-    marginBottom: 5,
+    marginTop: 5,
+    resize: "horizontal",
   },
   dataGrid: {
     padding: "5px 5px 0px 5px",
     backgroundColor: theme.palette.grid.background,
     "& .MuiDataGrid-cell": {
-      textOverflow: "clip",
+      textOverflow: "ellipse",
       cursor: "pointer",
     },
     "& .MuiCircularProgress-colorPrimary": {
@@ -80,7 +83,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "14px",
   },
   gridCaption: {
-    marginLeft: 5,
     color: theme.palette.text.disabled,
   },
   actions: {
@@ -131,6 +133,9 @@ export const SatellitesTable = () => {
     useContext(HelpersContext);
 
   const [width, height] = useWindowSize();
+
+  const [popperBody, setPopperBody] = useState(null);
+  const [showPopper, setShowPopper] = useState(false);
   const [filter, setFilter] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [newSat, setNewSat] = useState(true);
@@ -144,6 +149,15 @@ export const SatellitesTable = () => {
   const [selector, setSelector] = useState({});
   const [columns, setColumns] = useState([]);
   const [prompt, setPrompt] = useState();
+
+  const debounced = useDebouncedCallback((row) => {
+    if (row.row.description) {
+      setPopperBody(row.row.description);
+      setShowPopper(true);
+    } else {
+      setShowPopper(false);
+    }
+  }, 300);
 
   const decideSort = () => {
     if (sortNames) return { names: sortNames, isDeleted: false };
@@ -171,6 +185,9 @@ export const SatellitesTable = () => {
           orbit: sat.orbit
             ? sat.orbit.map((entry) => entry.orbit).join(", ")
             : "N/A",
+          description: sat.descriptionShort
+            ? sat.descriptionShort[0]?.descriptionShort
+            : null,
         };
       });
     rows.getRows = count;
@@ -520,16 +537,22 @@ export const SatellitesTable = () => {
               next page
             </Link>
           </Tooltip>
-          . Click on the <strong>satellite</strong> names in the table to bring
-          up the schemas and data associated with the <strong>satellite</strong>
-          .
+          . Double-click on the <strong>satellite</strong> names in the table to
+          bring up the schemas and data associated with the{" "}
+          <strong>satellite</strong>.
         </Typography>
         <SearchBar
+          placeholder={"Delimit with commas..."}
           filter={filter}
           setFilter={setFilter}
           selector={selector}
           setSelector={setSelector}
         />
+        <br />
+        <Typography variant="caption" className={classes.gridCaption}>
+          Hover to view satellite description, Click to interact with a cell,
+          Double-click to view satellite data
+        </Typography>
         <div className={classes.gridContainer}>
           <DataGrid
             className={classes.dataGrid}
@@ -558,11 +581,15 @@ export const SatellitesTable = () => {
               );
             }}
             onSortModelChange={handleSort}
+            onRowOver={debounced}
+            onRowOut={() => {
+              debounced(false);
+              setShowPopper(false);
+            }}
           />
         </div>
-        <Typography variant="caption" className={classes.gridCaption}>
-          Click to interact with a cell, Double-click to view satellite data
-        </Typography>
+
+        <Popper open={showPopper} value={popperBody} />
         <SatelliteModal
           show={showModal}
           newSat={newSat}

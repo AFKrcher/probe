@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Field, ErrorMessage } from "formik";
+import { Field } from "formik";
 // Components
 import { MultiSelectTextInput } from "./MultiSelectTextInput";
 
@@ -21,11 +21,6 @@ const useStyles = makeStyles((theme) => ({
   field: {
     display: "flex",
     alignItems: "center",
-  },
-  helpers: {
-    marginLeft: 14,
-    marginTop: 0,
-    marginBottom: 8,
   },
   helpersError: {
     marginLeft: 14,

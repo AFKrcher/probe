@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // @material-ui
 import { IconButton, makeStyles, TextField } from "@material-ui/core";
@@ -12,23 +12,50 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SearchBar = ({ filter, setFilter, selector, setSelector }) => {
+export const SearchBar = ({
+  placeholder = "Search...",
+  filter,
+  setFilter,
+  selector,
+  setSelector,
+}) => {
   const classes = useStyles();
+  useEffect(() => {}, [filter, setFilter, selector, setSelector]);
+
   return (
     <TextField
       variant="outlined"
-      placeholder="Search Schemas…"
+      placeholder={placeholder}
       value={filter}
       onChange={(e) => {
-        setSelector({
-          $or: [
-            { noradID: { $in: filter.split(",") } },
-            // { "type.type": "manMade" },
-          ],
-        });
         setFilter(e.target.value);
-        console.log("selector", selector);
-        console.log("filter", filter);
+        let val = e.target.value.replace(/\s/g, "").toUpperCase().split(",");
+        let obj = {
+          $or: [
+            {
+              noradID: {
+                $in: val,
+              },
+            },
+            {
+              "orbit.orbit": {
+                $in: val,
+              },
+            },
+          ],
+        };
+        let val2 = e.target.value.split(", ");
+        val2.map((v) => {
+          if (v.replace(/\s/g, "") !== "") {
+            obj.$or.push({
+              "descriptionShort.descriptionShort": {
+                $regex: v,
+                $options: "i",
+              },
+            });
+          }
+        });
+        !val && selector !== {} ? setSelector({}) : setSelector(obj);
       }}
       className={classes.textField}
       InputProps={{
