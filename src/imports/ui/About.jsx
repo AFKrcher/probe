@@ -14,6 +14,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-around",
     gridGap: 40,
   },
+  title: {
+    color: theme.palette.tertiary.main,
+    filter: `drop-shadow(3px 2px 2px ${theme.palette.tertiary.shadow})`,
+  },
   link: {
     color: theme.palette.text.primary,
     textDecoration: "none",
@@ -22,24 +26,18 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 30,
     marginBottom: 30,
   },
-  imgContainer: {
-    width: "225px",
-    height: "225px",
-    border: "2px solid",
-    borderColor: theme.palette.primary,
-    borderRadius: 4,
-    "&:hover": {
-      border: "2px solid",
-      borderColor: theme.palette.info.main,
-    },
-  },
   image: {
     display: "block",
     objectFit: "cover",
-    borderRadius: 1.5,
     verticalAlign: "middle",
-    marginLeft: "auto",
-    marginRight: "auto",
+    width: "auto",
+    height: "230px",
+    border: "2.5px solid",
+    borderColor: theme.palette.primary,
+    borderRadius: 5,
+    "&:hover": {
+      borderColor: theme.palette.info.main,
+    },
   },
   caption: {
     textAlign: "justify",
@@ -129,7 +127,7 @@ export const About = () => {
   return (
     <div className={classes.root}>
       <Typography variant="h3">
-        About <strong>PROBE</strong>
+        About <strong className={classes.title}>PROBE</strong>
       </Typography>
       <p>
         <strong>P</strong>ublicly <strong>R</strong>esearched <strong>O</strong>
@@ -168,15 +166,13 @@ export const About = () => {
                     className={classes.link}
                     rel="noreferrer"
                   >
-                    <div className={classes.imgContainer}>
-                      <img
-                        width="100%"
-                        height="100%"
-                        src={member.Img}
-                        className={classes.image}
-                        alt={`${member.Name}`}
-                      />
-                    </div>
+                    <img
+                      width="100%"
+                      height="100%"
+                      src={member.Img}
+                      className={classes.image}
+                      alt={`${member.Name}`}
+                    />
                     <Typography variant="body2" className={classes.caption}>
                       <span className={classes.name}>{member.Name}</span>
                       <br />

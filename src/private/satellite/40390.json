@@ -1,6 +1,12 @@
 {
   "_id": "kBjSWp8w35LcoA3do",
   "noradID": "40390",
+  "isDeleted": false,
+  "createdOn": "2021-10-05T17:58:51.719Z",
+  "createdBy": "admin",
+  "modifiedOn": "2021-10-05T17:58:51.720Z",
+  "modifiedBy": "admin",
+  "adminCheck": true,
   "names": [
     {
       "reference": "https://en.wikipedia.org/wiki/Deep_Space_Climate_Observatory",
@@ -138,11 +144,5 @@
       "url": "https://upload.wikimedia.org/wikipedia/commons/3/3f/DSCOVR_spacecraft_model.png",
       "entireSatellite": "true"
     }
-  ],
-  "isDeleted": false,
-  "createdOn": "2021-10-05T17:58:51.719Z",
-  "createdBy": "admin",
-  "modifiedOn": "2021-10-05T17:58:51.720Z",
-  "modifiedBy": "admin",
-  "adminCheck": true
+  ]
 }

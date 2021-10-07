@@ -1,106 +1,50 @@
 import React, { useState, useEffect } from "react";
 
 // @material-ui
-import {
-  Chip,
-  IconButton,
-  makeStyles,
-  TextField,
-  FormHelperText,
-} from "@material-ui/core";
+import { makeStyles, TextField, IconButton } from "@material-ui/core";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import SearchIcon from "@material-ui/icons/Search";
 import ClearIcon from "@material-ui/icons/Clear";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import Close from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
-    marginBottom: 20,
+    marginBottom: 25,
     backgroundColor: theme.palette.grid.background,
+    width: "50%",
   },
 }));
 
 export const SearchBar = ({
-  placeholder = "Search...",
-  filter,
-  setFilter,
-  selector,
   setSelector,
+  multiple = true,
+  placeholder = "Press ENTER to add another search term",
 }) => {
   const classes = useStyles();
-  useEffect(() => {}, [filter, setFilter, selector, setSelector]);
+  const [value, setValue] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  useEffect(() => {}, [setSelector]);
 
   return (
     <div>
       <Autocomplete
-        multiple
+        multiple={multiple}
+        // value={value}
+        // inputValue={inputValue}
         freeSolo
         filterSelectedOptions
         options={[]}
-        onChange={(e, values) => {
-          let val = values.join().toUpperCase().split(",");
-          let obj = {
-            $or: [
-              {
-                noradID: {
-                  $in: val,
-                },
-              },
-              {
-                "orbit.orbit": {
-                  $in: val,
-                },
-              },
-            ],
-          };
-          values.map((val) => {
-            console.log(val);
-          });
-          // let val = e.target.value.replace(/\s/g, "").toUpperCase().split(",");
-          // let obj = {
-          //   $or: [
-          //     {
-          //       noradID: {
-          //         $in: val,
-          //       },
-          //     },
-          //     {
-          //       "orbit.orbit": {
-          //         $in: val,
-          //       },
-          //     },
-          //   ],
-          // };
-          // let val2 = e.target.value.split(", ");
-          // val2.map((v) => {
-          //   if (v.replace(/\s/g, "") !== "") {
-          //     obj.$or.push({
-          //       "descriptionShort.descriptionShort": {
-          //         $regex: v,
-          //         $options: "i",
-          //       },
-          //     });
-          //   }
-          // });
-          // !val && selector !== {} ? setSelector({}) : setSelector(obj);
+        onInputChange={(e, values) => {
+          if (!multiple) {
+            setSelector(values);
+          }
         }}
-        // onInputChange={(event, values) => console.log(values)}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            // variant="standard"
-            label="Search"
-            placeholder="Press enter to add another search term"
-          />
-        )}
-      />
-      <TextField
-        variant="outlined"
-        placeholder={placeholder}
-        value={filter}
-        onChange={(e) => {
-          setFilter(e.target.value);
-          let val = e.target.value.replace(/\s/g, "").toUpperCase().split(",");
+        // onKeyDown={(e) => {
+        //   if (e.keyCode === 9) {
+        //     setValue(inputValue);
+        //   }
+        // }}
+        onChange={(e, values) => {
+          let val = values.join().toUpperCase().trim().split(",");
           let obj = {
             $or: [
               {
@@ -115,8 +59,7 @@ export const SearchBar = ({
               },
             ],
           };
-          let val2 = e.target.value.split(", ");
-          val2.map((v) => {
+          val.map((v) => {
             if (v.replace(/\s/g, "") !== "") {
               obj.$or.push({
                 "descriptionShort.descriptionShort": {
@@ -126,26 +69,35 @@ export const SearchBar = ({
               });
             }
           });
-          !val && selector !== {} ? setSelector({}) : setSelector(obj);
+          val.map((v) => {
+            if (v.replace(/\s/g, "") !== "") {
+              obj.$or.push({
+                "names.name": {
+                  $regex: v,
+                  $options: "i",
+                },
+              });
+            }
+          });
+          val[0] === "" ? setSelector({}) : setSelector(obj);
         }}
-        className={classes.textField}
-        InputProps={{
-          startAdornment: (
-            <SearchIcon fontSize="small" style={{ marginRight: 5 }} />
-          ),
-          endAdornment: (
-            <IconButton
-              title="Clear"
-              aria-label="Clear"
-              size="small"
-              onClick={() => {
-                setSelector({});
-                setFilter("");
-              }}
-            >
-              <ClearIcon fontSize="small" />
-            </IconButton>
-          ),
+        renderInput={(params) => {
+          // params.inputProps.onKeyDown = handleOnKeyDown;
+          params.InputProps.startAdornment
+            ? params.InputProps.startAdornment.unshift(
+                <SearchIcon fontSize="small" style={{ marginRight: 5 }} />
+              )
+            : (params.InputProps.startAdornment = (
+                <SearchIcon fontSize="small" style={{ marginRight: 5 }} />
+              ));
+          return (
+            <TextField
+              {...params}
+              placeholder={placeholder}
+              className={classes.textField}
+              variant="outlined"
+            />
+          );
         }}
       />
     </div>

@@ -1,6 +1,12 @@
 {
   "_id": "xoecq6tGZhdJairAm",
   "noradID": "49127",
+  "isDeleted": false,
+  "createdOn": "2021-10-05T21:33:05.258Z",
+  "createdBy": "admin",
+  "modifiedOn": "2021-10-05T21:33:05.260Z",
+  "modifiedBy": "admin",
+  "adminCheck": true,
   "launchSites": [
     {
       "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2021-081A",
@@ -274,11 +280,5 @@
       "url": "https://upload.wikimedia.org/wikipedia/commons/a/af/Strela-2M.jpg",
       "entireSatellite": "false"
     }
-  ],
-  "isDeleted": false,
-  "createdOn": "2021-10-05T21:33:05.258Z",
-  "createdBy": "admin",
-  "modifiedOn": "2021-10-05T21:33:05.260Z",
-  "modifiedBy": "admin",
-  "adminCheck": true
+  ]
 }

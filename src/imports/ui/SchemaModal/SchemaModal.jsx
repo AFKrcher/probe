@@ -343,7 +343,6 @@ export const SchemaModal = ({
               isValidating,
             }) => (
               <Form>
-                {console.log(initValues)}
                 {isLoading ? (
                   <DialogContent className={classes.loadingDialog}>
                     <CircularProgress size={75} />
@@ -401,7 +400,7 @@ export const SchemaModal = ({
                                     ? "Delete Forever"
                                     : "Delete"}
                                 </Button>
-                                {admin ? (
+                                {admin && values.isDeleted ? (
                                   <Button
                                     size={width < 500 ? "small" : "medium"}
                                     variant="contained"
