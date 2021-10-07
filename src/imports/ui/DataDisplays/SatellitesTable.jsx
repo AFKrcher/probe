@@ -160,16 +160,25 @@ export const SatellitesTable = () => {
   }, 300);
 
   const decideSort = () => {
-    if (sortNames) return { names: sortNames, isDeleted: false };
-    if (sortNorad) return { noradID: sortNorad, isDeleted: false };
-    if (sortType) return { type: sortType, isDeleted: false };
-    if (sortOrbit) return { orbit: sortOrbit, isDeleted: false };
+    if (sortNames) return { names: sortNames };
+    if (sortNorad) return { noradID: sortNorad };
+    if (sortType) return { type: sortType };
+    if (sortOrbit) return { orbit: sortOrbit };
   };
 
   const [rows, isLoadingSchemas, isLoadingSats, count] = useTracker(() => {
     const subSchemas = Meteor.subscribe("satellites");
     const subSats = Meteor.subscribe("satellites");
-    const count = SatelliteCollection.find({ isDeleted: false }).count();
+    const count = SatelliteCollection.find({
+      $or: [
+        {
+          isDeleted: false,
+        },
+        {
+          isDeleted: undefined,
+        },
+      ],
+    }).count();
     const sats = SatelliteCollection.find(selector, {
       limit: limiter,
       skip: page * limiter,
@@ -181,10 +190,10 @@ export const SatellitesTable = () => {
         return {
           id: sat.noradID,
           names: sat.names?.map((name) => name.names || name.name).join(", "),
-          type: sat.type ? sat.type[0]?.type : "N/A",
+          type: sat.type ? sat.type[0]?.type : "",
           orbit: sat.orbit
             ? sat.orbit.map((entry) => entry.orbit).join(", ")
-            : "N/A",
+            : "",
           description: sat.descriptionShort
             ? sat.descriptionShort[0]?.descriptionShort
             : null,
@@ -542,13 +551,11 @@ export const SatellitesTable = () => {
           <strong>satellite</strong>.
         </Typography>
         <SearchBar
-          placeholder={"Delimit with commas..."}
           filter={filter}
           setFilter={setFilter}
           selector={selector}
           setSelector={setSelector}
         />
-        <br />
         <Typography variant="caption" className={classes.gridCaption}>
           Hover to view satellite description, Click to interact with a cell,
           Double-click to view satellite data

@@ -3,7 +3,6 @@ import HelpersContext from "../Dialogs/HelpersContext.jsx";
 // Imports
 import { useTracker } from "meteor/react-meteor-data";
 import { UsersCollection } from "../../api/users";
-import SnackBar from "../Dialogs/SnackBar.jsx";
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
 
 // @material-ui
@@ -19,6 +18,7 @@ import {
   IconButton,
   Typography,
   Divider,
+  Paper,
 } from "@material-ui/core";
 import {
   DataGrid,
@@ -60,8 +60,8 @@ const useStyles = makeStyles((theme) => ({
     alignContent: "center",
     margin: "-15px -25px 10px -25px",
   },
-  rolesTitle:{
-    marginBottom: 10
+  rolesTitle: {
+    marginBottom: 10,
   },
   rolesContainer: {
     margin: 5,
@@ -161,20 +161,22 @@ export const Users = () => {
       "addUserToRole",
       user,
       role,
-      (err, res) => console.log(err, res) // TODO: Use snackbar and alert
+      (err, res) => {
+        if (err || res) console.log(err || res);
+      } // TODO: Use snackbar and alert
     );
   };
 
   const deleteAccount = (id) => {
     Meteor.call("deleteAccount", id, (err, res) => {
-      console.log(err, res); // TODO: Use snackbar and alert
+      if (err || res) console.log(err || res); // TODO: Use snackbar and alert
     });
     setOpen(false);
   };
 
   const removeRole = (user, role) => {
     Meteor.call("removeRole", user, role, (err, res) => {
-      console.log(err, res); // TODO: Use snackbar and alert
+      if (err || res) console.log(err || res); // TODO: Use snackbar and alert
     });
   };
 
@@ -191,7 +193,7 @@ export const Users = () => {
       ),
       actions: (
         <Button
-          variant="outlined"
+          variant="contained"
           size="small"
           color="secondary"
           disableElevation
@@ -204,11 +206,7 @@ export const Users = () => {
           Confirm
         </Button>
       ),
-      closeAction: (
-        <Button variant="outlined" size="small">
-          Cancel
-        </Button>
-      ),
+      closeAction: " Cancel",
     });
     setOpenAlert(true);
   };
@@ -218,25 +216,26 @@ export const Users = () => {
       <AlertDialog bodyAlert={alert} />
       <Grid container justifyContent="space-between" className={classes.root}>
         <Grid item xs>
-          <DataGrid
-            className={classes.dataGrid}
-            components={{
-              Toolbar: CustomToolbar,
-            }}
-            rowsPerPageOptions={[10, 15, 20, 50, 100]}
-            columns={columns}
-            rows={rows}
-            loading={loading}
-            autoHeight={true}
-            rowCount={rows.length}
-            pagination
-            disableSelectionOnClick
-            autoHeight
-            onRowDoubleClick={(e) => {
-              handleOpen(e.row);
-              setEditUser(Meteor.users.find({ _id: e.row.id }).fetch()[0]);
-            }}
-          />
+          <Paper elevation={5}>
+            <DataGrid
+              className={classes.dataGrid}
+              components={{
+                Toolbar: CustomToolbar,
+              }}
+              rowsPerPageOptions={[10, 15, 20, 50, 100]}
+              columns={columns}
+              rows={rows}
+              loading={loading}
+              autoHeight={true}
+              rowCount={rows.length}
+              pagination
+              disableSelectionOnClick
+              onRowDoubleClick={(e) => {
+                handleOpen(e.row);
+                setEditUser(Meteor.users.find({ _id: e.row.id }).fetch()[0]);
+              }}
+            />
+          </Paper>
         </Grid>
       </Grid>
 
@@ -273,18 +272,10 @@ export const Users = () => {
                 {Roles.getRolesForUser(editUser._id).map((role, index) => {
                   return (
                     <React.Fragment key={index}>
-                      <Grid
-                        item
-                        xs={5}
-                        className={classes.rolesRow}
-                      >
+                      <Grid item xs={5} className={classes.rolesRow}>
                         {role}
                       </Grid>
-                      <Grid
-                        item
-                        xs={7}
-                        className={classes.rolesRow}
-                      >
+                      <Grid item xs={7} className={classes.rolesRow}>
                         <Button
                           variant="contained"
                           onClick={() => removeRole(editUser, role)}

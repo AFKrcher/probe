@@ -20,6 +20,7 @@ import {
   Typography,
   Tooltip,
   IconButton,
+  TextField,
 } from "@material-ui/core";
 import {
   DataGrid,
@@ -28,6 +29,8 @@ import {
   GridToolbarFilterButton,
   GridToolbarDensitySelector,
 } from "@material-ui/data-grid";
+import SearchIcon from "@material-ui/icons/Search";
+import ClearIcon from "@material-ui/icons/Clear";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 
 const useStyles = makeStyles((theme) => ({
@@ -113,7 +116,7 @@ export const SchemasTable = () => {
   const [showPopper, setShowPopper] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [newSchema, setNewSchema] = useState(true);
-  const [filter, setFilter] = useState("");
+  const [selector, setSelector] = useState("");
   const [initialSchemaValues, setInitialSchemaValues] =
     useState(newSchemaValues);
 
@@ -145,10 +148,10 @@ export const SchemasTable = () => {
         },
       ],
     }).fetch();
-    const searchRegex = new RegExp(escapeRegExp(filter), "i");
+    const searchRegex = new RegExp(escapeRegExp(selector), "i");
     const rows = schemas
       .filter((schema) =>
-        filter
+        selector
           ? Object.keys(schema).some((field) => {
               return searchRegex.test(schema[field].toString());
             })
@@ -286,16 +289,15 @@ export const SchemasTable = () => {
         </Tooltip>{" "}
         for usage examples. Each <strong>schema</strong> has a reference for
         where the data was found, a description describing what the data is, and
-        a number of data fields that contain the actual information.
-        Double-click on a desired <strong>schema</strong> below to view its
-        details and edit the entry fields.
+        a number of data fields that contain the information. Double-click on a
+        desired <strong>schema</strong> below to view its details and edit the
+        entry fields.
       </Typography>
       <SearchBar
-        placeholder={"Search by name..."}
-        filter={filter}
-        setFilter={setFilter}
+        setSelector={setSelector}
+        multiple={false}
+        placeholder="Search by name or description"
       />
-      <br />
       <Typography variant="caption" className={classes.gridCaption}>
         Hover to view schema description, Click to interact with a cell,
         Double-click to view schema data

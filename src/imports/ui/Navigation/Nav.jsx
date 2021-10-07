@@ -53,6 +53,9 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.text.primary,
     },
   },
+  navButtonText: {
+    filter: `drop-shadow(2px 2px 2px ${theme.palette.tertiary.shadow})`,
+  },
   dropDown: {
     backgroundColor: theme.palette.navigation.main,
     color: theme.palette.text.primary,
@@ -111,7 +114,7 @@ export const Nav = ({ theme, toggleTheme }) => {
                   }}
                   to="/"
                 >
-                  Home
+                  <span className={classes.navButtonText}>Home</span>
                 </Button>
                 <Button
                   disableElevation
@@ -124,7 +127,7 @@ export const Nav = ({ theme, toggleTheme }) => {
                   }}
                   to="/satellites"
                 >
-                  Satellites
+                  <span className={classes.navButtonText}> Satellites</span>
                 </Button>
                 <Button
                   disableElevation
@@ -137,7 +140,7 @@ export const Nav = ({ theme, toggleTheme }) => {
                   }}
                   to="/schemas"
                 >
-                  Schemas
+                  <span className={classes.navButtonText}>Schemas</span>
                 </Button>
                 <Button
                   disableElevation
@@ -150,7 +153,7 @@ export const Nav = ({ theme, toggleTheme }) => {
                   }}
                   to="/about"
                 >
-                  About
+                  <span className={classes.navButtonText}>About</span>
                 </Button>
               </React.Fragment>
             ) : null}

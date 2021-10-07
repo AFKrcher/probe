@@ -1,6 +1,12 @@
 {
   "_id": "6eHmD6FAKRi4NKPCY",
   "noradID": "49261",
+  "isDeleted": false,
+  "createdOn": "2021-10-05T21:39:46.567Z",
+  "createdBy": "admin",
+  "modifiedOn": "2021-10-05T22:47:00.888Z",
+  "modifiedBy": "admin",
+  "adminCheck": true,
   "launchSites": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=49261",
@@ -177,12 +183,6 @@
       "durationScale": ""
     }
   ],
-  "isDeleted": false,
-  "createdOn": "2021-10-05T21:39:46.567Z",
-  "createdBy": "admin",
-  "modifiedOn": "2021-10-05T22:47:00.888Z",
-  "modifiedBy": "admin",
-  "adminCheck": true,
   "type": [
     {
       "reference": "https://platform.leolabs.space/catalog/L124784",
