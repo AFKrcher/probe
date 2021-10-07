@@ -48,6 +48,12 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     marginBottom: 5,
   },
+  iconButton: {
+    fontSize: 25,
+  },
+  optionsButton: {
+    fontSize: 15,
+  },
   cardButton: {
     border: "1px solid",
     filter: `drop-shadow(2px 2px 5px ${theme.palette.button.shadow})`,
@@ -80,15 +86,6 @@ export const SatCard = ({ width, height, satellite }) => {
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const adjustableFontSize = (width) => {
-    switch (width) {
-      case width < 900:
-        return 25;
-      default:
-        return 25;
-    }
   };
 
   function handleModify(e) {
@@ -157,7 +154,7 @@ export const SatCard = ({ width, height, satellite }) => {
         <CardActions
           className={classes.cardActions}
           style={
-            width < 1250
+            width < 1000
               ? { justifyContent: "space-around" }
               : {
                   justifyContent: "space-between",
@@ -166,7 +163,7 @@ export const SatCard = ({ width, height, satellite }) => {
                 }
           }
         >
-          {width < 1250 ? (
+          {width < 1000 ? (
             <React.Fragment>
               <Button
                 variant="outlined"
@@ -174,13 +171,7 @@ export const SatCard = ({ width, height, satellite }) => {
                 onClick={handleClick}
                 className={classes.cardButton}
               >
-                <strong
-                  style={{
-                    fontSize: adjustableFontSize(width),
-                  }}
-                >
-                  Options
-                </strong>
+                <strong className={classes.optionButton}>Options</strong>
               </Button>
               <Menu
                 keepMounted
@@ -216,7 +207,7 @@ export const SatCard = ({ width, height, satellite }) => {
                     handleClose(e);
                   }}
                 >
-                  Visualize in Space Cockpit
+                  Space Cockpit Visualize
                 </MenuItem>
               </Menu>
             </React.Fragment>
@@ -229,11 +220,7 @@ export const SatCard = ({ width, height, satellite }) => {
                   className={classes.cardButton}
                   onClick={(e) => handleModify(e, satellite)}
                 >
-                  <VisibilityIcon
-                    style={{
-                      fontSize: adjustableFontSize(width),
-                    }}
-                  />
+                  <VisibilityIcon className={classes.iconButton} />
                 </Button>
               </Tooltip>
               <Tooltip title="Satellite Dashboard View" arrow placement="top">
@@ -243,11 +230,7 @@ export const SatCard = ({ width, height, satellite }) => {
                   className={classes.cardButton}
                   onClick={(e) => handleDashboard(e, satellite.noradID)}
                 >
-                  <DashboardIcon
-                    style={{
-                      fontSize: adjustableFontSize(width),
-                    }}
-                  />
+                  <DashboardIcon className={classes.iconButton} />
                 </Button>
               </Tooltip>
               <Tooltip
@@ -266,10 +249,7 @@ export const SatCard = ({ width, height, satellite }) => {
                     )
                   }
                 >
-                  <img
-                    src="/saberastro.png"
-                    width={`${adjustableFontSize(width) + 2.5}px`}
-                  />
+                  <img src="/saberastro.png" width="27.5px" />
                 </Button>
               </Tooltip>
             </React.Fragment>

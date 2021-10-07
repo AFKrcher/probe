@@ -44,11 +44,11 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.info.main,
     },
   },
-  verifiedAdornment: {
+  validatedAdornment: {
     color: theme.palette.success.main,
     filter: "drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4))",
   },
-  notVerifiedAdornment: {
+  notvalidatedAdornment: {
     color: theme.palette.warning.main,
     filter: "drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4))",
   },
@@ -84,10 +84,17 @@ export const SatelliteSchemaEntry = ({
   const classes = useStyles();
 
   const [helpers, setHelpers] = useState(null);
-  const debounced = useDebouncedCallback((event, verifiedField) => {
+  const debounced = useDebouncedCallback((event, validatedField) => {
     setFieldValue(event.target.name, event.target.value);
-    // set verified to false if a field is modified and subsequently saved
-    setFieldValue(verifiedField, false);
+    // set validated to false if a field is modified and subsequently saved
+    setFieldValue(validatedField, [
+      {
+        method: "",
+        name: "",
+        validated: false,
+        validatedOn: "",
+      },
+    ]);
   }, 300);
 
   const preliminaryDebounced = useDebouncedCallback((event) => {
@@ -96,7 +103,7 @@ export const SatelliteSchemaEntry = ({
     setTouched(obj);
     // Needed in order for errors to be properly set or cleared after Formik completes a check on the satellite data
     setFieldValue(event.target.name, event.target.value);
-  }, 800);
+  }, 400);
 
   const refreshHelpers = () => {
     if (JSON.stringify(errors) !== "{}") {
@@ -151,7 +158,7 @@ export const SatelliteSchemaEntry = ({
     window.open(url, "_blank").focus();
   };
 
-  const fieldProps = (classes, field, fieldIndex, verified) => {
+  const fieldProps = (classes, field, fieldIndex, validated) => {
     return {
       className: classes.field,
       inputProps: {
@@ -169,15 +176,15 @@ export const SatelliteSchemaEntry = ({
       defaultValue: entry[`${field.name}`] || "",
       onChange: (event) => {
         preliminaryDebounced(event);
-        debounced(event, `${schema.name}.${entryIndex}.verified`);
+        debounced(event, `${schema.name}.${entryIndex}.validated`);
       },
       onBlur: (event) => {
         preliminaryDebounced(event);
-        debounced(event, `${schema.name}.${entryIndex}.verified`);
+        debounced(event, `${schema.name}.${entryIndex}.validated`);
       },
       onInput: (event) => {
         preliminaryDebounced(event);
-        debounced(event, `${schema.name}.${entryIndex}.verified`);
+        debounced(event, `${schema.name}.${entryIndex}.validated`);
       },
       error: filteredHelper(schema.name, entryIndex, fieldIndex) ? true : false,
       label: field.name,
@@ -198,7 +205,7 @@ export const SatelliteSchemaEntry = ({
                 props,
                 entry[`${field.name}`],
                 field.type,
-                verified
+                validated
               ),
 
       type: field.type === "date" ? "datetime-local" : field.type,
@@ -207,7 +214,7 @@ export const SatelliteSchemaEntry = ({
     };
   };
 
-  const linkAdornment = (props, field, type, verified) => {
+  const linkAdornment = (props, field, type, validated) => {
     return (
       <TextField
         InputProps={
@@ -236,18 +243,18 @@ export const SatelliteSchemaEntry = ({
             ? {
                 endAdornment: (
                   <Tooltip
-                    title={verified ? "Verified" : "Unverified"}
+                    title={validated ? "validated" : "Unvalidated"}
                     placement="top"
                   >
                     <InputAdornment
                       className={
-                        verified
-                          ? classes.verifiedAdornment
-                          : classes.notVerifiedAdornment
+                        validated
+                          ? classes.validatedAdornment
+                          : classes.notvalidatedAdornment
                       }
                       position="end"
                     >
-                      {verified ? <CheckBoxIcon /> : <ReportIcon />}
+                      {validated ? <CheckBoxIcon /> : <ReportIcon />}
                     </InputAdornment>
                   </Tooltip>
                 ),
@@ -273,7 +280,7 @@ export const SatelliteSchemaEntry = ({
                         classes,
                         field,
                         fieldIndex,
-                        entry["verified"]
+                        entry["validated"]
                       )}
                     />
                   ) : (
@@ -295,7 +302,7 @@ export const SatelliteSchemaEntry = ({
                           classes,
                           field,
                           fieldIndex,
-                          entry["verified"]
+                          entry["validated"]
                         )}
                         select
                       >

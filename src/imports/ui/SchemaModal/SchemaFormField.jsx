@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Field, ErrorMessage } from "formik";
+import { Field } from "formik";
 // Components
 import { MultiSelectTextInput } from "./MultiSelectTextInput";
 
@@ -21,11 +21,6 @@ const useStyles = makeStyles((theme) => ({
   field: {
     display: "flex",
     alignItems: "center",
-  },
-  helpers: {
-    marginLeft: 14,
-    marginTop: 0,
-    marginBottom: 8,
   },
   helpersError: {
     marginLeft: 14,
@@ -159,6 +154,13 @@ export const SchemaFormField = ({
               <MenuItem value="number">Number</MenuItem>
               <MenuItem value="date">Date</MenuItem>
               <MenuItem value="url">URL</MenuItem>
+              <MenuItem value="changelog">Changelog</MenuItem>
+              <MenuItem value="verified" style={{ display: "none" }}>
+                Verified
+              </MenuItem>
+              <MenuItem value="validated" style={{ display: "none" }}>
+                Validated
+              </MenuItem>
             </Field>
           </FormControl>
           {editing && typeErrors === "Required" && touched ? (
