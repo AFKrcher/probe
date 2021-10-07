@@ -102,8 +102,24 @@ export const satelliteValidatorShaper = (values, initValues) => {
           // the following must be modified whenever we decide to create:
           // a new "type" (e.g. number, string, date) or
           // a new "type constraint" (e.g. max number, min number, max string length)
-          let tempFieldSchema =
-            field.type !== "url" ? Yup[field.type]() : Yup["string"]();
+          let tempFieldSchema;
+          switch (field.type) {
+            case "url":
+              tempFieldSchema = Yup["string"]();
+              break;
+            case "validated":
+              tempFieldSchema = Yup["array"]();
+              break;
+            case "verified":
+              tempFieldSchema = Yup["array"]();
+              break;
+            case "changelog":
+              tempFieldSchema = Yup["array"]();
+              break;
+            default:
+              tempFieldSchema = Yup[`${field.type}`]();
+              break;
+          }
           const baseFieldType = tempFieldSchema;
           // stores the yup fragments needed for each constraint
           const fieldSchemaMatrix = {

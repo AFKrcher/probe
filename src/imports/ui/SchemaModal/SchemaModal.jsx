@@ -46,7 +46,6 @@ const useStyles = makeStyles(() => ({
   content: {
     marginTop: -15,
     overflowY: "auto",
-    marginTop: 0,
   },
   description: {
     marginTop: -20,
@@ -344,6 +343,7 @@ export const SchemaModal = ({
               isValidating,
             }) => (
               <Form>
+                {console.log(initValues)}
                 {isLoading ? (
                   <DialogContent className={classes.loadingDialog}>
                     <CircularProgress size={75} />

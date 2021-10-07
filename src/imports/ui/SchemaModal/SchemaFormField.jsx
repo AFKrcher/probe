@@ -154,6 +154,13 @@ export const SchemaFormField = ({
               <MenuItem value="number">Number</MenuItem>
               <MenuItem value="date">Date</MenuItem>
               <MenuItem value="url">URL</MenuItem>
+              <MenuItem value="changelog">Changelog</MenuItem>
+              <MenuItem value="verified" style={{ display: "none" }}>
+                Verified
+              </MenuItem>
+              <MenuItem value="validated" style={{ display: "none" }}>
+                Validated
+              </MenuItem>
             </Field>
           </FormControl>
           {editing && typeErrors === "Required" && touched ? (

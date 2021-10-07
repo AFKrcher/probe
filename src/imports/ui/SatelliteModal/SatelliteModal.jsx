@@ -384,7 +384,7 @@ export const SatelliteModal = ({
                   </React.Fragment>
                 )}
               </span>
-              <IconButton size="small" id="exitVisualize" onClick={handleClose}>
+              <IconButton size="small" onClick={handleClose}>
                 <CloseIcon />
               </IconButton>
             </Typography>
