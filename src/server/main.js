@@ -1,6 +1,6 @@
 // Dependencies
 import * as Yup from "yup";
-import helmet from "helmet";
+// import helmet from "helmet";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Accounts } from "meteor/accounts-base";
@@ -10,7 +10,7 @@ import { SchemaCollection } from "/imports/api/schemas";
 import { SatelliteCollection } from "/imports/api/satellites";
 import { UsersCollection } from "/imports/api/users";
 import { ErrorsCollection } from "/imports/api/errors";
-import { helmetOptions } from "./helmet";
+// import { helmetOptions } from "./helmet";
 import { schemaValidatorShaper } from "./validators/schemaDataFuncs";
 import { satelliteValidatorShaper } from "./validators/satelliteDataFuncs";
 import "./routes";
@@ -32,14 +32,14 @@ const isValidUsername = (oldUsername, newUsername) => {
 Meteor.startup(() => {
   console.log("> PROBE server is starting-up...");
   // See helmet.js for Content Security Policy (CSP) options
-  WebApp.connectHandlers.use(helmet(helmetOptions()));
+  // WebApp.connectHandlers.use(helmet(helmetOptions()));
 
   // Account publications, methods, and seeds
   Roles.createRole("admin", { unlessExists: true });
   Roles.createRole("moderator", { unlessExists: true });
   Roles.createRole("dummies", { unlessExists: true });
 
-  // Email verificationa dn password reset emails
+  // Email verification and password reset emails
   Accounts.config({
     sendVerificationEmail: false,
   });
@@ -229,7 +229,7 @@ Meteor.startup(() => {
       Accounts.createUser({
         email: "admin@saberastro.com",
         username: "admin",
-        password: "12345678aA!",
+        password: "12345678aA!", // only for local dev testing - password changed on deployment
       });
       Roles.addUsersToRoles(Accounts.findUserByUsername("admin"), "admin");
     }
@@ -239,7 +239,6 @@ Meteor.startup(() => {
   Meteor.methods({
     addError: (obj) => {
       ErrorsCollection.insert(obj);
-
       if (ErrorsCollection.find().count() > 50) {
         console.log("Clearing ErrorsCollection");
         ErrorsCollection.remove({});
@@ -292,7 +291,7 @@ Meteor.startup(() => {
     files = fs.readdirSync("./assets/app/schema");
     files.forEach(function (file) {
       data = fs.readFileSync("./assets/app/schema/" + file, "ascii");
-      jsonObj.push(JSON.parse(data));
+      jsonObj.push(JSON.parse(data));14
     });
     jsonObj.forEach(function (data) {
       SchemaCollection.insert(data);
