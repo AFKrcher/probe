@@ -32,13 +32,9 @@ const useStyles = makeStyles((theme) => ({
     filter: `drop-shadow(2px 2px 2px ${theme.palette.tertiary.shadow})`,
     "&:hover": {
       color: "black",
+      filter: "none",
       cursor: "pointer",
     },
-  },
-  title: {
-    color: theme.palette.tertiary.main,
-    textDecoration: "none",
-    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
   },
   divider: {
     margin: 10,
@@ -50,8 +46,8 @@ export const Footer = () => {
 
   return (
     <Paper className={classes.root} elevation={5}>
-      <Link to="/" className={classes.title}>
-        <strong>PROBE</strong>
+      <Link to="/" className={classes.link}>
+        PROBE
       </Link>
       <Divider
         orientation="vertical"
