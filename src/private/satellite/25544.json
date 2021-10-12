@@ -7,7 +7,6 @@
   "modifiedOn": "2021-10-05T19:31:08.144Z",
   "modifiedBy": "admin",
   "adminCheck": true,
-  "isDeleted": false,
   "names": [
     {
       "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
@@ -291,7 +290,7 @@
       "longitude": "63.305"
     }
   ],
-  "type": [
+  "types": [
     {
       "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
       "verified": [
@@ -322,7 +321,39 @@
           "validatedOn": ""
         }
       ],
-      "type": "manMade"
+      "type": "space station"
+    },
+    {
+      "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "type": "research"
     }
   ],
   "mission": [

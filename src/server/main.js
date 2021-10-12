@@ -223,7 +223,7 @@ Meteor.startup(() => {
 
   // Seed admin account for testing
   Meteor.call("userExists", "admin", (_, res) => {
-    if (res) {
+    if (res || UsersCollection.find().count() > 1) {
       return;
     } else {
       Accounts.createUser({
@@ -233,6 +233,7 @@ Meteor.startup(() => {
       });
       Roles.addUsersToRoles(Accounts.findUserByUsername("admin"), "admin");
     }
+    console.log("Development Account Seeded");
   });
 
   // Error methods
@@ -256,7 +257,7 @@ Meteor.startup(() => {
   if (ErrorsCollection.find().count() === 0) {
     console.log("ErrorsCollection Seeded");
     const errors = {
-      user: 00000000000000000,
+      user: "Not Logged-In",
       time: new Date(),
       msg: "Database Reset",
       source: "Test Error",
@@ -291,7 +292,8 @@ Meteor.startup(() => {
     files = fs.readdirSync("./assets/app/schema");
     files.forEach(function (file) {
       data = fs.readFileSync("./assets/app/schema/" + file, "ascii");
-      jsonObj.push(JSON.parse(data));14
+      jsonObj.push(JSON.parse(data));
+      14;
     });
     jsonObj.forEach(function (data) {
       SchemaCollection.insert(data);

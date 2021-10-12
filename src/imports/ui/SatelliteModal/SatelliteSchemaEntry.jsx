@@ -18,10 +18,10 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import LinkIcon from "@material-ui/icons/Link";
-import VerifiedIcon from "@material-ui/icons/CheckBoxOutlined";
-import ValidatedIcon from "@material-ui/icons/LibraryAddCheckOutlined";
-// import ReportIcon from "@material-ui/icons/ReportOutlined";
-import ErrorIcon from "@material-ui/icons/WarningOutlined";
+import VerifiedIcon from "@material-ui/icons/CheckBox";
+import ValidatedIcon from "@material-ui/icons/LibraryAddCheck";
+// import ReportIcon from "@material-ui/icons/Report";
+import ErrorIcon from "@material-ui/icons/Warning";
 
 const useStyles = makeStyles((theme) => ({
   entryPaper: {
@@ -86,12 +86,18 @@ export const SatelliteSchemaEntry = ({
   satelliteValidatorShaper,
   setTouched,
   values,
+  width,
 }) => {
   const classes = useStyles();
 
   const [helpers, setHelpers] = useState(null);
-  const debounced = useDebouncedCallback(
+
+  const debounceOne = useDebouncedCallback(
     (event, validatedField, verifiedField) => {
+      let obj = {};
+      obj[`${event.target.name}`] = true;
+      setTouched(obj);
+      // Needed in order for errors to be properly set or cleared after Formik completes a check on the satellite data
       setFieldValue(event.target.name, event.target.value);
       // set validated to false if a field is modified and subsequently saved
       setFieldValue(validatedField, [
@@ -114,13 +120,9 @@ export const SatelliteSchemaEntry = ({
     300
   );
 
-  const preliminaryDebounced = useDebouncedCallback((event) => {
-    let obj = {};
-    obj[`${event.target.name}`] = true;
-    setTouched(obj);
-    // Needed in order for errors to be properly set or cleared after Formik completes a check on the satellite data
+  const debouncTwo = useDebouncedCallback((event) => {
     setFieldValue(event.target.name, event.target.value);
-  }, 400);
+  }, 200);
 
   const refreshHelpers = () => {
     if (JSON.stringify(errors) !== "{}") {
@@ -176,6 +178,7 @@ export const SatelliteSchemaEntry = ({
   };
 
   const decideVerifiedValidatedIcon = (array, verified, style, tip) => {
+    console.log(array);
     if (!style && !tip) {
       let isChecked = array.map((checker) => {
         return verified ? checker.verified : checker.validated;
@@ -228,28 +231,20 @@ export const SatelliteSchemaEntry = ({
       },
       defaultValue: entry[`${field.name}`] || "",
       onChange: (event) => {
-        preliminaryDebounced(event);
-        debounced(
+        debounceOne(
           event,
           `${schema.name}.${entryIndex}.validated`,
           `${schema.name}.${entryIndex}.verified`
         );
-      },
-      onBlur: (event) => {
-        preliminaryDebounced(event);
-        debounced(
-          event,
-          `${schema.name}.${entryIndex}.validated`,
-          `${schema.name}.${entryIndex}.verified`
-        );
+        debouncTwo(event);
       },
       onInput: (event) => {
-        preliminaryDebounced(event);
-        debounced(
+        debounceOne(
           event,
           `${schema.name}.${entryIndex}.validated`,
           `${schema.name}.${entryIndex}.verified`
         );
+        debouncTwo(event);
       },
       error: filteredHelper(schema.name, entryIndex, fieldIndex) ? true : false,
       label: field.name,
@@ -261,11 +256,10 @@ export const SatelliteSchemaEntry = ({
         field.stringMax &&
         !field.isUnique &&
         field.name !== "name" &&
-        entry[field.name]?.length > 125,
-      rows:
-        (!field.stringMax && field.type !== "url") || field.stringMax > 255
-          ? 6
-          : 2,
+        entry[field.name]?.length > 100,
+      rows: Math.ceil(entry[field.name]?.length / 100),
+      minRows: 3,
+      maxRows: 10,
       component:
         editing || editingSchema
           ? TextField
@@ -275,8 +269,7 @@ export const SatelliteSchemaEntry = ({
                 entry[`${field.name}`],
                 field.type,
                 validated,
-                verified,
-                field.allowedValues?.length > 0
+                verified
               ),
 
       type: field.type === "date" ? "datetime-local" : field.type,
@@ -285,7 +278,7 @@ export const SatelliteSchemaEntry = ({
     };
   };
 
-  const linkAdornment = (props, field, type, validated, verified, select) => {
+  const linkAdornment = (props, field, type, validated, verified) => {
     return (
       <TextField
         InputProps={
@@ -313,7 +306,19 @@ export const SatelliteSchemaEntry = ({
             : field && field.length > 0 // only have verification adornment if there is data
             ? {
                 endAdornment: (
-                  <React.Fragment>
+                  <span
+                    style={
+                      field.length > 300 || width < 600
+                        ? {
+                            display: "flex",
+                            flexDirection: "column",
+                          }
+                        : {
+                            display: "flex",
+                            flexDirection: "row",
+                          }
+                    }
+                  >
                     <Tooltip
                       title={decideVerifiedValidatedIcon(
                         verified,
@@ -341,6 +346,9 @@ export const SatelliteSchemaEntry = ({
                         )}
                       </InputAdornment>
                     </Tooltip>
+                    {field.length > 300 || width < 600 ? (
+                      <div style={{ marginTop: 40 }} />
+                    ) : null}
                     <Tooltip
                       title={decideVerifiedValidatedIcon(
                         validated,
@@ -348,11 +356,12 @@ export const SatelliteSchemaEntry = ({
                         false,
                         true
                       )}
-                      placement="top"
+                      placement={
+                        field.length > 300 || width < 600 ? "bottom" : "top"
+                      }
                       arrow
                     >
                       <InputAdornment
-                        style={select ? { marginRight: 20 } : {}}
                         className={decideVerifiedValidatedIcon(
                           validated,
                           false,
@@ -369,7 +378,7 @@ export const SatelliteSchemaEntry = ({
                         )}
                       </InputAdornment>
                     </Tooltip>
-                  </React.Fragment>
+                  </span>
                 ),
               }
             : null
@@ -419,7 +428,7 @@ export const SatelliteSchemaEntry = ({
                           entry["validated"],
                           entry["verified"]
                         )}
-                        select
+                        select={editing || editingSchema ? true : false}
                       >
                         <MenuItem value="" disabled>
                           <em>Allowed Values</em>

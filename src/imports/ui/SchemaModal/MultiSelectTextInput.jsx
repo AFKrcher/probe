@@ -34,7 +34,7 @@ export const MultiSelectTextInput = ({
   };
 
   const handleInputChange = (event, newInputValue) => {
-    const options = newInputValue.split(/[ ,]+/);
+    const options = newInputValue.split(/[,]+/);
     const fieldValue = [...allowedValues, ...options]
       .map((x) => x.trim())
       .filter((x) => x);

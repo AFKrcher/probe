@@ -20,8 +20,10 @@ import {
 } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
-import FlipCameraIcon from "@material-ui/icons/FlipCameraIos";
-import FlipCameraOutlinedIcon from "@material-ui/icons/FlipCameraIosOutlined";
+import InfiniteScrollIcon from "@material-ui/icons/BurstMode";
+import InfiniteScrollOutlinedIcon from "@material-ui/icons/BurstModeOutlined";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import DashboardIcon from "@material-ui/icons/Dashboard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +35,11 @@ const useStyles = makeStyles((theme) => ({
   },
   description: {
     marginTop: 10,
+  },
+  key: {
+    marginBottom: 25,
+    marginTop: 25,
+    display: "flex",
   },
   showcase: {
     marginTop: 30,
@@ -175,7 +182,11 @@ export const Home = () => {
                 className={classes.toggleInfinite}
                 onClick={() => setInfiniteMode(!infiniteMode)}
               >
-                {infiniteMode ? <FlipCameraIcon /> : <FlipCameraOutlinedIcon />}
+                {infiniteMode ? (
+                  <InfiniteScrollIcon />
+                ) : (
+                  <InfiniteScrollOutlinedIcon />
+                )}
               </IconButton>
             </Tooltip>
           </React.Fragment>
@@ -191,6 +202,25 @@ export const Home = () => {
         </Typography>
         <Typography variant="subtitle1">
           100% Open Source, 100% Machine Readable.
+        </Typography>
+        <Typography gutterBottom variant="body2" className={classes.key}>
+          <VisibilityIcon fontSize="small" style={{ marginRight: 5 }} />– Open a
+          satellite to view and/or modify the fields or schemas
+        </Typography>
+        <Typography gutterBottom variant="body2" className={classes.key}>
+          <DashboardIcon fontSize="small" style={{ marginRight: 5 }} />– Open
+          the satellite dashboard. Satellite dashboards allow users to ciew
+          satellite data outside of an editing modal and provide users with a
+          shareable URL.
+        </Typography>
+        <Typography gutterBottom variant="body2" className={classes.key}>
+          <img
+            src="/assets/saberastro.png"
+            width="21px"
+            height="21px"
+            style={{ marginRight: 5 }}
+          />
+          – Open a schema to view and/or modify the fields
         </Typography>
       </Container>
 
@@ -301,19 +331,24 @@ export const Home = () => {
               alignItems="center"
               className={classes.loadMoreContainer}
             >
-              <Grid item xs={5}>
+              <Grid item xs={width > 800 ? 5 : 3}>
                 <Divider />
               </Grid>
-              <Grid item xs={2} container justifyContent="center">
+              <Grid
+                item
+                xs={width > 800 ? 2 : 6}
+                container
+                justifyContent="center"
+              >
                 <Typography
                   variant={width > 1000 ? "body1" : "caption"}
                   className={classes.loadMore}
                   onClick={() => setPage(page + 1)}
                 >
-                  Load More Satellites
+                  {width > 300 ? "Load More Satellites" : "Load More"}
                 </Typography>
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={width > 800 ? 5 : 3}>
                 <Divider />
               </Grid>
             </Grid>
@@ -323,18 +358,23 @@ export const Home = () => {
               alignItems="center"
               className={classes.loadMoreContainer}
             >
-              <Grid item xs={5}>
+              <Grid item xs={width > 800 ? 5 : 4}>
                 <Divider />
               </Grid>
-              <Grid item xs={2} container justifyContent="center">
+              <Grid
+                item
+                xs={width > 800 ? 2 : 4}
+                container
+                justifyContent="center"
+              >
                 <Typography
                   variant={width > 1000 ? "body1" : "caption"}
                   className={classes.loadMore}
                 >
-                  No More Satellites
+                  {width > 300 ? "No More Satellites" : "No More"}
                 </Typography>
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={width > 800 ? 5 : 4}>
                 <Divider />
               </Grid>
             </Grid>

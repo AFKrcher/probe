@@ -163,7 +163,7 @@ export const SatCard = ({ width, height, satellite }) => {
                 }
           }
         >
-          {width < 1000 ? (
+          {width < 400 ? (
             <React.Fragment>
               <Button
                 variant="outlined"
@@ -186,7 +186,7 @@ export const SatCard = ({ width, height, satellite }) => {
                     handleClose(e);
                   }}
                 >
-                  Data View
+                  <VisibilityIcon className={classes.iconButton} />
                 </MenuItem>
                 <MenuItem
                   dense
@@ -195,7 +195,7 @@ export const SatCard = ({ width, height, satellite }) => {
                     handleClose(e);
                   }}
                 >
-                  Dashboard View
+                  <DashboardIcon className={classes.iconButton} />
                 </MenuItem>
                 <MenuItem
                   dense
@@ -207,7 +207,11 @@ export const SatCard = ({ width, height, satellite }) => {
                     handleClose(e);
                   }}
                 >
-                  Space Cockpit Visualize
+                  <img
+                    src="/assets/saberastro.png"
+                    width="27.5px"
+                    height="27.5px"
+                  />
                 </MenuItem>
               </Menu>
             </React.Fragment>
@@ -249,7 +253,7 @@ export const SatCard = ({ width, height, satellite }) => {
                     )
                   }
                 >
-                  <img src="/saberastro.png" width="27.5px" />
+                  <img src="/assets/saberastro.png" width="27.5px" />
                 </Button>
               </Tooltip>
             </React.Fragment>

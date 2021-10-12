@@ -10,6 +10,7 @@ import { Nav } from "./Navigation/Nav.jsx";
 import { SatellitesTable } from "./DataDisplays/SatellitesTable.jsx";
 import { SchemasTable } from "./DataDisplays/SchemasTable.jsx";
 import { Dashboard } from "./DataDisplays/Dashboard.jsx";
+import { Minified } from "./DataDisplays/Minified.jsx";
 import { Home } from "./Home.jsx";
 import { About } from "./About.jsx";
 import { Footer } from "./Navigation/Footer.jsx";
@@ -114,6 +115,9 @@ export const App = () => {
                 </Route>
                 <Route exact={true} path="/verify">
                   <Verify />
+                </Route>
+                <Route exact={true} path="/Minified">
+                  <Minified />
                 </Route>
                 <Route exact={true} path="/settings">
                   <ProtectedRoute component={Settings} loginRequired={true} />

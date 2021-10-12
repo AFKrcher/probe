@@ -56,7 +56,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: "space-between",
   },
   content: {
-    marginTop: -15,
+    marginTop: 0,
     overflowY: "auto",
   },
   description: {
@@ -255,15 +255,16 @@ export const SatelliteModal = ({
     setOpenAlert(true);
   };
 
-  const handleToggleEdit = (setValues, values) => {
-    emptyDataRemover(values);
+  const handleToggleEdit = async (setValues, values, setErrors) => {
+    await emptyDataRemover(values);
     if (newSat && editing) handleClose();
-    if (editing) setValues(initValues);
-    setEditing(!editing);
+    if (editing) await setValues(initValues);
+    await setEditing(!editing);
+    setErrors({});
   };
 
-  const handleEdit = (setValues, dirty, touched, values) => {
-    if (editing && dirty && Object.keys(touched).length) {
+  const handleEdit = (setValues, dirty, touched, values, setErrors) => {
+    if ((editing || editingOne) && dirty && Object.keys(touched).length) {
       setAlert({
         title: initValues.names ? (
           <span>
@@ -298,7 +299,7 @@ export const SatelliteModal = ({
             disableElevation
             onClick={() => {
               setOpenAlert(false);
-              handleToggleEdit(setValues, values);
+              handleToggleEdit(setValues, values, setErrors);
             }}
           >
             Confirm
@@ -308,7 +309,7 @@ export const SatelliteModal = ({
       });
       setOpenAlert(true);
     } else {
-      handleToggleEdit(setValues, values);
+      handleToggleEdit(setValues, values, setErrors);
     }
   };
 
@@ -398,6 +399,7 @@ export const SatelliteModal = ({
           >
             {({
               errors,
+              setErrors,
               isSubmitting,
               values,
               setValues,
@@ -502,9 +504,15 @@ export const SatelliteModal = ({
                                 ? "secondary"
                                 : "default"
                             }
-                            onClick={() =>
-                              handleEdit(setValues, dirty, touched, values)
-                            }
+                            onClick={() => {
+                              handleEdit(
+                                setValues,
+                                dirty,
+                                touched,
+                                values,
+                                setErrors
+                              );
+                            }}
                             startIcon={
                               width && width < 500 ? null : editing ? (
                                 dirty && Object.keys(touched).length ? (
@@ -537,7 +545,11 @@ export const SatelliteModal = ({
                     <Button
                       size={width && width < 500 ? "small" : "medium"}
                       variant="contained"
-                      onClick={handleClose}
+                      onClick={() => {
+                        handleClose();
+                        setEditingOne(false);
+                        setErrors({});
+                      }}
                       startIcon={width && width < 500 ? null : <CloseIcon />}
                     >
                       Close
