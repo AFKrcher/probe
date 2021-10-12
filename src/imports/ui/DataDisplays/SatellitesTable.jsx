@@ -37,6 +37,13 @@ import StarIcon from "@material-ui/icons/Star";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import DashboardIcon from "@material-ui/icons/Dashboard";
+import MouseIcon from "@material-ui/icons/Mouse";
+import VerifiedIcon from "@material-ui/icons/CheckBox";
+import ValidatedIcon from "@material-ui/icons/LibraryAddCheck";
+import ReportIcon from "@material-ui/icons/Report";
+import ErrorIcon from "@material-ui/icons/Warning";
+import ReportOutlinedIcon from "@material-ui/icons/ReportOutlined";
+import ErrorOutlinedIcon from "@material-ui/icons/ReportProblemOutlined";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,8 +56,36 @@ const useStyles = makeStyles((theme) => ({
   },
   key: {
     marginBottom: 25,
-    marginTop: 0,
     display: "flex",
+  },
+  keyItems: {
+    marginRight: "0.5ch",
+  },
+  keyItemsStar: {
+    marginRight: "0.5ch",
+    fill: "gold",
+  },
+  keyItemsValid: {
+    marginRight: "0.5ch",
+    fill: theme.palette.success.light,
+  },
+  keyItemsPartial: {
+    marginRight: "0.5ch",
+    fill: theme.palette.warning.light,
+  },
+  keyItemsInvalid: {
+    marginRight: "0.5ch",
+    fill: theme.palette.error.light,
+  },
+  showKey: {
+    marginTop: 10,
+    marginBottom: 20,
+    color: theme.palette.text.disabled,
+    cursor: "pointer",
+    "&:hover": {
+      color: theme.palette.info.light,
+    },
+    width: "10ch",
   },
   gridContainer: {
     display: "flex",
@@ -153,10 +188,11 @@ export const SatellitesTable = () => {
   const [selector, setSelector] = useState({});
   const [columns, setColumns] = useState([]);
   const [prompt, setPrompt] = useState();
+  const [showKey, setShowKey] = useState(false);
 
   const debounced = useDebouncedCallback((row) => {
-    if (row.row.description) {
-      setPopperBody(row.row.description);
+    if (row?.row?.description) {
+      setPopperBody(row?.row?.description);
       setShowPopper(true);
     } else {
       setShowPopper(false);
@@ -226,12 +262,14 @@ export const SatellitesTable = () => {
     setInitialSatValues(newSatValues);
     setNewSat(true);
     setShowModal(true);
+    debounced(false);
   };
 
   const handleRowDoubleClick = (schemaObject) => {
     setInitialSatValues(schemaObject);
     setNewSat(false);
     setShowModal(true);
+    debounced(false);
   };
 
   const handleFilter = (e) => {
@@ -497,11 +535,13 @@ export const SatellitesTable = () => {
       satellite: satellite,
     });
     setOpenVisualize(true);
+    debounced(false);
   };
 
   function handleDashboard(e, id) {
     e.preventDefault();
     history.push(`/${id}`);
+    debounced(false);
   }
 
   const AddSatelliteButton = () => {
@@ -563,45 +603,94 @@ export const SatellitesTable = () => {
           bring up the schemas and data associated with the{" "}
           <strong>satellite</strong>.
         </Typography>
-        {Meteor.userId() && (
-          <Typography gutterBottom variant="body2" className={classes.key}>
-            <StarIcon
-              fontSize="small"
-              className={classes.starButtonHeader}
-              style={{ marginRight: 5 }}
-            />
-            – Add a satellite to your favorites list
-          </Typography>
+        <Typography
+          variant="body2"
+          className={classes.showKey}
+          onClick={() => setShowKey(!showKey)}
+        >
+          {showKey ? "Hide Key..." : "Show Key..."}
+        </Typography>
+        {showKey && (
+          <React.Fragment>
+            {Meteor.userId() && (
+              <Typography gutterBottom variant="body2" className={classes.key}>
+                <StarIcon fontSize="small" className={classes.keyItemsStar} />
+                <span className={classes.keyItems}>–</span>
+                Add a satellite to your favorites list
+              </Typography>
+            )}
+            <Typography gutterBottom variant="body2" className={classes.key}>
+              <VisibilityIcon fontSize="small" className={classes.keyItems} />
+              <span className={classes.keyItems}>–</span>
+              Open a satellite to view and/or modify the fields or schemas
+            </Typography>
+            <Typography gutterBottom variant="body2" className={classes.key}>
+              <DashboardIcon fontSize="small" className={classes.keyItems} />
+              <span className={classes.keyItems}>–</span>
+              Open the satellite dashboard - allows users to view satellite data
+              outside of an editing modal and provide users with a shareable URL
+            </Typography>
+            <Typography gutterBottom variant="body2" className={classes.key}>
+              <img
+                src="/assets/saberastro.png"
+                width="21px"
+                height="21px"
+                className={classes.keyItems}
+              />
+              <span className={classes.keyItems}>–</span> Open a satellite to
+              view and/or modify its schemas or entries
+            </Typography>
+            <Typography gutterBottom variant="body2" className={classes.key}>
+              <MouseIcon fontSize="small" className={classes.keyItems} />
+              <span className={classes.keyItems}>–</span> Hover or Click to view
+              satellite description, Double-click to view and/or modify a
+              satellite's schemas or entries
+            </Typography>
+            <Typography gutterBottom variant="body2" className={classes.key}>
+              <VerifiedIcon
+                fontSize="small"
+                className={classes.keyItemsValid}
+              />
+              <ValidatedIcon
+                fontSize="small"
+                className={classes.keyItemsValid}
+              />
+              <span className={classes.keyItems}>–</span> Indicates that
+              information has been verified to be in the reference or validated
+              across multiple sources by user(s) AND web-crawling algorithm(s)
+            </Typography>
+            <Typography gutterBottom variant="body2" className={classes.key}>
+              <ReportIcon
+                fontSize="small"
+                className={classes.keyItemsPartial}
+              />
+              <ReportOutlinedIcon
+                fontSize="small"
+                className={classes.keyItemsPartial}
+              />
+              <span className={classes.keyItems}>–</span> Indicates that
+              information has been verified to be in the reference or validated
+              across multiple sources by user(s) OR web-crawling algorithm(s)
+            </Typography>
+            <Typography gutterBottom variant="body2" className={classes.key}>
+              <ErrorIcon fontSize="small" className={classes.keyItemsInvalid} />
+              <ErrorOutlinedIcon
+                fontSize="small"
+                className={classes.keyItemsInvalid}
+              />
+              <span className={classes.keyItems}>–</span> Indicates that
+              information has NOT been verified to be in the reference or
+              validated across multiple sources by user(s) OR web-crawling
+              algorithm(s)
+            </Typography>
+          </React.Fragment>
         )}
-        <Typography gutterBottom variant="body2" className={classes.key}>
-          <VisibilityIcon fontSize="small" style={{ marginRight: 5 }} />– Open a
-          satellite to view and/or modify the fields or schemas
-        </Typography>
-        <Typography gutterBottom variant="body2" className={classes.key}>
-          <DashboardIcon fontSize="small" style={{ marginRight: 5 }} />– Open
-          the satellite dashboard. Satellite dashboards allow users to ciew
-          satellite data outside of an editing modal and provide users with a
-          shareable URL.
-        </Typography>
-        <Typography gutterBottom variant="body2" className={classes.key}>
-          <img
-            src="/assets/saberastro.png"
-            width="21px"
-            height="21px"
-            style={{ marginRight: 5 }}
-          />
-          – Open a schema to view and/or modify the fields
-        </Typography>
         <SearchBar
           filter={filter}
           setFilter={setFilter}
           selector={selector}
           setSelector={setSelector}
         />
-        <Typography variant="caption" className={classes.gridCaption}>
-          Hover to view satellite description, Click to interact with a cell,
-          Double-click to view satellite data
-        </Typography>
         <div className={classes.gridContainer}>
           <DataGrid
             className={classes.dataGrid}
