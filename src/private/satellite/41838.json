@@ -1,15 +1,15 @@
 {
-  "_id": "cQcibnBjpqu2DJNPz",
-  "noradID": "40258",
+  "_id": "MGsmA4KdK52g79WRn",
+  "noradID": "41838",
   "isDeleted": false,
-  "createdOn": "2021-10-05T15:03:34.752Z",
+  "createdOn": "2021-10-05T21:10:07.454Z",
   "createdBy": "admin",
-  "modifiedOn": "2021-10-05T16:26:52.083Z",
+  "modifiedOn": "2021-10-05T22:18:52.812Z",
   "modifiedBy": "admin",
   "adminCheck": true,
   "names": [
     {
-      "reference": "https://spaceflight101.com/spacecraft/olymp/",
+      "reference": "https://www.n2yo.com/satellite/?s=41838",
       "verified": [
         {
           "method": "user",
@@ -38,252 +38,12 @@
           "validatedOn": ""
         }
       ],
-      "name": "Luch"
-    },
-    {
-      "reference": "https://spaceflight101.com/spacecraft/olymp/",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "name": "Olymp-K"
-    }
-  ],
-  "bus": [
-    {
-      "reference": "https://en.wikipedia.org/wiki/Olymp-K",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "name": "Express-2000",
-      "description": "Highly flexible satellite bus designed and manufactured by ISS Reshetnev."
-    }
-  ],
-  "cosparID": [
-    {
-      "reference": "https://en.wikipedia.org/wiki/Olymp-K",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "cosparID": "2014-058A"
-    }
-  ],
-  "manufacturer": [
-    {
-      "reference": "https://en.wikipedia.org/wiki/Olymp-K",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "name": "JSC Information Satellite Systems",
-      "responsibility": ""
-    }
-  ],
-  "images": [
-    {
-      "reference": "https://spaceflight101.com/spacecraft/olymp/",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "description": "Ekspress-2000 Satellite",
-      "url": "https://spaceflight101.com/spacecraft/wp-content/uploads/sites/18/2015/09/9646451_orig-1024x337.jpg",
-      "entireSatellite": "false"
-    }
-  ],
-  "descriptionShort": [
-    {
-      "reference": "https://en.wikipedia.org/wiki/Olymp-K",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "descriptionShort": "A Russian geostationary satellite built for the Russian Ministry of Defence and Federal Security Service (FSB). The satellite is also referred to as \"Luch\". It is believed to be a signals intelligence satellite."
-    }
-  ],
-  "descriptionLong": [
-    {
-      "reference": "https://en.wikipedia.org/wiki/Olymp-K",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "descriptionLong": "Olymp-K is a Russian geostationary satellite built for the Russian Ministry of Defence and Federal Security Service (FSB). The satellite is also referred to as \"Luch\". It is believed to be a signals intelligence satellite. Olymp-K was launched on 28 September 2014. \nThe Proton-M rocket with a Briz-M upper stage launched from Baikonur Cosmodrome launchpad 81/24 in Kazakhstan at 20:23 UTC. After four burns of the Briz-M upper stage it was placed into geosynchronous transfer orbit.[4][1] In a press release on 28 September 2014, Roscosmos referred to the satellite as \"Luch\"."
+      "name": "Shijian-17"
     }
   ],
   "ownership": [
     {
-      "reference": "https://en.wikipedia.org/wiki/Olymp-K",
+      "reference": "https://www.n2yo.com/satellite/?s=41838",
       "verified": [
         {
           "method": "user",
@@ -313,8 +73,294 @@
         }
       ],
       "type": "country",
-      "name": "Russia",
+      "name": "People's Republic of China",
       "responsibility": ""
+    }
+  ],
+  "launchSites": [
+    {
+      "reference": "https://www.n2yo.com/satellite/?s=41838",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "name": "Wenchang Satellite Launch Center (WSC)",
+      "description": "",
+      "latitude": "",
+      "longitude": ""
+    }
+  ],
+  "descriptionShort": [
+    {
+      "reference": "https://www.n2yo.com/satellite/?s=41838",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "descriptionShort": "An experimental satellite that carries an electric thruster test package, a type of propulsion system that could give the spacecraft great maneuverability to efficiently adjust its orbit and move around the geostationary belt."
+    }
+  ],
+  "cosparID": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2016-065A",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "cosparID": "2016-065A"
+    }
+  ],
+  "manufacturer": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2016-065A",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "name": "China Academy of Space Technology (CAST)",
+      "responsibility": ""
+    }
+  ],
+  "orbit": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2016-065A",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "orbit": "GEO",
+      "description": ""
+    }
+  ],
+  "bus": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2016-065A",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "name": "DFH-3B",
+      "description": ""
+    }
+  ],
+  "power": [
+    {
+      "reference": "https://space.skyrocket.de/doc_sdat/sj-17.htm",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "source": "solar",
+      "sourceStatus": "",
+      "voltage": "",
+      "voltageScale": "",
+      "current": "",
+      "currentScale": "",
+      "description": "2 deployable solar arrays plus batteries"
+    }
+  ],
+  "images": [
+    {
+      "reference": "https://space.skyrocket.de/doc_sdat/sj-17.htm",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "description": "Artist rendering of satellite from/for CNTV",
+      "url": "https://space.skyrocket.de/img_sat/sj-17__1.jpg",
+      "entireSatellite": "true"
     }
   ]
 }

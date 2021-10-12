@@ -239,10 +239,18 @@ Meteor.startup(() => {
   Meteor.methods({
     addError: (obj) => {
       ErrorsCollection.insert(obj);
+
+      if (ErrorsCollection.find().count() > 50) {
+        console.log("Clearing ErrorsCollection");
+        ErrorsCollection.remove({});
+      }
     },
     deleteError: (id) => {
       ErrorsCollection.remove(id);
-    }
+    },
+    deleteAllErrors: () => {
+      ErrorsCollection.remove({});
+    },
   });
 
   // Errors publication and seed data
@@ -298,7 +306,6 @@ Meteor.startup(() => {
     files = fs.readdirSync("./assets/app/satellite");
     files.forEach(function (file) {
       data = fs.readFileSync("./assets/app/satellite/" + file, "ascii");
-      console.log(file)
       jsonObj.push(JSON.parse(data));
     });
     jsonObj.forEach(function (data) {
@@ -405,11 +412,6 @@ Meteor.startup(() => {
         Roles.userIsInRole(Meteor.userId(), "moderator")
       ) {
         values["adminCheck"] = true;
-        values.forEach((value) =>
-          value.forEach((field) => {
-            if (field) field.verified = true;
-          })
-        );
         SatelliteCollection.update({ _id: values._id }, values);
       } else {
         return "Unauthorized [401]";
@@ -510,11 +512,6 @@ Meteor.startup(() => {
         Roles.userIsInRole(Meteor.userId(), "moderator")
       ) {
         values["adminCheck"] = true;
-        values.forEach((value) =>
-          value.forEach((field) => {
-            if (field) field.verified = true;
-          })
-        );
         SchemaCollection.update({ _id: values._id }, values);
       } else {
         return "Unauthorized [401]";

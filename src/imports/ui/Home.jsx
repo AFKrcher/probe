@@ -16,13 +16,20 @@ import {
   makeStyles,
   CircularProgress,
   Tooltip,
+  Divider,
 } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import FlipCameraIcon from "@material-ui/icons/FlipCameraIos";
+import FlipCameraOutlinedIcon from "@material-ui/icons/FlipCameraIosOutlined";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
+  },
+  title: {
+    color: theme.palette.tertiary.main,
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
   },
   description: {
     marginTop: 10,
@@ -31,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 30,
   },
   secondaryShowcase: {
-    marginTop: 35,
+    marginTop: 30,
   },
   card: {
     marginTop: -10,
@@ -43,9 +50,29 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
   },
   scrollUp: {
+    color: theme.palette.tertiary.main,
     position: "fixed",
     bottom: 10,
     right: 10,
+    zIndex: 20,
+  },
+  toggleInfinite: {
+    color: theme.palette.tertiary.main,
+    position: "fixed",
+    bottom: 60,
+    right: 10,
+  },
+  loadMoreContainer: {
+    marginTop: 40,
+    marginBottom: -25,
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
+  },
+  loadMore: {
+    cursor: "pointer",
+    color: theme.palette.text.disabled,
+    "&:hover": {
+      color: theme.palette.info.light,
+    },
   },
 }));
 
@@ -56,6 +83,7 @@ export const Home = () => {
   const [page, setPage] = useState(1);
   const [limiter] = useState(3);
   const [scrolled, setScrolled] = useState(false);
+  const [infiniteMode, setInfiniteMode] = useState(true);
 
   const count = SatelliteCollection.find().count();
 
@@ -93,7 +121,10 @@ export const Home = () => {
   useEffect(() => {}, [page]);
 
   window.onscroll = () => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+    if (
+      window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+      infiniteMode
+    ) {
       handleInfiniteScroll();
       setScrolled(true);
     }
@@ -113,6 +144,17 @@ export const Home = () => {
     }
   };
 
+  const showLoadMore = () => {
+    if (
+      otherSats.length !==
+      SatelliteCollection.find({ isDeleted: false }).count()
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const handleScrollUp = (e) => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -122,14 +164,24 @@ export const Home = () => {
     <div className={classes.root}>
       <Container>
         {scrolled ? (
-          <Tooltip title="Scroll back to top" placement="top-end" arrow>
-            <IconButton className={classes.scrollUp} onClick={handleScrollUp}>
-              <ArrowUpwardIcon />
-            </IconButton>
-          </Tooltip>
+          <React.Fragment>
+            <Tooltip title="Scroll back to top" placement="left" arrow>
+              <IconButton className={classes.scrollUp} onClick={handleScrollUp}>
+                <ArrowUpwardIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Toggle infinite scroll" placement="left" arrow>
+              <IconButton
+                className={classes.toggleInfinite}
+                onClick={() => setInfiniteMode(!infiniteMode)}
+              >
+                {infiniteMode ? <FlipCameraIcon /> : <FlipCameraOutlinedIcon />}
+              </IconButton>
+            </Tooltip>
+          </React.Fragment>
         ) : null}
         <Typography variant="h3">
-          Welcome to <strong>PROBE</strong>!
+          Welcome to <strong className={classes.title}>PROBE</strong>!
         </Typography>
         <Typography variant="body1" className={classes.description}>
           <strong>P</strong>ublicly <strong>R</strong>esearched{" "}
@@ -141,78 +193,36 @@ export const Home = () => {
           100% Open Source, 100% Machine Readable.
         </Typography>
       </Container>
+
       <Container className={classes.showcase}>
-        {isLoading ? (
-          <Skeleton variant="rect" className={classes.skeleton}>
-            <Typography variant="h3" gutterBottom>
-              Satellite Data Cards
-            </Typography>
-          </Skeleton>
-        ) : (
-          <Typography variant="h4" gutterBottom>
-            {favorites?.length > 0 ? (
-              <React.Fragment>
-                <strong>{user}</strong>'s Favorite Satellites
-              </React.Fragment>
-            ) : (
-              <div style={{ marginBottom: -40 }}></div>
-            )}
-          </Typography>
-        )}
-        {cardSpace ? (
-          <Grid
-            container
-            justifyContent={width > 1000 ? "flex-start" : "center"}
-            spacing={cardSpace}
-            className={classes.card}
-          >
-            {!isLoading
-              ? sats.map((sat, index) => (
-                  <Grid item xs={cardSpace} key={index}>
-                    <SatCard
-                      satellite={sat}
-                      width={width}
-                      height={height}
-                      id={`SatCard-${index}`}
-                    />
-                  </Grid>
-                ))
-              : [...Array(limiter)].map((_, index) => (
-                  <Grid item xs={cardSpace} key={index}>
-                    <Skeleton variant="rect" className={classes.skeleton}>
-                      <SatCard satellite={{}} width={width} height={height} />
-                    </Skeleton>
-                  </Grid>
-                ))}
-            <br />
-          </Grid>
-        ) : (
-          <CircularProgress className={classes.spinner} />
-        )}
-        {Meteor.userId() && favorites ? (
-          <div className={classes.secondaryShowcase}>
+        {Meteor.userId() && favorites?.length > 0 ? (
+          <React.Fragment>
             {isLoading ? (
               <Skeleton variant="rect" className={classes.skeleton}>
                 <Typography variant="h3" gutterBottom>
-                  All Satellites
+                  Satellite Data Cards
                 </Typography>
               </Skeleton>
             ) : (
               <Typography variant="h4" gutterBottom>
-                {favorites?.length > 1
-                  ? "Satellite Data Cards"
-                  : "All Satellites"}
+                {favorites?.length > 0 ? (
+                  <React.Fragment>
+                    <strong>{user}</strong>'s Favorite Satellites
+                  </React.Fragment>
+                ) : (
+                  <div style={{ marginBottom: -40 }}></div>
+                )}
               </Typography>
             )}
             {cardSpace ? (
               <Grid
                 container
-                justifyContent={width > 900 ? "flex-start" : "center"}
+                justifyContent={width > 1000 ? "flex-start" : "center"}
                 spacing={cardSpace}
                 className={classes.card}
               >
                 {!isLoading
-                  ? otherSats.map((sat, index) => (
+                  ? sats.map((sat, index) => (
                       <Grid item xs={cardSpace} key={index}>
                         <SatCard
                           satellite={sat}
@@ -238,8 +248,98 @@ export const Home = () => {
             ) : (
               <CircularProgress className={classes.spinner} />
             )}
-          </div>
+          </React.Fragment>
         ) : null}
+
+        <div className={classes.secondaryShowcase}>
+          {isLoading ? (
+            <Skeleton variant="rect" className={classes.skeleton}>
+              <Typography variant="h3" gutterBottom>
+                Satellite Data Cards
+              </Typography>
+            </Skeleton>
+          ) : (
+            <Typography variant="h4" gutterBottom>
+              {favorites?.length > 1
+                ? "All Satellites"
+                : "Satellite Data Cards"}
+            </Typography>
+          )}
+          {cardSpace ? (
+            <Grid
+              container
+              justifyContent={width > 900 ? "flex-start" : "center"}
+              spacing={cardSpace}
+              className={classes.card}
+            >
+              {!isLoading
+                ? otherSats.map((sat, index) => (
+                    <Grid item xs={cardSpace} key={index}>
+                      <SatCard
+                        satellite={sat}
+                        width={width}
+                        height={height}
+                        id={`SatCard-${index}`}
+                      />
+                    </Grid>
+                  ))
+                : [...Array(limiter)].map((_, index) => (
+                    <Grid item xs={cardSpace} key={index}>
+                      <Skeleton variant="rect" className={classes.skeleton}>
+                        <SatCard satellite={{}} width={width} height={height} />
+                      </Skeleton>
+                    </Grid>
+                  ))}
+              <br />
+            </Grid>
+          ) : (
+            <CircularProgress className={classes.spinner} />
+          )}
+          {showLoadMore() ? (
+            <Grid
+              container
+              alignItems="center"
+              className={classes.loadMoreContainer}
+            >
+              <Grid item xs={5}>
+                <Divider />
+              </Grid>
+              <Grid item xs={2} container justifyContent="center">
+                <Typography
+                  variant={width > 1000 ? "body1" : "caption"}
+                  className={classes.loadMore}
+                  onClick={() => setPage(page + 1)}
+                >
+                  Load More Satellites
+                </Typography>
+              </Grid>
+              <Grid item xs={5}>
+                <Divider />
+              </Grid>
+            </Grid>
+          ) : (
+            <Grid
+              container
+              alignItems="center"
+              className={classes.loadMoreContainer}
+            >
+              <Grid item xs={5}>
+                <Divider />
+              </Grid>
+              <Grid item xs={2} container justifyContent="center">
+                <Typography
+                  variant={width > 1000 ? "body1" : "caption"}
+                  className={classes.loadMore}
+                >
+                  No More Satellites
+                </Typography>
+              </Grid>
+              <Grid item xs={5}>
+                <Divider />
+              </Grid>
+            </Grid>
+          )}
+        </div>
       </Container>
     </div>
   );

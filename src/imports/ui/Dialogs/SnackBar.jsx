@@ -19,14 +19,14 @@ export default function SimpleSnackbar({ bodySnackBar }) {
   };
 
   return (
-    <>
+    <React.Fragment>
       <Snackbar
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "left",
         }}
         open={openSnack}
-        autoHideDuration={6000}
+        autoHideDuration={3000}
         onClose={handleClose}
         message={bodySnackBar}
         action={
@@ -42,6 +42,6 @@ export default function SimpleSnackbar({ bodySnackBar }) {
           </React.Fragment>
         }
       />
-    </>
+    </React.Fragment>
   );
 }

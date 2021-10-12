@@ -1,15 +1,15 @@
 {
-  "_id": "cQcibnBjpqu2DJNPz",
-  "noradID": "40258",
+  "_id": "xoecq6tGZhdJairAm",
+  "noradID": "49127",
   "isDeleted": false,
-  "createdOn": "2021-10-05T15:03:34.752Z",
+  "createdOn": "2021-10-05T21:33:05.258Z",
   "createdBy": "admin",
-  "modifiedOn": "2021-10-05T16:26:52.083Z",
+  "modifiedOn": "2021-10-05T21:33:05.260Z",
   "modifiedBy": "admin",
   "adminCheck": true,
-  "names": [
+  "launchSites": [
     {
-      "reference": "https://spaceflight101.com/spacecraft/olymp/",
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2021-081A",
       "verified": [
         {
           "method": "user",
@@ -38,184 +38,15 @@
           "validatedOn": ""
         }
       ],
-      "name": "Luch"
-    },
-    {
-      "reference": "https://spaceflight101.com/spacecraft/olymp/",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "name": "Olymp-K"
-    }
-  ],
-  "bus": [
-    {
-      "reference": "https://en.wikipedia.org/wiki/Olymp-K",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "name": "Express-2000",
-      "description": "Highly flexible satellite bus designed and manufactured by ISS Reshetnev."
-    }
-  ],
-  "cosparID": [
-    {
-      "reference": "https://en.wikipedia.org/wiki/Olymp-K",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "cosparID": "2014-058A"
-    }
-  ],
-  "manufacturer": [
-    {
-      "reference": "https://en.wikipedia.org/wiki/Olymp-K",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "name": "JSC Information Satellite Systems",
-      "responsibility": ""
-    }
-  ],
-  "images": [
-    {
-      "reference": "https://spaceflight101.com/spacecraft/olymp/",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "description": "Ekspress-2000 Satellite",
-      "url": "https://spaceflight101.com/spacecraft/wp-content/uploads/sites/18/2015/09/9646451_orig-1024x337.jpg",
-      "entireSatellite": "false"
+      "name": "Plesetsk, Russia",
+      "description": "No detailed trajectory information available.",
+      "latitude": "",
+      "longitude": ""
     }
   ],
   "descriptionShort": [
     {
-      "reference": "https://en.wikipedia.org/wiki/Olymp-K",
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2021-081A",
       "verified": [
         {
           "method": "user",
@@ -244,12 +75,12 @@
           "validatedOn": ""
         }
       ],
-      "descriptionShort": "A Russian geostationary satellite built for the Russian Ministry of Defence and Federal Security Service (FSB). The satellite is also referred to as \"Luch\". It is believed to be a signals intelligence satellite."
+      "descriptionShort": "Cosmos 2551 is a classified Russian military satellite, possibly designed with a new miniature reconnaissance camera."
     }
   ],
-  "descriptionLong": [
+  "cosparID": [
     {
-      "reference": "https://en.wikipedia.org/wiki/Olymp-K",
+      "reference": "https://www.fezatr.com/eng/object/49127/",
       "verified": [
         {
           "method": "user",
@@ -278,12 +109,12 @@
           "validatedOn": ""
         }
       ],
-      "descriptionLong": "Olymp-K is a Russian geostationary satellite built for the Russian Ministry of Defence and Federal Security Service (FSB). The satellite is also referred to as \"Luch\". It is believed to be a signals intelligence satellite. Olymp-K was launched on 28 September 2014. \nThe Proton-M rocket with a Briz-M upper stage launched from Baikonur Cosmodrome launchpad 81/24 in Kazakhstan at 20:23 UTC. After four burns of the Briz-M upper stage it was placed into geosynchronous transfer orbit.[4][1] In a press release on 28 September 2014, Roscosmos referred to the satellite as \"Luch\"."
+      "cosparID": "2021-081A"
     }
   ],
-  "ownership": [
+  "names": [
     {
-      "reference": "https://en.wikipedia.org/wiki/Olymp-K",
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2021-081A",
       "verified": [
         {
           "method": "user",
@@ -312,9 +143,142 @@
           "validatedOn": ""
         }
       ],
-      "type": "country",
-      "name": "Russia",
-      "responsibility": ""
+      "name": "Cosmos 2551"
+    },
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2021-081A",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "name": "Razbeg"
+    },
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2021-081A",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "name": "Kosmos 2551"
+    }
+  ],
+  "launchVehicle": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/displayTrajectory.action?id=2021-081A",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "name": "Soyuz-2.1b",
+      "description": ""
+    }
+  ],
+  "images": [
+    {
+      "reference": "https://upload.wikimedia.org/wikipedia/commons/a/af/Strela-2M.jpg",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "description": "A similar Strela-2M communication satellite",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/a/af/Strela-2M.jpg",
+      "entireSatellite": "false"
     }
   ]
 }

@@ -33,7 +33,7 @@ const useStyles = makeStyles(() => ({
   },
   main: {
     marginTop: 95,
-    marginBottom: 40
+    marginBottom: 60,
   },
   bottom: {
     display: "flex",
@@ -42,7 +42,8 @@ const useStyles = makeStyles(() => ({
   },
   footer: {
     position: "relative",
-    bottom: 5
+    bottom: 0,
+    width: "100%",
   },
 }));
 
@@ -50,6 +51,7 @@ export const App = () => {
   const [theme, setTheme] = useState(themes.dark);
   const [openAlert, setOpenAlert] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
+  const [openVisualize, setOpenVisualize] = useState(false);
   const [alert, setAlert] = useState({
     title: "", //dialog title
     text: "", //dialog body text
@@ -64,14 +66,13 @@ export const App = () => {
     setTheme((theme) => (theme === themes.dark ? themes.light : themes.dark));
   };
 
-  window.onerror = function (msg, source, _, _, error) {
+  window.onerror = function (msg, source) {
     const user = Meteor.userId() || "Not Logged-In";
     const obj = {
       user: user,
       time: new Date(),
       msg: msg,
       source: source,
-      error: error,
     };
     Meteor.call("addError", obj);
     return true;
@@ -88,6 +89,8 @@ export const App = () => {
         setOpenAlert,
         openSnack,
         setOpenSnack,
+        openVisualize,
+        setOpenVisualize,
       }}
     >
       <ThemeProvider theme={theme}>

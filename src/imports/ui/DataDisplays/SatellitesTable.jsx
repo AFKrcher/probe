@@ -1,17 +1,20 @@
 import React, { useState, useEffect, useContext } from "react";
 // Imports
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import useWindowSize from "../Hooks/useWindowSize.jsx";
 import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
+import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
 
 // Components
+import { SearchBar } from "./SearchBar.jsx";
 import VisualizeDialog from "../Dialogs/VisualizeDialog";
 import { SatelliteModal } from "../SatelliteModal/SatelliteModal";
 import { SatelliteCollection } from "../../api/satellites";
 import SnackBar from "../Dialogs/SnackBar.jsx";
+import { Popper } from "../Dialogs/Popper.jsx";
 
 // @material-ui
 import {
@@ -32,9 +35,8 @@ import {
 } from "@material-ui/data-grid";
 import Star from "@material-ui/icons/Star";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
-import VisualizeIcon from "@material-ui/icons/ThreeDRotation";
-import CloseIcon from "@material-ui/icons/Close";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import DashboardIcon from "@material-ui/icons/Dashboard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,12 +51,15 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     height: "100%",
     width: "100%",
-    marginBottom: 5,
+    marginTop: 5,
+    resize: "horizontal",
   },
   dataGrid: {
+    padding: "5px 5px 0px 5px",
     backgroundColor: theme.palette.grid.background,
     "& .MuiDataGrid-cell": {
-      textOverflow: "clip",
+      textOverflow: "ellipse",
+      cursor: "pointer",
     },
     "& .MuiCircularProgress-colorPrimary": {
       color: theme.palette.text.primary,
@@ -78,7 +83,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "14px",
   },
   gridCaption: {
-    marginLeft: 5,
     color: theme.palette.text.disabled,
   },
   actions: {
@@ -117,16 +121,22 @@ const useStyles = makeStyles((theme) => ({
 
 const newSatValues = {
   noradID: "",
-  isDeleted: false
+  isDeleted: false,
 };
 
 export const SatellitesTable = () => {
   const classes = useStyles();
 
-  const { setOpenSnack, snack, setSnack } = useContext(HelpersContext);
+  const history = useHistory();
+
+  const { setOpenSnack, snack, setSnack, setOpenVisualize } =
+    useContext(HelpersContext);
 
   const [width, height] = useWindowSize();
 
+  const [popperBody, setPopperBody] = useState(null);
+  const [showPopper, setShowPopper] = useState(false);
+  const [filter, setFilter] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [newSat, setNewSat] = useState(true);
   const [initialSatValues, setInitialSatValues] = useState(newSatValues);
@@ -140,17 +150,35 @@ export const SatellitesTable = () => {
   const [columns, setColumns] = useState([]);
   const [prompt, setPrompt] = useState();
 
+  const debounced = useDebouncedCallback((row) => {
+    if (row.row.description) {
+      setPopperBody(row.row.description);
+      setShowPopper(true);
+    } else {
+      setShowPopper(false);
+    }
+  }, 300);
+
   const decideSort = () => {
-    if (sortNames) return { names: sortNames, isDeleted: false };
-    if (sortNorad) return { noradID: sortNorad, isDeleted: false };
-    if (sortType) return { type: sortType, isDeleted: false };
-    if (sortOrbit) return { orbit: sortOrbit, isDeleted: false };
+    if (sortNames) return { names: sortNames };
+    if (sortNorad) return { noradID: sortNorad };
+    if (sortType) return { type: sortType };
+    if (sortOrbit) return { orbit: sortOrbit };
   };
 
   const [rows, isLoadingSchemas, isLoadingSats, count] = useTracker(() => {
     const subSchemas = Meteor.subscribe("satellites");
     const subSats = Meteor.subscribe("satellites");
-    const count = SatelliteCollection.find({ isDeleted: false }).count();
+    const count = SatelliteCollection.find({
+      $or: [
+        {
+          isDeleted: false,
+        },
+        {
+          isDeleted: undefined,
+        },
+      ],
+    }).count();
     const sats = SatelliteCollection.find(selector, {
       limit: limiter,
       skip: page * limiter,
@@ -162,10 +190,13 @@ export const SatellitesTable = () => {
         return {
           id: sat.noradID,
           names: sat.names?.map((name) => name.names || name.name).join(", "),
-          type: sat.type ? sat.type[0]?.type : "N/A",
+          type: sat.type ? sat.type[0]?.type : "",
           orbit: sat.orbit
             ? sat.orbit.map((entry) => entry.orbit).join(", ")
-            : "N/A",
+            : "",
+          description: sat.descriptionShort
+            ? sat.descriptionShort[0]?.descriptionShort
+            : null,
         };
       });
     rows.getRows = count;
@@ -226,8 +257,9 @@ export const SatellitesTable = () => {
         default:
           setSelector({});
       }
+    } else {
+      setSelector({});
     }
-    return;
   };
 
   const handleSort = (e) => {
@@ -331,6 +363,62 @@ export const SatellitesTable = () => {
   useEffect(() => {
     const columns = [
       {
+        headerAlign: "center",
+        filterable: false,
+        sortable: false,
+        field: "actions",
+        headerName: "ACTIONS",
+        width: 200,
+        align: "left",
+        renderCell: function renderCellButtons(satellite) {
+          return (
+            <span className={classes.actions}>
+              <Tooltip title="Satellite Data View" arrow placement="top">
+                <IconButton
+                  className={classes.actionIconButton}
+                  onClick={() =>
+                    handleRowDoubleClick(
+                      SatelliteCollection.find({
+                        noradID: satellite.id,
+                      }).fetch()[0]
+                    )
+                  }
+                >
+                  <VisibilityIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Satellite Dashboard View" arrow placement="top">
+                <IconButton
+                  className={classes.actionIconButton}
+                  onClick={(e) => {
+                    handleDashboard(e, satellite.id);
+                  }}
+                >
+                  <DashboardIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip
+                title="Visualize satellite in Space Cockpit"
+                arrow
+                placement="top"
+              >
+                <IconButton
+                  className={classes.actionIconButton}
+                  onClick={() => {
+                    handleVisualize(
+                      satellite.row.names,
+                      `https://spacecockpit.saberastro.com/?SID=${satellite.id}&FS=${satellite.id}`
+                    );
+                  }}
+                >
+                  <img src="/saberastro.png" width="24px" />
+                </IconButton>
+              </Tooltip>
+            </span>
+          );
+        },
+      },
+      {
         headerAlign: "left",
         field: "id",
         headerName: "NORAD ID",
@@ -366,48 +454,6 @@ export const SatellitesTable = () => {
           (operator) => operator.value === "contains"
         ),
       },
-      {
-        headerAlign: "center",
-        filterable: false,
-        sortable: false,
-        field: "actions",
-        headerName: "ACTIONS",
-        width: 150,
-        align: "left",
-        renderCell: (satellite) => {
-          return (
-            <span className={classes.actions}>
-              <Tooltip title="View satellite data" arrow placement="top">
-                <IconButton
-                  className={classes.actionIconButton}
-                  onClick={() =>
-                    handleRowDoubleClick(
-                      SatelliteCollection.find({
-                        noradID: satellite.id,
-                      }).fetch()[0]
-                    )
-                  }
-                >
-                  <VisibilityIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Visualize satellite" arrow placement="top">
-                <IconButton
-                  className={classes.actionIconButton}
-                  onClick={() => {
-                    handleVisualize(
-                      satellite.row.names,
-                      `https://spacecockpit.saberastro.com/?SID=${satellite.id}&FS=${satellite.id}`
-                    );
-                  }}
-                >
-                  <VisualizeIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-            </span>
-          );
-        },
-      },
     ];
 
     if (Meteor.userId()) {
@@ -432,6 +478,19 @@ export const SatellitesTable = () => {
     setColumns(columns);
   }, [Meteor.userId(), selector]);
 
+  const handleVisualize = (satellite, url) => {
+    setPrompt({
+      url: url,
+      satellite: satellite,
+    });
+    setOpenVisualize(true);
+  };
+
+  function handleDashboard(e, id) {
+    e.preventDefault();
+    history.push(`/${id}`);
+  }
+
   const AddSatelliteButton = () => {
     return (
       <Grid
@@ -451,53 +510,9 @@ export const SatellitesTable = () => {
     );
   };
 
-  const handleVisualize = (satNames, url) => {
-    setPrompt({
-      title: (
-        <div className={classes.modalHeader}>
-          <Tooltip
-            title="Click to open Space Cockpit in a new tab"
-            placement="right"
-            arrow
-          >
-            <Typography
-              onClick={() => window.open(url, "_blank").focus()}
-              style={{
-                cursor: "pointer",
-              }}
-            >
-              Visualizing <strong>{satNames}</strong> in Space Cockpit by Saber
-              Astronautics
-            </Typography>
-          </Tooltip>
-          <IconButton
-            size="small"
-            className={classes.modalButton}
-            id="exitVisualize"
-            onClick={() => {
-              setPrompt(null);
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </div>
-      ),
-      text: (
-        <iframe
-          src={url}
-          height="99%"
-          width="100%"
-          title="SpaceCockpit"
-          className={classes.iframe}
-        />
-      ),
-      actions: "",
-    });
-  };
-
   return (
     <React.Fragment>
-      <VisualizeDialog bodyPrompt={prompt} open={prompt ? true : false} />
+      <VisualizeDialog body={prompt} />
       <SnackBar bodySnackBar={snack} />
       <div className={classes.root}>
         <Grid container justifyContent="space-between" alignItems="center">
@@ -531,9 +546,19 @@ export const SatellitesTable = () => {
               next page
             </Link>
           </Tooltip>
-          . Click on the <strong>satellite</strong> names in the table to bring
-          up the schemas and data associated with the <strong>satellite</strong>
-          .
+          . Double-click on the <strong>satellite</strong> names in the table to
+          bring up the schemas and data associated with the{" "}
+          <strong>satellite</strong>.
+        </Typography>
+        <SearchBar
+          filter={filter}
+          setFilter={setFilter}
+          selector={selector}
+          setSelector={setSelector}
+        />
+        <Typography variant="caption" className={classes.gridCaption}>
+          Hover to view satellite description, Click to interact with a cell,
+          Double-click to view satellite data
         </Typography>
         <div className={classes.gridContainer}>
           <DataGrid
@@ -563,11 +588,15 @@ export const SatellitesTable = () => {
               );
             }}
             onSortModelChange={handleSort}
+            onRowOver={debounced}
+            onRowOut={() => {
+              debounced(false);
+              setShowPopper(false);
+            }}
           />
         </div>
-        <Typography variant="caption" className={classes.gridCaption}>
-          Click to interact with a cell, Double-click to view satellite data
-        </Typography>
+
+        <Popper open={showPopper} value={popperBody} />
         <SatelliteModal
           show={showModal}
           newSat={newSat}

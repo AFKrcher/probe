@@ -13,14 +13,12 @@ import {
   Grid,
   Button,
   makeStyles,
-  Select,
-  FormControl,
-  InputLabel,
-  MenuItem,
   IconButton,
   Tooltip,
   Paper,
 } from "@material-ui/core";
+import MuiTextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import DeleteIcon from "@material-ui/icons/Delete";
 import HelpIcon from "@material-ui/icons/Help";
 
@@ -30,10 +28,11 @@ const useStyles = makeStyles((theme) => ({
   },
   addSchemaContainer: {
     textAlign: "center",
-    margin: 10,
+    margin: 15,
   },
   addItem: {
     alignItems: "center",
+    marginTop: 10,
   },
   noradID: {
     padding: theme.spacing(1),
@@ -43,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.disabled,
     fontSize: "small",
     marginLeft: 5,
-    marginTop: -5,
+    marginTop: -10,
   },
 }));
 
@@ -173,8 +172,8 @@ export const SatelliteForm = ({
     }
   };
 
-  const onSchemaChange = (e) => {
-    setAddSchema(e.target.value);
+  const onSchemaChange = (optionName) => {
+    setAddSchema(optionName);
   };
 
   const toggleAddSchema = () => {
@@ -195,6 +194,7 @@ export const SatelliteForm = ({
     disabled: !editing,
     autoComplete: "off",
   };
+
   return (
     <Grid container spacing={1}>
       <AlertDialog bodyAlert={alert} />
@@ -222,54 +222,36 @@ export const SatelliteForm = ({
       {editing && schemaAddition && (
         <Grid item container xs={12} className={classes.addItem}>
           <Grid item xs={10}>
-            <FormControl variant="outlined" margin="dense" fullWidth>
-              <InputLabel htmlFor={`satellite-field`}>
-                Available Schemas
-              </InputLabel>
-              <Field
-                label="Available Schemas"
-                inputProps={{
-                  id: `satellite-field`,
-                  name: `satellite-field`,
-                }}
-                component={Select}
-                value={addSchema}
-                onChange={onSchemaChange}
-              >
-                <MenuItem disabled value={""}>
-                  <em>Available Schemas</em>
-                </MenuItem>
-                {schemas.map((schema, schemaIndex) => {
-                  if (
-                    schema.name !== "name" &&
-                    (initValues[`${schema.name}`] ? false : true)
-                  ) {
-                    return (
-                      <MenuItem
-                        className="schemaIndex"
-                        dense
-                        value={`${schema.name}`}
-                        key={schemaIndex}
-                      >
-                        {schema.name}
-                        <Tooltip
-                          title={schema.description}
-                          placement="bottom-start"
-                          arrow
-                        >
-                          <HelpIcon
-                            fontSize="small"
-                            className={classes.helpIcon}
-                          />
-                        </Tooltip>
-                      </MenuItem>
-                    );
-                  }
-                })}
-              </Field>
-            </FormControl>
+            <Autocomplete
+              options={schemas.filter((schema) => !initValues[schema.name])}
+              onChange={(e, option) => onSchemaChange(option.name)}
+              getOptionLabel={(option) => option.name}
+              renderOption={(option) => (
+                <span>
+                  {option.name}
+                  <Tooltip
+                    title={`${option.description}`}
+                    arrow
+                    placement="right"
+                  >
+                    <HelpIcon className={classes.helpIcon} />
+                  </Tooltip>
+                </span>
+              )}
+              autoComplete
+              autoHighlight
+              autoSelect
+              renderInput={(params) => (
+                <MuiTextField
+                  {...params}
+                  label="Available Schemas"
+                  variant="outlined"
+                  size="small"
+                />
+              )}
+            />
           </Grid>
-          <Grid item xs style={{ marginLeft: 10, marginTop: 5 }}>
+          <Grid item xs style={{ marginLeft: 10 }}>
             <Button
               id="add-schema"
               variant="contained"
