@@ -58,6 +58,7 @@ export const SchemaForm = ({
         required: false,
         min: null,
         max: null,
+        stringMax: null,
       },
     ];
     setValues({ ...formValues, fields });

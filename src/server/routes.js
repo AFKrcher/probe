@@ -64,13 +64,13 @@ WebApp.connectHandlers.use("/api/satellites", async (req, res, next) => {
           "names.name": { $regex: `${target}`, $options: "i" },
         }).fetch();
         if (result.length > 0 && result[0] !== undefined) {
-          console.log('result ', result[0])
+          console.log("result ", result[0]);
           res.writeHead(200);
           res.end(JSON.stringify(result));
-        }
-        else {
+        } else {
           error = {
-            error: "Could not fetch sat based on name - non-existent name. And I should know. I invented satellites.",
+            error:
+              "Could not fetch sat based on name - non-existent name. And I should know. I invented satellites.",
           };
           res.writeHead(500);
           res.end(JSON.stringify(error));
@@ -85,7 +85,7 @@ WebApp.connectHandlers.use("/api/satellites", async (req, res, next) => {
       try {
         const target = req.query.type;
         sats.fetch().forEach((sat) => {
-          let bool = sat.type.find((type) => {
+          let bool = sat.types.find((type) => {
             return type.type || type.type === target ? true : false;
           });
           if (bool) {

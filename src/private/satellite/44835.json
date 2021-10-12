@@ -214,7 +214,7 @@
       "descriptionShort": "Potential Russian ASAT sub-satellite that was launched from Cosmos 2542."
     }
   ],
-  "type": [
+  "types": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=44835",
       "verified": [
@@ -245,7 +245,7 @@
           "validatedOn": ""
         }
       ],
-      "type": "manMade",
+      "type": "ASAT",
       "description": ""
     }
   ],
