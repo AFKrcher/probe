@@ -20,8 +20,10 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import LinkIcon from "@material-ui/icons/Link";
 import VerifiedIcon from "@material-ui/icons/CheckBox";
 import ValidatedIcon from "@material-ui/icons/LibraryAddCheck";
-// import ReportIcon from "@material-ui/icons/Report";
+import ReportIcon from "@material-ui/icons/Report";
 import ErrorIcon from "@material-ui/icons/Warning";
+import ReportOutlinedIcon from "@material-ui/icons/ReportOutlined";
+import ErrorOutlinedIcon from "@material-ui/icons/ReportProblemOutlined";
 
 const useStyles = makeStyles((theme) => ({
   entryPaper: {
@@ -47,15 +49,15 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   validatedAdornment: {
-    color: theme.palette.success.main,
+    color: theme.palette.success.light,
     filter: "drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4))",
   },
   partiallyValidatedAdornment: {
-    color: theme.palette.warning.main,
+    color: theme.palette.warning.light,
     filter: "drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4))",
   },
   notValidatedAdornment: {
-    color: theme.palette.error.main,
+    color: theme.palette.error.light,
     filter: "drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4))",
   },
   helpersError: {
@@ -178,39 +180,78 @@ export const SatelliteSchemaEntry = ({
   };
 
   const decideVerifiedValidatedIcon = (array, verified, style, tip) => {
-    console.log(array);
-    if (!style && !tip) {
-      let isChecked = array.map((checker) => {
-        return verified ? checker.verified : checker.validated;
+    let userChecking = array
+      .filter(
+        (checker) =>
+          checker.method === "user" && (checker.verified || checker.validated)
+      )
+      .map((checker) => {
+        return {
+          name: checker.name,
+          date: checker.verifiedOn || checker.validatedOn,
+        };
       });
-      return isChecked.includes(true) ? (
-        verified ? (
-          <VerifiedIcon />
-        ) : (
-          <ValidatedIcon />
-        )
-      ) : (
-        <ErrorIcon />
-      );
-    } else if (!tip) {
-      let isChecked = array.map((checker) => {
-        return verified ? checker.verified : checker.validated;
+    let machineChecking = array
+      .filter(
+        (checker) =>
+          checker.method === "machine" &&
+          (checker.verified || checker.validated)
+      )
+      .map((checker) => {
+        return {
+          name: checker.name,
+          date: checker.verifiedOn || checker.validatedOn,
+        };
       });
 
-      return isChecked.includes(true)
-        ? classes.validatedAdornment
-        : classes.notValidatedAdornment;
+    let mostRecentUser = `${
+      userChecking[userChecking.length - 1]?.name
+    } on ${userChecking[userChecking.length - 1]?.date
+      .toString()
+      .substr(0, 10)}`;
+    let mostRecentMachine = `${
+      machineChecking[machineChecking.length - 1]?.name
+    } on ${machineChecking[machineChecking.length - 1]?.date
+      .toString()
+      .substr(0, 10)}`;
+
+    if (!style && !tip) {
+      if (userChecking.length > 0 && machineChecking.length > 0)
+        return verified ? <VerifiedIcon /> : <ValidatedIcon />;
+      if (
+        (userChecking.length > 0 && machineChecking.length === 0) ||
+        (userChecking.length === 0 && machineChecking.length > 0)
+      )
+        return verified ? <ReportIcon /> : <ReportOutlinedIcon />;
+      if (userChecking.length === 0 && machineChecking.length === 0)
+        return verified ? <ErrorIcon /> : <ErrorOutlinedIcon />;
+    } else if (!tip) {
+      if (userChecking.length > 0 && machineChecking.length > 0)
+        return classes.validatedAdornment;
+      if (
+        (userChecking.length > 0 && machineChecking.length === 0) ||
+        (userChecking.length === 0 && machineChecking.length > 0)
+      )
+        return classes.partiallyValidatedAdornment;
+      if (userChecking.length === 0 && machineChecking.length === 0)
+        return classes.notValidatedAdornment;
     } else {
-      let isChecked = array.map((checker) => {
-        return verified ? checker.verified : checker.validated;
-      });
-      return verified
-        ? isChecked.includes(true)
-          ? "Verified in reference"
-          : "Not yet verified in reference"
-        : isChecked.includes(true)
-        ? "Validated across multiple sources"
-        : "Not validated across multiple sources";
+      if (userChecking.length > 0 && machineChecking.length > 0)
+        return verified
+          ? `Verified by user: ${mostRecentUser} and machine: ${mostRecentMachine}`
+          : `Validated across multiple sources by user: ${mostRecentUser} and machine: ${mostRecentMachine}`;
+      if (userChecking.length > 0 && machineChecking.length === 0)
+        return verified
+          ? `Verified by user: ${mostRecentUser}`
+          : `Validated across multiple sources by user: ${mostRecentUser}`;
+      if (userChecking.length === 0 && machineChecking.length > 0)
+        return verified
+          ? `Verified by machine: ${mostRecentMachine}`
+          : `Validated across multiple sources by machine: ${mostRecentMachine}`;
+      if (userChecking.length === 0 && machineChecking.length === 0)
+        return verified
+          ? "Not verified by user nor machine"
+          : "Not validated by user nor machine";
     }
   };
 
@@ -257,8 +298,7 @@ export const SatelliteSchemaEntry = ({
         !field.isUnique &&
         field.name !== "name" &&
         entry[field.name]?.length > 100,
-      rows: Math.ceil(entry[field.name]?.length / 100),
-      minRows: 3,
+      minRows: Math.ceil(entry[field.name]?.length / 100) || 3,
       maxRows: 10,
       component:
         editing || editingSchema
@@ -308,7 +348,7 @@ export const SatelliteSchemaEntry = ({
                 endAdornment: (
                   <span
                     style={
-                      field.length > 300 || width < 600
+                      field.length > 300 && width < 1000
                         ? {
                             display: "flex",
                             flexDirection: "column",
@@ -346,7 +386,7 @@ export const SatelliteSchemaEntry = ({
                         )}
                       </InputAdornment>
                     </Tooltip>
-                    {field.length > 300 || width < 600 ? (
+                    {field.length > 300 && width < 1000 ? (
                       <div style={{ marginTop: 40 }} />
                     ) : null}
                     <Tooltip
@@ -357,7 +397,7 @@ export const SatelliteSchemaEntry = ({
                         true
                       )}
                       placement={
-                        field.length > 300 || width < 600 ? "bottom" : "top"
+                        field.length > 300 && width < 1000 ? "bottom" : "top"
                       }
                       arrow
                     >

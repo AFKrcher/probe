@@ -24,6 +24,12 @@ import InfiniteScrollIcon from "@material-ui/icons/BurstMode";
 import InfiniteScrollOutlinedIcon from "@material-ui/icons/BurstModeOutlined";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import DashboardIcon from "@material-ui/icons/Dashboard";
+import VerifiedIcon from "@material-ui/icons/CheckBox";
+import ValidatedIcon from "@material-ui/icons/LibraryAddCheck";
+import ReportIcon from "@material-ui/icons/Report";
+import ErrorIcon from "@material-ui/icons/Warning";
+import ReportOutlinedIcon from "@material-ui/icons/ReportOutlined";
+import ErrorOutlinedIcon from "@material-ui/icons/ReportProblemOutlined";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,16 +42,40 @@ const useStyles = makeStyles((theme) => ({
   description: {
     marginTop: 10,
   },
+  showKey: {
+    marginTop: 15,
+    color: theme.palette.text.disabled,
+    cursor: "pointer",
+    "&:hover": {
+      color: theme.palette.info.light,
+    },
+    width: "10ch",
+  },
   key: {
-    marginBottom: 25,
-    marginTop: 25,
+    marginBottom: 20,
+    marginTop: 15,
     display: "flex",
   },
+  keyItems: {
+    marginRight: "0.5ch",
+  },
+  keyItemsValid: {
+    marginRight: "0.5ch",
+    fill: theme.palette.success.light,
+  },
+  keyItemsPartial: {
+    marginRight: "0.5ch",
+    fill: theme.palette.warning.light,
+  },
+  keyItemsInvalid: {
+    marginRight: "0.5ch",
+    fill: theme.palette.error.light,
+  },
   showcase: {
-    marginTop: 30,
+    marginTop: 20,
   },
   secondaryShowcase: {
-    marginTop: 30,
+    marginTop: 20,
   },
   card: {
     marginTop: -10,
@@ -91,6 +121,7 @@ export const Home = () => {
   const [limiter] = useState(3);
   const [scrolled, setScrolled] = useState(false);
   const [infiniteMode, setInfiniteMode] = useState(true);
+  const [showKey, setShowKey] = useState(false);
 
   const count = SatelliteCollection.find().count();
 
@@ -124,8 +155,6 @@ export const Home = () => {
         : otherSats;
     return [sats, otherSats, !sub.ready(), favorites, user];
   });
-
-  useEffect(() => {}, [page]);
 
   window.onscroll = () => {
     if (
@@ -201,27 +230,79 @@ export const Home = () => {
           information.
         </Typography>
         <Typography variant="subtitle1">
-          100% Open Source, 100% Machine Readable.
+          100% Open Source, 100% Machine Readable.{" "}
         </Typography>
-        <Typography gutterBottom variant="body2" className={classes.key}>
-          <VisibilityIcon fontSize="small" style={{ marginRight: 5 }} />– Open a
-          satellite to view and/or modify the fields or schemas
+        <Typography
+          variant="body2"
+          className={classes.showKey}
+          onClick={() => setShowKey(!showKey)}
+        >
+          {showKey ? "Hide Key..." : "Show Key..."}
         </Typography>
-        <Typography gutterBottom variant="body2" className={classes.key}>
-          <DashboardIcon fontSize="small" style={{ marginRight: 5 }} />– Open
-          the satellite dashboard. Satellite dashboards allow users to ciew
-          satellite data outside of an editing modal and provide users with a
-          shareable URL.
-        </Typography>
-        <Typography gutterBottom variant="body2" className={classes.key}>
-          <img
-            src="/assets/saberastro.png"
-            width="21px"
-            height="21px"
-            style={{ marginRight: 5 }}
-          />
-          – Open a schema to view and/or modify the fields
-        </Typography>
+
+        {showKey && (
+          <React.Fragment>
+            <Typography gutterBottom variant="body2" className={classes.key}>
+              <VisibilityIcon fontSize="small" className={classes.keyItems} />
+              <span className={classes.keyItems}>–</span>
+              Open a satellite to view and/or modify the fields or schemas
+            </Typography>
+            <Typography gutterBottom variant="body2" className={classes.key}>
+              <DashboardIcon fontSize="small" className={classes.keyItems} />
+              <span className={classes.keyItems}>–</span>
+              Open the satellite dashboard - allows users to view satellite data
+              outside of an editing modal and provide users with a shareable URL
+            </Typography>
+            <Typography gutterBottom variant="body2" className={classes.key}>
+              <img
+                src="/assets/saberastro.png"
+                width="21px"
+                height="21px"
+                className={classes.keyItems}
+              />
+              <span className={classes.keyItems}>–</span> Open a satellite to
+              view and/or modify its schemas or entries
+            </Typography>
+            <Typography gutterBottom variant="body2" className={classes.key}>
+              <VerifiedIcon
+                fontSize="small"
+                className={classes.keyItemsValid}
+              />
+              <ValidatedIcon
+                fontSize="small"
+                className={classes.keyItemsValid}
+              />
+              <span className={classes.keyItems}>–</span> Indicates that
+              information has been verified to be in the reference or validated
+              across multiple sources by user(s) AND web-crawling algorithm(s)
+            </Typography>
+            <Typography gutterBottom variant="body2" className={classes.key}>
+              <ReportIcon
+                fontSize="small"
+                className={classes.keyItemsPartial}
+              />
+              <ReportOutlinedIcon
+                fontSize="small"
+                className={classes.keyItemsPartial}
+              />
+              <span className={classes.keyItems}>–</span> Indicates that
+              information has ONLY been verified to be in the reference or
+              validated across multiple sources by user(s) OR web-crawling
+              algorithm(s)
+            </Typography>
+            <Typography gutterBottom variant="body2" className={classes.key}>
+              <ErrorIcon fontSize="small" className={classes.keyItemsInvalid} />
+              <ErrorOutlinedIcon
+                fontSize="small"
+                className={classes.keyItemsInvalid}
+              />
+              <span className={classes.keyItems}>–</span> Indicates that
+              information has NOT been verified to be in the reference or
+              validated across multiple sources by user(s) OR web-crawling
+              algorithm(s)
+            </Typography>
+          </React.Fragment>
+        )}
       </Container>
 
       <Container className={classes.showcase}>
