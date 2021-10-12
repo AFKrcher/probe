@@ -14,13 +14,13 @@ export const getSatName = (satellite) => {
 export const getSatImage = (satellite) => {
   return satellite && satellite.images && satellite.images.length > 0
     ? satellite.images[0].link || satellite.images[0].url
-    : "/sat-placeholder.jpg";
+    : "/assets/sat-placeholder.jpg";
 };
 
 export const getSatImages = (satellite) => {
   return satellite && satellite.images && satellite.images.length > 0
     ? satellite.images
-    : "/sat-placeholder.jpg";
+    : "/assets/sat-placeholder.jpg";
 };
 
 export const getSatID = (satellite) => {

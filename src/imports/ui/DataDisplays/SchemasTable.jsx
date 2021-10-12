@@ -20,7 +20,6 @@ import {
   Typography,
   Tooltip,
   IconButton,
-  TextField,
 } from "@material-ui/core";
 import {
   DataGrid,
@@ -29,8 +28,6 @@ import {
   GridToolbarFilterButton,
   GridToolbarDensitySelector,
 } from "@material-ui/data-grid";
-import SearchIcon from "@material-ui/icons/Search";
-import ClearIcon from "@material-ui/icons/Clear";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 
 const useStyles = makeStyles((theme) => ({
@@ -38,8 +35,12 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
   },
   description: {
-    marginBottom: 25,
+    marginBottom: 20,
     marginTop: 10,
+  },
+  key: {
+    marginBottom: 25,
+    display: "flex",
   },
   dataGrid: {
     padding: "5px 5px 0px 5px",
@@ -47,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 5,
     "& .MuiDataGrid-cell": {
       textOverflow: "ellipse",
-      cursor: "pointer",
     },
     "& .MuiCircularProgress-colorPrimary": {
       color: theme.palette.text.primary,
@@ -292,6 +292,10 @@ export const SchemasTable = () => {
         a number of data fields that contain the information. Double-click on a
         desired <strong>schema</strong> below to view its details and edit the
         entry fields.
+      </Typography>
+      <Typography gutterBottom variant="body2" className={classes.key}>
+        <VisibilityIcon fontSize="small" style={{ marginRight: 5 }} />– Open a
+        schema to view and/or modify the fields
       </Typography>
       <SearchBar
         setSelector={setSelector}

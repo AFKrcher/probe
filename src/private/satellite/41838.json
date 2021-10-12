@@ -77,6 +77,40 @@
       "responsibility": ""
     }
   ],
+  "types": [
+    {
+      "reference": "https://www.n2yo.com/satellite/?s=41838",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "type": "research"
+    }
+  ],
   "launchSites": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=41838",

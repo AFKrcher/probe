@@ -5,27 +5,23 @@ import { autoPlay } from "react-swipeable-views-utils";
 import { getSatImages } from "../utils/satelliteDataFuncs.js";
 
 // @material-ui
-import {
-  MobileStepper,
-  Box,
-  Button,
-  makeStyles,
-} from "@material-ui/core";
+import { MobileStepper, Box, Button, makeStyles } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 500,
     flexGrow: 1,
+    overflow: "hidden",
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
   },
   imageContainer: {
     height: "300px",
     width: "100%",
     display: "block",
     objectFit: "cover",
-    overflow: "hidden",
   },
   mobileStepper: {
     backgroundColor: "transparent",

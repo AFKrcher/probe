@@ -41,7 +41,7 @@
       "name": "GALAXY 17"
     }
   ],
-  "type": [
+  "types": [
     {
       "reference": "https://en.wikipedia.org/wiki/Galaxy_17",
       "verified": [
@@ -72,8 +72,7 @@
           "validatedOn": ""
         }
       ],
-      "type": "manMade",
-      "description": ""
+      "type": "communications"
     }
   ],
   "descriptionShort": [

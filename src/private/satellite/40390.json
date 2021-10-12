@@ -109,6 +109,40 @@
       "descriptionShort": "A National Oceanic and Atmospheric Administration (NOAA) space weather, space climate, and Earth observation satellite. It was launched by SpaceX on Febuary 11, 2015."
     }
   ],
+  "types": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Deep_Space_Climate_Observatory",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "type": "weather"
+    }
+  ],
   "images": [
     {
       "reference": "https://en.wikipedia.org/wiki/Deep_Space_Climate_Observatory",

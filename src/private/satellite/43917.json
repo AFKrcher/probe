@@ -41,7 +41,7 @@
       "name": "TJS-3 AKM"
     }
   ],
-  "type": [
+  "types": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=43917",
       "verified": [
@@ -72,7 +72,7 @@
           "validatedOn": ""
         }
       ],
-      "type": "manMade",
+      "type": "debris",
       "description": "Rocket Body"
     }
   ],
