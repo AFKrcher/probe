@@ -38,10 +38,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     color: theme.palette.tertiary.main,
     textDecoration: "none",
-    filter: `drop-shadow(5px 2px 2px ${theme.palette.tertiary.shadow})`,
-    "&:hover": {
-      filter: "none",
-    },
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
   },
   divider: {
     margin: 10,

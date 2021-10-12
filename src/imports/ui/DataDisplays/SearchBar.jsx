@@ -34,15 +34,17 @@ export const SearchBar = ({
         filterSelectedOptions
         options={[]}
         onInputChange={(e, values) => {
+          console.log(values)
           if (!multiple) {
             setSelector(values);
           }
         }}
-        // onKeyDown={(e) => {
-        //   if (e.keyCode === 9) {
-        //     setValue(inputValue);
-        //   }
-        // }}
+        onKeyDown={(e) => {
+          if (e.code === "Tab" || e.key === "Tab" || e.keyIdentifier === "Tab") {
+            console.log('tab')
+            setValue(inputValue);
+          }
+        }}
         onChange={(e, values) => {
           let val = values.join().toUpperCase().trim().split(",");
           let obj = {
@@ -79,6 +81,7 @@ export const SearchBar = ({
               });
             }
           });
+          setInputValue(values)
           val[0] === "" ? setSelector({}) : setSelector(obj);
         }}
         renderInput={(params) => {
