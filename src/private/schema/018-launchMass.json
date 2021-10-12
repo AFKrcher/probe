@@ -12,9 +12,8 @@
     {
       "name": "verified",
       "hidden": true,
-      "description": "",
-      "type": "string",
-      "allowedValues": ["true", "false"]
+      "type": "verified",
+      "required": true
     },
     {
       "name": "launchMassKg",

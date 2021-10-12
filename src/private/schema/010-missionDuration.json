@@ -12,9 +12,8 @@
     {
       "name": "verified",
       "hidden": true,
-      "description": "",
-      "type": "string",
-      "allowedValues": ["true", "false"]
+      "type": "verified",
+      "required": true
     },
     {
       "name": "start",
@@ -29,13 +28,18 @@
       "allowedValues": []
     },
     {
+      "name": "plannedMissionDurationScale",
+      "type": "string",
+      "allowedValues": ["hours", "days", "months", "years"]
+    },
+    {
       "name": "actualMissionDuration",
       "type": "number",
       "min": 0,
       "allowedValues": []
     },
     {
-      "name": "durationScale",
+      "name": "actualMissionDurationScale",
       "type": "string",
       "allowedValues": ["hours", "days", "months", "years"]
     }

@@ -18,8 +18,10 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import LinkIcon from "@material-ui/icons/Link";
-import CheckBoxIcon from "@material-ui/icons/CheckBoxOutlined";
-import ReportIcon from "@material-ui/icons/ReportOutlined";
+import VerifiedIcon from "@material-ui/icons/CheckBoxOutlined";
+import ValidatedIcon from "@material-ui/icons/LibraryAddCheckOutlined";
+// import ReportIcon from "@material-ui/icons/ReportOutlined";
+import ErrorIcon from "@material-ui/icons/WarningOutlined";
 
 const useStyles = makeStyles((theme) => ({
   entryPaper: {
@@ -44,12 +46,16 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.info.main,
     },
   },
-  verifiedAdornment: {
+  validatedAdornment: {
     color: theme.palette.success.main,
     filter: "drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4))",
   },
-  notVerifiedAdornment: {
+  partiallyValidatedAdornment: {
     color: theme.palette.warning.main,
+    filter: "drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4))",
+  },
+  notValidatedAdornment: {
+    color: theme.palette.error.main,
     filter: "drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4))",
   },
   helpersError: {
@@ -84,11 +90,29 @@ export const SatelliteSchemaEntry = ({
   const classes = useStyles();
 
   const [helpers, setHelpers] = useState(null);
-  const debounced = useDebouncedCallback((event, verifiedField) => {
-    setFieldValue(event.target.name, event.target.value);
-    // set verified to false if a field is modified and subsequently saved
-    setFieldValue(verifiedField, false);
-  }, 300);
+  const debounced = useDebouncedCallback(
+    (event, validatedField, verifiedField) => {
+      setFieldValue(event.target.name, event.target.value);
+      // set validated to false if a field is modified and subsequently saved
+      setFieldValue(validatedField, [
+        {
+          method: "",
+          name: "",
+          validated: false,
+          validatedOn: "",
+        },
+      ]);
+      setFieldValue(verifiedField, [
+        {
+          method: "",
+          name: "",
+          verified: false,
+          verifiedOn: "",
+        },
+      ]);
+    },
+    300
+  );
 
   const preliminaryDebounced = useDebouncedCallback((event) => {
     let obj = {};
@@ -96,7 +120,7 @@ export const SatelliteSchemaEntry = ({
     setTouched(obj);
     // Needed in order for errors to be properly set or cleared after Formik completes a check on the satellite data
     setFieldValue(event.target.name, event.target.value);
-  }, 800);
+  }, 400);
 
   const refreshHelpers = () => {
     if (JSON.stringify(errors) !== "{}") {
@@ -151,7 +175,43 @@ export const SatelliteSchemaEntry = ({
     window.open(url, "_blank").focus();
   };
 
-  const fieldProps = (classes, field, fieldIndex, verified) => {
+  const decideVerifiedValidatedIcon = (array, verified, style, tip) => {
+    if (!style && !tip) {
+      let isChecked = array.map((checker) => {
+        return verified ? checker.verified : checker.validated;
+      });
+      return isChecked.includes(true) ? (
+        verified ? (
+          <VerifiedIcon />
+        ) : (
+          <ValidatedIcon />
+        )
+      ) : (
+        <ErrorIcon />
+      );
+    } else if (!tip) {
+      let isChecked = array.map((checker) => {
+        return verified ? checker.verified : checker.validated;
+      });
+
+      return isChecked.includes(true)
+        ? classes.validatedAdornment
+        : classes.notValidatedAdornment;
+    } else {
+      let isChecked = array.map((checker) => {
+        return verified ? checker.verified : checker.validated;
+      });
+      return verified
+        ? isChecked.includes(true)
+          ? "Verified in reference"
+          : "Not yet verified in reference"
+        : isChecked.includes(true)
+        ? "Validated across multiple sources"
+        : "Not validated across multiple sources";
+    }
+  };
+
+  const fieldProps = (classes, field, fieldIndex, validated, verified) => {
     return {
       className: classes.field,
       inputProps: {
@@ -160,7 +220,7 @@ export const SatelliteSchemaEntry = ({
         max: field.max,
         maxLength: field.stringMax,
         step: "any",
-        spellCheck: true,
+        spellCheck: field.type === "string",
         autoComplete: "off",
       },
       InputLabelProps: {
@@ -169,15 +229,27 @@ export const SatelliteSchemaEntry = ({
       defaultValue: entry[`${field.name}`] || "",
       onChange: (event) => {
         preliminaryDebounced(event);
-        debounced(event, `${schema.name}.${entryIndex}.verified`);
+        debounced(
+          event,
+          `${schema.name}.${entryIndex}.validated`,
+          `${schema.name}.${entryIndex}.verified`
+        );
       },
       onBlur: (event) => {
         preliminaryDebounced(event);
-        debounced(event, `${schema.name}.${entryIndex}.verified`);
+        debounced(
+          event,
+          `${schema.name}.${entryIndex}.validated`,
+          `${schema.name}.${entryIndex}.verified`
+        );
       },
       onInput: (event) => {
         preliminaryDebounced(event);
-        debounced(event, `${schema.name}.${entryIndex}.verified`);
+        debounced(
+          event,
+          `${schema.name}.${entryIndex}.validated`,
+          `${schema.name}.${entryIndex}.verified`
+        );
       },
       error: filteredHelper(schema.name, entryIndex, fieldIndex) ? true : false,
       label: field.name,
@@ -185,11 +257,15 @@ export const SatelliteSchemaEntry = ({
       required: field.required,
       fullWidth: true,
       variant: "outlined",
-      multiline: field.stringMax > 255,
+      multiline:
+        field.stringMax &&
+        !field.isUnique &&
+        field.name !== "name" &&
+        entry[field.name]?.length > 125,
       rows:
         (!field.stringMax && field.type !== "url") || field.stringMax > 255
-          ? 5
-          : 1,
+          ? 6
+          : 2,
       component:
         editing || editingSchema
           ? TextField
@@ -198,7 +274,9 @@ export const SatelliteSchemaEntry = ({
                 props,
                 entry[`${field.name}`],
                 field.type,
-                verified
+                validated,
+                verified,
+                field.allowedValues?.length > 0
               ),
 
       type: field.type === "date" ? "datetime-local" : field.type,
@@ -207,7 +285,7 @@ export const SatelliteSchemaEntry = ({
     };
   };
 
-  const linkAdornment = (props, field, type, verified) => {
+  const linkAdornment = (props, field, type, validated, verified, select) => {
     return (
       <TextField
         InputProps={
@@ -235,21 +313,63 @@ export const SatelliteSchemaEntry = ({
             : field && field.length > 0 // only have verification adornment if there is data
             ? {
                 endAdornment: (
-                  <Tooltip
-                    title={verified ? "Verified" : "Unverified"}
-                    placement="top"
-                  >
-                    <InputAdornment
-                      className={
-                        verified
-                          ? classes.verifiedAdornment
-                          : classes.notVerifiedAdornment
-                      }
-                      position="end"
+                  <React.Fragment>
+                    <Tooltip
+                      title={decideVerifiedValidatedIcon(
+                        verified,
+                        true,
+                        false,
+                        true
+                      )}
+                      placement="top"
+                      arrow
                     >
-                      {verified ? <CheckBoxIcon /> : <ReportIcon />}
-                    </InputAdornment>
-                  </Tooltip>
+                      <InputAdornment
+                        className={decideVerifiedValidatedIcon(
+                          verified,
+                          true,
+                          true,
+                          false
+                        )}
+                        position="end"
+                      >
+                        {decideVerifiedValidatedIcon(
+                          verified,
+                          true,
+                          false,
+                          false
+                        )}
+                      </InputAdornment>
+                    </Tooltip>
+                    <Tooltip
+                      title={decideVerifiedValidatedIcon(
+                        validated,
+                        false,
+                        false,
+                        true
+                      )}
+                      placement="top"
+                      arrow
+                    >
+                      <InputAdornment
+                        style={select ? { marginRight: 20 } : {}}
+                        className={decideVerifiedValidatedIcon(
+                          validated,
+                          false,
+                          true,
+                          false
+                        )}
+                        position="end"
+                      >
+                        {decideVerifiedValidatedIcon(
+                          validated,
+                          false,
+                          false,
+                          false
+                        )}
+                      </InputAdornment>
+                    </Tooltip>
+                  </React.Fragment>
                 ),
               }
             : null
@@ -273,6 +393,7 @@ export const SatelliteSchemaEntry = ({
                         classes,
                         field,
                         fieldIndex,
+                        entry["validated"],
                         entry["verified"]
                       )}
                     />
@@ -295,6 +416,7 @@ export const SatelliteSchemaEntry = ({
                           classes,
                           field,
                           fieldIndex,
+                          entry["validated"],
                           entry["verified"]
                         )}
                         select

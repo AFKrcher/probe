@@ -27,6 +27,7 @@ import {
   CircularProgress,
   makeStyles,
   Typography,
+  IconButton,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
@@ -51,11 +52,12 @@ const useStyles = makeStyles(() => ({
   },
   titleText: {
     fontSize: "25px",
+    display: "flex",
+    justifyContent: "space-between",
   },
   content: {
     marginTop: -15,
     overflowY: "auto",
-    marginTop: 0,
   },
   description: {
     marginTop: 25,
@@ -86,7 +88,7 @@ export const SatelliteModal = ({
   width,
   height,
   admin,
-  path,
+  dashboard,
 }) => {
   const classes = useStyles();
   const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } =
@@ -128,7 +130,7 @@ export const SatelliteModal = ({
   };
 
   useEffect(() => {
-    setEditing(path ? true : newSat || false); // ensures that Add Satellite always opens as a new instance in edit-mode
+    setEditing(dashboard ? newSat : newSat || false); // ensures that Add Satellite always opens as a new instance in edit-mode
   }, [newSat, show]);
 
   useEffect(() => {
@@ -255,8 +257,8 @@ export const SatelliteModal = ({
 
   const handleToggleEdit = (setValues, values) => {
     emptyDataRemover(values);
-    if (editing) setValues(initValues);
     if (newSat && editing) handleClose();
+    if (editing) setValues(initValues);
     setEditing(!editing);
   };
 
@@ -290,7 +292,6 @@ export const SatelliteModal = ({
         ),
         actions: (
           <Button
-            size={width && width < 500 ? "small" : "medium"}
             variant="contained"
             size="small"
             color="secondary"
@@ -367,20 +368,25 @@ export const SatelliteModal = ({
         <div className={classes.modal}>
           <DialogTitle className={classes.title}>
             <Typography className={classes.titleText}>
-              {newSat || path ? (
-                <React.Fragment>
-                  Creating <strong>New Satellite</strong>
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  Editing{" "}
-                  <strong>
-                    {initValues.names && initValues.names[0]
-                      ? initValues.names[0].name
-                      : "N/A"}
-                  </strong>
-                </React.Fragment>
-              )}
+              <span>
+                {newSat ? (
+                  <React.Fragment>
+                    Creating <strong>New Satellite</strong>
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    Editing{" "}
+                    <strong>
+                      {initValues.names && initValues.names[0]
+                        ? initValues.names[0].name
+                        : "New Satellite"}
+                    </strong>
+                  </React.Fragment>
+                )}
+              </span>
+              <IconButton size="small" onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
             </Typography>
           </DialogTitle>
           <Formik
@@ -441,7 +447,6 @@ export const SatelliteModal = ({
                       satelliteValidatorShaper={satelliteValidatorShaper}
                       setTouched={setTouched}
                       dirty={dirty}
-                      newSat={newSat}
                     />
                   </DialogContent>
                 )}
@@ -464,7 +469,7 @@ export const SatelliteModal = ({
                                 ? "Delete Forever"
                                 : "Delete"}
                             </Button>
-                            {admin ? (
+                            {admin && values.isDeleted ? (
                               <Button
                                 size={width && width < 500 ? "small" : "medium"}
                                 variant="contained"

@@ -18,43 +18,18 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import SettingsIcon from "@material-ui/icons/Settings";
-import StarIcon from "@material-ui/icons/Star";
 import BrightnessHigh from "@material-ui/icons/BrightnessHigh";
 import Brightness2 from "@material-ui/icons/Brightness2";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 import { themes } from "../css/Themes.jsx";
 
 const useStyles = makeStyles((theme) => ({
-  navbar: {
-    backgroundColor: theme.palette.navigation.main,
-  },
-  toolbar: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-  },
-  logo: {
-    color: theme.palette.text.primary,
-    textDecoration: "none",
-    "&:hover": {
-      color: theme.palette.text.primary,
-    },
-  },
-  links: {
-    display: "flex",
-    flexWrap: "wrap",
-    alignItems: "center",
-  },
-  navBtn: {
-    backgroundColor: theme.palette.navigation.main,
-    color: theme.palette.text.primary,
-    marginLeft: "20px",
-    "&:hover": {
-      backgroundColor: theme.palette.navigation.hover,
-      color: theme.palette.text.primary,
-    },
+  settings: {
+    color: theme.palette.tertiary.main,
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
   },
 }));
+
 const StyledMenu = withStyles({
   paper: {
     border: "1px solid #d3d4d5",
@@ -87,7 +62,7 @@ const StyledMenuItem = withStyles((theme) => ({
 }))(MenuItem);
 
 export const DropDown = ({ theme, toggleTheme }) => {
-  const history = useHistory();
+  const classes = useStyles();
 
   const [user, roles, isLoadingRoles] = useTracker(() => {
     const subRoles = Meteor.subscribe("roles");
@@ -113,7 +88,12 @@ export const DropDown = ({ theme, toggleTheme }) => {
 
   return (
     <React.Fragment>
-      <Button onClick={handleClick} id="drop-down" disableElevation>
+      <Button
+        onClick={handleClick}
+        id="drop-down"
+        disableElevation
+        className={classes.settings}
+      >
         <SettingsIcon fontSize="medium" />
       </Button>
       <StyledMenu
@@ -151,7 +131,7 @@ export const DropDown = ({ theme, toggleTheme }) => {
                 onClick={handleLogout}
               />
             </StyledMenuItem>
-            {roles.indexOf("admin") !== -1 ? (
+            {roles.indexOf("admin") !== -1 || isLoadingRoles ? (
               <StyledMenuItem id="admin" component={Link} to="/admin">
                 <ListItemIcon>
                   <SupervisorAccountIcon />

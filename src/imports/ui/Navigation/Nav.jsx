@@ -33,13 +33,11 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   logo: {
-    color: theme.palette.text.primary,
+    color: theme.palette.tertiary.main,
     textDecoration: "none",
     marginRight: 0,
     fontSize: "30px",
-    "&:hover": {
-      color: theme.palette.text.primary,
-    },
+    filter: `drop-shadow(3px 2px 2px ${theme.palette.tertiary.shadow})`,
   },
   links: {
     display: "flex",
@@ -54,6 +52,9 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.navigation.hover,
       color: theme.palette.text.primary,
     },
+  },
+  navButtonText: {
+    filter: `drop-shadow(2px 2px 2px ${theme.palette.tertiary.shadow})`,
   },
   dropDown: {
     backgroundColor: theme.palette.navigation.main,
@@ -81,8 +82,7 @@ export const Nav = ({ theme, toggleTheme }) => {
             <Tooltip
               title={
                 <Typography color="inherit" variant="body2">
-                  <strong>P</strong>ublically <strong>R</strong>esearched{" "}
-                  <strong>OB</strong>s<strong>E</strong>rvatory
+                  To Home Page
                 </Typography>
               }
               arrow
@@ -114,7 +114,7 @@ export const Nav = ({ theme, toggleTheme }) => {
                   }}
                   to="/"
                 >
-                  Home
+                  <span className={classes.navButtonText}>Home</span>
                 </Button>
                 <Button
                   disableElevation
@@ -127,7 +127,7 @@ export const Nav = ({ theme, toggleTheme }) => {
                   }}
                   to="/satellites"
                 >
-                  Satellites
+                  <span className={classes.navButtonText}> Satellites</span>
                 </Button>
                 <Button
                   disableElevation
@@ -140,7 +140,7 @@ export const Nav = ({ theme, toggleTheme }) => {
                   }}
                   to="/schemas"
                 >
-                  Schemas
+                  <span className={classes.navButtonText}>Schemas</span>
                 </Button>
                 <Button
                   disableElevation
@@ -153,7 +153,7 @@ export const Nav = ({ theme, toggleTheme }) => {
                   }}
                   to="/about"
                 >
-                  About
+                  <span className={classes.navButtonText}>About</span>
                 </Button>
               </React.Fragment>
             ) : null}

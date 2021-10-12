@@ -1,15 +1,15 @@
 {
-  "_id": "cQcibnBjpqu2DJNPz",
-  "noradID": "40258",
+  "_id": "w2AHNkKxATCFrByJb",
+  "noradID": "47097",
   "isDeleted": false,
-  "createdOn": "2021-10-05T15:03:34.752Z",
+  "createdOn": "2021-10-06T00:23:16.556Z",
   "createdBy": "admin",
-  "modifiedOn": "2021-10-05T16:26:52.083Z",
+  "modifiedOn": "2021-10-06T00:23:16.557Z",
   "modifiedBy": "admin",
   "adminCheck": true,
   "names": [
     {
-      "reference": "https://spaceflight101.com/spacecraft/olymp/",
+      "reference": "https://en.wikipedia.org/wiki/Chang%27e_5",
       "verified": [
         {
           "method": "user",
@@ -38,79 +38,13 @@
           "validatedOn": ""
         }
       ],
-      "name": "Luch"
-    },
-    {
-      "reference": "https://spaceflight101.com/spacecraft/olymp/",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "name": "Olymp-K"
-    }
-  ],
-  "bus": [
-    {
-      "reference": "https://en.wikipedia.org/wiki/Olymp-K",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "name": "Express-2000",
-      "description": "Highly flexible satellite bus designed and manufactured by ISS Reshetnev."
+
+      "name": "Chang'e 5"
     }
   ],
   "cosparID": [
     {
-      "reference": "https://en.wikipedia.org/wiki/Olymp-K",
+      "reference": "https://en.wikipedia.org/wiki/Chang%27e_5",
       "verified": [
         {
           "method": "user",
@@ -139,151 +73,13 @@
           "validatedOn": ""
         }
       ],
-      "cosparID": "2014-058A"
-    }
-  ],
-  "manufacturer": [
-    {
-      "reference": "https://en.wikipedia.org/wiki/Olymp-K",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "name": "JSC Information Satellite Systems",
-      "responsibility": ""
-    }
-  ],
-  "images": [
-    {
-      "reference": "https://spaceflight101.com/spacecraft/olymp/",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "description": "Ekspress-2000 Satellite",
-      "url": "https://spaceflight101.com/spacecraft/wp-content/uploads/sites/18/2015/09/9646451_orig-1024x337.jpg",
-      "entireSatellite": "false"
-    }
-  ],
-  "descriptionShort": [
-    {
-      "reference": "https://en.wikipedia.org/wiki/Olymp-K",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "descriptionShort": "A Russian geostationary satellite built for the Russian Ministry of Defence and Federal Security Service (FSB). The satellite is also referred to as \"Luch\". It is believed to be a signals intelligence satellite."
-    }
-  ],
-  "descriptionLong": [
-    {
-      "reference": "https://en.wikipedia.org/wiki/Olymp-K",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "descriptionLong": "Olymp-K is a Russian geostationary satellite built for the Russian Ministry of Defence and Federal Security Service (FSB). The satellite is also referred to as \"Luch\". It is believed to be a signals intelligence satellite. Olymp-K was launched on 28 September 2014. \nThe Proton-M rocket with a Briz-M upper stage launched from Baikonur Cosmodrome launchpad 81/24 in Kazakhstan at 20:23 UTC. After four burns of the Briz-M upper stage it was placed into geosynchronous transfer orbit.[4][1] In a press release on 28 September 2014, Roscosmos referred to the satellite as \"Luch\"."
+
+      "cosparID": "2020-087A"
     }
   ],
   "ownership": [
     {
-      "reference": "https://en.wikipedia.org/wiki/Olymp-K",
+      "reference": "https://en.wikipedia.org/wiki/Chang%27e_5",
       "verified": [
         {
           "method": "user",
@@ -312,9 +108,265 @@
           "validatedOn": ""
         }
       ],
+
       "type": "country",
-      "name": "Russia",
+      "name": "People's Republic of China",
       "responsibility": ""
+    }
+  ],
+  "manufacturer": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Chang%27e_5",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+
+      "name": "China Academy of Space Technology (CAST)",
+      "responsibility": ""
+    }
+  ],
+  "launchSites": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Chang%27e_5",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+
+      "name": "Wenchang Space Launch Site",
+      "description": "Hainan, China",
+      "latitude": "",
+      "longitude": ""
+    }
+  ],
+  "descriptionShort": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Chang%27e_5",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+
+      "descriptionShort": "5th lunar exploration mission of the Chinese Lunar Exploration Program, and China's 1st lunar sample-return mission."
+    }
+  ],
+  "images": [
+    {
+      "reference": "https://upload.wikimedia.org/wikipedia/commons/2/2d/Chang-e-5-assembly-CG-1-Cropped.jpg",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+
+      "description": "Chang'e 5 probe separating from the launcher (artist's impression)",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/2/2d/Chang-e-5-assembly-CG-1-Cropped.jpg",
+      "entireSatellite": "false"
+    }
+  ],
+  "launchMassKg": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2020-087A",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+
+      "launchMassKg": "8200"
+    }
+  ],
+  "launchVehicle": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2020-087A",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+
+      "name": "Long March 5",
+      "description": ""
+    }
+  ],
+  "missionDuration": [
+    {
+      "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2020-087A",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+
+      "start": "2020-11-23T15:30",
+      "plannedMissionDuration": "14",
+      "actualMissionDuration": "8",
+      "durationScale": "days"
     }
   ]
 }

@@ -47,7 +47,7 @@ export const MultiSelectTextInput = ({
   };
 
   return (
-    <>
+    <React.Fragment>
       <Field
         multiple
         disableClearable
@@ -56,6 +56,7 @@ export const MultiSelectTextInput = ({
         renderTags={(options, getTagProps) =>
           options.map((option, index) => (
             <Chip
+              key={index}
               deleteIcon={<Close />}
               size="small"
               label={option}
@@ -85,6 +86,6 @@ export const MultiSelectTextInput = ({
           foo, baz, bar)
         </FormHelperText>
       )}
-    </>
+    </React.Fragment>
   );
 };

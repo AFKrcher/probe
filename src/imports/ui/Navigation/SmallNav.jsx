@@ -6,18 +6,11 @@ import { useTracker } from "meteor/react-meteor-data";
 import { Link } from "react-router-dom";
 
 // @material-ui
-import {
-  withStyles,
-  Menu,
-  MenuItem,
-  Button,
-  Divider,
-} from "@material-ui/core";
+import { withStyles, Menu, MenuItem, Button, Divider } from "@material-ui/core";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import SettingsIcon from "@material-ui/icons/Settings";
 import StarIcon from "@material-ui/icons/Star";
 import BrightnessHigh from "@material-ui/icons/BrightnessHigh";
 import Brightness2 from "@material-ui/icons/Brightness2";
@@ -121,7 +114,7 @@ export const SmallNav = ({ theme, toggleTheme }) => {
           </ListItemIcon>
           <ListItemText primary="About" />
         </StyledMenuItem>
-        <Divider component="li"/>
+        <Divider component="li" />
         <StyledMenuItem onClick={toggleTheme}>
           <ListItemIcon>
             {theme === themes.dark ? (
@@ -156,7 +149,7 @@ export const SmallNav = ({ theme, toggleTheme }) => {
                 onClick={handleLogout}
               />
             </StyledMenuItem>
-            {roles.indexOf("admin") !== -1 ? (
+            {roles.indexOf("admin") !== -1 || isLoadingRoles ? (
               <StyledMenuItem id="admin" component={Link} to="/admin">
                 <ListItemIcon>
                   <SupervisorAccountIcon />
