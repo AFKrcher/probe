@@ -183,7 +183,7 @@
       "durationScale": ""
     }
   ],
-  "type": [
+  "types": [
     {
       "reference": "https://platform.leolabs.space/catalog/L124784",
       "verified": [
@@ -214,8 +214,8 @@
           "validatedOn": ""
         }
       ],
-      "type": "unknown",
-      "description": "Possible rocket body or debris"
+      "type": "debris",
+      "description": "Rocket body or debris"
     }
   ],
   "dimensionDescription": [

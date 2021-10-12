@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 // @material-ui
-import { makeStyles, TextField, IconButton } from "@material-ui/core";
+import { makeStyles, TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import SearchIcon from "@material-ui/icons/Search";
-import ClearIcon from "@material-ui/icons/Clear";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
@@ -20,29 +19,21 @@ export const SearchBar = ({
   placeholder = "Press ENTER to add another search term",
 }) => {
   const classes = useStyles();
-  const [value, setValue] = useState([]);
-  const [inputValue, setInputValue] = useState("");
-  useEffect(() => {}, [setSelector]);
+
+  useEffect(() => {
+    // flag for re-render on change in the selector from parent component
+  }, [setSelector]);
 
   return (
     <div>
       <Autocomplete
         multiple={multiple}
-        // value={value}
-        // inputValue={inputValue}
         freeSolo
         filterSelectedOptions
         options={[]}
         onInputChange={(e, values) => {
-          console.log(values)
           if (!multiple) {
             setSelector(values);
-          }
-        }}
-        onKeyDown={(e) => {
-          if (e.code === "Tab" || e.key === "Tab" || e.keyIdentifier === "Tab") {
-            console.log('tab')
-            setValue(inputValue);
           }
         }}
         onChange={(e, values) => {
@@ -81,11 +72,19 @@ export const SearchBar = ({
               });
             }
           });
-          setInputValue(values)
+          val.map((v) => {
+            if (v.replace(/\s/g, "") !== "") {
+              obj.$or.push({
+                "types.type": {
+                  $regex: v,
+                  $options: "i",
+                },
+              });
+            }
+          });
           val[0] === "" ? setSelector({}) : setSelector(obj);
         }}
         renderInput={(params) => {
-          // params.inputProps.onKeyDown = handleOnKeyDown;
           params.InputProps.startAdornment
             ? params.InputProps.startAdornment.unshift(
                 <SearchIcon fontSize="small" style={{ marginRight: 5 }} />

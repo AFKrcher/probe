@@ -470,7 +470,7 @@
       "firingDurationScale": ""
     }
   ],
-  "type": [
+  "types": [
     {
       "reference": "https://eoportal.org/web/eoportal/satellite-missions/a/aerocube-10",
       "verified": [
@@ -501,7 +501,73 @@
           "validatedOn": ""
         }
       ],
-      "type": "manMade",
+      "type": "research",
+      "description": ""
+    },
+    {
+      "reference": "https://eoportal.org/web/eoportal/satellite-missions/a/aerocube-10",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "type": "miniaturized",
+      "description": ""
+    },
+    {
+      "reference": "https://eoportal.org/web/eoportal/satellite-missions/a/aerocube-10",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "type": "imaging",
       "description": ""
     }
   ],
@@ -536,7 +602,7 @@
           "validatedOn": ""
         }
       ],
-      "description": "Water vapor propulasion testing, micro-Charged Particle Telescope testing, and a testsensor that will confirm when the optical beacon is impinging on the satellite"
+      "description": "Water vapor propulasion testing, micro-Charged Particle Telescope testing, and a test sensor that will confirm when the optical beacon is impinging on the satellite"
     }
   ]
 }

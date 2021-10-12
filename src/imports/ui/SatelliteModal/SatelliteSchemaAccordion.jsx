@@ -47,15 +47,15 @@ const useStyles = makeStyles((theme) => ({
   },
   editIcon: {
     padding: 6,
-    margin: "-2px 5px -2px -15px",
+    margin: "-6px 5px -6px -15px",
   },
   closeIcon: {
     padding: 6,
-    margin: "-2px 20px -2px -15px",
+    margin: "-6px 20px -6px -15px",
   },
   saveIcon: {
     padding: 6,
-    margin: "-2px 0px -2px -15px",
+    margin: "-6px 0px -6px -15px",
   },
   accordianDetails: {
     marginTop: -15,
@@ -254,6 +254,7 @@ export const SatelliteSchemaAccordion = ({
                 setTouched={setTouched}
                 values={values}
                 setExpanded={setExpanded}
+                width={width}
               />
             ))}
             <Grid item xs={12} className={classes.buttonContainer}>

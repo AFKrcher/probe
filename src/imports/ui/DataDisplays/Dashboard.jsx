@@ -32,8 +32,6 @@ export const Dashboard = () => {
 
   const [sats, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("satellites");
-    const user = Meteor.user()?.username;
-    const favorites = Meteor.user()?.favorites;
     let sats;
     if (path) {
       sats = SatelliteCollection.find(

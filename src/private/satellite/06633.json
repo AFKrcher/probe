@@ -1,6 +1,6 @@
 {
   "_id": "RnBWq62wdCD6YEya3",
-  "noradID": "6936",
+  "noradID": "06633",
   "isDeleted": false,
   "createdOn": "2021-10-05T16:58:33.834Z",
   "createdBy": "admin",
@@ -106,7 +106,73 @@
           "validatedOn": ""
         }
       ],
-      "descriptionShort": "The third crewed Skylab mission and placed the third and final crew aboard the first American space station."
+      "descriptionShort": "The third crewed Skylab mission - placed the third and final crew aboard the first American space station."
+    }
+  ],
+  "types": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/Skylab",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "type": "space station"
+    },
+    {
+      "reference": "https://en.wikipedia.org/wiki/Skylab",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "type": "research"
     }
   ],
   "images": [

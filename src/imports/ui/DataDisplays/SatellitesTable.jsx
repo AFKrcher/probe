@@ -33,7 +33,7 @@ import {
   getGridStringOperators,
   GridToolbarDensitySelector,
 } from "@material-ui/data-grid";
-import Star from "@material-ui/icons/Star";
+import StarIcon from "@material-ui/icons/Star";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import DashboardIcon from "@material-ui/icons/Dashboard";
@@ -44,8 +44,13 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   description: {
-    marginBottom: 25,
+    marginBottom: 20,
     marginTop: 10,
+  },
+  key: {
+    marginBottom: 25,
+    marginTop: 0,
+    display: "flex",
   },
   gridContainer: {
     display: "flex",
@@ -59,7 +64,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.grid.background,
     "& .MuiDataGrid-cell": {
       textOverflow: "ellipse",
-      cursor: "pointer",
     },
     "& .MuiCircularProgress-colorPrimary": {
       color: theme.palette.text.primary,
@@ -190,7 +194,12 @@ export const SatellitesTable = () => {
         return {
           id: sat.noradID,
           names: sat.names?.map((name) => name.names || name.name).join(", "),
-          type: sat.type ? sat.type[0]?.type : "",
+          types: sat.types
+            ? sat.types
+                .map((type) => type.type)
+                .sort((a, b) => a.localeCompare(b))
+                .join(", ")
+            : "",
           orbit: sat.orbit
             ? sat.orbit.map((entry) => entry.orbit).join(", ")
             : "",
@@ -244,9 +253,9 @@ export const SatellitesTable = () => {
             noradID: { $in: Meteor.user().favorites },
           });
           break;
-        case "type":
+        case "types":
           setSelector({
-            "type.type": { $regex: `${filterBy.value}`, $options: "i" },
+            "types.type": { $regex: `${filterBy.value}`, $options: "i" },
           });
           break;
         case "orbit":
@@ -271,7 +280,7 @@ export const SatellitesTable = () => {
         case "names":
           e[0].sort === "asc" ? setSortNames(-1) : setSortNames(1);
           break;
-        case "type":
+        case "types":
           e[0].sort === "asc" ? setSortType(-1) : setSortType(1);
           break;
         case "orbit":
@@ -342,7 +351,7 @@ export const SatellitesTable = () => {
           }
         >
           {checkIfFavorite() ? (
-            <Star className={classes.starButtonFilled} />
+            <StarIcon className={classes.starButtonFilled} />
           ) : (
             <StarBorderIcon className={classes.starButtonEmpty} />
           )}
@@ -411,7 +420,11 @@ export const SatellitesTable = () => {
                     );
                   }}
                 >
-                  <img src="/saberastro.png" width="24px" />
+                  <img
+                    src="/assets/saberastro.png"
+                    width="24px"
+                    height="24px"
+                  />
                 </IconButton>
               </Tooltip>
             </span>
@@ -422,24 +435,24 @@ export const SatellitesTable = () => {
         headerAlign: "left",
         field: "id",
         headerName: "NORAD ID",
-        minWidth: 160,
+        minWidth: 150,
         filterOperators: getGridStringOperators().filter(
           (operator) => operator.value === "contains"
         ),
       },
       {
         headerAlign: "left",
-        field: "type",
-        headerName: "TYPE",
-        minWidth: 130,
+        field: "orbit",
+        headerName: "ORBIT(S)",
+        minWidth: 150,
         editable: false,
         filterable: false,
       },
       {
         headerAlign: "left",
-        field: "orbit",
-        headerName: "ORBIT(S)",
-        minWidth: 150,
+        field: "types",
+        headerName: "TYPE(S)",
+        minWidth: 200,
         editable: false,
         filterable: false,
       },
@@ -461,7 +474,7 @@ export const SatellitesTable = () => {
         field: (
           <Tooltip title="Toggle favorites filter" arrow placement="top-start">
             <span onClick={() => filterFavorites()}>
-              <Star className={classes.starButtonHeader} />
+              <StarIcon className={classes.starButtonHeader} />
             </span>
           </Tooltip>
         ),
@@ -549,6 +562,35 @@ export const SatellitesTable = () => {
           . Double-click on the <strong>satellite</strong> names in the table to
           bring up the schemas and data associated with the{" "}
           <strong>satellite</strong>.
+        </Typography>
+        {Meteor.userId() && (
+          <Typography gutterBottom variant="body2" className={classes.key}>
+            <StarIcon
+              fontSize="small"
+              className={classes.starButtonHeader}
+              style={{ marginRight: 5 }}
+            />
+            – Add a satellite to your favorites list
+          </Typography>
+        )}
+        <Typography gutterBottom variant="body2" className={classes.key}>
+          <VisibilityIcon fontSize="small" style={{ marginRight: 5 }} />– Open a
+          satellite to view and/or modify the fields or schemas
+        </Typography>
+        <Typography gutterBottom variant="body2" className={classes.key}>
+          <DashboardIcon fontSize="small" style={{ marginRight: 5 }} />– Open
+          the satellite dashboard. Satellite dashboards allow users to ciew
+          satellite data outside of an editing modal and provide users with a
+          shareable URL.
+        </Typography>
+        <Typography gutterBottom variant="body2" className={classes.key}>
+          <img
+            src="/assets/saberastro.png"
+            width="21px"
+            height="21px"
+            style={{ marginRight: 5 }}
+          />
+          – Open a schema to view and/or modify the fields
         </Typography>
         <SearchBar
           filter={filter}
