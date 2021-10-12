@@ -278,7 +278,7 @@ Meteor.startup(() => {
 
   // Satellite and schema publications and seed data
   // Seed schema data
-  if (SchemaCollection.find().count() === 0) {
+  if (SchemaCollection.find().count() < 26) {
     console.log("SchemaCollection Seeded");
     var jsonObj = [];
     files = fs.readdirSync("./assets/app/schema");
@@ -292,7 +292,7 @@ Meteor.startup(() => {
   }
 
   // Seed satellite data
-  if (SatelliteCollection.find().count() === 0) {
+  if (SatelliteCollection.find().count() < 5) {
     console.log("SatelliteCollection Seeded");
     var jsonObj = [];
     files = fs.readdirSync("./assets/app/satellite");
