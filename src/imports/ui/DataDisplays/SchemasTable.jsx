@@ -29,6 +29,7 @@ import {
   GridToolbarDensitySelector,
 } from "@material-ui/data-grid";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import MouseIcon from "@material-ui/icons/Mouse";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,6 +42,19 @@ const useStyles = makeStyles((theme) => ({
   key: {
     marginBottom: 25,
     display: "flex",
+  },
+  keyItems: {
+    marginRight: "0.5ch",
+  },
+  showKey: {
+    marginTop: 10,
+    marginBottom: 20,
+    color: theme.palette.text.disabled,
+    cursor: "pointer",
+    "&:hover": {
+      color: theme.palette.info.light,
+    },
+    width: "10ch",
   },
   dataGrid: {
     padding: "5px 5px 0px 5px",
@@ -119,6 +133,7 @@ export const SchemasTable = () => {
   const [selector, setSelector] = useState("");
   const [initialSchemaValues, setInitialSchemaValues] =
     useState(newSchemaValues);
+  const [showKey, setShowKey] = useState(false);
 
   const debounced = useDebouncedCallback((cell) => {
     if (
@@ -180,12 +195,14 @@ export const SchemasTable = () => {
     setNewSchema(true);
     setShowModal(true);
     setInitialSchemaValues(newSchemaValues);
+    debounced(false);
   };
 
   const handleRowDoubleClick = (schemaObject) => {
     setNewSchema(false);
     setShowModal(true);
     setInitialSchemaValues(schemaObject);
+    debounced(false);
   };
 
   const AddSchemaButton = () => {
@@ -293,19 +310,33 @@ export const SchemasTable = () => {
         desired <strong>schema</strong> below to view its details and edit the
         entry fields.
       </Typography>
-      <Typography gutterBottom variant="body2" className={classes.key}>
-        <VisibilityIcon fontSize="small" style={{ marginRight: 5 }} />– Open a
-        schema to view and/or modify the fields
+      <Typography
+        variant="body2"
+        className={classes.showKey}
+        onClick={() => setShowKey(!showKey)}
+      >
+        {showKey ? "Hide Key..." : "Show Key..."}
       </Typography>
+      {showKey && (
+        <React.Fragment>
+          <Typography gutterBottom variant="body2" className={classes.key}>
+            <VisibilityIcon fontSize="small" className={classes.keyItems} />
+            <span className={classes.keyItems}>–</span>
+            Open a schema to view and/or modify its fields
+          </Typography>
+          <Typography gutterBottom variant="body2" className={classes.key}>
+            <MouseIcon fontSize="small" className={classes.keyItems} />
+            <span className={classes.keyItems}>–</span> Hover or Click to view
+            schema description, Double-click to view and/or modify a schema's
+            fields
+          </Typography>
+        </React.Fragment>
+      )}
       <SearchBar
         setSelector={setSelector}
         multiple={false}
         placeholder="Search by name or description"
       />
-      <Typography variant="caption" className={classes.gridCaption}>
-        Hover to view schema description, Click to interact with a cell,
-        Double-click to view schema data
-      </Typography>
       <DataGrid
         className={classes.dataGrid}
         columns={columns}

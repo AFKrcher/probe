@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.grid.background,
     marginBottom: "10px",
   },
+  tooltip: {
+    width: "10%",
+  },
   item: {
     margin: "10px",
     color: ({ color }) => color,
@@ -64,87 +67,38 @@ export const Minified = () => {
     return [sats, !sub.ready()];
   });
 
-  const openCard = (sat) => {
-    console.log(sat);
-  };
-
   const orbits = ["GEO", "LEO", "HEO", "SSO", "Polar", "GTO"];
 
   return (
-    <div>
-      <div className={classes.container}>
-        <b className={classes.title}>LEO</b>
-        {orbits.map((orbit) => orbit)}
-        <Grid container>
-          {sats.map((sat) => {
-            return sat.orbit[0].orbit === "LEO" ? (
-              <Grid
-                item
-                key={sat.noradID}
-                className={classes.item}
-                onClick={() => {
-                  openCard(sat);
-                }}
-              >
-                {sat.noradID}
-              </Grid>
-            ) : (
-              ""
-            );
-          })}
-        </Grid>
+    <Grid container>
+      <div style={{ width: "100%" }}>
+        {orbits.map((orbit) => {
+          return (
+            <div key={orbit} className={classes.container}>
+              <p className={classes.title}>{orbit}</p>
+              {sats.map((sat) => {
+                return sat.orbit[0].orbit === orbit ? (
+                  <Tooltip
+                    className={classes.tooltip}
+                    title={
+                      <span>
+                        <p className={classes.title}>{sat.names[0]?.name}</p>
+                        <p className={classes.helperText}>
+                          {sat.descriptionShort[0]?.descriptionShort}
+                        </p>
+                      </span>
+                    }
+                  >
+                    <span style={{ width: "10px" }} className={classes.item}>
+                      {sat.noradID}
+                    </span>
+                  </Tooltip>
+                ) : null;
+              })}
+            </div>
+          );
+        })}
       </div>
-      <div className={classes.container}>
-        <b className={classes.title}>GEO</b>
-        <Grid container>
-          {sats.map((sat) => {
-            return sat.orbit[0].orbit === "GEO" ? (
-              <Tooltip
-                title={
-                  <div className={classes.helperText}>
-                    <p className={classes.title}>{sat.names[0].name}</p>
-                    {sat.descriptionShort[0].descriptionShort}
-                  </div>
-                }
-              >
-                <Grid
-                  item
-                  key={sat.noradID}
-                  className={classes.item}
-                  onClick={() => {
-                    openCard(sat);
-                  }}
-                >
-                  {sat.noradID}
-                </Grid>
-              </Tooltip>
-            ) : (
-              ""
-            );
-          })}
-        </Grid>
-      </div>
-      <div className={classes.container}>
-        <b className={classes.title}>HEO</b>
-        <Grid container>
-          {sats.map((sat) => {
-            return sat.orbit[0].orbit === "HEO" ? (
-              <Grid
-                item
-                key={sat.noradID}
-                className={classes.item}
-                onClick={() => {
-                  openCard(sat);
-                }}
-              >
-                {sat.noradID}
-              </Grid>
-            ) : (
-              ""
-            );
-          })}
-        </Grid>
-      </div>
-    </div>
+    </Grid>
   );
 };
