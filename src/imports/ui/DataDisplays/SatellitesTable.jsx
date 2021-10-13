@@ -669,7 +669,7 @@ export const SatellitesTable = () => {
                 className={classes.keyItemsPartial}
               />
               <span className={classes.keyItems}>–</span> Indicates that
-              information has been verified to be in the reference or validated
+              information has ONLY been verified to be in the reference or validated
               across multiple sources by user(s) OR web-crawling algorithm(s)
             </Typography>
             <Typography gutterBottom variant="body2" className={classes.key}>
