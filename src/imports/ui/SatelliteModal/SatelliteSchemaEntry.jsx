@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 // Imports
 import { Field } from "formik";
 import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
+import { decideVerifiedValidated } from "../utils/satelliteDataFuncs";
 
 // @material-ui
 import {
@@ -18,12 +19,6 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import LinkIcon from "@material-ui/icons/Link";
-import VerifiedIcon from "@material-ui/icons/CheckBox";
-import ValidatedIcon from "@material-ui/icons/LibraryAddCheck";
-import ReportIcon from "@material-ui/icons/Report";
-import ErrorIcon from "@material-ui/icons/Warning";
-import ReportOutlinedIcon from "@material-ui/icons/ReportOutlined";
-import ErrorOutlinedIcon from "@material-ui/icons/ReportProblemOutlined";
 
 const useStyles = makeStyles((theme) => ({
   entryPaper: {
@@ -179,82 +174,6 @@ export const SatelliteSchemaEntry = ({
     window.open(url, "_blank").focus();
   };
 
-  const decideVerifiedValidatedIcon = (array, verified, style, tip) => {
-    let userChecking = array
-      .filter(
-        (checker) =>
-          checker.method === "user" && (checker.verified || checker.validated)
-      )
-      .map((checker) => {
-        return {
-          name: checker.name,
-          date: checker.verifiedOn || checker.validatedOn,
-        };
-      });
-    let machineChecking = array
-      .filter(
-        (checker) =>
-          checker.method === "machine" &&
-          (checker.verified || checker.validated)
-      )
-      .map((checker) => {
-        return {
-          name: checker.name,
-          date: checker.verifiedOn || checker.validatedOn,
-        };
-      });
-
-    let mostRecentUser = `${
-      userChecking[userChecking.length - 1]?.name
-    } on ${userChecking[userChecking.length - 1]?.date
-      .toString()
-      .substr(0, 10)}`;
-    let mostRecentMachine = `${
-      machineChecking[machineChecking.length - 1]?.name
-    } on ${machineChecking[machineChecking.length - 1]?.date
-      .toString()
-      .substr(0, 10)}`;
-
-    if (!style && !tip) {
-      if (userChecking.length > 0 && machineChecking.length > 0)
-        return verified ? <VerifiedIcon /> : <ValidatedIcon />;
-      if (
-        (userChecking.length > 0 && machineChecking.length === 0) ||
-        (userChecking.length === 0 && machineChecking.length > 0)
-      )
-        return verified ? <ReportIcon /> : <ReportOutlinedIcon />;
-      if (userChecking.length === 0 && machineChecking.length === 0)
-        return verified ? <ErrorIcon /> : <ErrorOutlinedIcon />;
-    } else if (!tip) {
-      if (userChecking.length > 0 && machineChecking.length > 0)
-        return classes.validatedAdornment;
-      if (
-        (userChecking.length > 0 && machineChecking.length === 0) ||
-        (userChecking.length === 0 && machineChecking.length > 0)
-      )
-        return classes.partiallyValidatedAdornment;
-      if (userChecking.length === 0 && machineChecking.length === 0)
-        return classes.notValidatedAdornment;
-    } else {
-      if (userChecking.length > 0 && machineChecking.length > 0)
-        return verified
-          ? `Verified by user: ${mostRecentUser} and machine: ${mostRecentMachine}`
-          : `Validated across multiple sources by user: ${mostRecentUser} and machine: ${mostRecentMachine}`;
-      if (userChecking.length > 0 && machineChecking.length === 0)
-        return verified
-          ? `Verified by user: ${mostRecentUser}`
-          : `Validated across multiple sources by user: ${mostRecentUser}`;
-      if (userChecking.length === 0 && machineChecking.length > 0)
-        return verified
-          ? `Verified by machine: ${mostRecentMachine}`
-          : `Validated across multiple sources by machine: ${mostRecentMachine}`;
-      if (userChecking.length === 0 && machineChecking.length === 0)
-        return verified
-          ? "Not verified by user nor machine"
-          : "Not validated by user nor machine";
-    }
-  };
-
   const fieldProps = (classes, field, fieldIndex, validated, verified) => {
     return {
       className: classes.field,
@@ -360,29 +279,39 @@ export const SatelliteSchemaEntry = ({
                     }
                   >
                     <Tooltip
-                      title={decideVerifiedValidatedIcon(
+                      title={decideVerifiedValidated(
                         verified,
                         true,
                         false,
-                        true
-                      )}
+                        true,
+                        classes
+                      )
+                    // decideVerifiedValidated takes the following arguments
+                    //    1. array of verification or validation objects
+                    //    2. whether it is a verification (true) or validation (false)
+                    //    3. whether it is a styling decision
+                    //    4. whether it is an icon decision
+                    //    5. the useStyles classes
+                    }
                       placement="top"
                       arrow
                     >
                       <InputAdornment
-                        className={decideVerifiedValidatedIcon(
+                        className={decideVerifiedValidated(
                           verified,
                           true,
                           true,
-                          false
+                          false,
+                          classes
                         )}
                         position="end"
                       >
-                        {decideVerifiedValidatedIcon(
+                        {decideVerifiedValidated(
                           verified,
                           true,
                           false,
-                          false
+                          false,
+                          classes
                         )}
                       </InputAdornment>
                     </Tooltip>
@@ -390,11 +319,12 @@ export const SatelliteSchemaEntry = ({
                       <div style={{ marginTop: 40 }} />
                     ) : null}
                     <Tooltip
-                      title={decideVerifiedValidatedIcon(
+                      title={decideVerifiedValidated(
                         validated,
                         false,
                         false,
-                        true
+                        true,
+                        classes
                       )}
                       placement={
                         field.length > 300 && width < 1000 ? "bottom" : "top"
@@ -402,19 +332,21 @@ export const SatelliteSchemaEntry = ({
                       arrow
                     >
                       <InputAdornment
-                        className={decideVerifiedValidatedIcon(
+                        className={decideVerifiedValidated(
                           validated,
                           false,
                           true,
-                          false
+                          false,
+                          classes
                         )}
                         position="end"
                       >
-                        {decideVerifiedValidatedIcon(
+                        {decideVerifiedValidated(
                           validated,
                           false,
                           false,
-                          false
+                          false,
+                          classes
                         )}
                       </InputAdornment>
                     </Tooltip>

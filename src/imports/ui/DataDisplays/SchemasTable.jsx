@@ -7,10 +7,11 @@ import useWindowSize from "../Hooks/useWindowSize.jsx";
 import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
 
 // Components
-import { SearchBar } from "./SearchBar.jsx";
+import { SearchBar } from "../Helpers/SearchBar.jsx";
 import { Link } from "react-router-dom";
 import { SchemaModal } from "../SchemaModal/SchemaModal.jsx";
 import { Popper } from "../Dialogs/Popper.jsx";
+import { Key } from "../Helpers/Key.jsx";
 
 // @material-ui
 import {
@@ -38,23 +39,6 @@ const useStyles = makeStyles((theme) => ({
   description: {
     marginBottom: 20,
     marginTop: 10,
-  },
-  key: {
-    marginBottom: 25,
-    display: "flex",
-  },
-  keyItems: {
-    marginRight: "0.5ch",
-  },
-  showKey: {
-    marginTop: 10,
-    marginBottom: 20,
-    color: theme.palette.text.disabled,
-    cursor: "pointer",
-    "&:hover": {
-      color: theme.palette.info.light,
-    },
-    width: "10ch",
   },
   dataGrid: {
     padding: "5px 5px 0px 5px",
@@ -296,7 +280,7 @@ export const SchemasTable = () => {
           </div>
         ) : null}
       </Grid>
-      <Typography gutterBottom variant="body2" className={classes.description}>
+      <Typography gutterBottom variant="body1" className={classes.description}>
         Each <strong>schema</strong> is built to store sets of data that
         characterize a satellite. Please see the satellites on the{" "}
         <Tooltip title="Bring me to the schemas page">
@@ -310,28 +294,7 @@ export const SchemasTable = () => {
         desired <strong>schema</strong> below to view its details and edit the
         entry fields.
       </Typography>
-      <Typography
-        variant="body2"
-        className={classes.showKey}
-        onClick={() => setShowKey(!showKey)}
-      >
-        {showKey ? "Hide Key..." : "Show Key..."}
-      </Typography>
-      {showKey && (
-        <React.Fragment>
-          <Typography gutterBottom variant="body2" className={classes.key}>
-            <VisibilityIcon fontSize="small" className={classes.keyItems} />
-            <span className={classes.keyItems}>–</span>
-            Open a schema to view and/or modify its fields
-          </Typography>
-          <Typography gutterBottom variant="body2" className={classes.key}>
-            <MouseIcon fontSize="small" className={classes.keyItems} />
-            <span className={classes.keyItems}>–</span> Hover or Click to view
-            schema description, Double-click to view and/or modify a schema's
-            fields
-          </Typography>
-        </React.Fragment>
-      )}
+      <Key page="SchemasTable"/>
       <SearchBar
         setSelector={setSelector}
         multiple={false}

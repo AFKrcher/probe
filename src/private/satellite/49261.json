@@ -7,6 +7,7 @@
   "modifiedOn": "2021-10-05T22:47:00.888Z",
   "modifiedBy": "admin",
   "adminCheck": true,
+  "machineCheck": false,
   "launchSites": [
     {
       "reference": "https://www.n2yo.com/satellite/?s=49261",

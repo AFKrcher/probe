@@ -1,8 +1,15 @@
 /**
- * PLEASE ENSURE THAT ANY CHANGES MADE HERE ARE REFLECTED IN SERVER-SIDE VALIDATIONS
+ * PLEASE ENSURE THAT ANY CHANGES MADE TO VALIDATION SCHEMA ARE REFLECTED IN SERVER-SIDE VALIDATIONS
  **/
 
 import * as Yup from "yup";
+import React from "react";
+import VerifiedIcon from "@material-ui/icons/CheckBox";
+import ValidatedIcon from "@material-ui/icons/LibraryAddCheck";
+import ReportIcon from "@material-ui/icons/Report";
+import ErrorIcon from "@material-ui/icons/Warning";
+import ReportOutlinedIcon from "@material-ui/icons/ReportOutlined";
+import ErrorOutlinedIcon from "@material-ui/icons/ReportProblemOutlined";
 
 // Data display functions
 export const getSatName = (satellite) => {
@@ -35,6 +42,90 @@ export const getSatDesc = (satellite) => {
     satellite.descriptionShort.length > 0
     ? satellite.descriptionShort[0].descriptionShort
     : "";
+};
+
+export const decideVerifiedValidated = (
+  array,
+  verified,
+  style,
+  tip,
+  classes
+) => {
+  if (array) {
+    let userChecking = array
+      .filter(
+        (checker) =>
+          checker.method === "user" && (checker.verified || checker.validated)
+      )
+      .map((checker) => {
+        return {
+          name: checker.name,
+          date: checker.verifiedOn || checker.validatedOn,
+        };
+      });
+    let machineChecking = array
+      .filter(
+        (checker) =>
+          checker.method === "machine" &&
+          (checker.verified || checker.validated)
+      )
+      .map((checker) => {
+        return {
+          name: checker.name,
+          date: checker.verifiedOn || checker.validatedOn,
+        };
+      });
+
+    let mostRecentUser = `${
+      userChecking[userChecking.length - 1]?.name
+    } on ${userChecking[userChecking.length - 1]?.date
+      .toString()
+      .substr(0, 10)}`;
+    let mostRecentMachine = `${
+      machineChecking[machineChecking.length - 1]?.name
+    } on ${machineChecking[machineChecking.length - 1]?.date
+      .toString()
+      .substr(0, 10)}`;
+
+    if (!style && !tip) {
+      if (userChecking.length > 0 && machineChecking.length > 0)
+        return verified ? <VerifiedIcon /> : <ValidatedIcon />;
+      if (
+        (userChecking.length > 0 && machineChecking.length === 0) ||
+        (userChecking.length === 0 && machineChecking.length > 0)
+      )
+        return verified ? <ReportIcon /> : <ReportOutlinedIcon />;
+      if (userChecking.length === 0 && machineChecking.length === 0)
+        return verified ? <ErrorIcon /> : <ErrorOutlinedIcon />;
+    } else if (!tip) {
+      if (userChecking.length > 0 && machineChecking.length > 0)
+        return classes.validatedAdornment;
+      if (
+        (userChecking.length > 0 && machineChecking.length === 0) ||
+        (userChecking.length === 0 && machineChecking.length > 0)
+      )
+        return classes.partiallyValidatedAdornment;
+      if (userChecking.length === 0 && machineChecking.length === 0)
+        return classes.notValidatedAdornment;
+    } else {
+      if (userChecking.length > 0 && machineChecking.length > 0)
+        return verified
+          ? `Verified by user: ${mostRecentUser} and machine: ${mostRecentMachine}`
+          : `Validated across multiple sources by user: ${mostRecentUser} and machine: ${mostRecentMachine}`;
+      if (userChecking.length > 0 && machineChecking.length === 0)
+        return verified
+          ? `Verified by user: ${mostRecentUser}`
+          : `Validated across multiple sources by user: ${mostRecentUser}`;
+      if (userChecking.length === 0 && machineChecking.length > 0)
+        return verified
+          ? `Verified by machine: ${mostRecentMachine}`
+          : `Validated across multiple sources by machine: ${mostRecentMachine}`;
+      if (userChecking.length === 0 && machineChecking.length === 0)
+        return verified
+          ? "Not verified by user nor machine"
+          : "Not validated by user nor machine";
+    }
+  }
 };
 
 // Data entry functions

@@ -75,14 +75,50 @@ export const SchemaFormField = ({
     setFieldValue(event.target.name, event.target.checked);
   };
 
-  const maxErrorMessage = (message) => {
-    if (message) {
-      const toIndex = message.indexOf("to ");
-      const to = message.substr(toIndex);
-      const numberIndex = to.indexOf(" ");
-      const number = to.substr(numberIndex);
-      return `Maximum Value must be greater than the Minimum Value of ${number}`;
+  const maxErrorMessage = (index) => {
+    let contents = null;
+    if (editing && errors["fields"]) {
+      if (editing && errors.fields[index]) {
+        if (errors.fields[index].max) {
+          let err = errors.fields[index].max;
+          const toIndex = err.indexOf("to ");
+          const to = err.substr(toIndex);
+          const numberIndex = to.indexOf(" ");
+          const number = to.substr(numberIndex);
+          const message = `Maximum Value must be greater than the Minimum Value of ${number}`;
+          contents = (
+            <FormHelperText className={classes.helpersError}>
+              {message}
+            </FormHelperText>
+          );
+        }
+      } else {
+        contents = (
+          <FormHelperText className={classes.helpers}>
+            OPTIONAL: Provide a minimum and/or maximum value for the number
+          </FormHelperText>
+        );
+      }
+    } else {
+      contents = (
+        <FormHelperText className={classes.helpers}>
+          OPTIONAL: Provide a minimum and/or maximum value for the number
+        </FormHelperText>
+      );
     }
+    return contents;
+  };
+
+  const maxErrorDetermination = (index) => {
+    let determination = false;
+    if (errors.fields) {
+      if (errors.fields[index]) {
+        if (errors.fields[index].max) {
+          determination = true;
+        }
+      }
+    }
+    return determination;
   };
 
   const handleBlur = () => {
@@ -201,13 +237,7 @@ export const SchemaFormField = ({
                   }}
                   onChange={onMaxChange}
                   defaultValue={field.max}
-                  error={
-                    !errors["fields"]
-                      ? false
-                      : errors["fields"][index]["max"]
-                      ? true
-                      : false
-                  }
+                  error={maxErrorDetermination(index)}
                   label="Maximum Value"
                   margin="dense"
                   fullWidth
@@ -219,17 +249,7 @@ export const SchemaFormField = ({
                 />
               </Grid>
             </Grid>
-            {editing && !errors["fields"] ? (
-              false
-            ) : editing && errors["fields"][index] ? (
-              <FormHelperText className={classes.helpersError}>
-                {maxErrorMessage(errors["fields"][index]["max"])}
-              </FormHelperText>
-            ) : (
-              <FormHelperText className={classes.helpers}>
-                OPTIONAL: Provide a minimum and/or maximum value for the number
-              </FormHelperText>
-            )}
+            {maxErrorMessage(index)}
           </>
         ) : null}
         {field.type === "string" ? (

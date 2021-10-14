@@ -7,6 +7,7 @@
   "modifiedOn": "2021-10-05T22:16:59.107Z",
   "modifiedBy": "admin",
   "adminCheck": true,
+  "machineCheck": false,
   "names": [
     {
       "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=FLOCK2K43",

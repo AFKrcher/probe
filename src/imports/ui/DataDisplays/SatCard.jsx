@@ -40,8 +40,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "3%",
   },
   cardDesc: {
-    minHeight: `340px`,
-    maxHeight: `340px`,
+    minHeight: "21em",
+    maxHeight: "21em",
   },
   cardActions: {
     position: "relative",
@@ -71,9 +71,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const SatCard = ({ width, height, satellite }) => {
   const classes = useStyles();
-
   const history = useHistory();
-
   const { setOpenVisualize } = useContext(HelpersContext);
 
   const [showModal, setShowModal] = useState(false);
@@ -106,9 +104,8 @@ export const SatCard = ({ width, height, satellite }) => {
     });
     setOpenVisualize(true);
   };
-
   return (
-    <React.Fragment>
+    <span>
       <VisualizeDialog body={prompt} />
       <SatelliteModal
         show={showModal}
@@ -121,40 +118,48 @@ export const SatCard = ({ width, height, satellite }) => {
         height={height}
       />
       <Card className={classes.satCard} elevation={4} raised={true}>
-        <CardMedia className={classes.cardImage}>
+        <CardMedia
+          className={classes.cardImage}
+          // style={{
+          //   cursor: satellite.images?.length > 1 ? "grab" : "default"
+          // }}
+        >
           <Gallery initValues={satellite} autoplay={false} width={width} />
         </CardMedia>
         <CardContent className={classes.cardDesc}>
           <Typography
-            variant={width > 1000 ? "h5" : width > 350 ? "h6" : "body1"}
+            variant={width > 1200 ? "h5" : width > 650 ? "h6" : "body1"}
             className={classes.satName}
           >
             <strong>{getSatName(satellite)}</strong>
           </Typography>
           <Typography
             gutterBottom
-            variant={width > 1000 ? "body1" : width > 350 ? "body2" : "caption"}
+            variant={width > 1200 ? "body1" : width > 400 ? "body2" : "caption"}
           >
             COSPAR ID:{" "}
             {satellite.cosparID ? satellite.cosparID[0].cosparID : "N/A"}
           </Typography>
+          {width < 400 && <br />}
           <Typography
             gutterBottom
-            variant={width > 1000 ? "body1" : width > 350 ? "body2" : "caption"}
+            variant={width > 1200 ? "body1" : width > 400 ? "body2" : "caption"}
           >
             NORAD ID: {getSatID(satellite)}
           </Typography>
           <Typography
             color="textSecondary"
-            variant={width > 1000 ? "body1" : width > 350 ? "body2" : "caption"}
+            variant={width > 1200 ? "body1" : width > 400 ? "body2" : "caption"}
           >
-            {getSatDesc(satellite)}
+            {width > 350
+              ? getSatDesc(satellite)
+              : getSatDesc(satellite).substr(0, 100) + "..."}
           </Typography>
         </CardContent>
         <CardActions
           className={classes.cardActions}
           style={
-            width < 1000
+            width < 650
               ? { justifyContent: "space-around" }
               : {
                   justifyContent: "space-between",
@@ -163,7 +168,7 @@ export const SatCard = ({ width, height, satellite }) => {
                 }
           }
         >
-          {width < 400 ? (
+          {width < 650 ? (
             <React.Fragment>
               <Button
                 variant="outlined"
@@ -260,6 +265,6 @@ export const SatCard = ({ width, height, satellite }) => {
           )}
         </CardActions>
       </Card>
-    </React.Fragment>
+    </span>
   );
 };

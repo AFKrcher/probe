@@ -11,8 +11,16 @@ import { SatelliteCollection } from "/imports/api/satellites";
 import { UsersCollection } from "/imports/api/users";
 import { ErrorsCollection } from "/imports/api/errors";
 // import { helmetOptions } from "./helmet";
-import { schemaValidatorShaper } from "./validators/schemaDataFuncs";
-import { satelliteValidatorShaper } from "./validators/satelliteDataFuncs";
+import { schemaValidatorShaper } from "./utils/schemaDataFuncs";
+import { satelliteValidatorShaper } from "./utils/satelliteDataFuncs";
+import {
+  userHasVerifiedData,
+  machineHasVerifiedData,
+} from "./utils/verificationFuncs";
+import {
+  userHasValidateddData,
+  machineHasValidateddData,
+} from "./utils/validationFuncs";
 import "./routes";
 
 const fs = Npm.require("fs");
@@ -334,16 +342,16 @@ Meteor.startup(() => {
         values["modifiedOn"] = new Date();
         values["modifiedBy"] = Meteor.user().username;
         values["adminCheck"] = false;
-
+        values["machineCheck"] = false;
         satelliteValidatorShaper(values, initValues)
           .validate(values)
           .then(() => {
-            if (Roles.userIsInRole(Meteor.userId(), "admin")) {
-              values["adminCheck"] = true;
-            }
             SatelliteCollection.insert(values);
           })
-          .catch((err) => (error = err));
+          .catch((err) => {
+            console.log(err);
+            error = err;
+          });
         return error;
       } else {
         return "Unauthorized [401]";
@@ -360,15 +368,16 @@ Meteor.startup(() => {
         values["modifiedOn"] = new Date();
         values["modifiedBy"] = Meteor.user().username;
         values["adminCheck"] = false;
+        values["machineCheck"] = false;
         satelliteValidatorShaper(values, initValues)
           .validate(values)
           .then(() => {
-            if (Roles.userIsInRole(Meteor.userId(), "admin")) {
-              values["adminCheck"] = true;
-            }
             SatelliteCollection.update({ _id: values._id }, values);
           })
-          .catch((err) => (error = err));
+          .catch((err) => {
+            console.log(err);
+            error = err;
+          });
         return error;
       } else {
         return "Unauthorized [401]";
@@ -407,12 +416,18 @@ Meteor.startup(() => {
         return "Unauthorized [401]";
       }
     },
-    adminCheckSatellite: (values) => {
+    checkSatelliteData: (values, task, method) => {
       if (
         Roles.userIsInRole(Meteor.userId(), "admin") ||
         Roles.userIsInRole(Meteor.userId(), "moderator")
       ) {
-        values["adminCheck"] = true;
+        if (method === "user") {
+          if (task === "verify") values = userHasVerifiedData(values, Meteor.user().username);
+          if (task === "validate") values = userHasValidateddData(values, Meteor.user().username);
+        } else if (method === "machine") {
+          if (task === "verify") values = machineHasVerifiedData(values, Meteor.user().username);
+          if (task === "validate") values = machineHasValidateddData(values, Meteor.user().username);
+        }
         SatelliteCollection.update({ _id: values._id }, values);
       } else {
         return "Unauthorized [401]";
@@ -435,13 +450,11 @@ Meteor.startup(() => {
         schemaValidatorShaper(initValues, schemas)
           .validate(values)
           .then(() => {
-            if (Roles.userIsInRole(Meteor.userId(), "admin")) {
-              values["adminCheck"] = true;
-            }
             return SchemaCollection.insert(values);
           })
           .catch((error) => {
-            err = error;
+            console.log(err);
+            error = err;
           });
         return error;
       } else {
@@ -463,12 +476,12 @@ Meteor.startup(() => {
         schemaValidatorShaper(initValues, schemas)
           .validate(values)
           .then(() => {
-            if (Roles.userIsInRole(Meteor.userId(), "admin")) {
-              values["adminCheck"] = true;
-            }
             return SchemaCollection.update({ _id: values._id }, values);
           })
-          .catch((err) => console.err(err));
+          .catch((err) => {
+            console.log(err);
+            error = err;
+          });
         return error;
       } else {
         return "Unauthorized [401]";

@@ -6,11 +6,10 @@ import ProtectedRoute from "./utils/ProtectedRoute.jsx";
 
 // Components
 import { Admin } from "./Admin/Admin";
-import { Nav } from "./Navigation/Nav.jsx";
+import { NavBar } from "./Navigation/NavBar.jsx";
 import { SatellitesTable } from "./DataDisplays/SatellitesTable.jsx";
 import { SchemasTable } from "./DataDisplays/SchemasTable.jsx";
 import { Dashboard } from "./DataDisplays/Dashboard.jsx";
-import { Minified } from "./DataDisplays/Minified.jsx";
 import { Home } from "./Home.jsx";
 import { About } from "./About.jsx";
 import { Footer } from "./Navigation/Footer.jsx";
@@ -25,8 +24,10 @@ import { Verify } from "./Accounts/Verify";
 
 // @material-ui
 import { ThemeProvider } from "@material-ui/core/styles";
-import { themes } from "./css/Themes.jsx";
 import { CssBaseline, Container, makeStyles } from "@material-ui/core";
+
+// CSS
+import { themes } from "./CSS/Themes.jsx";
 
 const useStyles = makeStyles(() => ({
   body: {
@@ -97,7 +98,7 @@ export const App = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Router>
-          <Nav theme={theme} toggleTheme={toggleTheme} />
+          <NavBar theme={theme} toggleTheme={toggleTheme} />
           <Container maxWidth="lg" className={classes.body}>
             <main className={classes.main}>
               <Switch>
@@ -115,9 +116,6 @@ export const App = () => {
                 </Route>
                 <Route exact={true} path="/verify">
                   <Verify />
-                </Route>
-                <Route exact={true} path="/Minified">
-                  <Minified />
                 </Route>
                 <Route exact={true} path="/settings">
                   <ProtectedRoute component={Settings} loginRequired={true} />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // imports
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
@@ -10,12 +10,14 @@ import { useTheme } from "@material-ui/core/styles";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 
+const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 500,
     flexGrow: 1,
     overflow: "hidden",
     filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
+    marginBottom: -10,
   },
   imageContainer: {
     height: "300px",
@@ -25,19 +27,14 @@ const useStyles = makeStyles((theme) => ({
   },
   mobileStepper: {
     backgroundColor: "transparent",
-    zIndex: "1",
-    position: "relative",
-    marginTop: "-12%",
   },
 }));
 
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
-
 export const Gallery = ({ initValues, autoplay = true, width = 1000 }) => {
-  const classes = useStyles();
-
-  const [activeStep, setActiveStep] = useState(0);
   const images = getSatImages(initValues);
+  const classes = useStyles();
+  const [activeStep, setActiveStep] = useState(0);
+
   const theme = useTheme();
   const maxSteps = typeof images !== "string" ? images.length : 1;
 
@@ -62,6 +59,7 @@ export const Gallery = ({ initValues, autoplay = true, width = 1000 }) => {
         index={activeStep}
         onChangeIndex={handleStepChange}
         enableMouseEvents
+        style={{ cursor: images?.length > 1 ? "grab" : "default" }}
       >
         {typeof images !== "string" ? (
           images.map((step, index) => (
@@ -85,38 +83,40 @@ export const Gallery = ({ initValues, autoplay = true, width = 1000 }) => {
           />
         )}
       </AutoPlaySwipeableViews>
+      {images.length > 1 ? 
       <MobileStepper
-        className={classes.mobileStepper}
-        steps={maxSteps}
-        position="static"
-        activeStep={activeStep}
-        nextButton={
-          width < 1000 ? (
-            <div />
+      className={classes.mobileStepper}
+      steps={maxSteps}
+      activeStep={activeStep}
+      position="bottom"
+      nextButton={
+        width < 600 ? (
+          <div />
           ) : (
             <Button
-              size="small"
-              onClick={handleNext}
-              disabled={activeStep === maxSteps - 1}
+            size="small"
+            onClick={handleNext}
+            disabled={activeStep === maxSteps - 1}
             >
               <KeyboardArrowRight />
             </Button>
           )
         }
         backButton={
-          width < 1000 ? (
+          width < 600 ? (
             <div />
-          ) : (
-            <Button
+            ) : (
+              <Button
               size="small"
               onClick={handleBack}
               disabled={activeStep === 0}
-            >
+              >
               <KeyboardArrowLeft />
             </Button>
           )
         }
-      />
+        />
+     : null}
     </Box>
   );
 };
