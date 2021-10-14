@@ -20,7 +20,9 @@ import HomeIcon from "@material-ui/icons/Home";
 import SatelliteIcon from "@material-ui/icons/Satellite";
 import StorageIcon from "@material-ui/icons/Storage";
 import ImportContacts from "@material-ui/icons/ImportContacts";
-import { themes } from "../css/Themes.jsx";
+
+// CSS
+import { themes } from "../CSS/Themes.jsx";
 
 const StyledMenu = withStyles({
   paper: {

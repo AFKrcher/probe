@@ -88,10 +88,10 @@ export const ApproveSatellites = () => {
                 <Typography variant="body2">NAME(S)</Typography>
               </TableCell>
               <TableCell>
-                <Typography variant="body2">APPROVAL</Typography>
+                <Typography variant="body2">REQUIRES REVIEW</Typography>
               </TableCell>
               <TableCell>
-                <Typography variant="body2">DELETION</Typography>
+                <Typography variant="body2">REQUIRES DELETION</Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="body2">MODIFIED ON</Typography>

@@ -9,12 +9,13 @@ import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
 import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
 
 // Components
-import { SearchBar } from "./SearchBar.jsx";
+import { SearchBar } from "../Helpers/SearchBar.jsx";
 import VisualizeDialog from "../Dialogs/VisualizeDialog";
 import { SatelliteModal } from "../SatelliteModal/SatelliteModal";
 import { SatelliteCollection } from "../../api/satellites";
 import SnackBar from "../Dialogs/SnackBar.jsx";
 import { Popper } from "../Dialogs/Popper.jsx";
+import { Key } from "../Helpers/Key.jsx";
 
 // @material-ui
 import {
@@ -37,13 +38,6 @@ import StarIcon from "@material-ui/icons/Star";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import MouseIcon from "@material-ui/icons/Mouse";
-import VerifiedIcon from "@material-ui/icons/CheckBox";
-import ValidatedIcon from "@material-ui/icons/LibraryAddCheck";
-import ReportIcon from "@material-ui/icons/Report";
-import ErrorIcon from "@material-ui/icons/Warning";
-import ReportOutlinedIcon from "@material-ui/icons/ReportOutlined";
-import ErrorOutlinedIcon from "@material-ui/icons/ReportProblemOutlined";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,39 +47,6 @@ const useStyles = makeStyles((theme) => ({
   description: {
     marginBottom: 20,
     marginTop: 10,
-  },
-  key: {
-    marginBottom: 25,
-    display: "flex",
-  },
-  keyItems: {
-    marginRight: "0.5ch",
-  },
-  keyItemsStar: {
-    marginRight: "0.5ch",
-    fill: "gold",
-  },
-  keyItemsValid: {
-    marginRight: "0.5ch",
-    fill: theme.palette.success.light,
-  },
-  keyItemsPartial: {
-    marginRight: "0.5ch",
-    fill: theme.palette.warning.light,
-  },
-  keyItemsInvalid: {
-    marginRight: "0.5ch",
-    fill: theme.palette.error.light,
-  },
-  showKey: {
-    marginTop: 10,
-    marginBottom: 20,
-    color: theme.palette.text.disabled,
-    cursor: "pointer",
-    "&:hover": {
-      color: theme.palette.info.light,
-    },
-    width: "10ch",
   },
   gridContainer: {
     display: "flex",
@@ -185,7 +146,7 @@ export const SatellitesTable = () => {
   const [sortNames, setSortNames] = useState(0);
   const [sortType, setSortType] = useState(0);
   const [sortOrbit, setSortOrbit] = useState(0);
-  const [selector, setSelector] = useState({});
+  const [selector, setSelector] = useState({ isDeleted: false });
   const [columns, setColumns] = useState([]);
   const [prompt, setPrompt] = useState();
   const [showKey, setShowKey] = useState(false);
@@ -209,41 +170,30 @@ export const SatellitesTable = () => {
   const [rows, isLoadingSchemas, isLoadingSats, count] = useTracker(() => {
     const subSchemas = Meteor.subscribe("satellites");
     const subSats = Meteor.subscribe("satellites");
-    const count = SatelliteCollection.find({
-      $or: [
-        {
-          isDeleted: false,
-        },
-        {
-          isDeleted: undefined,
-        },
-      ],
-    }).count();
+    const count = SatelliteCollection.find(selector).count();
     const sats = SatelliteCollection.find(selector, {
       limit: limiter,
       skip: page * limiter,
       sort: decideSort(),
     }).fetch();
-    const rows = sats
-      .filter((sat) => !sat.isDeleted)
-      .map((sat) => {
-        return {
-          id: sat.noradID,
-          names: sat.names?.map((name) => name.names || name.name).join(", "),
-          types: sat.types
-            ? sat.types
-                .map((type) => type.type)
-                .sort((a, b) => a.localeCompare(b))
-                .join(", ")
-            : "",
-          orbit: sat.orbit
-            ? sat.orbit.map((entry) => entry.orbit).join(", ")
-            : "",
-          description: sat.descriptionShort
-            ? sat.descriptionShort[0]?.descriptionShort
-            : null,
-        };
-      });
+    const rows = sats.map((sat) => {
+      return {
+        id: sat.noradID,
+        names: sat.names?.map((name) => name.names || name.name).join(", "),
+        types: sat.types
+          ? sat.types
+              .map((type) => type.type)
+              .sort((a, b) => a.localeCompare(b))
+              .join(", ")
+          : "",
+        orbit: sat.orbit
+          ? sat.orbit.map((entry) => entry.orbit).join(", ")
+          : "",
+        description: sat.descriptionShort
+          ? sat.descriptionShort[0]?.descriptionShort
+          : null,
+      };
+    });
     rows.getRows = count;
     return [rows, !subSchemas.ready(), !subSats.ready(), count];
   });
@@ -307,6 +257,7 @@ export const SatellitesTable = () => {
     } else {
       setSelector({});
     }
+    selector["isDeleted"] = false;
   };
 
   const handleSort = (e) => {
@@ -482,7 +433,7 @@ export const SatellitesTable = () => {
         headerAlign: "left",
         field: "orbit",
         headerName: "ORBIT(S)",
-        minWidth: 150,
+        minWidth: 140,
         editable: false,
         filterable: false,
       },
@@ -589,7 +540,7 @@ export const SatellitesTable = () => {
         ) : null}
         <Typography
           gutterBottom
-          variant="body2"
+          variant="body1"
           className={classes.description}
         >
           Each <strong>satellite</strong> in the catalogue contains a number of
@@ -603,88 +554,7 @@ export const SatellitesTable = () => {
           bring up the schemas and data associated with the{" "}
           <strong>satellite</strong>.
         </Typography>
-        <Typography
-          variant="body2"
-          className={classes.showKey}
-          onClick={() => setShowKey(!showKey)}
-        >
-          {showKey ? "Hide Key..." : "Show Key..."}
-        </Typography>
-        {showKey && (
-          <React.Fragment>
-            {Meteor.userId() && (
-              <Typography gutterBottom variant="body2" className={classes.key}>
-                <StarIcon fontSize="small" className={classes.keyItemsStar} />
-                <span className={classes.keyItems}>–</span>
-                Add a satellite to your favorites list
-              </Typography>
-            )}
-            <Typography gutterBottom variant="body2" className={classes.key}>
-              <VisibilityIcon fontSize="small" className={classes.keyItems} />
-              <span className={classes.keyItems}>–</span>
-              Open a satellite to view and/or modify the fields or schemas
-            </Typography>
-            <Typography gutterBottom variant="body2" className={classes.key}>
-              <DashboardIcon fontSize="small" className={classes.keyItems} />
-              <span className={classes.keyItems}>–</span>
-              Open the satellite dashboard - allows users to view satellite data
-              outside of an editing modal and provide users with a shareable URL
-            </Typography>
-            <Typography gutterBottom variant="body2" className={classes.key}>
-              <img
-                src="/assets/saberastro.png"
-                width="21px"
-                height="21px"
-                className={classes.keyItems}
-              />
-              <span className={classes.keyItems}>–</span> Open a satellite to
-              view and/or modify its schemas or entries
-            </Typography>
-            <Typography gutterBottom variant="body2" className={classes.key}>
-              <MouseIcon fontSize="small" className={classes.keyItems} />
-              <span className={classes.keyItems}>–</span> Hover or Click to view
-              satellite description, Double-click to view and/or modify a
-              satellite's schemas or entries
-            </Typography>
-            <Typography gutterBottom variant="body2" className={classes.key}>
-              <VerifiedIcon
-                fontSize="small"
-                className={classes.keyItemsValid}
-              />
-              <ValidatedIcon
-                fontSize="small"
-                className={classes.keyItemsValid}
-              />
-              <span className={classes.keyItems}>–</span> Indicates that
-              information has been verified to be in the reference or validated
-              across multiple sources by user(s) AND web-crawling algorithm(s)
-            </Typography>
-            <Typography gutterBottom variant="body2" className={classes.key}>
-              <ReportIcon
-                fontSize="small"
-                className={classes.keyItemsPartial}
-              />
-              <ReportOutlinedIcon
-                fontSize="small"
-                className={classes.keyItemsPartial}
-              />
-              <span className={classes.keyItems}>–</span> Indicates that
-              information has ONLY been verified to be in the reference or validated
-              across multiple sources by user(s) OR web-crawling algorithm(s)
-            </Typography>
-            <Typography gutterBottom variant="body2" className={classes.key}>
-              <ErrorIcon fontSize="small" className={classes.keyItemsInvalid} />
-              <ErrorOutlinedIcon
-                fontSize="small"
-                className={classes.keyItemsInvalid}
-              />
-              <span className={classes.keyItems}>–</span> Indicates that
-              information has NOT been verified to be in the reference or
-              validated across multiple sources by user(s) OR web-crawling
-              algorithm(s)
-            </Typography>
-          </React.Fragment>
-        )}
+        <Key page="SatellitesTable" />
         <SearchBar
           filter={filter}
           setFilter={setFilter}

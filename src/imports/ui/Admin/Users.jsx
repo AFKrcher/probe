@@ -67,11 +67,14 @@ const useStyles = makeStyles((theme) => ({
     margin: 5,
   },
   rolesRow: {
+    marginLeft: 10,
     marginBottom: 10,
     marginTop: 10,
   },
   divider: {
-    margin: 10,
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: -10,
   },
   actions: {
     display: "flex",
@@ -252,51 +255,51 @@ export const Users = () => {
             </div>
           </DialogTitle>
           <DialogContentText className={classes.rolesContainer}>
-            <Typography variant="h6">
-              <Grid
-                container
-                display="flex"
-                justifyContent="flex-end"
-                alignItems="center"
-              >
-                <Grid item xs={12} className={classes.rolesTitle}>
+            <Grid
+              container
+              display="flex"
+              justifyContent="flex-end"
+              alignItems="center"
+            >
+              <Grid item xs={12} className={classes.rolesTitle}>
+                <Typography variant="h6">
                   <strong>Roles:</strong>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider
-                    className={classes.divider}
-                    variant="inset"
-                    orientation="horizontal"
-                  />
-                </Grid>
-                {Roles.getRolesForUser(editUser._id).map((role, index) => {
-                  return (
-                    <React.Fragment key={index}>
-                      <Grid item xs={5} className={classes.rolesRow}>
-                        {role}
-                      </Grid>
-                      <Grid item xs={7} className={classes.rolesRow}>
-                        <Button
-                          variant="contained"
-                          onClick={() => removeRole(editUser, role)}
-                          color="secondary"
-                          size="small"
-                        >
-                          Remove
-                        </Button>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Divider
-                          className={classes.divider}
-                          variant="inset"
-                          orientation="horizontal"
-                        />
-                      </Grid>
-                    </React.Fragment>
-                  );
-                })}
+                </Typography>
               </Grid>
-            </Typography>
+              <Grid item xs={12}>
+                <Divider
+                  className={classes.divider}
+                  variant="inset"
+                  orientation="horizontal"
+                />
+              </Grid>
+              {Roles.getRolesForUser(editUser._id).map((role, index) => {
+                return (
+                  <React.Fragment key={index}>
+                    <Grid item xs={7} className={classes.rolesRow}>
+                      {role}
+                    </Grid>
+                    <Grid item xs={4} className={classes.rolesRow}>
+                      <Button
+                        variant="contained"
+                        onClick={() => removeRole(editUser, role)}
+                        color="secondary"
+                        size="small"
+                      >
+                        Remove
+                      </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Divider
+                        className={classes.divider}
+                        variant="inset"
+                        orientation="horizontal"
+                      />
+                    </Grid>
+                  </React.Fragment>
+                );
+              })}
+            </Grid>
           </DialogContentText>
         </DialogContent>
         <DialogActions className={classes.actions}>
@@ -305,6 +308,7 @@ export const Users = () => {
             variant="contained"
             onClick={() => verifyChange(editUser, "dummies")}
             color="secondary"
+            disabled={Roles.getRolesForUser(editUser._id).includes("admin")}
           >
             Ban
           </Button>
@@ -313,6 +317,7 @@ export const Users = () => {
             variant="contained"
             onClick={() => verifyChange(editUser, "delete")}
             color="secondary"
+            disabled={Roles.getRolesForUser(editUser._id).includes("admin")}
           >
             Delete
           </Button>
@@ -322,6 +327,7 @@ export const Users = () => {
             onClick={() => addUserToRole(editUser, "moderator")}
             color="primary"
             autoFocus
+            disabled={Roles.getRolesForUser(editUser._id).includes("moderator")}
           >
             Make Moderator
           </Button>
@@ -331,6 +337,7 @@ export const Users = () => {
             onClick={() => addUserToRole(editUser, "admin")}
             color="primary"
             autoFocus
+            disabled={Roles.getRolesForUser(editUser._id).includes("admin")}
           >
             Make Admin
           </Button>

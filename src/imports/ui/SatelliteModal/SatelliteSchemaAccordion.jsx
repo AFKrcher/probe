@@ -183,7 +183,7 @@ export const SatelliteSchemaAccordion = ({
               accordionBeingEdited === -1) ? (
               <Grid item className={classes.iconButtons}>
                 {!editingSchema ? (
-                  Meteor.userId() ? ( // not using ProtectedFunctionality on this due to slow load times on .map() of accordions
+                  Meteor.userId() ? ( // not using ProtectedFunctionality on this due to the noticeable lag of .map() in the parent
                     <Tooltip
                       title={
                         <React.Fragment>

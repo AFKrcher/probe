@@ -32,10 +32,6 @@ import CheckIcon from "@material-ui/icons/Check";
 import RestorePageIcon from "@material-ui/icons/RestorePage";
 
 const useStyles = makeStyles(() => ({
-  modal: {
-    width: "auto",
-    height: "auto",
-  },
   title: {
     marginBottom: -5,
     marginTop: -5,
@@ -216,15 +212,14 @@ export const SchemaModal = ({
     setOpenAlert(true);
   };
 
-  const handleToggleEdit = (setValues) => {
-    if (editing) setValues(initValues);
-    if (newSchema) {
-      handleClose();
-    }
+  const handleToggleEdit = async (setValues, setErrors) => {
+    if (editing) await setValues(initValues);
+    if (newSchema && editing) handleClose();
     setEditing(!editing);
+    if (setErrors) setErrors({});
   };
 
-  const handleEdit = (setValues, dirty) => {
+  const handleEdit = (dirty, setValues, setErrors) => {
     if (editing && dirty) {
       setAlert({
         title: (
@@ -247,7 +242,7 @@ export const SchemaModal = ({
             disableElevation
             onClick={() => {
               setOpenAlert(false);
-              handleToggleEdit(setValues);
+              handleToggleEdit(setValues, setErrors);
             }}
           >
             Confirm
@@ -309,196 +304,193 @@ export const SchemaModal = ({
     <React.Fragment>
       <AlertDialog bodyAlert={alert} />
       <SnackBar bodySnackBar={snack} />
-      <Dialog open={show} scroll="paper" maxWidth="md">
-        <div className={classes.modal}>
-          <DialogTitle className={classes.title}>
-            <Typography className={classes.titleText}>
-              {newSchema ? (
-                "Create New Schema"
-              ) : (
-                <React.Fragment>
-                  Editing <strong>{initValues.name || "N/A"}</strong>
-                </React.Fragment>
-              )}
-            </Typography>
-          </DialogTitle>
-          <Formik
-            initialValues={initValues}
-            validationSchema={schemaValidatorShaper(
-              initValues,
-              isUniqueList,
-              schemas
+      <Dialog open={show} scroll="paper" maxWidth="md" fullWidth>
+        <DialogTitle className={classes.title}>
+          <Typography className={classes.titleText}>
+            {newSchema ? (
+              "Create New Schema"
+            ) : (
+              <React.Fragment>
+                Editing <strong>{initValues.name || "N/A"}</strong>
+              </React.Fragment>
             )}
-            onSubmit={handleSubmit}
-          >
-            {({
-              errors,
-              isSubmitting,
-              values,
-              touched,
-              setValues,
-              setFieldValue,
-              initValues,
-              dirty,
-              isValidating,
-            }) => (
-              <Form>
-                {isLoading ? (
-                  <DialogContent className={classes.loadingDialog}>
-                    <CircularProgress size={75} />
-                  </DialogContent>
-                ) : (
-                  <DialogContent
-                    className={classes.content}
-                    style={decideHeight()}
-                  >
-                    <Typography className={classes.description}>
-                      {user ? (
-                        <React.Fragment>
-                          Last change made by{" "}
-                          <strong>{`${
-                            values.modifiedBy || user.username
-                          }`}</strong>{" "}
-                          on{" "}
-                          <strong>
-                            {values.modifiedOn
-                              ? `${values.modifiedOn}`
-                              : `${new Date()}`}
-                          </strong>
-                        </React.Fragment>
-                      ) : null}
-                    </Typography>
-                    <SchemaForm
-                      touched={touched}
-                      errors={errors}
-                      formValues={values}
-                      setValues={setValues}
-                      setFieldValue={setFieldValue}
-                      editing={editing}
-                      initValues={initValues}
-                    />
-                  </DialogContent>
-                )}
-                <DialogActions className={classes.actions}>
-                  {!newSchema && (
-                    <React.Fragment>
-                      {!editing && (
-                        <ProtectedFunctionality
-                          component={() => {
-                            return (
-                              <React.Fragment>
+          </Typography>
+        </DialogTitle>
+        <Formik
+          initialValues={initValues}
+          validationSchema={schemaValidatorShaper(
+            initValues,
+            isUniqueList,
+            schemas
+          )}
+          onSubmit={handleSubmit}
+        >
+          {({
+            errors,
+            setErrors,
+            isSubmitting,
+            values,
+            touched,
+            setValues,
+            setFieldValue,
+            initValues,
+            dirty,
+            isValidating,
+          }) => (
+            <Form>
+              {isLoading ? (
+                <DialogContent className={classes.loadingDialog}>
+                  <CircularProgress size={75} />
+                </DialogContent>
+              ) : (
+                <DialogContent
+                  className={classes.content}
+                  style={decideHeight()}
+                >
+                  <Typography className={classes.description}>
+                    {user ? (
+                      <React.Fragment>
+                        Last change made by{" "}
+                        <strong>{`${
+                          values.modifiedBy || user.username
+                        }`}</strong>{" "}
+                        on{" "}
+                        <strong>
+                          {values.modifiedOn
+                            ? `${values.modifiedOn}`
+                            : `${new Date()}`}
+                        </strong>
+                      </React.Fragment>
+                    ) : null}
+                  </Typography>
+                  <SchemaForm
+                    touched={touched}
+                    errors={errors}
+                    formValues={values}
+                    setValues={setValues}
+                    setFieldValue={setFieldValue}
+                    editing={editing}
+                    initValues={initValues}
+                  />
+                </DialogContent>
+              )}
+              <DialogActions className={classes.actions}>
+                {!newSchema && (
+                  <React.Fragment>
+                    {!editing && (
+                      <ProtectedFunctionality
+                        component={() => {
+                          return (
+                            <React.Fragment>
+                              <Button
+                                size={width < 500 ? "small" : "medium"}
+                                variant="contained"
+                                color="secondary"
+                                startIcon={width < 500 ? null : <DeleteIcon />}
+                                onClick={handleDeleteDialog}
+                              >
+                                {admin && width > 825
+                                  ? "Delete Forever"
+                                  : "Delete"}
+                              </Button>
+                              {admin && values.isDeleted ? (
                                 <Button
                                   size={width < 500 ? "small" : "medium"}
                                   variant="contained"
-                                  color="secondary"
+                                  color="primary"
+                                  onClick={handleRestore}
                                   startIcon={
-                                    width < 500 ? null : <DeleteIcon />
+                                    width < 500 ? null : <RestorePageIcon />
                                   }
-                                  onClick={handleDeleteDialog}
                                 >
-                                  {admin && width > 825
-                                    ? "Delete Forever"
-                                    : "Delete"}
+                                  Restore
                                 </Button>
-                                {admin && values.isDeleted ? (
-                                  <Button
-                                    size={width < 500 ? "small" : "medium"}
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={handleRestore}
-                                    startIcon={
-                                      width < 500 ? null : <RestorePageIcon />
-                                    }
-                                  >
-                                    Restore
-                                  </Button>
-                                ) : null}
-                              </React.Fragment>
-                            );
-                          }}
-                          loginRequired={true}
-                        />
-                      )}
-                    </React.Fragment>
-                  )}
-                  <ProtectedFunctionality
-                    component={() => {
-                      return (
-                        <Button
-                          size={width < 500 ? "small" : "medium"}
-                          variant="contained"
-                          color={editing && dirty ? "secondary" : "default"}
-                          startIcon={
-                            width < 500 ? null : editing ? (
-                              dirty ? (
-                                <DeleteIcon />
-                              ) : null
-                            ) : (
-                              <EditIcon />
-                            )
-                          }
-                          onClick={() => handleEdit(setValues, dirty)}
-                        >
-                          {editing ? "Cancel" : "Edit"}
-                        </Button>
-                      );
-                    }}
-                    loginRequired={true}
-                  />
+                              ) : null}
+                            </React.Fragment>
+                          );
+                        }}
+                        loginRequired={true}
+                      />
+                    )}
+                  </React.Fragment>
+                )}
+                <ProtectedFunctionality
+                  component={() => {
+                    return (
+                      <Button
+                        size={width < 500 ? "small" : "medium"}
+                        variant="contained"
+                        color={editing && dirty ? "secondary" : "default"}
+                        startIcon={
+                          width < 500 ? null : editing ? (
+                            dirty ? (
+                              <DeleteIcon />
+                            ) : null
+                          ) : (
+                            <EditIcon />
+                          )
+                        }
+                        onClick={() => handleEdit(dirty, setValues, setErrors)}
+                      >
+                        {editing ? "Cancel" : "Edit"}
+                      </Button>
+                    );
+                  }}
+                  loginRequired={true}
+                />
 
-                  {!editing && admin && !values.isDeleted && (
-                    <Button
-                      size={width < 500 ? "small" : "medium"}
-                      variant="contained"
-                      color="primary"
-                      onClick={handleApprove}
-                      startIcon={width < 500 ? null : <CheckIcon />}
-                    >
-                      Approve
-                    </Button>
-                  )}
-                  {!editing && (
-                    <Button
-                      size={width < 500 ? "small" : "medium"}
-                      variant="contained"
-                      onClick={handleClose}
-                      startIcon={width < 500 ? null : <CloseIcon />}
-                    >
-                      Close
-                    </Button>
-                  )}
-                  {editing && (
-                    <Button
-                      size={width < 500 ? "small" : "medium"}
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      startIcon={width < 500 ? null : <SaveIcon />}
-                      disabled={
-                        Object.entries(errors).length > 0 ||
-                        !dirty ||
-                        isValidating
-                          ? true
-                          : false
-                      }
-                    >
-                      {isSubmitting || isValidating ? (
-                        <CircularProgress
-                          size={24}
-                          className={classes.loadingSave}
-                        />
-                      ) : newSchema ? (
-                        "Save"
-                      ) : (
-                        "Save Changes"
-                      )}
-                    </Button>
-                  )}
-                </DialogActions>
-              </Form>
-            )}
-          </Formik>
-        </div>
+                {!editing && admin && !values.isDeleted && (
+                  <Button
+                    size={width < 500 ? "small" : "medium"}
+                    variant="contained"
+                    color="primary"
+                    onClick={handleApprove}
+                    startIcon={width < 500 ? null : <CheckIcon />}
+                  >
+                    Approve
+                  </Button>
+                )}
+                {!editing && (
+                  <Button
+                    size={width < 500 ? "small" : "medium"}
+                    variant="contained"
+                    onClick={handleClose}
+                    startIcon={width < 500 ? null : <CloseIcon />}
+                  >
+                    Close
+                  </Button>
+                )}
+                {editing && (
+                  <Button
+                    size={width < 500 ? "small" : "medium"}
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    startIcon={width < 500 ? null : <SaveIcon />}
+                    disabled={
+                      Object.entries(errors).length > 0 ||
+                      !dirty ||
+                      isValidating
+                        ? true
+                        : false
+                    }
+                  >
+                    {isSubmitting || isValidating ? (
+                      <CircularProgress
+                        size={24}
+                        className={classes.loadingSave}
+                      />
+                    ) : newSchema ? (
+                      "Save"
+                    ) : (
+                      "Save Changes"
+                    )}
+                  </Button>
+                )}
+              </DialogActions>
+            </Form>
+          )}
+        </Formik>
       </Dialog>
     </React.Fragment>
   );

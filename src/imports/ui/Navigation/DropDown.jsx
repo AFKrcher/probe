@@ -21,7 +21,9 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import BrightnessHigh from "@material-ui/icons/BrightnessHigh";
 import Brightness2 from "@material-ui/icons/Brightness2";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
-import { themes } from "../css/Themes.jsx";
+
+// CSS
+import { themes } from "../CSS/Themes.jsx";
 
 const useStyles = makeStyles((theme) => ({
   settings: {

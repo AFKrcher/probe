@@ -7,6 +7,7 @@
   "modifiedOn": "2021-10-05T21:33:05.260Z",
   "modifiedBy": "admin",
   "adminCheck": true,
+  "machineCheck": false,
   "launchSites": [
     {
       "reference": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2021-081A",

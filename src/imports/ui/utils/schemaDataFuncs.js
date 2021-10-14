@@ -44,18 +44,17 @@ export const schemaValidatorShaper = (initValues, isUniqueList, schemas) => {
           allowedValues: Yup.array()
             .ensure()
             .max(100, "Must not exceed 100 elements"),
-          min: Yup.number().nullable().notRequired(),
+          min: Yup.number().nullable(),
           max: Yup.number()
             .nullable()
             .when(["min"], (min, schema) => {
               return schema.min(min);
             }),
-          required: Yup.boolean(),
-          isUnique: Yup.boolean(),
-          stringMax: Yup.number().max(
-            20000,
-            "Must not exceed 20,000 characters"
-          ),
+          required: Yup.boolean().nullable(),
+          isUnique: Yup.boolean().nullable(),
+          stringMax: Yup.number()
+            .max(20000, "Must not exceed 20,000 characters")
+            .nullable(),
         })
         .notRequired()
     ),

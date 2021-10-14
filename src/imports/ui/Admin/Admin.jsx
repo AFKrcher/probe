@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core";
 
 // CSS
-import "../css/tabs.css";
+import "../CSS/tabs.css";
 
 const useStyles = makeStyles((theme) => ({
   navbar: {

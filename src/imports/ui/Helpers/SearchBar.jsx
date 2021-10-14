@@ -51,6 +51,7 @@ export const SearchBar = ({
                 },
               },
             ],
+            isDeleted: false,
           };
           val.map((v) => {
             if (v.replace(/\s/g, "") !== "") {
@@ -82,7 +83,7 @@ export const SearchBar = ({
               });
             }
           });
-          val[0] === "" ? setSelector({}) : setSelector(obj);
+          val[0] === "" ? setSelector({ isDeleted: false }) : setSelector(obj);
         }}
         renderInput={(params) => {
           params.InputProps.startAdornment

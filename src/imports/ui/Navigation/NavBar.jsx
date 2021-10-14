@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Nav = ({ theme, toggleTheme }) => {
+export const NavBar = ({ theme, toggleTheme }) => {
   const { setOpenAlert, setOpenSnack } = useContext(HelpersContext);
 
   const classes = useStyles();
