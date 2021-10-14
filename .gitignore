@@ -1,11 +1,2 @@
 # VScode configs
 .vscode
-
-# Node artifact files
-node_modules/
-
-# Secrets
-*.env*
-
-# Build
-*probe_test_build*

@@ -22,7 +22,7 @@ import StorageIcon from "@material-ui/icons/Storage";
 import ImportContacts from "@material-ui/icons/ImportContacts";
 
 // CSS
-import { themes } from "../CSS/Themes.jsx";
+import { themes } from "../css/Themes.jsx";
 
 const StyledMenu = withStyles({
   paper: {

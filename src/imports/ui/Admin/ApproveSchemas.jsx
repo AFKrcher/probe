@@ -19,6 +19,7 @@ import {
   TableCell,
   CircularProgress,
 } from "@material-ui/core";
+import ErrorOutlinedIcon from "@material-ui/icons/ErrorOutlined";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +44,16 @@ const useStyles = makeStyles((theme) => ({
       cursor: "pointer",
     },
   },
+  warningIcon: {
+    fill: theme.palette.warning.light,
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
+    marginLeft: 15,
+  },
+  errorIcon: {
+    fill: theme.palette.error.light,
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
+    marginLeft: 15,
+  },
   spinner: {
     color: theme.palette.text.primary,
   },
@@ -60,6 +71,7 @@ const newSchemaValues = {
       min: null,
       max: null,
       required: true,
+      stringMax: null,
     },
   ],
 };
@@ -85,6 +97,40 @@ export const ApproveSchemas = () => {
     setInitialSchemaValues(schemaObject);
   };
 
+  const cells = (schema, i) => {
+    console.log(schemasDeleted);
+    return (
+      <TableRow
+        key={`schema-row-${i}`}
+        className={classes.tableRow}
+        onClick={() => handleRowClick(schema)}
+      >
+        <TableCell key={`schema-name-${i}`} className={classes.tableNameCol}>
+          {schema.name}
+        </TableCell>
+        <TableCell key={`schema-approve-${i}`}>
+          {!schema.adminCheck ? (
+            <ErrorOutlinedIcon
+              fontSize="small"
+              className={classes.warningIcon}
+            />
+          ) : null}
+        </TableCell>
+        <TableCell key={`schema-delete-${i}`}>
+          {schema.isDeleted ? (
+            <ErrorOutlinedIcon fontSize="small" className={classes.errorIcon} />
+          ) : null}
+        </TableCell>
+        <TableCell key={`schema-modOn-${i}`}>
+          {`${schema.modifiedOn || schema.createdOn}`}
+        </TableCell>
+        <TableCell key={`schema-modBy-${i}`}>
+          {`${schema.modifiedBy || schema.createdBy}`}
+        </TableCell>
+      </TableRow>
+    );
+  };
+
   return (
     <div className={classes.root}>
       <TableContainer component={Paper} className={classes.table} elevation={5}>
@@ -95,7 +141,7 @@ export const ApproveSchemas = () => {
                 <Typography variant="body2">SCHEMA NAME</Typography>
               </TableCell>
               <TableCell>
-                <Typography variant="body2">APPROVAL</Typography>
+                <Typography variant="body2">ADMIN REVIEW</Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="body2">DELETION</Typography>
@@ -118,61 +164,11 @@ export const ApproveSchemas = () => {
             )}
             {!isLoading &&
               schemasDeleted.map((schema, i) => {
-                return (
-                  <TableRow
-                    key={`schema-row-${i}`}
-                    className={classes.tableRow}
-                    onClick={() => handleRowClick(schema)}
-                  >
-                    <TableCell
-                      key={`schema-name-${i}`}
-                      className={classes.tableNameCol}
-                    >
-                      {schema.name}
-                    </TableCell>
-                    <TableCell key={`schema-approve-${i}`}>
-                      {!schema.adminCheck ? "TRUE" : "FALSE"}
-                    </TableCell>
-                    <TableCell key={`schema-delete-${i}`}>
-                      {schema.isDeleted ? "TRUE" : "FALSE"}
-                    </TableCell>
-                    <TableCell key={`schema-modOn-${i}`}>
-                      {`${schema.modifiedOn || schema.createdOn}`}
-                    </TableCell>
-                    <TableCell key={`schema-modBy-${i}`}>
-                      {`${schema.modifiedBy || schema.createdBy}`}
-                    </TableCell>
-                  </TableRow>
-                );
+                return cells(schema, i);
               })}
             {!isLoading &&
               schemasModified.map((schema, i) => {
-                return (
-                  <TableRow
-                    key={`schema-row-${i}`}
-                    className={classes.tableRow}
-                    onClick={() => handleRowClick(schema)}
-                  >
-                    <TableCell
-                      key={`schema-name-${i}`}
-                      className={classes.tableNameCol}
-                    >
-                      {schema.name}
-                    </TableCell>
-                    <TableCell key={`schema-approve-${i}`}>
-                      {!schema.adminCheck ? "TRUE" : "FALSE"}
-                    </TableCell>
-                    <TableCell key={`schema-delete-${i}`}>
-                      {schema.isDeleted ? "TRUE" : "FALSE"}
-                    </TableCell>
-                    <TableCell key={`schema-modOn-${i}`}>
-                      {`${schema.modifiedOn || schema.createdOn}`}
-                    </TableCell>
-                    <TableCell key={`schema-modBy-${i}`}>
-                      {`${schema.modifiedBy || schema.createdBy}`}
-                    </TableCell>
-                  </TableRow>
-                );
+                return cells(schema, i);
               })}
           </TableBody>
         </Table>

@@ -27,7 +27,7 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import { CssBaseline, Container, makeStyles } from "@material-ui/core";
 
 // CSS
-import { themes } from "./CSS/Themes.jsx";
+import { themes } from "./css/Themes.jsx";
 
 const useStyles = makeStyles(() => ({
   body: {
@@ -36,6 +36,7 @@ const useStyles = makeStyles(() => ({
   main: {
     marginTop: 95,
     marginBottom: 60,
+    paddingBottom: 15,
   },
   bottom: {
     display: "flex",
@@ -43,8 +44,9 @@ const useStyles = makeStyles(() => ({
     width: "100%",
   },
   footer: {
+    marginTop: -25,
     position: "relative",
-    bottom: 0,
+    bottom: 5,
     width: "100%",
   },
 }));

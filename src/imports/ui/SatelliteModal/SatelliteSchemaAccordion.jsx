@@ -31,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
   },
   accordionHeader: {
     display: "flex",
-    alignItems: "center",
   },
   accordionTitle: {
     marginRight: "5px",
@@ -47,15 +46,15 @@ const useStyles = makeStyles((theme) => ({
   },
   editIcon: {
     padding: 6,
-    margin: "-6px 5px -6px -15px",
+    margin: "-6px 0em -6px 0px",
   },
   closeIcon: {
     padding: 6,
-    margin: "-6px 20px -6px -15px",
+    margin: "-6px 10px -6px -20px",
   },
   saveIcon: {
     padding: 6,
-    margin: "-6px 0px -6px -15px",
+    margin: "-6px 0px -6px 0px",
   },
   accordianDetails: {
     marginTop: -15,
@@ -165,7 +164,11 @@ export const SatelliteSchemaAccordion = ({
           id={`${schema.name}-accord-header`}
         >
           <Grid container spacing={editingSchema ? 1 : 4}>
-            <Grid item className={classes.accordionHeader} xs={11}>
+            <Grid
+              item
+              className={classes.accordionHeader}
+              xs={width > 1000 ? 11 : 10}
+            >
               <Chip
                 size="small"
                 label={entries?.length ? entries.length : "0"}
@@ -181,50 +184,34 @@ export const SatelliteSchemaAccordion = ({
             width > 800 &&
             (accordionBeingEdited === schemaIndex ||
               accordionBeingEdited === -1) ? (
-              <Grid item className={classes.iconButtons}>
+              <Grid item className={classes.iconButtons} xs="auto">
                 {!editingSchema ? (
-                  Meteor.userId() ? ( // not using ProtectedFunctionality on this due to the noticeable lag of .map() in the parent
-                    <Tooltip
-                      title={
-                        <React.Fragment>
-                          Edit <strong>{schema.name}</strong> entry
-                        </React.Fragment>
-                      }
-                      placement="top-end"
-                      arrow
+                  Meteor.userId() && ( // not using ProtectedFunctionality on this due to the noticeable lag of .map() in the parent
+                    <IconButton
+                      className={classes.editIcon}
+                      onClick={handleEditSchema}
                     >
-                      <IconButton
-                        className={classes.editIcon}
-                        onClick={handleEditSchema}
-                      >
-                        <EditIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                  ) : null
+                      <EditIcon fontSize="small" />
+                    </IconButton>
+                  )
                 ) : (
                   <React.Fragment>
-                    <Tooltip title="Cancel Changes" placement="top" arrow>
-                      <IconButton
-                        className={classes.closeIcon}
-                        onClick={handleEditSchema}
-                      >
-                        <CloseIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Save Changes" placement="top" arrow>
-                      <span>
-                        <IconButton
-                          className={classes.saveIcon}
-                          disabled={!dirty}
-                          onClick={() => {
-                            handleSubmit(values);
-                          }}
-                          color="primary"
-                        >
-                          <SaveIcon fontSize="small" />
-                        </IconButton>
-                      </span>
-                    </Tooltip>
+                    <IconButton
+                      className={classes.closeIcon}
+                      onClick={handleEditSchema}
+                    >
+                      <CloseIcon fontSize="small" />
+                    </IconButton>
+                    <IconButton
+                      className={classes.saveIcon}
+                      disabled={!dirty}
+                      onClick={() => {
+                        handleSubmit(values);
+                      }}
+                      color="primary"
+                    >
+                      <SaveIcon fontSize="small" />
+                    </IconButton>
                   </React.Fragment>
                 )}
               </Grid>

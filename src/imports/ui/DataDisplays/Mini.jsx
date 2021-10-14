@@ -58,11 +58,11 @@ export const Mini = () => {
 
   const [width, height] = useWindowSize();
 
-  const [sats, orbits, isLoadingSats, isLoadingSchemas] = useTracker(() => {
+  const [sats, regimes, isLoadingSats, isLoadingSchemas] = useTracker(() => {
     const subSats = Meteor.subscribe("satellites");
     const subSchemas = Meteor.subscribe("schemas");
     const sats = SatelliteCollection.find(
-      {},
+      { isDeleted: false },
       {
         fields: {
           noradID: 1,
@@ -74,10 +74,10 @@ export const Mini = () => {
     )
       .fetch()
       .filter((sat) => !sat.isDeleted);
-    const orbits = SchemaCollection.find({ name: "orbits" })
+    const regimes = SchemaCollection.find({ name: "orbits" })
       .fetch()[0]
       .fields.find((field) => field.name === "orbit").allowedValues;
-    return [sats, orbits, !subSats.ready(), !subSchemas.ready()];
+    return [sats, regimes, !subSats.ready(), !subSchemas.ready()];
   });
 
   const [open, setOpen] = useState(false);
@@ -101,80 +101,95 @@ export const Mini = () => {
         <Dialog open={open} onClose={closeCard} maxWidth="xs" fullWidth>
           <SatCard satellite={sat} width={width} height={height} />
         </Dialog>
-        {orbits.map((orbit, index) => {
-          return (
-            <Paper key={index} className={classes.paper}>
-              <Typography variant="h5" className={classes.orbit}>
-                {orbit}
-              </Typography>
-              <Grid container>
-                {sats.map((sat, index) => {
-                  if (sat.orbit) {
-                    if (sat.orbit[0].orbit === orbit)
-                      return (
-                        <Grid item key={index} xs="auto" className={classes.card}>
-                          <Tooltip
-                            arrow
-                            className={classes.tooltip}
-                            title={
-                              <span className={classes.description}>
-                                <Typography
-                                  variant="body1"
-                                  className={classes.satName}
-                                >
-                                  {sat.names[0]?.name}
-                                </Typography>
-                                <Typography variant="body2">
-                                  {sat.descriptionShort[0]?.descriptionShort}
-                                </Typography>
-                              </span>
-                            }
-                          >
-                            <Typography
-                              variant="body2"
-                              onClick={() => openCard(sat)}
+        {isLoadingSats || isLoadingSchemas ? null : (
+          <React.Fragment>
+            {regimes.map((regime, index) => {
+              return (
+                <Paper key={index} className={classes.paper}>
+                  <Typography variant="h5" className={classes.orbit}>
+                    {regime}
+                  </Typography>
+                  <Grid container>
+                    {sats.map((sat, index) => {
+                      if (sat.orbit) {
+                        if (sat.orbit[0].orbit === regime)
+                          return (
+                            <Grid
+                              item
+                              key={index}
+                              xs="auto"
+                              className={classes.card}
                             >
-                              {sat.noradID}
-                            </Typography>
-                          </Tooltip>
-                        </Grid>
-                      );
-                  } else if (orbit === "Unknown") {
-                    return (
-                      <Grid item key={index} xs="auto">
-                        <Tooltip
-                          arrow
-                          className={classes.tooltip}
-                          title={
-                            <span className={classes.description}>
-                              <Typography
-                                variant="body1"
-                                className={classes.satName}
+                              <Tooltip
+                                arrow
+                                className={classes.tooltip}
+                                title={
+                                  <span className={classes.description}>
+                                    <Typography
+                                      variant="body1"
+                                      className={classes.satName}
+                                    >
+                                      {sat.names ? sat.names[0]?.name : "N/A"}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                      {
+                                        sat.descriptionShort[0]
+                                          ?.descriptionShort
+                                      }
+                                    </Typography>
+                                  </span>
+                                }
                               >
-                                {sat.names[0]?.name}
+                                <Typography
+                                  variant="body2"
+                                  onClick={() => openCard(sat)}
+                                >
+                                  {sat.noradID}
+                                </Typography>
+                              </Tooltip>
+                            </Grid>
+                          );
+                      } else if (regime === "Undetermined" && !sat.orbit) {
+                        return (
+                          <Grid item key={index} xs="auto">
+                            <Tooltip
+                              arrow
+                              className={classes.tooltip}
+                              title={
+                                <span className={classes.description}>
+                                  <Typography
+                                    variant="body1"
+                                    className={classes.satName}
+                                  >
+                                    {sat.names ? sat.names[0]?.name : "N/A"}
+                                  </Typography>
+                                  <Typography variant="body2">
+                                    {sat.descriptionShort
+                                      ? sat.descriptionShort[0]
+                                          ?.descriptionShort
+                                      : "No description available"}
+                                  </Typography>
+                                </span>
+                              }
+                            >
+                              <Typography
+                                variant="body2"
+                                onClick={() => openCard(sat)}
+                                className={classes.card}
+                              >
+                                {sat.noradID}
                               </Typography>
-                              <Typography variant="body2">
-                                {sat.descriptionShort[0]?.descriptionShort}
-                              </Typography>
-                            </span>
-                          }
-                        >
-                          <Typography
-                            variant="body2"
-                            onClick={() => openCard(sat)}
-                            className={classes.card}
-                          >
-                            {sat.noradID}
-                          </Typography>
-                        </Tooltip>
-                      </Grid>
-                    );
-                  }
-                })}
-              </Grid>
-            </Paper>
-          );
-        })}
+                            </Tooltip>
+                          </Grid>
+                        );
+                      }
+                    })}
+                  </Grid>
+                </Paper>
+              );
+            })}
+          </React.Fragment>
+        )}
       </span>
     </Grid>
   );

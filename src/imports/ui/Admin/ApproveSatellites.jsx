@@ -19,7 +19,11 @@ import {
   TableRow,
   TableCell,
   CircularProgress,
+  IconButton,
 } from "@material-ui/core";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import ErrorOutlinedIcon from "@material-ui/icons/ErrorOutlined";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,11 +42,25 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 12.5,
     paddingBottom: 12.5,
   },
+  filterableHeader: {
+    display: "flex",
+    alignItems: "center",
+  },
   tableRow: {
     "&:hover": {
       backgroundColor: theme.palette.action.hover,
       cursor: "pointer",
     },
+  },
+  warningIcon: {
+    fill: theme.palette.warning.light,
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
+    marginLeft: 15,
+  },
+  errorIcon: {
+    fill: theme.palette.error.light,
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
+    marginLeft: 15,
   },
   spinner: {
     color: theme.palette.text.primary,
@@ -58,21 +76,85 @@ export const ApproveSatellites = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [initialSatValues, setInitialSatValues] = useState(newSatValues);
+  const [viewAdminCheck, setViewAdminCheck] = useState(true);
+  const [viewMachineCheck, setViewMachineCheck] = useState(true);
+  const [viewDeleteCheck, setViewDeleteCheck] = useState(true);
 
   const [width, height] = useWindowSize();
 
-  const [satsDeleted, satsModified, isLoading] = useTracker(() => {
+  const [
+    satsDeleted,
+    satsAdminCheck,
+    satsMachineCheck,
+    satsBothCheck,
+    isLoading,
+  ] = useTracker(() => {
     const sub = Meteor.subscribe("satellites");
     const satsDeleted = SatelliteCollection.find({ isDeleted: true }).fetch();
-    const satsModified = SatelliteCollection.find({
+    const satsAdminCheck = SatelliteCollection.find({
+      adminCheck: false,
+      machineCheck: true,
+    }).fetch();
+    const satsMachineCheck = SatelliteCollection.find({
+      machineCheck: false,
+      adminCheck: true,
+    }).fetch();
+    const satsBothCheck = SatelliteCollection.find({
+      machineCheck: false,
       adminCheck: false,
     }).fetch();
-    return [satsDeleted, satsModified, !sub.ready()];
+    return [
+      satsDeleted,
+      satsAdminCheck,
+      satsMachineCheck,
+      satsBothCheck,
+      !sub.ready(),
+    ];
   });
 
   const handleRowClick = (sat) => {
     setShowModal(true);
     setInitialSatValues(sat);
+  };
+
+  const cells = (sat, i) => {
+    return (
+      <TableRow
+        key={`sat-row-${i}`}
+        className={classes.tableRow}
+        onClick={() => handleRowClick(sat)}
+      >
+        <TableCell key={`sat-id-${i}`}>{sat.noradID}</TableCell>
+        <TableCell key={`sat-name-${i}`}>{sat.names[0].name}</TableCell>
+        <TableCell key={`sat-adminCheck-${i}`}>
+          {!sat.adminCheck ? (
+            <ErrorOutlinedIcon
+              fontSize="small"
+              className={classes.warningIcon}
+            />
+          ) : null}
+        </TableCell>
+        <TableCell key={`sat-machineCheck-${i}`}>
+          {!sat.machineCheck ? (
+            <ErrorOutlinedIcon
+              fontSize="small"
+              className={classes.warningIcon}
+            />
+          ) : null}
+        </TableCell>
+        <TableCell key={`sat-delete-${i}`}>
+          {sat.isDeleted ? (
+            <ErrorOutlinedIcon fontSize="small" className={classes.errorIcon} />
+          ) : null}
+        </TableCell>
+        <TableCell key={`sat-modOn-${i}`}>
+          {`${sat.modifiedOn || sat.createdOn}`}
+        </TableCell>
+        <TableCell key={`sat-modBy-${i}`}>
+          {`${sat.modifiedBy || sat.createdBy}`}
+        </TableCell>
+      </TableRow>
+    );
   };
 
   return (
@@ -88,10 +170,49 @@ export const ApproveSatellites = () => {
                 <Typography variant="body2">NAME(S)</Typography>
               </TableCell>
               <TableCell>
-                <Typography variant="body2">REQUIRES REVIEW</Typography>
+                <span className={classes.filterableHeader}>
+                  <Typography variant="body2">ADMIN REVIEW</Typography>
+                  <IconButton
+                    size="small"
+                    onClick={() => setViewAdminCheck(!viewAdminCheck)}
+                  >
+                    {viewAdminCheck ? (
+                      <VisibilityIcon fontSize="small" />
+                    ) : (
+                      <VisibilityOffIcon fontSize="small" />
+                    )}
+                  </IconButton>
+                </span>
               </TableCell>
               <TableCell>
-                <Typography variant="body2">REQUIRES DELETION</Typography>
+                <span className={classes.filterableHeader}>
+                  <Typography variant="body2">MACHINE REVIEW</Typography>
+                  <IconButton
+                    size="small"
+                    onClick={() => setViewMachineCheck(!viewMachineCheck)}
+                  >
+                    {viewMachineCheck ? (
+                      <VisibilityIcon fontSize="small" />
+                    ) : (
+                      <VisibilityOffIcon fontSize="small" />
+                    )}
+                  </IconButton>
+                </span>
+              </TableCell>
+              <TableCell>
+                <span className={classes.filterableHeader}>
+                  <Typography variant="body2">DELETION</Typography>
+                  <IconButton
+                    size="small"
+                    onClick={() => setViewDeleteCheck(!viewDeleteCheck)}
+                  >
+                    {viewDeleteCheck ? (
+                      <VisibilityIcon fontSize="small" />
+                    ) : (
+                      <VisibilityOffIcon fontSize="small" />
+                    )}
+                  </IconButton>
+                </span>
               </TableCell>
               <TableCell>
                 <Typography variant="body2">MODIFIED ON</Typography>
@@ -110,59 +231,23 @@ export const ApproveSatellites = () => {
               </TableRow>
             )}
             {!isLoading &&
-              satsDeleted.map((sat, i) => {
-                return (
-                  <TableRow
-                    key={`sat-row-${i}`}
-                    className={classes.tableRow}
-                    onClick={() => handleRowClick(sat)}
-                  >
-                    <TableCell key={`sat-id-${i}`}>{sat.noradID}</TableCell>
-                    <TableCell key={`sat-name-${i}`}>
-                      {sat.names[0].name}
-                    </TableCell>
-                    <TableCell key={`sat-approve-${i}`}>
-                      {!sat.adminCheck ? "TRUE" : "FALSE"}
-                    </TableCell>
-                    <TableCell key={`sat-delete-${i}`}>
-                      {sat.isDeleted ? "TRUE" : "FALSE"}
-                    </TableCell>
-                    <TableCell key={`sat-modOn-${i}`}>
-                      {`${sat.modifiedOn || sat.createdOn}`}
-                    </TableCell>
-                    <TableCell key={`sat-modBy-${i}`}>
-                      {`${sat.modifiedBy || sat.createdBy}`}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+              satsDeleted.map((sat, i) =>
+                viewDeleteCheck ? cells(sat, i) : null
+              )}
             {!isLoading &&
-              satsModified.map((sat, i) => {
-                return !sat.isDeleted ? (
-                  <TableRow
-                    key={`sat-row-${i}`}
-                    className={classes.tableRow}
-                    onClick={() => handleRowClick(sat)}
-                  >
-                    <TableCell key={`sat-id-${i}`}>{sat.noradID}</TableCell>
-                    <TableCell key={`sat-name-${i}`}>
-                      {sat.names[0].name}
-                    </TableCell>
-                    <TableCell key={`sat-approve-${i}`}>
-                      {!sat.adminCheck ? "TRUE" : "FALSE"}
-                    </TableCell>
-                    <TableCell key={`sat-delete-${i}`}>
-                      {sat.isDeleted ? "TRUE" : "FALSE"}
-                    </TableCell>
-                    <TableCell key={`sat-modOn-${i}`}>
-                      {`${sat.modifiedOn || sat.createdOn}`}
-                    </TableCell>
-                    <TableCell key={`sat-modBy-${i}`}>
-                      {`${sat.modifiedBy || sat.createdBy}`}
-                    </TableCell>
-                  </TableRow>
-                ) : null;
-              })}
+              satsAdminCheck.map((sat, i) =>
+                !sat.isDeleted && viewAdminCheck ? cells(sat, i) : null
+              )}
+            {!isLoading &&
+              satsBothCheck.map((sat, i) =>
+                !sat.isDeleted && (viewMachineCheck || viewAdminCheck)
+                  ? cells(sat, i)
+                  : null
+              )}
+            {!isLoading &&
+              satsMachineCheck.map((sat, i) =>
+                !sat.isDeleted && viewMachineCheck ? cells(sat, i) : null
+              )}
           </TableBody>
         </Table>
       </TableContainer>
