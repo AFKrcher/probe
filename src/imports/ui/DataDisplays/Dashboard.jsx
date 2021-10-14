@@ -7,10 +7,10 @@ import { SatelliteModal } from "../SatelliteModal/SatelliteModal";
 import useWindowSize from "../Hooks/useWindowSize.jsx";
 
 //Components
-import {Gallery} from "./Gallery.jsx"
+import { Gallery } from "./Gallery.jsx";
 
 // @material-ui
-import { CircularProgress, makeStyles } from "@material-ui/core";
+import { CircularProgress, Grid, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   spinnerContainer: {
@@ -50,53 +50,67 @@ export const Dashboard = () => {
     return [sats, !sub.ready()];
   });
 
-  const nameMapper = (sat) =>{
-    let names = []
-    if(sat.names.length > 1){
-      for(let i = 1; i < sat.names.length; i++){    
-        if(i === sat.names.length -1){
-          names.push(`${sat.names[i].name}`)
-        }else{
-          names.push(`${sat.names[i].name}, `)
+  const nameMapper = (sat) => {
+    let names = [];
+    if (sat.names.length > 1) {
+      for (let i = 1; i < sat.names.length; i++) {
+        if (i === sat.names.length - 1) {
+          names.push(`${sat.names[i].name}`);
+        } else {
+          names.push(`${sat.names[i].name}, `);
         }
       }
     }
-    return(
-      ` (AKA: ${names.join(' ')})`
-    )
-  }
+    return ` (AKA: ${names.join(" ")})`;
+  };
 
-  const sat = !isLoading ? sats[0] : null
-  {/* {sat.names ? sat.names.map(name => `${name.name} `) : null} */}
+  const sat = !isLoading ? sats[0] : null;
+  // const test = (obj) => {
+  //   Object.keys(obj).map((key, index) => {
+  //     if (typeof obj[key] === "object") {
+  //       // console.log(key, obj[key]);
+  //       if (obj[key].length > 1) {
+  //         obj[key].map((item, i) => {
+  //           Object.keys(item).map((keys2, index2) => {
+  //             console.log(keys2);
+  //           });
+  //         });
+  //       }
+  //     }
+  //   });
+  // };
   return (
-    <React.Fragment>
+    <Grid container>
       {!isLoading && !sat.isDeleted ? (
         <React.Fragment>
-          {console.log(sat)}
-            {sat.names ? (
-            <div>
+          <Grid item container xs={12} spacing={10}>
+            <Grid item xs={6}>
+              {sat.names ? (
+                <div>
                   {sat.names[0].name}
-                  {sat.names.length > 1 ?
-                    nameMapper(sat) 
+                  {sat.names.length > 1 ? nameMapper(sat) : null}
+                </div>
+              ) : null}
+              <p>
+                Norad ID: {sat.noradID}
+                {sat.cosparID ? sat.cosparID.cosparID : null}
+              </p>
+              <p>
+                {sat.descriptionShort
+                  ? sat.descriptionShort[0].descriptionShort
                   : null}
-              </div>
-            )
-             : null}
-          <div>
-            <p>
-              Norad ID: {sat.noradID}
-              {sat.cosparID ? sat.cosparID.cosparID : null}
-            </p>
-            <p>
-              {sat.descriptionShort ? sat.descriptionShort[0].descriptionShort : null}
-              {sat.descriptionLong ? sat.descriptionLong[0].descriptionLong : null}
-            </p>
-          </div>
-          <Gallery initValues={sat}/>
-      </React.Fragment>
-      ):(
+                {sat.descriptionLong
+                  ? sat.descriptionLong[0].descriptionLong
+                  : null}
+              </p>
+            </Grid>
+            <Grid item xs={5}>
+              <Gallery initValues={sat} clickable={true} description={true} />
+            </Grid>
+          </Grid>
+        </React.Fragment>
+      ) : (
         <div className={classes.spinnerContainer}>
-          {console.log(sat)}
           <CircularProgress
             className={classes.spinner}
             size={100}
@@ -104,6 +118,6 @@ export const Dashboard = () => {
           />
         </div>
       )}
-    </React.Fragment>
+    </Grid>
   );
 };

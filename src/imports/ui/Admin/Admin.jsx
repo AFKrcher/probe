@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core";
 
 // CSS
-import "../CSS/tabs.css";
+import "../css/tabs.css";
 
 const useStyles = makeStyles((theme) => ({
   navbar: {
@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
   tabContainer: {
     marginTop: 5,
+    overflowY: "auto",
   },
   divider: {
     margin: 10,
@@ -55,6 +56,7 @@ export const Admin = () => {
         <Toolbar className={classes.tabContainer}>
           <Button
             size="medium"
+            style={{ marginLeft: 5, marginRight: 5 }}
             className={
               ("tabButton", toggleState === 1 ? "tabs active-tabs" : "tabs")
             }
@@ -71,6 +73,7 @@ export const Admin = () => {
           />
           <Button
             size="medium"
+            style={{ marginLeft: 5, marginRight: 5 }}
             className={
               ("tabButton", toggleState === 2 ? "tabs active-tabs" : "tabs")
             }
@@ -87,6 +90,7 @@ export const Admin = () => {
           />
           <Button
             size="medium"
+            style={{ marginLeft: 5, marginRight: 5 }}
             className={
               ("tabButton", toggleState === 3 ? "tabs active-tabs" : "tabs")
             }
@@ -103,6 +107,7 @@ export const Admin = () => {
           />
           <Button
             size="medium"
+            style={{ marginLeft: 5, marginRight: 5 }}
             className={
               ("tabButton", toggleState === 4 ? "tabs active-tabs" : "tabs")
             }
@@ -124,21 +129,18 @@ export const Admin = () => {
       </div>
       <Paper
         elevation={3}
-        className={classes.contentContainer}
         className={toggleState === 2 ? "tabs active-tabs" : "inactive-tabs"}
       >
         <ApproveSatellites />
       </Paper>
       <Paper
         elevation={3}
-        className={classes.contentContainer}
         className={toggleState === 3 ? "tabs active-tabs" : "inactive-tabs"}
       >
         <ApproveSchemas />
       </Paper>
       <Paper
         elevation={3}
-        className={classes.contentContainer}
         className={toggleState === 4 ? "tabs active-tabs" : "inactive-tabs"}
       >
         <ErrorLog />

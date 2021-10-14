@@ -4,12 +4,12 @@
 
 import * as Yup from "yup";
 import React from "react";
-import VerifiedIcon from "@material-ui/icons/CheckBox";
+import VerifiedIcon from "@material-ui/icons/CheckBoxOutlined";
 import ValidatedIcon from "@material-ui/icons/LibraryAddCheck";
-import ReportIcon from "@material-ui/icons/Report";
-import ErrorIcon from "@material-ui/icons/Warning";
-import ReportOutlinedIcon from "@material-ui/icons/ReportOutlined";
-import ErrorOutlinedIcon from "@material-ui/icons/ReportProblemOutlined";
+import IndeterminateIcon from "@material-ui/icons/IndeterminateCheckBox";
+import IndeterminateOutlinedIcon from "@material-ui/icons/IndeterminateCheckBoxOutlined";
+import NotReviewedIcon from "@material-ui/icons/Cancel";
+import NotReviewedOutlinedIcon from "@material-ui/icons/CancelOutlined";
 
 // Data display functions
 export const getSatName = (satellite) => {
@@ -94,9 +94,9 @@ export const decideVerifiedValidated = (
         (userChecking.length > 0 && machineChecking.length === 0) ||
         (userChecking.length === 0 && machineChecking.length > 0)
       )
-        return verified ? <ReportIcon /> : <ReportOutlinedIcon />;
+        return verified ? <IndeterminateOutlinedIcon /> : <IndeterminateIcon />;
       if (userChecking.length === 0 && machineChecking.length === 0)
-        return verified ? <ErrorIcon /> : <ErrorOutlinedIcon />;
+        return verified ? <NotReviewedOutlinedIcon /> : <NotReviewedIcon />;
     } else if (!tip) {
       if (userChecking.length > 0 && machineChecking.length > 0)
         return classes.validatedAdornment;
@@ -142,11 +142,29 @@ export const emptyDataRemover = (values) => {
   }
 
   deleteEmptyArr.forEach((emptyEntry) => delete values[emptyEntry]);
-  values.names?.length > 0
-    ? null
-    : (values.names = [
-        { reference: "https://www.placeholder.org/", name: "N/A" },
-      ]);
+  if (!values.names?.length > 0)
+    values.names = [
+      {
+        reference: "https://www.placeholder.org/",
+        name: "N/A",
+        verified: [
+          {
+            method: "",
+            name: "",
+            verified: false,
+            verifiedOn: "",
+          },
+        ],
+        validated: [
+          {
+            method: "",
+            name: "",
+            validated: false,
+            validatedOn: "",
+          },
+        ],
+      },
+    ];
   return values;
 };
 

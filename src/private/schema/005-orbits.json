@@ -1,5 +1,5 @@
 {
-  "name": "orbit",
+  "name": "orbits",
   "description": "Satellite's orbit parameters and/or description.",
   "fields": [
     {
@@ -18,7 +18,15 @@
     {
       "name": "orbit",
       "type": "string",
-      "allowedValues": ["GEO", "LEO", "HEO", "SSO", "Polar", "GTO", "unknown"],
+      "allowedValues": [
+        "GEO",
+        "LEO",
+        "HEO",
+        "SSO",
+        "Polar",
+        "GTO",
+        "Undetermined"
+      ],
       "required": true
     },
     {
