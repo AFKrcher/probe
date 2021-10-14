@@ -31,28 +31,29 @@ The application should be intuitive and easy-to-use, even for a first-time user.
 The public API allows all users to obtain information on satellites and schemas produced by PROBE. Queries can be made to obtain specific satellites or schemas. Below is a non-exhaustive list of example requests:
 
 Endpoint:
+
 `/api/`
+
 Response:
 
 ```
 "Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
 ```
 
-**WIP**
 
 ### Partner API
 
 The partner API allows registered partners to got beyond simple GET requests of the public API. The partner API is used mainly for PATCH, POST, and DELETE requests, as well as GET requests of more detailed information. Below is a non-exhaustive list of example requests:
 
 Endpoint:
+
 `/api/partner/:key`
+
 Response:
 
 ```
 "Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
 ```
-
-**WIP**
 
 ## How To Contribute
 
