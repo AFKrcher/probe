@@ -1,5 +1,6 @@
 import { SatelliteCollection } from "/imports/api/satellites";
 import { SchemaCollection } from "/imports/api/schemas";
+import { Meteor } from "meteor/meteor";
 import express from "express";
 import dotenv from "dotenv";
 
@@ -16,15 +17,27 @@ app.use(express.urlencoded({ extended: false }));
 
 WebApp.connectHandlers.use(app);
 
-app.patch("/api/patch/satellites/:key", (req, res) => {
+app.patch("/api/partner/:key", (req, res) => {
   const response =
     req.params.key === PROBE_API_KEY
-      ? "Welcome to the PROBE partner API"
+      ? "Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
       : "Unauthorized [401]";
   const status = req.params.key === PROBE_API_KEY ? 200 : 401;
-  res
-    .status(status)
-    .json({ reqBody: req.body, reqParams: req.params, reponse: response });
+  res.setHeader("Content-Type", "application/json");
+  res.writeHead(status);
+  res.end(JSON.stringify(response));
+});
+
+app.patch("/api/partner/:key/user", (req, res) => {
+  const checkKey = req.params.key === PROBE_API_KEY;
+  res.setHeader("Content-Type", "application/json");
+  if (checkKey) {
+    res.writeHead(200);
+    res.end(JSON.stringify("You are a partner!"));
+  } else {
+    res.writeHead(401);
+    res.end("Unauthorized [401]");
+  }
 });
 
 WebApp.connectHandlers.use("/api/satellites", async (req, res) => {
@@ -203,7 +216,7 @@ WebApp.connectHandlers.use("/api/", (req, res) => {
   res.writeHead(200);
   res.end(
     JSON.stringify(
-      "Welcome to the PROBE API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
+      "Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
     )
   );
 });

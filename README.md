@@ -17,8 +17,42 @@ The main focus of this application is data entry experience, data validation, an
 - Client: ReactJS
 - Server: Meteor/WebApp
 - Repository: [GitHub](https://github.com/AFKrcher/PSRA)
-- Staging Deployment: [Meteor](http://probe.meteorapp.com/)
-- Production Deployment: [PROBE](https://probe.saberastro.com)
+- Staging Deployment: [PROBE](https://probe.saberastro.com)
+- Production Deployment: **WIP**
+
+## Usage
+
+### Application
+
+The application should be intuitive and easy-to-use, even for a first-time user. If something is not clear, tooltips, keys, and captions are sprinkled throughout the application instructing users on what things are and how they work. If you think the UI/UX is not user-friendly enough, please submit an issue and a suggestion on how we fix it!
+
+### Public API
+
+The public API allows all users to obtain information on satellites and schemas produced by PROBE. Queries can be made to obtain specific satellites or schemas. Below is a non-exhaustive list of example requests:
+
+Endpoint:
+`/api/`
+Response:
+
+```
+"Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
+```
+
+**WIP**
+
+### Partner API
+
+The partner API allows registered partners to got beyond simple GET requests of the public API. The partner API is used mainly for PATCH, POST, and DELETE requests, as well as GET requests of more detailed information. Below is a non-exhaustive list of example requests:
+
+Endpoint:
+`/api/partner/:key`
+Response:
+
+```
+"Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
+```
+
+**WIP**
 
 ## How To Contribute
 
@@ -29,7 +63,11 @@ The main focus of this application is data entry experience, data validation, an
 3. Set-up your feature branches to the following standard: `feature/<feature name>-<GitHub username>`
 4. Ensure that any libraries or technologies that you use are properly listed in the dependency tree and in this README's [Libraries](#Libraries) section
 5. Contribute to the main/master repository through clear and succinct pull requests
-6. When not contributing code directly, generate issues on GitHub with context, problem statement, and, if possible, a suggested solution or target
+6. When not contributing code directly, generate issues on GitHub with context, problem statement, and, if possible, a suggested solution
+
+### GitLab
+
+**WIP**
 
 ### Installation
 
@@ -39,6 +77,20 @@ The main focus of this application is data entry experience, data validation, an
 4. Inside the src folder run `meteor npm install`
 5. Run `meteor`
 6. Go to `http://localhost:3000` and you should see the test app running.
+
+### Environment Variables
+
+Environment variables that control the operation of the app are defined in the
+`.env` file in the application root. These variables and their usage are shown
+in the following table.
+
+Environment variables maintained in the `.env` file are made available to the
+application code via `process.env.<variable-name>`. Prior to development or deployments, the following environment variables must be defined in the `.env` file. A `.env.example` has been provided in the `~/src/private` as a template.
+
+| Environment Variable | Description                               | Example Setting | Applicability |
+| :------------------- | :---------------------------------------- | :-------------- | :------------ |
+| ADMIN_PASSWORD       | Password for admin account in development | password        | server        |
+| PROBE_API_KEY        | PROBE API access key                      | password        | server        |
 
 ### Access MongoDB
 
@@ -51,7 +103,11 @@ show collections
 db.<collection name>.find()
 ```
 
-### Deployment
+### Docker Deployment
+
+**WIP**
+
+### AWS Deployment
 
 **Note**: Meteor only runs with NodeJS 14.17.1, so you need to install nvm and run `nvm install 14.17.1`
 
@@ -79,20 +135,6 @@ export ROOT_URL=''
 export MAIL_URL=''
 node main.js
 ```
-
-### Environment Variables
-
-Environment variables that control the operation of the app are defined in the
-`.env` file in the application root. These variables and their usage are shown
-in the following table.
-
-Environment variables maintained in the `.env` file are made available to the
-application code via `process.env.<variable-name>`. Prior to development or deployments, the following environment variables must be defined in the `.env` file. A `.env.example` has been provided in the `~/src/private` as a template.
-
-| Environment Variable | Description                               | Example Setting | Applicability |
-| :------------------- | :---------------------------------------- | :-------------- | :------------ |
-| ADMIN_PASSWORD       | Password for admin account in development | password        | server        |
-| PROBE_API_KEY        | PROBE API access key                      | password        | server        |
 
 ## Libraries
 
