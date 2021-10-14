@@ -44,6 +44,7 @@ The main focus of this application is data entry experience, data validation, an
 
 1. Meteor must be running
 2. In the command prompt run
+
 ```
 meteor mongo
 show collections
@@ -79,6 +80,20 @@ export MAIL_URL=''
 node main.js
 ```
 
+### Environment Variables
+
+Environment variables that control the operation of the app are defined in the
+`.env` file in the application root. These variables and their usage are shown
+in the following table.
+
+Environment variables maintained in the `.env` file are made available to the
+application code via `process.env.<variable-name>`. Prior to development or deployments, the following environment variables must be defined in the `.env` file. A `.env.example` has been provided in the `~/src/private` as a template.
+
+| Environment Variable | Description                               | Example Setting | Applicability |
+| :------------------- | :---------------------------------------- | :-------------- | :------------ |
+| ADMIN_PASSWORD       | Password for admin account in development | password        | server        |
+| PROBE_API_KEY        | PROBE API access key                      | password        | server        |
+
 ## Libraries
 
 The following is a list of notable packages and technologies used to build this application. Those not listed are considered defaults for the Meteor or React frameworks.
@@ -91,12 +106,14 @@ The following is a list of notable packages and technologies used to build this 
 | formik                | Development | Form management library              |
 | formik-material-ui    | Development | Formik + MUI compatability library   |
 | react-swipeable-views | Development | Picture gallery component            |
+| dotenv                | Development | Configuration .env reader            |
 | meteor                | Runtime     | App adaptation library for Meteor    |
 | react                 | Runtime     | Web-application framework            |
 | react-dom             | Runtime     | DOM renderer for React               |
 | yup                   | Runtime     | Object schema and validation library |
 | use-debounce          | Runtime     | React debouncing hook                |
 | helmet                | Runtime     | CSP and HTTP header security         |
+| express               | Runtime     | HTTP utility methods                 |
 
 ### Meteor
 

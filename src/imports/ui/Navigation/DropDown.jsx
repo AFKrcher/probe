@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 // Imports
-import { useHistory } from "react-router";
 import { Roles } from "meteor/alanning:roles";
 import { useTracker } from "meteor/react-meteor-data";
 import { Link } from "react-router-dom";
@@ -23,7 +22,7 @@ import Brightness2 from "@material-ui/icons/Brightness2";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 
 // CSS
-import { themes } from "../CSS/Themes.jsx";
+import { themes } from "../css/Themes.jsx";
 
 const useStyles = makeStyles((theme) => ({
   settings: {

@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
   },
   dataGrid: {
     backgroundColor: theme.palette.grid.background,
-    overflowY: "auto",
     "& .MuiDataGrid-row": {
       cursor: "pointer",
     },
@@ -190,8 +189,10 @@ export const Users = () => {
       text: (
         <span>
           {role === "dummies"
-            ? `Are you sure you want to ban ${user.username}?`
-            : `Are you sure you want to permanently delete ${user.username}?`}
+            ? `Are you sure you want to ban ${user?.username || "N/A"}?`
+            : `Are you sure you want to permanently delete ${
+                user?.username || "N/A"
+              }?`}
         </span>
       ),
       actions: (
@@ -203,7 +204,7 @@ export const Users = () => {
           onClick={() => {
             role === "dummies"
               ? (addUserToRole(user, role), setOpenAlert(false))
-              : (deleteAccount(user._id), setOpenAlert(false));
+              : (deleteAccount(user?._id), setOpenAlert(false));
           }}
         >
           Confirm
@@ -247,7 +248,7 @@ export const Users = () => {
           <DialogTitle>
             <div className={classes.modalHeader}>
               <Typography variant="h5">
-                Managing <strong>{editUser.username}</strong>
+                Managing <strong>{editUser?.username || "N/A"}</strong>
               </Typography>
               <IconButton size="small" onClick={handleClose}>
                 <CloseIcon />
@@ -273,7 +274,7 @@ export const Users = () => {
                   orientation="horizontal"
                 />
               </Grid>
-              {Roles.getRolesForUser(editUser._id).map((role, index) => {
+              {Roles.getRolesForUser(editUser?._id).map((role, index) => {
                 return (
                   <React.Fragment key={index}>
                     <Grid item xs={7} className={classes.rolesRow}>
@@ -308,7 +309,7 @@ export const Users = () => {
             variant="contained"
             onClick={() => verifyChange(editUser, "dummies")}
             color="secondary"
-            disabled={Roles.getRolesForUser(editUser._id).includes("admin")}
+            disabled={Roles.getRolesForUser(editUser?._id).includes("admin")}
           >
             Ban
           </Button>
@@ -317,7 +318,7 @@ export const Users = () => {
             variant="contained"
             onClick={() => verifyChange(editUser, "delete")}
             color="secondary"
-            disabled={Roles.getRolesForUser(editUser._id).includes("admin")}
+            disabled={Roles.getRolesForUser(editUser?._id).includes("admin")}
           >
             Delete
           </Button>
@@ -327,7 +328,9 @@ export const Users = () => {
             onClick={() => addUserToRole(editUser, "moderator")}
             color="primary"
             autoFocus
-            disabled={Roles.getRolesForUser(editUser._id).includes("moderator")}
+            disabled={Roles.getRolesForUser(editUser?._id).includes(
+              "moderator"
+            )}
           >
             Make Moderator
           </Button>
@@ -337,7 +340,7 @@ export const Users = () => {
             onClick={() => addUserToRole(editUser, "admin")}
             color="primary"
             autoFocus
-            disabled={Roles.getRolesForUser(editUser._id).includes("admin")}
+            disabled={Roles.getRolesForUser(editUser?._id).includes("admin")}
           >
             Make Admin
           </Button>

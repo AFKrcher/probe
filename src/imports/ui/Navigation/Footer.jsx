@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignContent: "center",
+    borderRadius: 0,
   },
   link: {
     color: theme.palette.text.primary,

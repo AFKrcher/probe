@@ -152,6 +152,7 @@ export const SatelliteModal = ({
             </span>
           );
           setOpenSnack(true);
+          setTimeout(() => setOpenSnack(false), 2000);
           setEditing(false);
           handleClose();
         }
@@ -172,6 +173,7 @@ export const SatelliteModal = ({
             </span>
           );
           setOpenSnack(true);
+          setTimeout(() => setOpenSnack(false), 2000);
         }
       });
     }
@@ -179,9 +181,9 @@ export const SatelliteModal = ({
     setEditing(false);
   };
 
-  const handleDelete = () => {
+  const handleDelete = (values) => {
     if (!admin) {
-      Meteor.call("deleteSatellite", initValues, (err, res) => {
+      Meteor.call("deleteSatellite", values, (err, res) => {
         if (res || err) {
           console.log(res || err);
         } else {
@@ -191,17 +193,15 @@ export const SatelliteModal = ({
           setSnack(
             <span>
               Deleted{" "}
-              <strong>
-                {initValues.names ? initValues.names[0].name : "N/A"}
-              </strong>
-              !
+              <strong>{values.names ? values.names[0].name : "N/A"}</strong>!
             </span>
           );
           setOpenSnack(true);
+          setTimeout(() => setOpenSnack(false), 2000);
         }
       });
     } else {
-      Meteor.call("actuallyDeleteSatellite", initValues, (err, res) => {
+      Meteor.call("actuallyDeleteSatellite", values, (err, res) => {
         if (res || err) {
           console.log(res || err);
         } else {
@@ -210,33 +210,30 @@ export const SatelliteModal = ({
           setSnack(
             <span>
               Deleted{" "}
-              <strong>
-                {initValues.names ? initValues.names[0].name : "N/A"}
-              </strong>{" "}
+              <strong>{values.names ? values.names[0].name : "N/A"}</strong>{" "}
               forever!
             </span>
           );
           handleClose();
           setOpenSnack(true);
+          setTimeout(() => setOpenSnack(false), 2000);
         }
       });
     }
   };
 
-  const handleDeleteDialog = () => {
+  const handleDeleteDialog = (values) => {
     setAlert({
       title: (
         <span>
-          Delete{" "}
-          <strong>{initValues.names ? initValues.names[0].name : "N/A"}</strong>
-          ?
+          Delete <strong>{values.names ? values.names[0].name : "N/A"}</strong>?
         </span>
       ),
       text: (
         <span>
           Are you sure you want to delete{" "}
-          <strong>{initValues.names ? initValues.names[0].name : "N/A"}</strong>{" "}
-          and all of its data?
+          <strong>{values.names ? values.names[0].name : "N/A"}</strong> and all
+          of its data?
         </span>
       ),
       actions: (
@@ -245,7 +242,7 @@ export const SatelliteModal = ({
           variant="contained"
           color="secondary"
           disableElevation
-          onClick={handleDelete}
+          onClick={() => handleDelete(values)}
         >
           Confirm
         </Button>
@@ -308,72 +305,69 @@ export const SatelliteModal = ({
         closeAction: "Cancel",
       });
       setOpenAlert(true);
+      setTimeout(() => setOpenSnack(false), 2000);
     } else {
       handleToggleEdit(setValues, values, setErrors);
     }
   };
 
-  const handleVerifyData = () => {
+  const handleVerifyData = (values, setValues) => {
     if (admin) {
       Meteor.call(
         "checkSatelliteData",
-        initValues,
+        values,
         "verify",
         "user",
         (err, res) => {
-          if (res || err) {
-            console.log(res || err);
+          if (err) {
+            console.log(err);
           } else {
             setOpenAlert(false);
             setOpenSnack(false);
             setSnack(
               <span>
                 Verified data for{" "}
-                <strong>
-                  {initValues.names ? initValues.names[0].name : "N/A"}
-                </strong>
-                !
+                <strong>{values.names ? values.names[0].name : "N/A"}</strong>!
               </span>
             );
-            handleClose();
             setOpenSnack(true);
+            setTimeout(() => setOpenSnack(false), 2000);
+            setValues(res);
           }
         }
       );
     }
   };
 
-  const handleValidateData = () => {
+  const handleValidateData = (values, setValues) => {
     if (admin) {
       Meteor.call(
         "checkSatelliteData",
-        initValues,
+        values,
         "validate",
         "user",
         (err, res) => {
-          if (res || err) {
-            console.log(res || err);
+          if (err) {
+            console.log(err);
           } else {
             setOpenAlert(false);
             setOpenSnack(false);
             setSnack(
               <span>
                 Validated data for{" "}
-                <strong>
-                  {initValues.names ? initValues.names[0].name : "N/A"}
-                </strong>
-                !
+                <strong>{values.names ? values.names[0].name : "N/A"}</strong>!
               </span>
             );
-            handleClose();
             setOpenSnack(true);
+            setTimeout(() => setOpenSnack(false), 2000);
+            setValues(res);
           }
         }
       );
     }
   };
 
-  const handleRestore = () => {
+  const handleRestore = (values) => {
     Meteor.call("restoreSatellite", initValues, (err, res) => {
       if (res || err) {
         console.log(res || err);
@@ -382,11 +376,12 @@ export const SatelliteModal = ({
         setOpenSnack(false);
         setSnack(
           <span>
-            Restored <strong>{initValues?.names[0]?.name}</strong>!
+            Restored <strong>{values?.names[0]?.name}</strong>!
           </span>
         );
         handleClose();
         setOpenSnack(true);
+        setTimeout(() => setOpenSnack(false), 2000);
       }
     });
   };
@@ -449,7 +444,6 @@ export const SatelliteModal = ({
               setTouched,
             }) => (
               <Form>
-                {console.log(values)}
                 {isLoadingSch || isLoadingSat ? (
                   <DialogContent className={classes.loadingDialog}>
                     <CircularProgress size={75} />
@@ -460,7 +454,7 @@ export const SatelliteModal = ({
                     style={decideHeight()}
                   >
                     <div className={classes.gallery}>
-                      <Gallery initValues={initValues} />
+                      <Gallery initValues={initValues} width={width} />
                     </div>
                     <Typography className={classes.description}>
                       Last change made by{" "}
@@ -500,13 +494,13 @@ export const SatelliteModal = ({
                         return (
                           <React.Fragment>
                             <Button
-                              size={width && width < 500 ? "small" : "medium"}
+                              size={width && width < 600 ? "small" : "medium"}
                               variant="contained"
                               color="secondary"
                               startIcon={
-                                width && width < 500 ? null : <DeleteIcon />
+                                width && width < 600 ? null : <DeleteIcon />
                               }
-                              onClick={handleDeleteDialog}
+                              onClick={() => handleDeleteDialog(values)}
                             >
                               {admin && width > 825
                                 ? "Delete Forever"
@@ -514,12 +508,12 @@ export const SatelliteModal = ({
                             </Button>
                             {admin && values.isDeleted ? (
                               <Button
-                                size={width && width < 500 ? "small" : "medium"}
+                                size={width && width < 600 ? "small" : "medium"}
                                 variant="contained"
                                 color="primary"
-                                onClick={handleRestore}
+                                onClick={() => handleRestore(values)}
                                 startIcon={
-                                  width && width < 500 ? null : (
+                                  width && width < 600 ? null : (
                                     <RestorePageIcon />
                                   )
                                 }
@@ -538,7 +532,7 @@ export const SatelliteModal = ({
                       component={() => {
                         return (
                           <Button
-                            size={width && width < 500 ? "small" : "medium"}
+                            size={width && width < 600 ? "small" : "medium"}
                             variant="contained"
                             color={
                               editing && dirty && Object.keys(touched).length
@@ -555,7 +549,7 @@ export const SatelliteModal = ({
                               );
                             }}
                             startIcon={
-                              width && width < 500 ? null : editing ? (
+                              width && width < 600 ? null : editing ? (
                                 dirty && Object.keys(touched).length ? (
                                   <DeleteIcon />
                                 ) : null
@@ -571,53 +565,57 @@ export const SatelliteModal = ({
                       loginRequired={true}
                     />
                   )}
-                  {!editing && admin && !values.isDeleted && (
-                    <React.Fragment>
-                      <Button
-                        size={width && width < 500 ? "small" : "medium"}
-                        variant="contained"
-                        color="primary"
-                        onClick={handleVerifyData}
-                        startIcon={
-                          width && width < 500 ? null : <VerifiedIcon />
-                        }
-                      >
-                        Verify
-                      </Button>
-                      <Button
-                        size={width && width < 500 ? "small" : "medium"}
-                        variant="contained"
-                        color="primary"
-                        onClick={handleValidateData}
-                        startIcon={
-                          width && width < 500 ? null : <ValidatedIcon />
-                        }
-                      >
-                        Validate
-                      </Button>
-                    </React.Fragment>
-                  )}
+                  {!editing &&
+                    !editingOne &&
+                    admin &&
+                    !values.isDeleted &&
+                    !values.adminCheck && (
+                      <React.Fragment>
+                        <Button
+                          size={width && width < 600 ? "small" : "medium"}
+                          variant="contained"
+                          color="primary"
+                          onClick={() => handleVerifyData(values, setValues)}
+                          startIcon={
+                            width && width < 600 ? null : <VerifiedIcon />
+                          }
+                        >
+                          Verify
+                        </Button>
+                        <Button
+                          size={width && width < 600 ? "small" : "medium"}
+                          variant="contained"
+                          color="primary"
+                          onClick={() => handleValidateData(values, setValues)}
+                          startIcon={
+                            width && width < 600 ? null : <ValidatedIcon />
+                          }
+                        >
+                          Validate
+                        </Button>
+                      </React.Fragment>
+                    )}
                   {!editing && !editingOne && (
                     <Button
-                      size={width && width < 500 ? "small" : "medium"}
+                      size={width && width < 600 ? "small" : "medium"}
                       variant="contained"
                       onClick={() => {
                         handleClose();
                         setEditingOne(false);
                         setErrors({});
                       }}
-                      startIcon={width && width < 500 ? null : <CloseIcon />}
+                      startIcon={width && width < 600 ? null : <CloseIcon />}
                     >
                       Close
                     </Button>
                   )}
                   {editing && !editingOne && (
                     <Button
-                      size={width && width < 500 ? "small" : "medium"}
+                      size={width && width < 600 ? "small" : "medium"}
                       type="submit"
                       variant="contained"
                       color="primary"
-                      startIcon={width && width < 500 ? null : <SaveIcon />}
+                      startIcon={width && width < 600 ? null : <SaveIcon />}
                       disabled={
                         Object.entries(errors).length > 0 ||
                         !dirty ||

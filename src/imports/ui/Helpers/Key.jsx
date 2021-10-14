@@ -6,12 +6,12 @@ import StarIcon from "@material-ui/icons/Star";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import MouseIcon from "@material-ui/icons/Mouse";
-import VerifiedIcon from "@material-ui/icons/CheckBox";
-import ValidatedIcon from "@material-ui/icons/LibraryAddCheckOutlined";
-import ReportIcon from "@material-ui/icons/Report";
-import ErrorIcon from "@material-ui/icons/Warning";
-import ReportOutlinedIcon from "@material-ui/icons/ReportOutlined";
-import ErrorOutlinedIcon from "@material-ui/icons/ReportProblemOutlined";
+import VerifiedIcon from "@material-ui/icons/CheckBoxOutlined";
+import ValidatedIcon from "@material-ui/icons/LibraryAddCheck";
+import IndeterminateIcon from "@material-ui/icons/IndeterminateCheckBox";
+import IndeterminateOutlinedIcon from "@material-ui/icons/IndeterminateCheckBoxOutlined";
+import NotReviewedIcon from "@material-ui/icons/Cancel";
+import NotReviewedOutlinedIcon from "@material-ui/icons/CancelOutlined";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,7 +93,7 @@ export const Key = ({ page }) => {
               </React.Fragment>
             )}
           </Typography>
-          {page !== "SchemasTable"  && (
+          {page !== "SchemasTable" && (
             <React.Fragment>
               <Typography gutterBottom variant="body2" className={classes.key}>
                 <DashboardIcon fontSize="small" className={classes.keyItems} />
@@ -134,46 +134,79 @@ export const Key = ({ page }) => {
           {page === "SatellitesTable" && (
             <React.Fragment>
               <Typography gutterBottom variant="body2" className={classes.key}>
-                <VerifiedIcon
-                  fontSize="small"
-                  className={classes.keyItemsValid}
-                />
-                <ValidatedIcon
-                  fontSize="small"
-                  className={classes.keyItemsValid}
-                />
-                <span className={classes.keyItems}>–</span> Indicates that
-                information has been verified to be in the reference or
-                validated across multiple sources by user(s) AND web-crawling
-                algorithm(s)
+                <Tooltip
+                  title="Verified by <method>: <name> on <date>, and <method>: <method>: <name> on <date>"
+                  placement="top"
+                  arrow
+                >
+                  <VerifiedIcon
+                    fontSize="small"
+                    className={classes.keyItemsValid}
+                  />
+                </Tooltip>
+                <Tooltip
+                  title="Validated across multiple sources by <method>: <name> on <date>, and <method>: <method>: <name> on <date>"
+                  placement="top"
+                  arrow
+                >
+                  <ValidatedIcon
+                    fontSize="small"
+                    className={classes.keyItemsValid}
+                  />
+                </Tooltip>
+                <span className={classes.keyItems}>–</span> Information has been
+                FULLY verified to be in the reference or validated across
+                multiple sources by user(s) and web-crawling algorithm(s)
               </Typography>
               <Typography gutterBottom variant="body2" className={classes.key}>
-                <ReportIcon
-                  fontSize="small"
-                  className={classes.keyItemsPartial}
-                />
-                <ReportOutlinedIcon
-                  fontSize="small"
-                  className={classes.keyItemsPartial}
-                />
-                <span className={classes.keyItems}>–</span> Indicates that
-                information has ONLY been verified to be in the reference or
-                validated across multiple sources by user(s) OR web-crawling
-                algorithm(s)
+                <Tooltip
+                  title="Verified by <method>: <name> on <date>"
+                  placement="top"
+                  arrow
+                >
+                  <IndeterminateOutlinedIcon
+                    fontSize="small"
+                    className={classes.keyItemsPartial}
+                  />
+                </Tooltip>
+                <Tooltip
+                  title="Validated across multiple sources by <method>: <name> on <date>"
+                  placement="top"
+                  arrow
+                >
+                  <IndeterminateIcon
+                    fontSize="small"
+                    className={classes.keyItemsPartial}
+                  />
+                </Tooltip>
+                <span className={classes.keyItems}>–</span> Information has
+                PARTIALLY been verified to be in the reference or validated
+                across multiple sources by user(s) or web-crawling algorithm(s)
               </Typography>
               <Typography gutterBottom variant="body2" className={classes.key}>
-                <ErrorIcon
-                  fontSize="small"
-                  className={classes.keyItemsInvalid}
-                />
-                <ErrorOutlinedIcon
-                  fontSize="small"
-                  className={classes.keyItemsInvalid}
-                />
-                <span className={classes.keyItems}>–</span> Indicates that
-                information has NOT been verified to be in the reference or
-                validated across multiple sources by user(s) OR web-crawling
-                algorithm(s)
+                <Tooltip
+                  title="Not verified by user nor machine"
+                  placement="top"
+                  arrow
+                >
+                  <NotReviewedOutlinedIcon
+                    fontSize="small"
+                    className={classes.keyItemsInvalid}
+                  />
+                </Tooltip>
+                <Tooltip
+                  title="Not validated by user nor machine"
+                  placement="top"
+                  arrow
+                >
+                  <NotReviewedIcon
+                    fontSize="small"
+                    className={classes.keyItemsInvalid}
+                  />
+                </Tooltip>
+                <span className={classes.keyItems}>–</span> Information has NOT
+                been verified to be in the reference or validated across
+                multiple sources by user(s) or web-crawling algorithm(s)
               </Typography>
             </React.Fragment>
           )}
