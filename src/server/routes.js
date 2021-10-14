@@ -1,8 +1,33 @@
-import { Meteor } from "meteor/meteor";
 import { SatelliteCollection } from "/imports/api/satellites";
 import { SchemaCollection } from "/imports/api/schemas";
+import express from "express";
+import dotenv from "dotenv";
 
-WebApp.connectHandlers.use("/api/satellites", async (req, res, next) => {
+dotenv.config({
+  path: Assets.absoluteFilePath(".env"), // .env file in the private folder
+});
+
+const { PROBE_API_KEY } = process.env;
+
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+WebApp.connectHandlers.use(app);
+
+app.patch("/api/patch/satellites/:key", (req, res) => {
+  const response =
+    req.params.key === PROBE_API_KEY
+      ? "Welcome to the PROBE partner API"
+      : "Unauthorized [401]";
+  const status = req.params.key === PROBE_API_KEY ? 200 : 401;
+  res
+    .status(status)
+    .json({ reqBody: req.body, reqParams: req.params, reponse: response });
+});
+
+WebApp.connectHandlers.use("/api/satellites", async (req, res) => {
   async function getSats() {
     res.setHeader("Content-Type", "application/json");
     const sats = await SatelliteCollection.find({});
@@ -148,7 +173,7 @@ WebApp.connectHandlers.use("/api/satellites", async (req, res, next) => {
   getSats();
 });
 
-WebApp.connectHandlers.use("/api/schemas", (req, res, next) => {
+WebApp.connectHandlers.use("/api/schemas", (req, res) => {
   function getSchema() {
     res.setHeader("Content-Type", "application/json");
     try {
@@ -173,7 +198,7 @@ WebApp.connectHandlers.use("/api/schemas", (req, res, next) => {
   getSchema();
 });
 
-WebApp.connectHandlers.use("/api/", (req, res, next) => {
+WebApp.connectHandlers.use("/api/", (req, res) => {
   res.setHeader("Content-Type", "application/json");
   res.writeHead(200);
   res.end(

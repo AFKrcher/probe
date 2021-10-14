@@ -121,7 +121,6 @@ const useStyles = makeStyles((theme) => ({
 
 const newSatValues = {
   noradID: "",
-  isDeleted: false,
 };
 
 export const SatellitesTable = () => {
@@ -149,7 +148,6 @@ export const SatellitesTable = () => {
   const [selector, setSelector] = useState({ isDeleted: false });
   const [columns, setColumns] = useState([]);
   const [prompt, setPrompt] = useState();
-  const [showKey, setShowKey] = useState(false);
 
   const debounced = useDebouncedCallback((row) => {
     if (row?.row?.description) {

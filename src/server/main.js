@@ -10,18 +10,25 @@ import { SchemaCollection } from "/imports/api/schemas";
 import { SatelliteCollection } from "/imports/api/satellites";
 import { UsersCollection } from "/imports/api/users";
 import { ErrorsCollection } from "/imports/api/errors";
-// import { helmetOptions } from "./helmet";
 import { schemaValidatorShaper } from "./utils/schemaDataFuncs";
 import { satelliteValidatorShaper } from "./utils/satelliteDataFuncs";
+// import { helmetOptions } from "./helmet";
+import "./routes";
+import dotenv from "dotenv";
 import {
   userHasVerifiedData,
   machineHasVerifiedData,
 } from "./utils/verificationFuncs";
 import {
-  userHasValidateddData,
-  machineHasValidateddData,
+  userHasValidatedData,
+  machineHasValidatedData,
 } from "./utils/validationFuncs";
-import "./routes";
+
+dotenv.config({
+  path: Assets.absoluteFilePath(".env"), // .env file in the private folder
+});
+
+const { ADMIN_PASSWORD } = process.env;
 
 const fs = Npm.require("fs");
 
@@ -39,12 +46,15 @@ const isValidUsername = (oldUsername, newUsername) => {
 
 Meteor.startup(() => {
   console.log("> PROBE server is starting-up...");
+
+  // TODO: ensure helmet CSP options are compaitable with AWS instance and configuration
   // See helmet.js for Content Security Policy (CSP) options
   // WebApp.connectHandlers.use(helmet(helmetOptions()));
 
   // Account publications, methods, and seeds
   Roles.createRole("admin", { unlessExists: true });
   Roles.createRole("moderator", { unlessExists: true });
+  Roles.createRole("machine", { unlessExists: true });
   Roles.createRole("dummies", { unlessExists: true });
 
   // Email verification and password reset emails
@@ -237,11 +247,11 @@ Meteor.startup(() => {
       Accounts.createUser({
         email: "admin@saberastro.com",
         username: "admin",
-        password: "12345678aA!", // only for local dev testing - password changed on deployment
+        password: ADMIN_PASSWORD, // only for local dev testing - password changed on deployment
       });
       Roles.addUsersToRoles(Accounts.findUserByUsername("admin"), "admin");
+      console.log("Development Account Seeded");
     }
-    console.log("Development Account Seeded");
   });
 
   // Error methods
@@ -417,18 +427,28 @@ Meteor.startup(() => {
       }
     },
     checkSatelliteData: (values, task, method) => {
+      let tempValues = values;
       if (
         Roles.userIsInRole(Meteor.userId(), "admin") ||
-        Roles.userIsInRole(Meteor.userId(), "moderator")
+        Roles.userIsInRole(Meteor.userId(), "moderator") ||
+        Roles.userIsInRole(Meteor.userId(), "machine")
       ) {
         if (method === "user") {
-          if (task === "verify") values = userHasVerifiedData(values, Meteor.user().username);
-          if (task === "validate") values = userHasValidateddData(values, Meteor.user().username);
+          if (task === "verify")
+            tempValues = userHasVerifiedData(values, Meteor.user().username);
+          if (task === "validate")
+            tempValues = userHasValidatedData(values, Meteor.user().username);
         } else if (method === "machine") {
-          if (task === "verify") values = machineHasVerifiedData(values, Meteor.user().username);
-          if (task === "validate") values = machineHasValidateddData(values, Meteor.user().username);
+          if (task === "verify")
+            tempValues = machineHasVerifiedData(values, Meteor.user().username);
+          if (task === "validate")
+            tempValues = machineHasValidatedData(
+              values,
+              Meteor.user().username
+            );
         }
-        SatelliteCollection.update({ _id: values._id }, values);
+        SatelliteCollection.update({ _id: values._id }, tempValues);
+        return tempValues;
       } else {
         return "Unauthorized [401]";
       }
@@ -452,7 +472,7 @@ Meteor.startup(() => {
           .then(() => {
             return SchemaCollection.insert(values);
           })
-          .catch((error) => {
+          .catch((err) => {
             console.log(err);
             error = err;
           });

@@ -114,6 +114,7 @@ export const SchemaModal = ({
               </span>
             );
             setOpenSnack(true);
+            setTimeout(() => setOpenSnack(false), 2000);
           }
         });
       } else {
@@ -128,6 +129,7 @@ export const SchemaModal = ({
               </span>
             );
             setOpenSnack(true);
+            setTimeout(() => setOpenSnack(false), 2000);
           }
         });
       }
@@ -153,6 +155,7 @@ export const SchemaModal = ({
           );
           handleClose();
           setOpenSnack(true);
+          setTimeout(() => setOpenSnack(false), 2000);
         }
       });
     } else {
@@ -169,6 +172,7 @@ export const SchemaModal = ({
           );
           handleClose();
           setOpenSnack(true);
+          setTimeout(() => setOpenSnack(false), 2000);
         }
       });
     }
@@ -219,19 +223,18 @@ export const SchemaModal = ({
     if (setErrors) setErrors({});
   };
 
-  const handleEdit = (dirty, setValues, setErrors) => {
+  const handleEdit = (dirty, setValues, setErrors, values) => {
     if (editing && dirty) {
       setAlert({
         title: (
           <span>
-            Delete changes on <strong>{initValues.name || "new schema"}</strong>
-            ?
+            Delete changes on <strong>{values.name || "new schema"}</strong>?
           </span>
         ),
         text: (
           <span>
             Are you sure you want to cancel all changes made to{" "}
-            <strong>{initValues.name}</strong> schema and its fields?
+            <strong>{values.name}</strong> schema and its fields?
           </span>
         ),
         actions: (
@@ -271,6 +274,7 @@ export const SchemaModal = ({
           );
           handleClose();
           setOpenSnack(true);
+          setTimeout(() => setOpenSnack(false), 2000);
         }
       });
     }
@@ -290,6 +294,7 @@ export const SchemaModal = ({
         );
         handleClose();
         setOpenSnack(true);
+        setTimeout(() => setOpenSnack(false), 2000);
       }
     });
   };
@@ -430,7 +435,9 @@ export const SchemaModal = ({
                             <EditIcon />
                           )
                         }
-                        onClick={() => handleEdit(dirty, setValues, setErrors)}
+                        onClick={() =>
+                          handleEdit(dirty, setValues, setErrors, values)
+                        }
                       >
                         {editing ? "Cancel" : "Edit"}
                       </Button>

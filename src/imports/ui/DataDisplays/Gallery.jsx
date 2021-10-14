@@ -13,6 +13,7 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 const useStyles = makeStyles((theme) => ({
   root: {
+    marginTop: -5,
     maxWidth: 500,
     flexGrow: 1,
     overflow: "hidden",
@@ -20,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: -10,
   },
   imageContainer: {
-    height: "300px",
+    height: "24em",
     width: "100%",
     display: "block",
     objectFit: "cover",
@@ -30,7 +31,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Gallery = ({ initValues, autoplay = true, width = 1000 }) => {
+export const Gallery = ({
+  initValues,
+  autoplay = true,
+  width,
+  description = false,
+  clickable = false,
+}) => {
   const images = getSatImages(initValues);
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
@@ -51,72 +58,84 @@ export const Gallery = ({ initValues, autoplay = true, width = 1000 }) => {
   };
 
   return (
-    <Box className={classes.root}>
-      <AutoPlaySwipeableViews
-        autoplay={autoplay}
-        interval={5000}
-        axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-        index={activeStep}
-        onChangeIndex={handleStepChange}
-        enableMouseEvents
-        style={{ cursor: images?.length > 1 ? "grab" : "default" }}
-      >
-        {typeof images !== "string" ? (
-          images.map((step, index) => (
-            <div key={index}>
-              {Math.abs(activeStep - index) <= 2 ? (
-                <Box
-                  component="img"
-                  className={classes.imageContainer}
-                  src={step.url}
-                  alt={step.description}
-                />
-              ) : null}
-            </div>
-          ))
-        ) : (
-          <Box
-            component="img"
-            className={classes.imageContainer}
-            src={images}
-            alt="Satellite Placeholder"
-          />
-        )}
-      </AutoPlaySwipeableViews>
-      {images.length > 1 ? 
-      <MobileStepper
-      className={classes.mobileStepper}
-      steps={maxSteps}
-      activeStep={activeStep}
-      position="bottom"
-      nextButton={
-        width < 600 ? (
-          <div />
+    <span>
+      <Box className={classes.root}>
+        <AutoPlaySwipeableViews
+          autoplay={autoplay}
+          interval={5000}
+          axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+          index={activeStep}
+          onChangeIndex={handleStepChange}
+          enableMouseEvents
+          style={{
+            cursor: !clickable && images?.length > 1 ? "grab" : "pointer",
+          }}
+        >
+          {typeof images !== "string" ? (
+            images.map((step, index) => (
+              <div key={index}>
+                {Math.abs(activeStep - index) <= 2 ? (
+                  <Box
+                    component="img"
+                    className={classes.imageContainer}
+                    src={step.url}
+                    alt={step.description}
+                    onClick={() => {
+                      clickable
+                        ? window.open(step.url, "_blank").focus()
+                        : null;
+                    }}
+                  />
+                ) : null}
+              </div>
+            ))
           ) : (
-            <Button
-            size="small"
-            onClick={handleNext}
-            disabled={activeStep === maxSteps - 1}
-            >
-              <KeyboardArrowRight />
-            </Button>
-          )
-        }
-        backButton={
-          width < 600 ? (
-            <div />
-            ) : (
-              <Button
-              size="small"
-              onClick={handleBack}
-              disabled={activeStep === 0}
-              >
-              <KeyboardArrowLeft />
-            </Button>
-          )
-        }
-        />
-     : null}
-    </Box>
+            <Box
+              component="img"
+              className={classes.imageContainer}
+              src={images}
+              alt="Satellite Placeholder"
+            />
+          )}
+        </AutoPlaySwipeableViews>
+        {images.length > 1 ? (
+          <MobileStepper
+            className={classes.mobileStepper}
+            steps={maxSteps}
+            activeStep={activeStep}
+            position="bottom"
+            nextButton={
+              width < 600 ? (
+                <div />
+              ) : (
+                <Button
+                  size="small"
+                  onClick={handleNext}
+                  disabled={activeStep === maxSteps - 1}
+                >
+                  <KeyboardArrowRight />
+                </Button>
+              )
+            }
+            backButton={
+              width < 600 ? (
+                <div />
+              ) : (
+                <Button
+                  size="small"
+                  onClick={handleBack}
+                  disabled={activeStep === 0}
+                >
+                  <KeyboardArrowLeft />
+                </Button>
+              )
+            }
+          />
+        ) : null}
+      </Box>
+      {description ? (
+        <div style={{ marginTop: "1em" }}>{images[activeStep].description}</div>
+      ) : null}
+    </span>
   );
 };

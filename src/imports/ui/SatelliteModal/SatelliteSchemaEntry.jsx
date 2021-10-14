@@ -38,22 +38,22 @@ const useStyles = makeStyles((theme) => ({
   urlAdornment: {
     cursor: "pointer",
     color: theme.palette.text.primary,
-    filter: "drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4))",
+    filter: `drop-shadow(1px 1px 1px ${theme.palette.tertiary.shadow})`,
     "&:hover": {
       color: theme.palette.info.main,
     },
   },
   validatedAdornment: {
     color: theme.palette.success.light,
-    filter: "drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4))",
+    filter: `drop-shadow(1px 1px 1px ${theme.palette.tertiary.shadow})`,
   },
   partiallyValidatedAdornment: {
     color: theme.palette.warning.light,
-    filter: "drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4))",
+    filter: `drop-shadow(1px 1px 1px ${theme.palette.tertiary.shadow})`,
   },
   notValidatedAdornment: {
     color: theme.palette.error.light,
-    filter: "drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4))",
+    filter: `drop-shadow(1px 1px 1px ${theme.palette.tertiary.shadow})`,
   },
   helpersError: {
     marginLeft: 14,
@@ -279,20 +279,21 @@ export const SatelliteSchemaEntry = ({
                     }
                   >
                     <Tooltip
-                      title={decideVerifiedValidated(
-                        verified,
-                        true,
-                        false,
-                        true,
-                        classes
-                      )
-                    // decideVerifiedValidated takes the following arguments
-                    //    1. array of verification or validation objects
-                    //    2. whether it is a verification (true) or validation (false)
-                    //    3. whether it is a styling decision
-                    //    4. whether it is an icon decision
-                    //    5. the useStyles classes
-                    }
+                      title={
+                        decideVerifiedValidated(
+                          verified,
+                          true,
+                          false,
+                          true,
+                          classes
+                        )
+                        // decideVerifiedValidated takes the following arguments
+                        //    1. array of verification or validation objects
+                        //    2. whether it is a verification (true) or validation (false)
+                        //    3. whether it is a styling decision
+                        //    4. whether it is an icon decision
+                        //    5. the useStyles classes
+                      }
                       placement="top"
                       arrow
                     >

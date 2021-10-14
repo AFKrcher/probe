@@ -40,8 +40,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "3%",
   },
   cardDesc: {
-    minHeight: "21em",
-    maxHeight: "21em",
+    minHeight: "22em",
+    maxHeight: "22em",
   },
   cardActions: {
     position: "relative",
@@ -147,13 +147,17 @@ export const SatCard = ({ width, height, satellite }) => {
           >
             NORAD ID: {getSatID(satellite)}
           </Typography>
+          {width < 400 && <br />}
           <Typography
-            color="textSecondary"
             variant={width > 1200 ? "body1" : width > 400 ? "body2" : "caption"}
           >
-            {width > 350
-              ? getSatDesc(satellite)
-              : getSatDesc(satellite).substr(0, 100) + "..."}
+            {width > 240 ? (
+              <React.Fragment>
+                {width > 350
+                  ? getSatDesc(satellite)
+                  : getSatDesc(satellite).substr(0, 100) + "..."}
+              </React.Fragment>
+            ) : null}
           </Typography>
         </CardContent>
         <CardActions

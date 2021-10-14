@@ -18,7 +18,6 @@ import {
   Grid,
   Typography,
   makeStyles,
-  CircularProgress,
   Tooltip,
   Divider,
 } from "@material-ui/core";
@@ -50,13 +49,13 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 5,
   },
   miniButton: {
-    marginBottom: 25,
+    marginBottom: 15,
   },
   showcase: {
-    marginTop: 20,
+    marginTop: 15,
   },
   secondaryShowcase: {
-    marginTop: 30,
+    marginTop: 15,
   },
   card: {
     marginTop: -10,
@@ -101,13 +100,12 @@ const useStyles = makeStyles((theme) => ({
 
 export const Home = () => {
   const classes = useStyles();
-  const history = useHistory();
 
   const [width, height] = useWindowSize();
   const [page, setPage] = useState(1);
   const [limiter] = useState(3);
   const [scrolled, setScrolled] = useState(false);
-  const [infiniteMode, setInfiniteMode] = useState(true);
+  const [infiniteMode, setInfiniteMode] = useState(false);
   const [mini, setMini] = useState(false);
 
   const count = SatelliteCollection.find().count();
@@ -176,7 +174,7 @@ export const Home = () => {
       handleInfiniteScroll();
       setScrolled(true);
     }
-    switch (window.scrollY > 200) {
+    switch (window.scrollY > 300) {
       case true:
         setScrolled(true);
         break;
@@ -218,18 +216,28 @@ export const Home = () => {
                 <ArrowUpwardIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Toggle infinite scroll" placement="left" arrow>
-              <IconButton
-                className={classes.toggleInfinite}
-                onClick={() => setInfiniteMode(!infiniteMode)}
+            {!mini && (
+              <Tooltip
+                title={
+                  infiniteMode
+                    ? "Turn off infinite scroll"
+                    : "Turn on infinite scroll"
+                }
+                placement="left"
+                arrow
               >
-                {infiniteMode ? (
-                  <InfiniteScrollIcon />
-                ) : (
-                  <InfiniteScrollOutlinedIcon />
-                )}
-              </IconButton>
-            </Tooltip>
+                <IconButton
+                  className={classes.toggleInfinite}
+                  onClick={() => setInfiniteMode(!infiniteMode)}
+                >
+                  {infiniteMode ? (
+                    <InfiniteScrollIcon />
+                  ) : (
+                    <InfiniteScrollOutlinedIcon />
+                  )}
+                </IconButton>
+              </Tooltip>
+            )}
           </React.Fragment>
         ) : null}
         <Typography variant="h3">
@@ -326,10 +334,10 @@ export const Home = () => {
                 </span>
               ) : (
                 <span className={classes.showcaseHeader}>
+                  {!favorites?.length > 0 && miniButton()}
                   <Typography variant="h4" gutterBottom>
                     Satellite Data Cards
                   </Typography>
-                  {!Meteor.userId() && !favorites?.length > 0 && miniButton()}
                 </span>
               )}
               <Grid
