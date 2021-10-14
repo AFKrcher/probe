@@ -110,15 +110,12 @@ export const ApproveSchemas = () => {
         </TableCell>
         <TableCell key={`schema-approve-${i}`}>
           {!schema.adminCheck ? (
-            <ErrorOutlinedIcon
-              fontSize="small"
-              className={classes.warningIcon}
-            />
+            <ErrorOutlinedIcon className={classes.warningIcon} />
           ) : null}
         </TableCell>
         <TableCell key={`schema-delete-${i}`}>
           {schema.isDeleted ? (
-            <ErrorOutlinedIcon fontSize="small" className={classes.errorIcon} />
+            <ErrorOutlinedIcon className={classes.errorIcon} />
           ) : null}
         </TableCell>
         <TableCell key={`schema-modOn-${i}`}>
