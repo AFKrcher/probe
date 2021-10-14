@@ -128,23 +128,17 @@ export const ApproveSatellites = () => {
         <TableCell key={`sat-name-${i}`}>{sat.names[0].name}</TableCell>
         <TableCell key={`sat-adminCheck-${i}`}>
           {!sat.adminCheck ? (
-            <ErrorOutlinedIcon
-              fontSize="small"
-              className={classes.warningIcon}
-            />
+            <ErrorOutlinedIcon className={classes.warningIcon} />
           ) : null}
         </TableCell>
         <TableCell key={`sat-machineCheck-${i}`}>
           {!sat.machineCheck ? (
-            <ErrorOutlinedIcon
-              fontSize="small"
-              className={classes.warningIcon}
-            />
+            <ErrorOutlinedIcon className={classes.warningIcon} />
           ) : null}
         </TableCell>
         <TableCell key={`sat-delete-${i}`}>
           {sat.isDeleted ? (
-            <ErrorOutlinedIcon fontSize="small" className={classes.errorIcon} />
+            <ErrorOutlinedIcon className={classes.errorIcon} />
           ) : null}
         </TableCell>
         <TableCell key={`sat-modOn-${i}`}>
