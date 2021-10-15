@@ -489,8 +489,8 @@ export const SatellitesTable = () => {
 
   function handleDashboard(e, id) {
     e.preventDefault();
-    history.push(`/${id}`);
-    debounced(false);
+    // history.push(`/dashboard/${id}`);
+    // debounced(false);
   }
 
   const AddSatelliteButton = () => {

@@ -22,6 +22,7 @@ import {
 const useStyles = makeStyles((theme) => ({
   container: {
     width: "100%",
+    marginBottom: 30,
   },
   paper: {
     backgroundColor: theme.palette.grid.background,

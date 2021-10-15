@@ -93,7 +93,7 @@ export const SatCard = ({ width, height, satellite }) => {
 
   function handleDashboard(e, id) {
     e.preventDefault();
-    history.push(`/${id}`);
+    // history.push(`/dashboard/${id}`);
   }
 
   const handleVisualize = (e, url) => {
