@@ -28,32 +28,17 @@ The application should be intuitive and easy-to-use, even for a first-time user.
 
 ### Public API
 
-The public API allows all users to obtain information on satellites and schemas produced by PROBE. Queries can be made to obtain specific satellites or schemas. Below is a non-exhaustive list of example requests:
+The public API allows all users to obtain information on satellites and schemas produced by PROBE. Queries can be made to obtain specific satellites or schemas. Below is a list of example requests:
 
-Endpoint:
-
-`/api/`
-
-Response:
-
-```
-"Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
-```
-
+Endpoint: `/api/welcome`
+Response: `"Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
 
 ### Partner API
 
-The partner API allows registered partners to got beyond simple GET requests of the public API. The partner API is used mainly for PATCH, POST, and DELETE requests, as well as GET requests of more detailed information. Below is a non-exhaustive list of example requests:
+The partner API allows registered partners with PROBE API keys to go beyond the public API GET requests. The partner API is used mainly for PATCH, POST, and DELETE requests, as well as GET requests of more detailed information. Below is a list of example requests:
 
-Endpoint:
-
-`/api/partner/:key`
-
-Response:
-
-```
-"Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
-```
+Endpoint: `/api/partner/:key`
+Response: `"Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
 
 ## How To Contribute
 
@@ -65,10 +50,6 @@ Response:
 4. Ensure that any libraries or technologies that you use are properly listed in the dependency tree and in this README's [Libraries](#Libraries) section
 5. Contribute to the main/master repository through clear and succinct pull requests
 6. When not contributing code directly, generate issues on GitHub with context, problem statement, and, if possible, a suggested solution
-
-### GitLab
-
-**WIP**
 
 ### Installation
 
@@ -104,9 +85,17 @@ show collections
 db.<collection name>.find()
 ```
 
-### Docker Deployment
+### Docker Containerization
 
-**WIP**
+The Docker deployment is dependent on a `pm2.json` file to describe the configuration of your meteor application. A pm2.example.json is provided for filling-in. In addition, a `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README.
+
+Paste and run the following commands at the root of the project to build and run a docker image of PROBE on http://localhost:3000.
+
+```
+chmod 777 scripts/build.sh && scripts/build.sh
+cd build && docker build -t probe .
+cd .. && docker run --rm --name probe --env-file src/private/.env -p 3000:3000 -t probe
+```
 
 ### AWS Deployment
 

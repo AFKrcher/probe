@@ -5,9 +5,9 @@
       "cwd": "/app",
       "script": "main.js",
       "env": {
-        "NODE_ENV": "production",
-        "PORT": "3000",
-        "ROOT_URL": "http://localhost",
+        "NODE_ENV": "",
+        "PORT": "",
+        "ROOT_URL": "",
         "MONGO_URL": "",
         "MAIL_URL": "",
         "METEOR_SETTINGS": {

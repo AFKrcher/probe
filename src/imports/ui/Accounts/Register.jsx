@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 // Imports
 import { Accounts } from "meteor/accounts-base";
 import { useHistory } from "react-router";
@@ -60,11 +60,8 @@ export const Register = () => {
     return regex.test(username) && username.length <= 32;
   };
 
-  isValidPassword = (password) => {
-    // This regex test does not accurately detect special characters like #s :(
-    // const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
-    return password.length >= 8 && password.length < 128
-    // && regex.test(password)
+  const isValidPassword = (password) => {
+    return password.length >= 8 && password.length < 128;
   };
 
   const validateEmail = () => {
@@ -117,7 +114,7 @@ export const Register = () => {
         setPassErr(
           password.length >= 128
             ? "Cannot be longer than 128 characters"
-            : "Must be at least 8 characters long. Recommended lowercase, uppercase, and special characters"
+            : "Must be at least 8 characters long, and should contain at least 1 lowercase, 1 uppercase, and 1 special character"
         );
       } else {
         setPassErr(null);

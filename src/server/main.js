@@ -28,7 +28,7 @@ dotenv.config({
   path: Assets.absoluteFilePath(".env"), // .env file in the private folder
 });
 
-const { ADMIN_PASSWORD } = process.env;
+const { ADMIN_PASSWORD, PROBE_API_KEY } = process.env;
 
 const fs = Npm.require("fs");
 
@@ -46,6 +46,7 @@ const isValidUsername = (oldUsername, newUsername) => {
 
 Meteor.startup(() => {
   console.log("> PROBE server is starting-up...");
+  console.log("> Checking environment variables...");
 
   // TODO: ensure helmet CSP options are compaitable with AWS instance and configuration
   // See helmet.js for Content Security Policy (CSP) options
@@ -239,21 +240,6 @@ Meteor.startup(() => {
     return user;
   });
 
-  // Seed admin account for testing
-  Meteor.call("userExists", "admin", (_, res) => {
-    if (res || UsersCollection.find().count() > 1) {
-      return;
-    } else {
-      Accounts.createUser({
-        email: "admin@saberastro.com",
-        username: "admin",
-        password: ADMIN_PASSWORD, // only for local dev testing - password changed on deployment
-      });
-      Roles.addUsersToRoles(Accounts.findUserByUsername("admin"), "admin");
-      console.log("Development Account Seeded");
-    }
-  });
-
   // Error methods
   Meteor.methods({
     addError: (obj) => {
@@ -272,7 +258,8 @@ Meteor.startup(() => {
   });
 
   // Errors publication and seed data
-  if (ErrorsCollection.find().count() === 0) {
+  if (ErrorsCollection.find().count() < 1) {
+    ErrorsCollection.remove({});
     console.log("ErrorsCollection Seeded");
     const errors = {
       user: "Not Logged-In",
@@ -288,15 +275,37 @@ Meteor.startup(() => {
     return ErrorsCollection.find({});
   });
 
+  console.log(
+    typeof ADMIN_PASSWORD === "string" && typeof PROBE_API_KEY === "string"
+      ? "Environment variables loaded!"
+      : "Could not load environment variables. Please check the code and restart the server."
+  );
+
   // Accounts publication and seed data
-  if (UsersCollection.find().count() === 0) {
-    console.log("UsersCollection Seeded");
+  if (UsersCollection.find().count() < 1) {
+    UsersCollection.remove({});
     const users = Meteor.users
       .find({}, { fields: { _id: 1, username: 1, emails: 1, roles: 1 } })
       .fetch();
     // UsersCollection.remove({}); // change the "=== 0" to "> 0" to wipe the userList
     users.forEach((user) => UsersCollection.insert(user));
+    console.log("UsersCollection Seeded");
   }
+
+  // Seed admin account for testing
+  Meteor.call("userExists", "admin", (_, res) => {
+    if (res || UsersCollection.find().count() < 1) {
+      return;
+    } else {
+      Accounts.createUser({
+        email: "admin@saberastro.com",
+        username: "admin",
+        password: ADMIN_PASSWORD, // only for local dev testing - password changed on deployment
+      });
+      Roles.addUsersToRoles(Accounts.findUserByUsername("admin"), "admin");
+      console.log("Development Account Seeded");
+    }
+  });
 
   Meteor.publish("userList", () => {
     return UsersCollection.find({});
@@ -305,7 +314,7 @@ Meteor.startup(() => {
   // Satellite and schema publications and seed data
   // Seed schema data
   if (SchemaCollection.find().count() < 26) {
-    console.log("SchemaCollection Seeded");
+    SchemaCollection.remove({});
     var jsonObj = [];
     files = fs.readdirSync("./assets/app/schema");
     files.forEach(function (file) {
@@ -316,11 +325,12 @@ Meteor.startup(() => {
     jsonObj.forEach(function (data) {
       SchemaCollection.insert(data);
     });
+    console.log("SchemaCollection Seeded");
   }
 
   // Seed satellite data
-  if (SatelliteCollection.find().count() < 5) {
-    console.log("SatelliteCollection Seeded");
+  if (SatelliteCollection.find().count() < 14) {
+    SatelliteCollection.remove({});
     var jsonObj = [];
     files = fs.readdirSync("./assets/app/satellite");
     files.forEach(function (file) {
@@ -330,6 +340,7 @@ Meteor.startup(() => {
     jsonObj.forEach(function (data) {
       SatelliteCollection.insert(data);
     });
+    console.log("SatelliteCollection Seeded");
   }
 
   // Publish satellites collection
