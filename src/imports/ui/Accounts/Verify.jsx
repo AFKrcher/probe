@@ -1,6 +1,6 @@
 import React from "react";
 // Imports
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Accounts } from "meteor/accounts-base";
 
 // @material-ui
@@ -14,5 +14,9 @@ export const Verify = () => {
     console.log(res, err);
   });
 
-  return <Grid container justifyContent="center" alignItems="center"></Grid>;
+  return (
+    <Grid container justifyContent="center" alignItems="center">
+      Verified!
+    </Grid>
+  );
 };

@@ -13,7 +13,7 @@ RUN mkdir -p /app
 COPY bundle /app
 
 # Build for the image
-RUN cd /app/programs/server && npm install
+RUN cd /app/programs/server && npm install --production
 FROM keymetrics/pm2:14-alpine
 RUN mkdir -p /app
 RUN mkdir -p /usr/pm2
