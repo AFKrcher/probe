@@ -17,7 +17,40 @@ app.use(express.urlencoded({ extended: false }));
 
 WebApp.connectHandlers.use(app);
 
+app.get("/api/partner/:key", (req, res) => {
+  const response =
+    req.params.key === PROBE_API_KEY
+      ? "Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
+      : "Unauthorized [401]";
+  const status = req.params.key === PROBE_API_KEY ? 200 : 401;
+  res.setHeader("Content-Type", "application/json");
+  res.writeHead(status);
+  res.end(JSON.stringify(response));
+});
+
+app.post("/api/partner/:key", (req, res) => {
+  const response =
+    req.params.key === PROBE_API_KEY
+      ? "Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
+      : "Unauthorized [401]";
+  const status = req.params.key === PROBE_API_KEY ? 200 : 401;
+  res.setHeader("Content-Type", "application/json");
+  res.writeHead(status);
+  res.end(JSON.stringify(response));
+});
+
 app.patch("/api/partner/:key", (req, res) => {
+  const response =
+    req.params.key === PROBE_API_KEY
+      ? "Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
+      : "Unauthorized [401]";
+  const status = req.params.key === PROBE_API_KEY ? 200 : 401;
+  res.setHeader("Content-Type", "application/json");
+  res.writeHead(status);
+  res.end(JSON.stringify(response));
+});
+
+app.put("/api/partner/:key", (req, res) => {
   const response =
     req.params.key === PROBE_API_KEY
       ? "Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
@@ -199,7 +232,7 @@ WebApp.connectHandlers.use("/api/schemas", (req, res) => {
   getSchema();
 });
 
-WebApp.connectHandlers.use("/api/welcome", (req, res) => {
+WebApp.connectHandlers.use("/api", (req, res) => {
   res.setHeader("Content-Type", "application/json");
   res.writeHead(200);
   res.end(

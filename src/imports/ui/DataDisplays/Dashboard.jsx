@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 // Imports
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 import { SatelliteCollection } from "../../api/satellites";
-import { SatelliteModal } from "../SatelliteModal/SatelliteModal";
-import useWindowSize from "../Hooks/useWindowSize.jsx";
 
 //Components
 import { Gallery } from "./Gallery.jsx";
 
 // @material-ui
-import { CircularProgress, Grid, makeStyles } from "@material-ui/core";
+import {
+  CircularProgress,
+  Grid,
+  makeStyles,
+  Container,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    height: "100%",
+    width: "100%",
+  },
   spinnerContainer: {
     display: "flex",
     justifyContent: "center",
@@ -25,34 +32,32 @@ const useStyles = makeStyles((theme) => ({
 
 export const Dashboard = () => {
   const classes = useStyles();
-  const history = useHistory();
   const location = useLocation();
 
-  const [width, height] = useWindowSize();
+  const [path, setPath] = useState(25544);
 
-  let path = location.pathname;
-  path = path.substring(1);
+  useEffect(() => {
+    const url = location.pathname.substring(1).split("/")[1];
+    setPath(url);
+  }, []);
 
-  const [sats, isLoading] = useTracker(() => {
+  const [sat, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("satellites");
-    let sats;
+    let sat;
     if (path) {
-      sats = SatelliteCollection.find(
+      sat = SatelliteCollection.find(
         {
           noradID: path,
         },
         {}
-      ).fetch();
+      ).fetch()[0];
     }
-    if (sats.length === 0) {
-      sats = [{ names: [], noradID: path }];
-    }
-    return [sats, !sub.ready()];
+    return [sat, !sub.ready()];
   });
 
   const nameMapper = (sat) => {
     let names = [];
-    if (sat.names.length > 1) {
+    if (sat.names?.length > 1) {
       for (let i = 1; i < sat.names.length; i++) {
         if (i === sat.names.length - 1) {
           names.push(`${sat.names[i].name}`);
@@ -61,34 +66,19 @@ export const Dashboard = () => {
         }
       }
     }
-    return ` (AKA: ${names.join(" ")})`;
+    return ` (AKA: ${names.join(", ")})`;
   };
 
-  const sat = !isLoading ? sats[0] : null;
-  // const test = (obj) => {
-  //   Object.keys(obj).map((key, index) => {
-  //     if (typeof obj[key] === "object") {
-  //       // console.log(key, obj[key]);
-  //       if (obj[key].length > 1) {
-  //         obj[key].map((item, i) => {
-  //           Object.keys(item).map((keys2, index2) => {
-  //             console.log(keys2);
-  //           });
-  //         });
-  //       }
-  //     }
-  //   });
-  // };
   return (
-    <Grid container>
-      {!isLoading && !sat.isDeleted ? (
+    <Container className={classes.root}>
+      {!isLoading && !sat?.isDeleted && sat ? (
         <React.Fragment>
           <Grid item container xs={12} spacing={10}>
             <Grid item xs={6}>
               {sat.names ? (
                 <div>
-                  {sat.names[0].name}
-                  {sat.names.length > 1 ? nameMapper(sat) : null}
+                  {sat.names ? sat.names[0].name : null}
+                  {sat.names?.length > 1 ? nameMapper(sat) : null}
                 </div>
               ) : null}
               <p>
@@ -118,6 +108,6 @@ export const Dashboard = () => {
           />
         </div>
       )}
-    </Grid>
+    </Container>
   );
 };
