@@ -28,7 +28,7 @@ dotenv.config({
   path: Assets.absoluteFilePath(".env"), // .env file in the private folder
 });
 
-const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT } = process.env;
+const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT, NODE_ENV } = process.env;
 
 const fs = Npm.require("fs");
 
@@ -260,7 +260,7 @@ Meteor.startup(() => {
   // Errors publication and seed data
   if (ErrorsCollection.find().count() < 1) {
     ErrorsCollection.remove({});
-    console.log("ErrorsCollection Seeded");
+    console.log("> ErrorsCollection Seeded");
     const errors = {
       user: "Not Logged-In",
       time: new Date(),
@@ -277,8 +277,8 @@ Meteor.startup(() => {
 
   console.log(
     typeof ADMIN_PASSWORD === "string" && typeof PROBE_API_KEY === "string"
-      ? "Environment variables loaded!"
-      : "Could not load environment variables. Please check the code and restart the server."
+      ? "> Environment variables loaded!"
+      : "> Could not load environment variables. Please check the code and restart the server."
   );
 
   // Accounts publication and seed data
@@ -289,7 +289,7 @@ Meteor.startup(() => {
       .fetch();
     // UsersCollection.remove({}); // change the "=== 0" to "> 0" to wipe the userList
     users.forEach((user) => UsersCollection.insert(user));
-    console.log("UsersCollection Seeded");
+    console.log("> UsersCollection Seeded");
   }
 
   Meteor.publish("userList", () => {
@@ -307,7 +307,7 @@ Meteor.startup(() => {
         password: ADMIN_PASSWORD, // only for local dev testing - password changed on deployment
       });
       Roles.addUsersToRoles(Accounts.findUserByUsername("admin"), "admin");
-      console.log("Development Account Seeded");
+      console.log("> Development Account Seeded");
     }
   });
 
@@ -325,7 +325,7 @@ Meteor.startup(() => {
     jsonObj.forEach(function (data) {
       SchemaCollection.insert(data);
     });
-    console.log("SchemaCollection Seeded");
+    console.log("> SchemaCollection Seeded");
   }
 
   // Seed satellite data
@@ -340,7 +340,7 @@ Meteor.startup(() => {
     jsonObj.forEach(function (data) {
       SatelliteCollection.insert(data);
     });
-    console.log("SatelliteCollection Seeded");
+    console.log("> SatelliteCollection Seeded");
   }
 
   // Publish satellites collection
@@ -563,6 +563,9 @@ Meteor.startup(() => {
       }
     },
   });
-  console.log("> PROBE server is running!");
-  console.log(`> PROBE is listening at ${ROOT_URL}${PORT ? ":" + PORT : null}`);
+  console.log(
+    `> PROBE server is running! Listening at ${ROOT_URL}${
+      NODE_ENV === "production" ? ":" + PORT : ""
+    }`
+  );
 });

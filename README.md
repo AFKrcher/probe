@@ -42,7 +42,7 @@ Response: `"Welcome to the PROBE partner API! For documentation, please visit th
 
 ## How To Contribute
 
-### Git and GitHub
+### Github Processes
 
 1. Fork and clone the repository using standard Git and Github commands
 2. Ensure you have fetched and pulled the latest master/main branch of the repository
@@ -62,6 +62,8 @@ Response: `"Welcome to the PROBE partner API! For documentation, please visit th
 
 ### Environment Variables
 
+(Development + Production)
+
 Environment variables that control the operation of the app are defined in the
 `.env` file in the application root. These variables and their usage are shown
 in the following table.
@@ -76,6 +78,8 @@ application code via `process.env.<variable-name>`. Prior to development or depl
 
 ### Access MongoDB
 
+(Development Only)
+
 1. Meteor must be running
 2. In the command prompt run
 
@@ -87,17 +91,20 @@ db.<collection name>.find()
 
 ### Docker Containerization
 
+(Development + MongoDB and SMTPS access)
+
 The Docker deployment is dependent on a `pm2.json` file to describe the configuration of your meteor application. A pm2.example.json is provided for filling-in. In addition, a `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README.
 
 Paste and run the following commands at the root of the project to build and run a docker image of PROBE on http://localhost:3000.
 
 ```
 chmod 777 scripts/build.sh && scripts/build.sh
-cd build && docker build -t probe .
-cd .. && docker run --rm --name probe --env-file src/private/.env -p 3000:3000 -t probe
+docker run --rm --name probe --env-file src/private/.env -p 3000:3000 -t probe
 ```
 
 ### AWS Deployment
+
+(Production Only)
 
 **Note**: Meteor only runs with NodeJS 14.17.1, so you need to install nvm and run `nvm install 14.17.1`
 
