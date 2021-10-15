@@ -40,7 +40,6 @@ Response:
 "Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
 ```
 
-
 ### Partner API
 
 The partner API allows registered partners to got beyond simple GET requests of the public API. The partner API is used mainly for PATCH, POST, and DELETE requests, as well as GET requests of more detailed information. Below is a non-exhaustive list of example requests:
@@ -104,9 +103,17 @@ show collections
 db.<collection name>.find()
 ```
 
-### Docker Deployment
+### Docker Containerization
 
-**WIP**
+The Docker deployment is dependent on a `pm2.json` file to describe the configuration of your application. A pm2.example.json is provided for filling-in.
+
+Run the following commands in order/succession to build and run a docker image of PROBE.
+
+```
+chmod 777 scripts/build.sh && scripts/build.sh
+cd build && docker build -t probe .
+cd .. && docker run --rm --name probe -p 3000:3000 -t probe
+```
 
 ### AWS Deployment
 
