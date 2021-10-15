@@ -28,7 +28,7 @@ dotenv.config({
   path: Assets.absoluteFilePath(".env"), // .env file in the private folder
 });
 
-const { ADMIN_PASSWORD, PROBE_API_KEY } = process.env;
+const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT } = process.env;
 
 const fs = Npm.require("fs");
 
@@ -292,11 +292,15 @@ Meteor.startup(() => {
     console.log("UsersCollection Seeded");
   }
 
+  Meteor.publish("userList", () => {
+    return UsersCollection.find({});
+  });
+
   // Seed admin account for testing
   Meteor.call("userExists", "admin", (_, res) => {
-    if (res || UsersCollection.find().count() < 1) {
+    if (res) {
       return;
-    } else {
+    } else if (UsersCollection.find().count() < 1) {
       Accounts.createUser({
         email: "admin@saberastro.com",
         username: "admin",
@@ -305,10 +309,6 @@ Meteor.startup(() => {
       Roles.addUsersToRoles(Accounts.findUserByUsername("admin"), "admin");
       console.log("Development Account Seeded");
     }
-  });
-
-  Meteor.publish("userList", () => {
-    return UsersCollection.find({});
   });
 
   // Satellite and schema publications and seed data
@@ -564,4 +564,5 @@ Meteor.startup(() => {
     },
   });
   console.log("> PROBE server is running!");
+  console.log(`> PROBE is listening at ${ROOT_URL}${PORT ? ":" + PORT : null}`);
 });
