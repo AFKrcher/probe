@@ -44,7 +44,7 @@ const useStyles = makeStyles(() => ({
     width: "100%",
   },
   footer: {
-    marginTop: -25,
+    marginTop: -30,
     position: "relative",
     bottom: 0,
     width: "100%",
@@ -135,6 +135,9 @@ export const App = () => {
                 <Route exact={true} path="/satellites">
                   <SatellitesTable />
                 </Route>
+                <Route path="/dashboard/:id">
+                  <Dashboard />
+                </Route>
                 <Route exact={true} path="/schemas">
                   <SchemasTable />
                 </Route>
@@ -149,9 +152,6 @@ export const App = () => {
                 </Route>
                 <Route exact={true} path="/">
                   <Home />
-                </Route>
-                <Route path="/:id">
-                  <Dashboard />
                 </Route>
                 <Route path="*">
                   <Home />
