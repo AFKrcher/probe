@@ -21,9 +21,6 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    marginBottom: -100,
-  },
   formContainer: {
     marginTop: 30,
     display: "flex",
@@ -280,7 +277,7 @@ export const Settings = () => {
   };
 
   return (
-    <Container className={classes.root}>
+    <Container>
       <AlertDialog bodyAlert={alert} />
       <SnackBar bodySnackBar={snack} />
       {loading ? (

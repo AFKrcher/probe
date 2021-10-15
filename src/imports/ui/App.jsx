@@ -34,9 +34,8 @@ const useStyles = makeStyles(() => ({
     minHeight: "calc(100vh - 120px)",
   },
   main: {
-    marginTop: 95,
+    marginTop: 100,
     marginBottom: 60,
-    paddingBottom: 15,
   },
   bottom: {
     display: "flex",
@@ -44,7 +43,6 @@ const useStyles = makeStyles(() => ({
     width: "100%",
   },
   footer: {
-    marginTop: -30,
     position: "relative",
     bottom: 0,
     width: "100%",
