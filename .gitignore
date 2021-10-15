@@ -1,2 +1,14 @@
 # VScode configs
-.vscode
+*.vscode
+
+# Node artifact files
+*node_modules
+
+# Secrets
+*.env
+
+# Build
+*src.tar.gz
+*bundle
+*pm2.json
+
