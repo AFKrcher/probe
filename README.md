@@ -30,15 +30,104 @@ The application should be intuitive and easy-to-use, even for a first-time user.
 
 The public API allows all users to obtain information on satellites and schemas produced by PROBE. Queries can be made to obtain specific satellites or schemas. Below is a list of example requests:
 
-Endpoint: `/api/welcome`
-Response: `"Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
+GET: `/api/`
+
+RESPONSE: `"Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
+
+GET: `/api/satellites`
+
+RESPONSE: 
+```
+{
+  "_id": "fTTviYiQRoMLdRC26",
+  "isDeleted": false,
+  "noradID": "25544",
+  "createdOn": "2021-10-04T17:49:45.758Z",
+  "createdBy": "admin",
+  "modifiedOn": "2021-10-05T19:31:08.144Z",
+  "modifiedBy": "admin",
+  "adminCheck": true,
+  "machineCheck": false,
+  "names": [
+    {
+      "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "name": "International Space Station"
+    }
+  ],
+  "descriptionShort": [
+    {
+      "reference": "https://en.wikipedia.org/wiki/International_Space_Station",
+      "verified": [
+        {
+          "method": "user",
+          "name": "admin",
+          "verified": true,
+          "verifiedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "verified": false,
+          "verifiedOn": ""
+        }
+      ],
+      "validated": [
+        {
+          "method": "user",
+          "name": "admin",
+          "validated": true,
+          "validatedOn": "2021-10-07T00:00:00.000Z"
+        },
+        {
+          "method": "machine",
+          "name": "Layer8",
+          "validated": false,
+          "validatedOn": ""
+        }
+      ],
+      "descriptionShort": "The International Space Station is a modular space station in low Earth orbit. It is a multinational collaborative project involving five participating space agencies: NASA, Roscosmos, JAXA, ESA, and CSA."
+    }
+  ]
+  ...
+}
+
+```
 
 ### Partner API
 
 The partner API allows registered partners with PROBE API keys to go beyond the public API GET requests. The partner API is used mainly for PATCH, POST, and DELETE requests, as well as GET requests of more detailed information. Below is a list of example requests:
 
-Endpoint: `/api/partner/:key`
-Response: `"Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
+GET: `/api/partner/:key`
+
+RESPONSE: `"Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
 
 ## How To Contribute
 
