@@ -46,7 +46,7 @@ const useStyles = makeStyles(() => ({
   footer: {
     marginTop: -25,
     position: "relative",
-    bottom: 5,
+    bottom: 0,
     width: "100%",
   },
 }));

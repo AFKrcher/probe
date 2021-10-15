@@ -28,18 +28,6 @@ app.patch("/api/partner/:key", (req, res) => {
   res.end(JSON.stringify(response));
 });
 
-app.patch("/api/partner/:key/user", (req, res) => {
-  const checkKey = req.params.key === PROBE_API_KEY;
-  res.setHeader("Content-Type", "application/json");
-  if (checkKey) {
-    res.writeHead(200);
-    res.end(JSON.stringify("You are a partner!"));
-  } else {
-    res.writeHead(401);
-    res.end("Unauthorized [401]");
-  }
-});
-
 WebApp.connectHandlers.use("/api/satellites", async (req, res) => {
   async function getSats() {
     res.setHeader("Content-Type", "application/json");
@@ -211,7 +199,7 @@ WebApp.connectHandlers.use("/api/schemas", (req, res) => {
   getSchema();
 });
 
-WebApp.connectHandlers.use("/api/", (req, res) => {
+WebApp.connectHandlers.use("/api/welcome", (req, res) => {
   res.setHeader("Content-Type", "application/json");
   res.writeHead(200);
   res.end(

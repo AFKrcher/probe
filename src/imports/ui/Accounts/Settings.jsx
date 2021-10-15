@@ -122,10 +122,7 @@ export const Settings = () => {
     let oldPassword = document.getElementById("oldPassword")?.value;
     let newPassword = document.getElementById("newPassword")?.value;
     let confirm = document.getElementById("confirm")?.value;
-    // const regex =
-    //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
     return (
-      // regex.test(newPassword) &&
       newPassword !== oldPassword &&
       confirm === newPassword &&
       newPassword?.length <= 128 &&
@@ -183,7 +180,7 @@ export const Settings = () => {
         setPassErr(
           newPassword.length > 128
             ? "Cannot be longer than 128 characters"
-            : "Must be at least 8 characters long, and contain 1 lowercase, 1 uppercase, and 1 special character"
+            : "Must be at least 8 characters long, and should contain at least 1 lowercase, 1 uppercase, and 1 special character"
         );
       }
     } else {
@@ -248,7 +245,9 @@ export const Settings = () => {
           setOpenAlert(true);
         }
         if (res) {
-          setSnack(`Username successfully changed from ${user} to ${newUsername}`);
+          setSnack(
+            `Username successfully changed from ${user} to ${newUsername}`
+          );
           setOpenSnack(true);
           setDisabled(true);
         }

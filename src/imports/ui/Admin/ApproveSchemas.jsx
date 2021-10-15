@@ -98,7 +98,6 @@ export const ApproveSchemas = () => {
   };
 
   const cells = (schema, i) => {
-    console.log(schemasDeleted);
     return (
       <TableRow
         key={`schema-row-${i}`}
