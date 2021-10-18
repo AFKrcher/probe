@@ -75,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
 export const SatelliteSchemaAccordion = ({
   dirty,
   errors,
+  setErrors,
   schema,
   schemas,
   entries,
@@ -82,9 +83,11 @@ export const SatelliteSchemaAccordion = ({
   editing,
   setSatSchema,
   values,
+  setValues,
   isUniqueList,
   satelliteValidatorShaper,
   setTouched,
+  touched,
   editingOne,
   setEditingOne,
   schemaIndex,
@@ -113,14 +116,16 @@ export const SatelliteSchemaAccordion = ({
     );
     const newEntries = [...entries, schemaFields];
     await setFieldValue(schema.name, newEntries);
-    setSatSchema(satelliteValidatorShaper(schemas, values, isUniqueList));
+    await setSatSchema(satelliteValidatorShaper(schemas, values, isUniqueList));
   };
 
-  const handleEditSchema = () => {
+  const handleEditSchema = async () => {
     setEditingSchema(!editingSchema);
     setEditingOne(!editingOne);
     if (editingSchema) {
       setAccordionBeingEdited(-1);
+      await setValues(initValues);
+      setErrors({});
     } else {
       setAccordionBeingEdited(schemaIndex);
     }
@@ -204,7 +209,13 @@ export const SatelliteSchemaAccordion = ({
                     </IconButton>
                     <IconButton
                       className={classes.saveIcon}
-                      disabled={!dirty}
+                      disabled={
+                        Object.entries(errors).length > 0 ||
+                        !dirty ||
+                        Object.entries(touched).length === 0
+                          ? true
+                          : false
+                      }
                       onClick={() => {
                         handleSubmit(values);
                       }}

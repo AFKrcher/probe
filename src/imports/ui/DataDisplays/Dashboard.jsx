@@ -9,12 +9,14 @@ import { Gallery } from "./Gallery.jsx";
 
 // @material-ui
 import {
+  Container,
   CircularProgress,
   DataGrid,
   Grid,
   makeStyles,
-  Container,
+  Paper,
 } from "@material-ui/core";
+import { styled } from "@material-ui/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,36 +33,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+}));
+
 export const Dashboard = () => {
   const classes = useStyles();
   const location = useLocation();
 
   const [path, setPath] = useState(25544);
-
-  const columns = [
-    {
-      headerAlign: "left",
-      field: "id",
-      headerName: "NORAD ID",
-      minWidth: 150,
-    },
-    {
-      headerAlign: "left",
-      field: "orbit",
-      headerName: "ORBIT(S)",
-      minWidth: 140,
-      editable: false,
-      filterable: false,
-    },
-    {
-      headerAlign: "left",
-      field: "types",
-      headerName: "TYPE(S)",
-      minWidth: 200,
-      editable: false,
-      filterable: false,
-    },
-  ];
 
   useEffect(() => {
     const url = location.pathname.substring(1).split("/")[1];
@@ -81,64 +65,65 @@ export const Dashboard = () => {
     return [sat, !sub.ready()];
   });
 
-  const nameMapper = (sat) => {
-    let names = [];
-    if (sat.names?.length > 1) {
-      for (let i = 1; i < sat.names.length; i++) {
-        if (i === sat.names.length - 1) {
-          names.push(`${sat.names[i].name}`);
+  const mapper = (prop = "names", key = prop) => {
+    let values = [];
+    if (sat[prop]?.length > 1) {
+      for (let i = 1; i < sat[prop].length; i++) {
+        if (i === sat[prop].length - 1) {
+          values.push(`${sat[prop][i][key]}`);
         } else {
-          names.push(`${sat.names[i].name}, `);
+          values.push(`${sat[prop][i][key]}, `);
         }
       }
     }
-    return ` (AKA: ${names.join(", ")})`;
+    return ` (${prop.toUpperCase()}: ${values.join(" ")})`;
   };
 
   return (
     <Container className={classes.root}>
       {!isLoading && !sat?.isDeleted && sat ? (
         <React.Fragment>
-          <Grid
-            item
-            container
-            xs={12}
-            spacing={10}
-            justifyContent="space-around"
-          >
+          <Grid container spacing={10} justifyContent="space-around">
             <Grid item xs={6}>
-              {sat.names ? (
-                <div>
-                  {sat.names ? sat.names[0].name : null}
-                  {sat.names?.length > 1 ? nameMapper(sat) : null}
-                </div>
-              ) : null}
-              <p>
-                Norad ID: {sat.noradID}
-                {sat.cosparID ? sat.cosparID.cosparID : null}
-              </p>
-              <Gallery
-                initValues={sat}
-                clickable={true}
-                description={true}
-                autoplay={false}
-              />
-              <p>
-                {sat.descriptionShort
-                  ? sat.descriptionShort[0].descriptionShort
-                  : null}
+              <Item>
+                {sat.names ? (
+                  <div>
+                    {sat.names ? sat.names[0].name : null}
+                    {sat.names?.length > 1 ? mapper("names", "name") : null}
+                  </div>
+                ) : null}
+                <p>
+                  Norad ID: {sat.noradID}
+                  {sat.cosparID ? sat.cosparID.cosparID : null}
+                </p>
+                <p>
+                  {sat.descriptionShort
+                    ? sat.descriptionShort[0].descriptionShort
+                    : null}
+                  <br />
+                  {sat.descriptionLong
+                    ? sat.descriptionLong[0].descriptionLong
+                    : null}
+                </p>
+                {Object.keys(sat).map((key) => {
+                  if (sat[key].length > 1 && typeof sat[key] === "object") {
+                    return <div>{mapper(key)}</div>;
+                  }
+                })}
+              </Item>
+            </Grid>
+            <Grid item xs={6}>
+              <Item>
+                <Gallery
+                  initValues={sat}
+                  clickable={true}
+                  description={true}
+                  autoplay={false}
+                />
+                {sat.organization ? mapper("organization") : null}
                 <br />
-                {sat.descriptionLong
-                  ? sat.descriptionLong[0].descriptionLong
-                  : null}
-              </p>
-              {Object.keys(sat).map((key) => {
-                if (typeof sat[key] !== "object") {
-                  return <div key={key}>{`${key} ${sat[key]}`}</div>;
-                } else {
-                  console.log(sat);
-                }
-              })}
+                {sat.payload ? mapper("payload", "name") : null}
+              </Item>
             </Grid>
           </Grid>
         </React.Fragment>
