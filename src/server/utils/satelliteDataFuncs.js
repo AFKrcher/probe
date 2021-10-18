@@ -18,10 +18,15 @@ const isUniqueList = (initValues, sats, path, field) => {
     for (let sat in sats) {
       let satEntries = sats[sat][path];
       for (let entry in satEntries) {
-        satEntries[entry][field] ===
-        (initValues[path].length > 0 ? initValues[path][entry][field] : false)
-          ? null
-          : list.push(satEntries[entry][field]);
+        if (initValues[path].length > 0 && initValues[path][entry]) {
+          if (
+            satEntries[entry][field] !== initValues[path][entry][field] &&
+            satEntries[entry][field] !== "N/A"
+          ) {
+            let item = satEntries[entry][field].toLowerCase();
+            list.push(item);
+          }
+        }
       }
     }
   }
@@ -104,17 +109,22 @@ export const satelliteValidatorShaper = (values, initValues) => {
           // a new "type constraint" (e.g. max number, min number, max string length)
           let tempFieldSchema;
           switch (field.type) {
+            case "string":
+              tempFieldSchema = Yup.string().trim().lowercase();
+              break;
             case "url":
-              tempFieldSchema = Yup["string"]();
+              tempFieldSchema = Yup.string().url(
+                `${path}-${entryCount}-${fieldCount}_Must be a valid URL (e.g. https://en.wikipedia.org/wiki/Main_Page).`
+              );
               break;
             case "validated":
-              tempFieldSchema = Yup["array"]();
+              tempFieldSchema = Yup.array();
               break;
             case "verified":
-              tempFieldSchema = Yup["array"]();
+              tempFieldSchema = Yup.array();
               break;
             case "changelog":
-              tempFieldSchema = Yup["array"]();
+              tempFieldSchema = Yup.array();
               break;
             default:
               tempFieldSchema = Yup[`${field.type}`]();
@@ -134,29 +144,19 @@ export const satelliteValidatorShaper = (values, initValues) => {
                   } Required`
                 )
               : false,
-            url:
-              field.type === "url"
-                ? baseFieldType.url(
-                    `${path}-${entryCount}-${fieldCount}_Must be a valid URL (e.g. https://en.wikipedia.org/wiki/Main_Page).`
+            isUnique:
+              field.type === "string" && field.isUnique
+                ? baseFieldType.notOneOf(
+                    isUniqueList(path, schemaField),
+                    `${path}-${entryCount}-${fieldCount}_A satellite with ${schemaField} of ${
+                      value[entryCount][schemaField]
+                        ? value[entryCount][schemaField].trim()
+                        : "N/A"
+                    } already exists.`
                   )
                 : false,
-            allowedValues:
-              field.allowedValues?.length > 0
-                ? baseFieldType.oneOf(
-                    [...field.allowedValues],
-                    `${path}-${entryCount}-${fieldCount}_Must be one of the following: ${field.allowedValues.join(
-                      ", "
-                    )}`
-                  )
-                : false,
-            isUnique: field.isUnique
-              ? baseFieldType.notOneOf(
-                  isUniqueList(initValues, sats, path, schemaField),
-                  `${path}-${entryCount}-${fieldCount}_A satellite with ${schemaField} of ${value[entryCount][schemaField]} already exists.`
-                )
-              : false,
             min:
-              field.type === "number" && field.max
+              field.type === "number" && field.min
                 ? baseFieldType.min(
                     field.min,
                     `${path}-${entryCount}-${fieldCount}_Must be no less than ${field.min}`
@@ -167,6 +167,13 @@ export const satelliteValidatorShaper = (values, initValues) => {
                 ? baseFieldType.max(
                     field.max,
                     `${path}-${entryCount}-${fieldCount}_Must be no greater than ${field.max}`
+                  )
+                : false,
+            allowedValues:
+              field.allowedValues?.length > 0
+                ? baseFieldType.oneOf(
+                    [...field.allowedValues],
+                    `${path}-${entryCount}-${fieldCount}_Please select an option from the list.`
                   )
                 : false,
             stringMax:
@@ -193,10 +200,9 @@ export const satelliteValidatorShaper = (values, initValues) => {
         fieldValidator
           .validate(entry, { abortEarly: true })
           .then(() => {
-            errObj = {}; // clear all errors on successful validation
+            return;
           })
           .catch((err) => {
-            errObj = {}; // clear old errors and repopulate error object upon failed validation
             err.path === undefined
               ? (err.message = "err is not defined")
               : null;

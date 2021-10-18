@@ -16,10 +16,17 @@
       "required": true
     },
     {
+      "name": "validated",
+      "hidden": true,
+      "type": "validated",
+      "required": true
+    },
+    {
       "name": "name",
       "type": "string",
       "allowedValues": [],
       "required": true,
+      "isUnique": true,
       "stringMax": 50
     }
   ]

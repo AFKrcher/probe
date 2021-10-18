@@ -221,7 +221,7 @@
       "description": "The Zvezda Service Module and Progress Module serve as the main thrust providers for the ISS."
     }
   ],
-  "orbit": [
+  "orbits": [
     {
       "reference": "https://en.wikipedia.org/wiki/Low_Earth_orbit",
       "verified": [

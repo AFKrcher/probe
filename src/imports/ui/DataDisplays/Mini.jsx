@@ -68,7 +68,7 @@ export const Mini = () => {
         fields: {
           noradID: 1,
           "names.name": 1,
-          "orbit.orbit": 1,
+          "orbits.orbit": 1,
           "descriptionShort.descriptionShort": 1,
         },
       }
@@ -112,8 +112,8 @@ export const Mini = () => {
                   </Typography>
                   <Grid container>
                     {sats.map((sat, index) => {
-                      if (sat.orbit) {
-                        if (sat.orbit[0].orbit === regime)
+                      if (sat.orbits) {
+                        if (sat.orbits[0].orbit === regime)
                           return (
                             <Grid
                               item

@@ -4,6 +4,7 @@
 
 import * as Yup from "yup";
 import React from "react";
+import { _ } from "meteor/underscore";
 import VerifiedIcon from "@material-ui/icons/CheckBoxOutlined";
 import ValidatedIcon from "@material-ui/icons/LibraryAddCheck";
 import IndeterminateIcon from "@material-ui/icons/IndeterminateCheckBox";
@@ -45,6 +46,7 @@ export const getSatDesc = (satellite) => {
 };
 
 export const decideVerifiedValidated = (
+  // decides the rendering of the validated / verified items for each of the satellite's fields
   array,
   verified,
   style,
@@ -130,6 +132,7 @@ export const decideVerifiedValidated = (
 
 // Data entry functions
 export const emptyDataRemover = (values) => {
+  // removes schemas that are added to a satellite but contain no information
   let tempObj = {};
   let deleteEmptyArr = [];
   Object.entries(values).forEach((entryArr) => {
@@ -143,6 +146,7 @@ export const emptyDataRemover = (values) => {
 
   deleteEmptyArr.forEach((emptyEntry) => delete values[emptyEntry]);
   if (!values.names?.length > 0)
+    // ensure that the names schema field is never empty
     values.names = [
       {
         reference: "https://www.placeholder.org/",
@@ -227,7 +231,7 @@ export const satelliteValidatorShaper = (schemas, values, isUniqueList) => {
       value?.forEach((entry) => {
         // "entry" is composed of multiple "fields", and is part of the submitted array, aka "value"
         let fieldObj = {};
-        let fieldCount = 0;
+        let fieldCount = 0; // index for error tracking
         const schema = cleanSchema[path];
         for (let schemaField in schema) {
           // "schema" are the schemas seen on the SchemasTable, and "schemaField" are the fields to be filled-in in each schema
@@ -235,25 +239,30 @@ export const satelliteValidatorShaper = (schemas, values, isUniqueList) => {
           // the following must be modified whenever we decide to create:
           // a new "type" (e.g. number, string, date) or
           // a new "type constraint" (e.g. max number, min number, max string length)
-          let tempFieldSchema;
+          let baseFieldSchema; // initialize vairable to store sub-schema constraints
           switch (field.type) {
+            case "string":
+              baseFieldSchema = Yup.string().trim();
+              break;
             case "url":
-              tempFieldSchema = Yup["string"]();
+              baseFieldSchema = Yup.string().url(
+                `${path}-${entryCount}-${fieldCount}_Must be a valid URL (e.g. https://en.wikipedia.org/wiki/Main_Page).`
+              );
               break;
             case "validated":
-              tempFieldSchema = Yup["array"]();
+              baseFieldSchema = Yup.array();
               break;
             case "verified":
-              tempFieldSchema = Yup["array"]();
+              baseFieldSchema = Yup.array();
               break;
             case "changelog":
-              tempFieldSchema = Yup["array"]();
+              baseFieldSchema = Yup.array();
               break;
             default:
-              tempFieldSchema = Yup[`${field.type}`]();
+              baseFieldSchema = Yup[`${field.type}`]();
               break;
           }
-          const baseFieldType = tempFieldSchema;
+          const baseFieldType = baseFieldSchema; // initialize vairable to store sub-schema type
           // stores the yup fragments needed for each constraint
           const fieldSchemaMatrix = {
             required: field.required
@@ -267,29 +276,19 @@ export const satelliteValidatorShaper = (schemas, values, isUniqueList) => {
                   } Required`
                 )
               : false,
-            url:
-              field.type === "url"
-                ? baseFieldType.url(
-                    `${path}-${entryCount}-${fieldCount}_Must be a valid URL (e.g. https://en.wikipedia.org/wiki/Main_Page).`
+            isUnique:
+              field.type === "string" && field.isUnique
+                ? baseFieldType.notOneOf(
+                    isUniqueList(path, schemaField),
+                    `${path}-${entryCount}-${fieldCount}_A satellite with ${schemaField} of ${
+                      value[entryCount][schemaField]
+                        ? value[entryCount][schemaField].trim()
+                        : "N/A"
+                    } already exists.`
                   )
                 : false,
-            allowedValues:
-              field.allowedValues?.length > 0
-                ? baseFieldType.oneOf(
-                    [...field.allowedValues],
-                    `${path}-${entryCount}-${fieldCount}_Must be one of the following: ${field.allowedValues.join(
-                      ", "
-                    )}`
-                  )
-                : false,
-            isUnique: field.isUnique
-              ? baseFieldType.notOneOf(
-                  isUniqueList(path, schemaField),
-                  `${path}-${entryCount}-${fieldCount}_A satellite with ${schemaField} of ${value[entryCount][schemaField]} already exists.`
-                )
-              : false,
             min:
-              field.type === "number" && field.max
+              field.type === "number" && field.min
                 ? baseFieldType.min(
                     field.min,
                     `${path}-${entryCount}-${fieldCount}_Must be no less than ${field.min}`
@@ -302,6 +301,13 @@ export const satelliteValidatorShaper = (schemas, values, isUniqueList) => {
                     `${path}-${entryCount}-${fieldCount}_Must be no greater than ${field.max}`
                   )
                 : false,
+            allowedValues:
+              field.allowedValues?.length > 0
+                ? baseFieldType.oneOf(
+                    [...field.allowedValues],
+                    `${path}-${entryCount}-${fieldCount}_Please select an option from the list.`
+                  )
+                : false,
             stringMax:
               field.type === "string" && field.stringMax
                 ? baseFieldType.max(
@@ -312,32 +318,47 @@ export const satelliteValidatorShaper = (schemas, values, isUniqueList) => {
           };
           // loop over the schema and concatenate all valid constraints to field's yup object
           for (let check in fieldSchemaMatrix) {
-            if (fieldSchemaMatrix[check])
-              tempFieldSchema = tempFieldSchema.concat(
+            if (fieldSchemaMatrix[check]) {
+              // concatenate constraints based on the sub-schema
+              baseFieldSchema = baseFieldSchema.concat(
                 fieldSchemaMatrix[check]
               );
+            }
           }
-          fieldObj[schemaField] = tempFieldSchema;
-          fieldCount++;
+          fieldObj[schemaField] = baseFieldSchema; // add sub-schema constraints to the overall schema
+          fieldCount++; // increment index for error tracking
         }
         let fieldValidator = Yup.object().shape(fieldObj);
 
         // Yup.addMethod's test must return a boolean, and/or generate errors as necessary, in order to complete the validation
         fieldValidator
           .validate(entry, { abortEarly: true })
-          .then(() => {
-            errObj = {}; // clear all errors on successful validation
+          .then((result) => {
+            let resolved = // provides an identifier to delete the correct error on successful validation
+              "-" +
+              value
+                .map((object) => {
+                  return _.isEqual(object, result);
+                })
+                .indexOf(true)
+                .toString() +
+              "-";
+            let key = Object.keys(errObj)[0];
+            if (!errObj[key]) {
+              // if the errObj does not contain the key, empty the object of all stale errors
+              return (errObj = {});
+            } else if (errObj[key].includes(resolved)) {
+              // if the errObj contains the key and has the resolved error, clear the stale error
+              return (errObj = {});
+            }
           })
           .catch((err) => {
-            errObj = {}; // clear old errors and repopulate error object upon failed validation
-            err.path === undefined
-              ? (err.message = "err is not defined")
-              : null;
-            return err.message !== "err is not defined"
-              ? (errObj[err["path"]] = err.message)
-              : null;
+            if (!_.isEmpty(errObj)) errObj = {}; // if the errObj is emptied by a resolved error, empty the errObj of stale errors
+            if (err.path === undefined) err.message = "err is not defined"; // catch-all for errors that the 2 types of errors are not relevent to form validation
+            if (err.message !== "err is not defined")
+              errObj[err["path"]] = err.message; // insert error into the errObj that is send back to the form for rendering
           });
-        entryCount++;
+        entryCount++; // increment index for error tracking
       });
 
       // check error object to determine the success of the validation and the amount of errors that need to be generated for Formik to handle
@@ -363,5 +384,5 @@ export const satelliteValidatorShaper = (schemas, values, isUniqueList) => {
     }
   }
 
-  return Yup.object().shape(yupShape);
+  return Yup.object().shape(yupShape); // return the test and overall Yup shape back to Formik
 };

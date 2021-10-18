@@ -46,7 +46,7 @@ export const SearchBar = ({
                 },
               },
               {
-                "orbit.orbit": {
+                "orbits.orbit": {
                   $in: val,
                 },
               },

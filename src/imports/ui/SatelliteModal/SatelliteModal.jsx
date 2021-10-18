@@ -109,7 +109,6 @@ export const SatelliteModal = ({
 
   const isUniqueList = (path, field) => {
     let list = [];
-    // let test = SatelliteCollection.find({})
     if (!path) {
       for (let sat in sats) {
         sats[sat][field] === initValues[field]
@@ -120,10 +119,15 @@ export const SatelliteModal = ({
       for (let sat in sats) {
         let satEntries = sats[sat][path];
         for (let entry in satEntries) {
-          satEntries[entry][field] ===
-          (initValues[path].length > 0 ? initValues[path][entry][field] : false)
-            ? null
-            : list.push(satEntries[entry][field]);
+          if (initValues[path].length > 0 && initValues[path][entry]) {
+            if (
+              satEntries[entry][field] !== initValues[path][entry][field] &&
+              satEntries[entry][field] !== "N/A"
+            ) {
+              let item = satEntries[entry][field];
+              list.push(item);
+            }
+          }
         }
       }
     }
@@ -473,6 +477,7 @@ export const SatelliteModal = ({
                       editingOne={editingOne}
                       setEditingOne={setEditingOne}
                       errors={errors}
+                      setErrors={setErrors}
                       values={values}
                       schemas={schemas}
                       setValues={setValues}
@@ -484,6 +489,7 @@ export const SatelliteModal = ({
                       isUniqueList={isUniqueList}
                       satelliteValidatorShaper={satelliteValidatorShaper}
                       setTouched={setTouched}
+                      touched={touched}
                       dirty={dirty}
                     />
                   </DialogContent>

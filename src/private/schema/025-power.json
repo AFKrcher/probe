@@ -16,6 +16,12 @@
       "required": true
     },
     {
+      "name": "validated",
+      "hidden": true,
+      "type": "validated",
+      "required": true
+    },
+    {
       "name": "source",
       "type": "string",
       "allowedValues": ["nuclear", "solar", "battery", "other"],
