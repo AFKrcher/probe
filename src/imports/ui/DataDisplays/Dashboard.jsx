@@ -10,6 +10,7 @@ import { Gallery } from "./Gallery.jsx";
 // @material-ui
 import {
   CircularProgress,
+  DataGrid,
   Grid,
   makeStyles,
   Container,
@@ -35,6 +36,31 @@ export const Dashboard = () => {
   const location = useLocation();
 
   const [path, setPath] = useState(25544);
+
+  const columns = [
+    {
+      headerAlign: "left",
+      field: "id",
+      headerName: "NORAD ID",
+      minWidth: 150,
+    },
+    {
+      headerAlign: "left",
+      field: "orbit",
+      headerName: "ORBIT(S)",
+      minWidth: 140,
+      editable: false,
+      filterable: false,
+    },
+    {
+      headerAlign: "left",
+      field: "types",
+      headerName: "TYPE(S)",
+      minWidth: 200,
+      editable: false,
+      filterable: false,
+    },
+  ];
 
   useEffect(() => {
     const url = location.pathname.substring(1).split("/")[1];
@@ -73,7 +99,13 @@ export const Dashboard = () => {
     <Container className={classes.root}>
       {!isLoading && !sat?.isDeleted && sat ? (
         <React.Fragment>
-          <Grid item container xs={12} spacing={10}>
+          <Grid
+            item
+            container
+            xs={12}
+            spacing={10}
+            justifyContent="space-around"
+          >
             <Grid item xs={6}>
               {sat.names ? (
                 <div>
@@ -85,17 +117,28 @@ export const Dashboard = () => {
                 Norad ID: {sat.noradID}
                 {sat.cosparID ? sat.cosparID.cosparID : null}
               </p>
+              <Gallery
+                initValues={sat}
+                clickable={true}
+                description={true}
+                autoplay={false}
+              />
               <p>
                 {sat.descriptionShort
                   ? sat.descriptionShort[0].descriptionShort
                   : null}
+                <br />
                 {sat.descriptionLong
                   ? sat.descriptionLong[0].descriptionLong
                   : null}
               </p>
-            </Grid>
-            <Grid item xs={5}>
-              <Gallery initValues={sat} clickable={true} description={true} />
+              {Object.keys(sat).map((key) => {
+                if (typeof sat[key] !== "object") {
+                  return <div key={key}>{`${key} ${sat[key]}`}</div>;
+                } else {
+                  console.log(sat);
+                }
+              })}
             </Grid>
           </Grid>
         </React.Fragment>

@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
 // Imports
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
+import { Field } from "formik";
 
 // Components
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
-import { Field } from "formik";
 import { SatelliteSchemaAccordion } from "./SatelliteSchemaAccordion";
 
 // @material-ui

@@ -9,9 +9,9 @@ import {
   satelliteValidatorShaper,
 } from "../utils/satelliteDataFuncs.js";
 import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
+import { Formik, Form } from "formik";
 
 // Components
-import { Formik, Form } from "formik";
 import { SatelliteForm } from "./SatelliteForm";
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
 import SnackBar from "../Dialogs/SnackBar.jsx";
@@ -109,6 +109,7 @@ export const SatelliteModal = ({
 
   const isUniqueList = (path, field) => {
     let list = [];
+    // let test = SatelliteCollection.find({})
     if (!path) {
       for (let sat in sats) {
         sats[sat][field] === initValues[field]
