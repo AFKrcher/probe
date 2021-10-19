@@ -1,0 +1,19 @@
+# Pull base image.
+FROM node:14
+
+# Create app directory
+RUN mkdir -p /app
+
+# Copy meteor build bundle
+COPY bundle /app
+
+# Build for the image
+RUN cd /app/programs/server && npm install --production
+RUN	export ROOT_URL='https://your.personal.url'
+RUN export MONGO_URL='mongodb://user:password@host:port/databasename'
+RUN	export MAIL_URL='smtp://user:password@mailhost:port/'
+
+EXPOSE 3000
+
+# Final run command
+CMD ["node main.js"]

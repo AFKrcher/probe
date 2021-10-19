@@ -142,7 +142,7 @@ export const SatellitesTable = () => {
   const [page, setPage] = useState(0);
   const [limiter, setLimiter] = useState(10);
   const [sortNorad, setSortNorad] = useState(0);
-  const [sortNames, setSortNames] = useState(0);
+  const [sortName, setSortName] = useState(0);
   const [sortType, setSortType] = useState(0);
   const [sortOrbit, setSortOrbit] = useState(0);
   const [selector, setSelector] = useState({ isDeleted: false });
@@ -159,10 +159,10 @@ export const SatellitesTable = () => {
   }, 300);
 
   const decideSort = () => {
-    if (sortNames) return { names: sortNames };
+    if (sortName) return { names: sortName };
     if (sortNorad) return { noradID: sortNorad };
     if (sortType) return { type: sortType };
-    if (sortOrbit) return { orbit: sortOrbit };
+    if (sortOrbit) return { orbits: sortOrbit };
   };
 
   const [rows, isLoadingSchemas, isLoadingSats, count] = useTracker(() => {
@@ -184,8 +184,8 @@ export const SatellitesTable = () => {
               .sort((a, b) => a.localeCompare(b))
               .join(", ")
           : "",
-        orbit: sat.orbit
-          ? sat.orbit.map((entry) => entry.orbit).join(", ")
+        orbits: sat.orbits
+          ? sat.orbits.map((entry) => entry.orbit).join(", ")
           : "",
         description: sat.descriptionShort
           ? sat.descriptionShort[0]?.descriptionShort
@@ -244,9 +244,9 @@ export const SatellitesTable = () => {
             "types.type": { $regex: `${filterBy.value}`, $options: "i" },
           });
           break;
-        case "orbit":
+        case "orbits":
           setSelector({
-            "orbit.orbit": { $regex: `${filterBy.value}`, $options: "i" },
+            "orbits.orbit": { $regex: `${filterBy.value}`, $options: "i" },
           });
           break;
         default:
@@ -265,12 +265,12 @@ export const SatellitesTable = () => {
           e[0].sort === "asc" ? setSortNorad(1) : setSortNorad(-1);
           break;
         case "names":
-          e[0].sort === "asc" ? setSortNames(-1) : setSortNames(1);
+          e[0].sort === "asc" ? setSortName(-1) : setSortName(1);
           break;
         case "types":
           e[0].sort === "asc" ? setSortType(-1) : setSortType(1);
           break;
-        case "orbit":
+        case "orbits":
           e[0].sort === "asc" ? setSortOrbit(-1) : setSortOrbit(1);
           break;
         default:
@@ -278,7 +278,7 @@ export const SatellitesTable = () => {
       }
     } else {
       setSortNorad(0);
-      setSortNames(0);
+      setSortName(0);
       setSortType(0);
       setSortOrbit(0);
     }
@@ -429,7 +429,7 @@ export const SatellitesTable = () => {
       },
       {
         headerAlign: "left",
-        field: "orbit",
+        field: "orbits",
         headerName: "ORBIT(S)",
         minWidth: 140,
         editable: false,
@@ -489,8 +489,8 @@ export const SatellitesTable = () => {
 
   function handleDashboard(e, id) {
     e.preventDefault();
-    // history.push(`/dashboard/${id}`);
-    // debounced(false);
+    history.push(`/dashboard/${id}`);
+    debounced(false);
   }
 
   const AddSatelliteButton = () => {

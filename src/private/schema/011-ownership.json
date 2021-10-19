@@ -16,6 +16,12 @@
       "required": true
     },
     {
+      "name": "validated",
+      "hidden": true,
+      "type": "validated",
+      "required": true
+    },
+    {
       "name": "type",
       "type": "string",
       "allowedValues": ["country", "company", "organization"],

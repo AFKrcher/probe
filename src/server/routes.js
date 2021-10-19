@@ -63,6 +63,7 @@ app.put("/api/partner/:key", (req, res) => {
 
 WebApp.connectHandlers.use("/api/satellites", async (req, res) => {
   async function getSats() {
+    let error;
     res.setHeader("Content-Type", "application/json");
     const sats = await SatelliteCollection.find({});
 
@@ -209,9 +210,10 @@ WebApp.connectHandlers.use("/api/satellites", async (req, res) => {
 
 WebApp.connectHandlers.use("/api/schemas", (req, res) => {
   function getSchema() {
+    let error;
     res.setHeader("Content-Type", "application/json");
     try {
-      schemaName = req.query.name;
+      let schemaName = req.query.name;
       if (schemaName && schemaName !== "") {
         res.writeHead(200);
         res.end(

@@ -9,9 +9,9 @@ import {
   satelliteValidatorShaper,
 } from "../utils/satelliteDataFuncs.js";
 import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
+import { Formik, Form } from "formik";
 
 // Components
-import { Formik, Form } from "formik";
 import { SatelliteForm } from "./SatelliteForm";
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
 import SnackBar from "../Dialogs/SnackBar.jsx";
@@ -119,10 +119,15 @@ export const SatelliteModal = ({
       for (let sat in sats) {
         let satEntries = sats[sat][path];
         for (let entry in satEntries) {
-          satEntries[entry][field] ===
-          (initValues[path].length > 0 ? initValues[path][entry][field] : false)
-            ? null
-            : list.push(satEntries[entry][field]);
+          if (initValues[path].length > 0 && initValues[path][entry]) {
+            if (
+              satEntries[entry][field] !== initValues[path][entry][field] &&
+              satEntries[entry][field] !== "N/A"
+            ) {
+              let item = satEntries[entry][field];
+              list.push(item);
+            }
+          }
         }
       }
     }
@@ -472,6 +477,7 @@ export const SatelliteModal = ({
                       editingOne={editingOne}
                       setEditingOne={setEditingOne}
                       errors={errors}
+                      setErrors={setErrors}
                       values={values}
                       schemas={schemas}
                       setValues={setValues}
@@ -483,6 +489,7 @@ export const SatelliteModal = ({
                       isUniqueList={isUniqueList}
                       satelliteValidatorShaper={satelliteValidatorShaper}
                       setTouched={setTouched}
+                      touched={touched}
                       dirty={dirty}
                     />
                   </DialogContent>

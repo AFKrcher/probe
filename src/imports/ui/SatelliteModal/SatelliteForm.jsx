@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
 // Imports
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
+import { Field } from "formik";
 
 // Components
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
-import { Field } from "formik";
 import { SatelliteSchemaAccordion } from "./SatelliteSchemaAccordion";
 
 // @material-ui
@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const SatelliteForm = ({
   errors,
+  setErrors,
   dirty,
   values,
   schemas,
@@ -64,6 +65,7 @@ export const SatelliteForm = ({
   setOpenSnack,
   setSnack,
   newSat,
+  touched,
 }) => {
   const { setOpenAlert, alert, setAlert } = useContext(HelpersContext);
   const [schemaAddition, setSchemaAddition] = useState(false);
@@ -82,6 +84,7 @@ export const SatelliteForm = ({
           editingOne={editingOne}
           setEditingOne={setEditingOne}
           errors={errors}
+          setErrors={setErrors}
           schema={schema}
           schemas={schemas}
           entries={values[`${schema.name}`]}
@@ -97,6 +100,7 @@ export const SatelliteForm = ({
           setOpenSnack={setOpenSnack}
           setSnack={setSnack}
           dirty={dirty}
+          touched={touched}
         />
         {editing && (
           <Tooltip title={`Delete ${schema.name}`}>
@@ -118,13 +122,17 @@ export const SatelliteForm = ({
     setAddSchema("");
     setFlag(!flag);
     toggleAddSchema();
+
+    await setSatSchema(satelliteValidatorShaper(schemas, values, isUniqueList));
   };
 
-  const handleDelete = (name) => {
+  const handleDelete = async (name) => {
     setFieldValue(name, []);
     delete initValues[`${name}`];
     setFlag(!flag);
     setOpenAlert(false);
+
+    await setSatSchema(satelliteValidatorShaper(schemas, values, isUniqueList));
 
     let obj = {};
     obj[name] = true;

@@ -1,20 +1,21 @@
 // Dependencies
 import * as Yup from "yup";
-// import helmet from "helmet";
+import helmet from "helmet";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Accounts } from "meteor/accounts-base";
 
 // Imports
+import { rateLimit } from "./ddp";
+import "./routes";
+import dotenv from "dotenv";
 import { SchemaCollection } from "/imports/api/schemas";
 import { SatelliteCollection } from "/imports/api/satellites";
 import { UsersCollection } from "/imports/api/users";
 import { ErrorsCollection } from "/imports/api/errors";
 import { schemaValidatorShaper } from "./utils/schemaDataFuncs";
 import { satelliteValidatorShaper } from "./utils/satelliteDataFuncs";
-// import { helmetOptions } from "./helmet";
-import "./routes";
-import dotenv from "dotenv";
+import { helmetOptions } from "./helmet";
 import {
   userHasVerifiedData,
   machineHasVerifiedData,
@@ -48,9 +49,8 @@ Meteor.startup(() => {
   console.log("> PROBE server is starting-up...");
   console.log("> Checking environment variables...");
 
-  // TODO: ensure helmet CSP options are compaitable with AWS instance and configuration
   // See helmet.js for Content Security Policy (CSP) options
-  // WebApp.connectHandlers.use(helmet(helmetOptions()));
+  WebApp.connectHandlers.use(helmet(helmetOptions()));
 
   // Account publications, methods, and seeds
   Roles.createRole("admin", { unlessExists: true });
@@ -315,10 +315,10 @@ Meteor.startup(() => {
   // Seed schema data
   if (SchemaCollection.find().count() < 26) {
     SchemaCollection.remove({});
-    var jsonObj = [];
-    files = fs.readdirSync("./assets/app/schema");
+    let jsonObj = [];
+    let files = fs.readdirSync("./assets/app/schema");
     files.forEach(function (file) {
-      data = fs.readFileSync("./assets/app/schema/" + file, "ascii");
+      let data = fs.readFileSync("./assets/app/schema/" + file, "ascii");
       jsonObj.push(JSON.parse(data));
       14;
     });
@@ -331,10 +331,10 @@ Meteor.startup(() => {
   // Seed satellite data
   if (SatelliteCollection.find().count() < 14) {
     SatelliteCollection.remove({});
-    var jsonObj = [];
-    files = fs.readdirSync("./assets/app/satellite");
+    let jsonObj = [];
+    let files = fs.readdirSync("./assets/app/satellite");
     files.forEach(function (file) {
-      data = fs.readFileSync("./assets/app/satellite/" + file, "ascii");
+      let data = fs.readFileSync("./assets/app/satellite/" + file, "ascii");
       jsonObj.push(JSON.parse(data));
     });
     jsonObj.forEach(function (data) {
@@ -563,9 +563,45 @@ Meteor.startup(() => {
       }
     },
   });
+
+  // Rate limits for preventing DDOS and spam
+  rateLimit({
+    methods: [
+      "userExists",
+      "emailExists",
+      "addUserToRole",
+      "deleteAccount",
+      "updateUsername",
+      "updateEmail",
+      "addToFavorites",
+      "removeRole",
+      "checkIfBanned",
+      "sendEmail",
+      "registerUser",
+      "addError",
+      "deleteError",
+      "deleteAllErrors",
+      "addNewSatellite",
+      "updateSatellite",
+      "deleteSatellite",
+      "actuallyDeleteSatellite",
+      "restoreSatellite",
+      "checkSatelliteData",
+      "addNewSchema",
+      "updateSchema",
+      "deleteSchema",
+      "actuallyDeleteSchema",
+      "restoreSchema",
+      "adminCheckSchema",
+    ],
+    limit: 5,
+    timeRange: 5000,
+  });
+
   console.log(
     `> PROBE server is running! Listening at ${ROOT_URL}${
       NODE_ENV === "production" ? ":" + PORT : ""
     }`
   );
+  console.log();
 });
