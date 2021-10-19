@@ -2,6 +2,12 @@
   "_id": "CaSD2dkm5SqaQ3pd2",
   "name": "transponder",
   "description": "Satellite transponder description and capabilities.",
+  "isDeleted": false,
+  "createdOn": "2021-10-05T16:58:33.834Z",
+  "createdBy": "admin",
+  "modifiedOn": "2021-10-05T17:01:08.444Z",
+  "modifiedBy": "admin",
+  "adminCheck": true,
   "fields": [
     {
       "name": "reference",

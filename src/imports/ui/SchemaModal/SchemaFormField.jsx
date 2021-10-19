@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
   },
+  firstRow: {
+    marginBottom: 10,
+  },
   helpersError: {
     marginLeft: 14,
     marginTop: 0,
@@ -44,12 +47,8 @@ export const SchemaFormField = ({
   editing,
 }) => {
   const [touched, setTouched] = useState(false);
+  const [currentStringMax, setCurrentStringMax] = useState(field.stringMax);
   const classes = useStyles();
-
-  const nameErrors =
-    (errors.fields?.length && errors.fields[index]?.name) || {};
-  const typeErrors =
-    (errors.fields?.length && errors.fields[index]?.type) || {};
 
   const onNameChange = (event) => {
     setFieldValue(event.target.name, event.target.value);
@@ -61,6 +60,11 @@ export const SchemaFormField = ({
 
   const onMaxChange = (event) => {
     setFieldValue(event.target.name, event.target.value);
+  };
+
+  const onStringMaxChange = (event) => {
+    setFieldValue(event.target.name, event.target.value);
+    setCurrentStringMax(event.target.value);
   };
 
   const onTypeChange = (event) => {
@@ -109,12 +113,12 @@ export const SchemaFormField = ({
     return contents;
   };
 
-  const maxErrorDetermination = (index) => {
+  const errorDetermination = (index, field) => {
     let determination = false;
     if (errors.fields) {
       if (errors.fields[index]) {
-        if (errors.fields[index].max) {
-          determination = true;
+        if (errors.fields[index][field]) {
+          determination = errors.fields[index][field];
         }
       }
     }
@@ -128,7 +132,7 @@ export const SchemaFormField = ({
   return (
     <Grid container item>
       <Grid container item spacing={2}>
-        <Grid item xs>
+        <Grid item xs className={classes.firstRow}>
           <Field
             inputProps={{
               name: `fields.${index}.name`,
@@ -144,13 +148,13 @@ export const SchemaFormField = ({
             disabled={!editing}
             component={TextField}
             onBlur={handleBlur}
-            error={nameErrors === "Required" && touched ? true : false}
+            error={errorDetermination(index, "name") && touched ? true : false}
             maxLength={255}
           />
           {editing ? (
-            nameErrors === "Required" && touched ? (
+            errorDetermination(index, "name") && touched ? (
               <Typography variant="caption" className={classes.helpersError}>
-                {nameErrors}
+                {errorDetermination(index, "name")}
               </Typography>
             ) : (
               <Typography variant="caption" className={classes.helpers}>
@@ -169,7 +173,9 @@ export const SchemaFormField = ({
           >
             <InputLabel
               htmlFor={`schema-field-${index}-data-type-label`}
-              error={typeErrors === "Required" && touched ? true : false}
+              error={
+                errorDetermination(index, "type") && touched ? true : false
+              }
             >
               Data type
             </InputLabel>
@@ -184,13 +190,17 @@ export const SchemaFormField = ({
               disabled={!editing}
               component={Select}
               onBlur={handleBlur}
-              error={typeErrors === "Required" && touched ? true : false}
+              error={
+                errorDetermination(index, "type") && touched ? true : false
+              }
             >
               <MenuItem value="string">String</MenuItem>
               <MenuItem value="number">Number</MenuItem>
               <MenuItem value="date">Date</MenuItem>
               <MenuItem value="url">URL</MenuItem>
-              <MenuItem value="changelog">Changelog</MenuItem>
+              <MenuItem value="changelog" disabled>
+                Changelog
+              </MenuItem>
               <MenuItem value="verified" style={{ display: "none" }}>
                 Verified
               </MenuItem>
@@ -199,9 +209,9 @@ export const SchemaFormField = ({
               </MenuItem>
             </Field>
           </FormControl>
-          {editing && typeErrors === "Required" && touched ? (
+          {editing && errorDetermination(index, "type") && touched ? (
             <Typography variant="caption" className={classes.helpersError}>
-              {typeErrors}
+              {errorDetermination(index, "type")}
             </Typography>
           ) : null}
         </Grid>
@@ -211,7 +221,7 @@ export const SchemaFormField = ({
           ? null
           : null}
         {field.type === "number" ? (
-          <>
+          <React.Fragment>
             <Grid container item spacing={2}>
               <Grid item xs>
                 <Field
@@ -237,7 +247,7 @@ export const SchemaFormField = ({
                   }}
                   onChange={onMaxChange}
                   defaultValue={field.max}
-                  error={maxErrorDetermination(index)}
+                  error={errorDetermination(index, "max")}
                   label="Maximum Value"
                   margin="dense"
                   fullWidth
@@ -250,10 +260,10 @@ export const SchemaFormField = ({
               </Grid>
             </Grid>
             {maxErrorMessage(index)}
-          </>
+          </React.Fragment>
         ) : null}
         {field.type === "string" ? (
-          <>
+          <React.Fragment>
             <Grid container item spacing={2}>
               <Grid item xs>
                 <MultiSelectTextInput
@@ -262,6 +272,8 @@ export const SchemaFormField = ({
                   disabled={!editing}
                   setFieldValue={setFieldValue}
                   editing={editing}
+                  currentStringMax={currentStringMax}
+                  errors={errors}
                 />
               </Grid>
               <Grid item xs>
@@ -270,7 +282,7 @@ export const SchemaFormField = ({
                     name: `fields.${index}.stringMax`,
                     min: "1",
                   }}
-                  onChange={onMaxChange}
+                  onChange={onStringMaxChange}
                   defaultValue={field.stringMax}
                   label="Maximum Length"
                   margin="dense"
@@ -284,7 +296,8 @@ export const SchemaFormField = ({
                 />
                 {editing && (
                   <FormHelperText className={classes.helpers}>
-                    OPTIONAL: Provide a maximum string length
+                    OPTIONAL: Provide a maximum character count, cannot exceed
+                    20,000
                   </FormHelperText>
                 )}
               </Grid>
@@ -306,7 +319,7 @@ export const SchemaFormField = ({
                 Unique Identifier (UUID)?
               </InputLabel>
             </div>
-          </>
+          </React.Fragment>
         ) : null}
         <div className={classes.field}>
           <Field

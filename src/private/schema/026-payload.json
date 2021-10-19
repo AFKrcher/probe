@@ -1,6 +1,12 @@
 {
   "name": "payload",
   "description": "Description of the history, origin, mission, and technical details of the payload(s) on the satellite.",
+  "isDeleted": false,
+  "createdOn": "2021-10-05T16:58:33.834Z",
+  "createdBy": "admin",
+  "modifiedOn": "2021-10-05T17:01:08.444Z",
+  "modifiedBy": "admin",
+  "adminCheck": true,
   "fields": [
     {
       "name": "reference",

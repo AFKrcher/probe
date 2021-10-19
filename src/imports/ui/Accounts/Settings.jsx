@@ -60,8 +60,7 @@ export const Settings = () => {
   const [id, user, email] = useTracker(() => {
     const id = Meteor.user()?._id;
     const user = Meteor.user()?.username;
-    const email =
-      Meteor.user()?.emails[Meteor.user()?.emails.length - 1].address;
+    const email = Meteor.user()?.emails[0]?.address;
     return [id, user, email];
   });
 
@@ -81,7 +80,6 @@ export const Settings = () => {
         setLoading(false);
         setSnack("Your account has been successfully deleted");
         setOpenSnack(true);
-        return;
       }
     });
   };
@@ -206,7 +204,6 @@ export const Settings = () => {
 
   const updateAccount = (e) => {
     e.preventDefault();
-
     const newEmail = e.target.newEmail?.value;
     const newUsername = e.target.newUsername?.value;
     const oldPassword = e.target.oldPassword?.value;
@@ -218,61 +215,85 @@ export const Settings = () => {
         if (err) {
           setAlert({
             title: "Error Encountered",
-            text: err,
+            text: err.message || err,
             actions: null,
             closeAction: "Close",
           });
           setOpenAlert(true);
-        }
-        if (res) {
-          setSnack(`Email successfully changed from ${email} to ${newEmail}`);
-          setOpenSnack(true);
+        } else if (res) {
           setDisabled(true);
+          setOpenSnack(true);
         }
       });
-    } else if (isValidUsername(newUsername) && newUsername !== user) {
+    }
+
+    if (isValidUsername(newUsername) && newUsername !== user) {
       Meteor.call("updateUsername", id, user, newUsername, (err, res) => {
         if (err) {
           setAlert({
             title: "Error Encountered",
-            text: err.message,
+            text: err.message || err,
             actions: null,
             closeAction: "Close",
           });
           setOpenAlert(true);
-        }
-        if (res) {
-          setSnack(
-            `Username successfully changed from ${user} to ${newUsername}`
-          );
-          setOpenSnack(true);
+        } else if (res) {
           setDisabled(true);
+          setOpenSnack(true);
         }
       });
-    } else if (isValidPassword(oldPassword, newPassword, confirm)) {
+    }
+
+    if (isValidPassword(oldPassword, newPassword, confirm)) {
       Accounts.changePassword(oldPassword, newPassword, (err, res) => {
         if (err) {
           setAlert({
             title: "Error Encountered",
-            text: err.message,
+            text: err.message || err,
             actions: null,
             closeAction: "Close",
           });
           setOpenAlert(true);
-        } else {
-          setSnack("Successfully changed password");
-          setOpenSnack(true);
+        } else if (res) {
           setDisabled(true);
+          setOpenSnack(true);
         }
       });
-    } else {
-      setAlert({
-        title: "Error Encountered",
-        text: "No changes made. Email, username, and password are the same.",
-        actions: null,
-        closeAction: "Close",
-      });
-      setOpenAlert(true);
+    }
+
+    if (
+      isValidEmail(newEmail) &&
+      newEmail !== email &&
+      isValidPassword(oldPassword, newPassword, confirm) &&
+      isValidUsername(newUsername) &&
+      newUsername !== user
+    ) {
+      setSnack("Successfully changed email, username, and password");
+    } else if (
+      isValidPassword(oldPassword, newPassword, confirm) &&
+      isValidUsername(newUsername) &&
+      newUsername !== user
+    ) {
+      setSnack("Successfully changed username and password");
+    } else if (
+      isValidEmail(newEmail) &&
+      newEmail !== email &&
+      isValidPassword(oldPassword, newPassword, confirm)
+    ) {
+      setSnack("Successfully changed email and password");
+    } else if (
+      isValidUsername(newUsername) &&
+      newUsername !== user &&
+      isValidEmail(newEmail) &&
+      newEmail !== email
+    ) {
+      setSnack("Successfully changed email and username");
+    } else if (isValidPassword(oldPassword, newPassword, confirm)) {
+      setSnack("Successfully changed password");
+    } else if (isValidUsername(newUsername) && newUsername !== user) {
+      setSnack(`Username successfully changed from ${user} to ${newUsername}`);
+    } else if (isValidEmail(newEmail) && newEmail !== email) {
+      setSnack(`Email successfully changed from ${email} to ${newEmail}`);
     }
   };
 
@@ -376,6 +397,7 @@ export const Settings = () => {
               >
                 Update your account
               </Button>
+              {Meteor.user().emails[0]?.verified}
               <Button
                 id="verifyButton"
                 onClick={sendEmail}

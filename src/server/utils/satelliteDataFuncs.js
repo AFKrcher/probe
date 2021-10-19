@@ -127,6 +127,9 @@ export const satelliteValidatorShaper = (values, initValues) => {
             case "changelog":
               baseFieldSchema = Yup.array();
               break;
+            case "date":
+              baseFieldSchema = Yup.date();
+              break;
             default:
               baseFieldSchema = Yup[`${field.type}`]();
               break;
@@ -203,10 +206,26 @@ export const satelliteValidatorShaper = (values, initValues) => {
         fieldValidator
           .validate(entry, { abortEarly: true })
           .then((result) => {
-            let resolved = // provides an identifier to delete the correct error on successful validation
+            let resolved = // provides an identifier to delete the correct error upon successful validation
               "-" +
               value
                 .map((object) => {
+                  for (let key in result) {
+                    if (
+                      Yup.date().isValidSync(result[key]) &&
+                      typeof result[key] !== "number"
+                    ) {
+                      // Yup transforms date strings into date objects
+                      // the "result" object will be mismatched with the original tested "value", leading to stale errors
+                      // solution is to transform values back to dates
+                      object[key] = new Date(object[key]);
+                    } else if (parseInt(object[key])) {
+                      // The original values that are integers are sent as strings
+                      // the "result" object will be mismatched with the original tested "value", leading to stale errors
+                      // solution is to transform the values back to numbers
+                      object[key] = parseInt(object[key]);
+                    }
+                  }
                   return _.isEqual(object, result);
                 })
                 .indexOf(true)
@@ -215,14 +234,14 @@ export const satelliteValidatorShaper = (values, initValues) => {
             let key = Object.keys(errObj)[0];
             if (!errObj[key]) {
               // if the errObj does not contain the key, empty the object of all stale errors
-              return (errObj = {});
+              errObj = {};
             } else if (errObj[key].includes(resolved)) {
               // if the errObj contains the key and has the resolved error, clear the stale error
-              return (errObj = {});
+              errObj = {};
             }
           })
           .catch((err) => {
-            if (!_.isEmpty(errObj)) errObj = {}; // if the errObj is emptied by a resolved error, empty the errObj of stale errors
+            errObj = {}; // if the errObj is emptied by a resolved error, empty the errObj of stale errors
             if (err.path === undefined) err.message = "err is not defined"; // catch-all for errors that the 2 types of errors are not relevent to form validation
             if (err.message !== "err is not defined")
               errObj[err["path"]] = err.message; // insert error into the errObj that is send back to the form for rendering

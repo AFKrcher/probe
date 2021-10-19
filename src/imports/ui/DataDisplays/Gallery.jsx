@@ -68,7 +68,12 @@ export const Gallery = ({
           onChangeIndex={handleStepChange}
           enableMouseEvents
           style={{
-            cursor: !clickable && images?.length > 1 ? "grab" : "pointer",
+            cursor:
+              !clickable && images?.length > 1
+                ? "grab"
+                : clickable
+                ? "pointer"
+                : "default",
           }}
         >
           {typeof images !== "string" ? (
