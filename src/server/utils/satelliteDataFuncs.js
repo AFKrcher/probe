@@ -3,6 +3,7 @@
  **/
 
 import * as Yup from "yup";
+import { _ } from "meteor/underscore";
 import { SchemaCollection } from "/imports/api/schemas";
 import { SatelliteCollection } from "/imports/api/satellites";
 
@@ -99,7 +100,7 @@ export const satelliteValidatorShaper = (values, initValues) => {
       value?.forEach((entry) => {
         // "entry" is composed of multiple "fields", and is part of the submitted array, aka "value"
         let fieldObj = {};
-        let fieldCount = 0;
+        let fieldCount = 0; // index for error tracking
         const schema = cleanSchema[path];
         for (let schemaField in schema) {
           // "schema" are the schemas seen on the SchemasTable, and "schemaField" are the fields to be filled-in in each schema
@@ -107,30 +108,30 @@ export const satelliteValidatorShaper = (values, initValues) => {
           // the following must be modified whenever we decide to create:
           // a new "type" (e.g. number, string, date) or
           // a new "type constraint" (e.g. max number, min number, max string length)
-          let tempFieldSchema;
+          let baseFieldSchema; // initialize vairable to store sub-schema constraints
           switch (field.type) {
             case "string":
-              tempFieldSchema = Yup.string().trim().lowercase();
+              baseFieldSchema = Yup.string().trim();
               break;
             case "url":
-              tempFieldSchema = Yup.string().url(
+              baseFieldSchema = Yup.string().url(
                 `${path}-${entryCount}-${fieldCount}_Must be a valid URL (e.g. https://en.wikipedia.org/wiki/Main_Page).`
               );
               break;
             case "validated":
-              tempFieldSchema = Yup.array();
+              baseFieldSchema = Yup.array();
               break;
             case "verified":
-              tempFieldSchema = Yup.array();
+              baseFieldSchema = Yup.array();
               break;
             case "changelog":
-              tempFieldSchema = Yup.array();
+              baseFieldSchema = Yup.array();
               break;
             default:
-              tempFieldSchema = Yup[`${field.type}`]();
+              baseFieldSchema = Yup[`${field.type}`]();
               break;
           }
-          const baseFieldType = tempFieldSchema;
+          const baseFieldType = baseFieldSchema; // initialize vairable to store sub-schema type
           // stores the yup fragments needed for each constraint
           const fieldSchemaMatrix = {
             required: field.required
@@ -186,31 +187,47 @@ export const satelliteValidatorShaper = (values, initValues) => {
           };
           // loop over the schema and concatenate all valid constraints to field's yup object
           for (let check in fieldSchemaMatrix) {
-            if (fieldSchemaMatrix[check])
-              tempFieldSchema = tempFieldSchema.concat(
+            if (fieldSchemaMatrix[check]) {
+              // concatenate constraints based on the sub-schema
+              baseFieldSchema = baseFieldSchema.concat(
                 fieldSchemaMatrix[check]
               );
+            }
           }
-          fieldObj[schemaField] = tempFieldSchema;
-          fieldCount++;
+          fieldObj[schemaField] = baseFieldSchema; // add sub-schema constraints to the overall schema
+          fieldCount++; // increment index for error tracking
         }
         let fieldValidator = Yup.object().shape(fieldObj);
 
         // Yup.addMethod's test must return a boolean, and/or generate errors as necessary, in order to complete the validation
         fieldValidator
           .validate(entry, { abortEarly: true })
-          .then(() => {
-            return;
+          .then((result) => {
+            let resolved = // provides an identifier to delete the correct error on successful validation
+              "-" +
+              value
+                .map((object) => {
+                  return _.isEqual(object, result);
+                })
+                .indexOf(true)
+                .toString() +
+              "-";
+            let key = Object.keys(errObj)[0];
+            if (!errObj[key]) {
+              // if the errObj does not contain the key, empty the object of all stale errors
+              return (errObj = {});
+            } else if (errObj[key].includes(resolved)) {
+              // if the errObj contains the key and has the resolved error, clear the stale error
+              return (errObj = {});
+            }
           })
           .catch((err) => {
-            err.path === undefined
-              ? (err.message = "err is not defined")
-              : null;
-            return err.message !== "err is not defined"
-              ? (errObj[err["path"]] = err.message)
-              : null;
+            if (!_.isEmpty(errObj)) errObj = {}; // if the errObj is emptied by a resolved error, empty the errObj of stale errors
+            if (err.path === undefined) err.message = "err is not defined"; // catch-all for errors that the 2 types of errors are not relevent to form validation
+            if (err.message !== "err is not defined")
+              errObj[err["path"]] = err.message; // insert error into the errObj that is send back to the form for rendering
           });
-        entryCount++;
+        entryCount++; // increment index for error tracking
       });
 
       // check error object to determine the success of the validation and the amount of errors that need to be generated for Formik to handle

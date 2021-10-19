@@ -88,6 +88,7 @@ export const ApproveSchemas = () => {
     const schemasDeleted = SchemaCollection.find({ isDeleted: true }).fetch();
     const schemasModified = SchemaCollection.find({
       adminCheck: false,
+      isDeleted: false,
     }).fetch();
     return [schemasDeleted, schemasModified, !sub.ready()];
   });

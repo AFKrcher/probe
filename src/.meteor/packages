@@ -28,4 +28,4 @@ accounts-base@2.1.0 # Meteor account management
 accounts-password@2.1.0 # Meteor account password management
 alanning:roles # Meteor account roles
 ddp-rate-limiter # Rate limiter for methods and subscriptions
-underscore
+underscore # Extended higher-order methods

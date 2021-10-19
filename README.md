@@ -30,105 +30,179 @@ The application should be intuitive and easy-to-use, even for a first-time user.
 
 The public API allows all users to obtain information on satellites and schemas produced by PROBE. Queries can be made to obtain specific satellites or schemas. Below is a list of example requests:
 
+#### Welcome Message
+
 GET: `/api/`
 
 RESPONSE: `"Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
 
+#### Satellites
+
 GET: `/api/satellites`
+
+GET (full or partial name): `/api/satellites?name=International`
+
+GET (full or partial NORAD ID): `/api/satellites?name=25544`
+
+GET (full or partial orbit): `/api/satellites?name=LEO`
+
+GET (full or partial type): `/api/satellites?name=research`
 
 RESPONSE:
 
+```json
+[
+  {
+    "_id": "fTTviYiQRoMLdRC26",
+    "isDeleted": false,
+    "noradID": "25544",
+    "createdOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)",
+    "createdBy": "admin",
+    "modifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)",
+    "modifiedBy": "admin",
+    "adminCheck": true,
+    "machineCheck": false,
+    "names": [
+      {
+        "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
+        "verified": [
+          {
+            "method": "user",
+            "name": "admin",
+            "verified": true,
+            "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+          },
+          {
+            "method": "machine",
+            "name": "Layer8",
+            "verified": false,
+            "verifiedOn": ""
+          }
+        ],
+        "validated": [
+          {
+            "method": "user",
+            "name": "admin",
+            "validated": true,
+            "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+          },
+          {
+            "method": "machine",
+            "name": "Layer8",
+            "validated": false,
+            "validatedOn": ""
+          }
+        ],
+        "name": "International Space Station"
+      }
+    ],
+    "descriptionShort": [
+      {
+        "reference": "https://en.wikipedia.org/wiki/International_Space_Station",
+        "verified": [
+          {
+            "method": "user",
+            "name": "admin",
+            "verified": true,
+            "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+          },
+          {
+            "method": "machine",
+            "name": "Layer8",
+            "verified": false,
+            "verifiedOn": ""
+          }
+        ],
+        "validated": [
+          {
+            "method": "user",
+            "name": "admin",
+            "validated": true,
+            "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+          },
+          {
+            "method": "machine",
+            "name": "Layer8",
+            "validated": false,
+            "validatedOn": ""
+          }
+        ],
+        "descriptionShort": "The International Space Station is a modular space station in low Earth orbit. It is a multinational collaborative project involving five participating space agencies: NASA, Roscosmos, JAXA, ESA, and CSA."
+      }
+    ],
+    ... // more data
+  },
+  ... // more related satellites
+]
 ```
-{
-  "_id": "fTTviYiQRoMLdRC26",
-  "isDeleted": false,
-  "noradID": "25544",
-  "createdOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)",
-  "createdBy": "admin",
-  "modifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)",
-  "modifiedBy": "admin",
-  "adminCheck": true,
-  "machineCheck": false,
-  "names": [
-    {
-      "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "name": "International Space Station"
-    }
-  ],
-  "descriptionShort": [
-    {
-      "reference": "https://en.wikipedia.org/wiki/International_Space_Station",
-      "verified": [
-        {
-          "method": "user",
-          "name": "admin",
-          "verified": true,
-          "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": ""
-        }
-      ],
-      "validated": [
-        {
-          "method": "user",
-          "name": "admin",
-          "validated": true,
-          "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": ""
-        }
-      ],
-      "descriptionShort": "The International Space Station is a modular space station in low Earth orbit. It is a multinational collaborative project involving five participating space agencies: NASA, Roscosmos, JAXA, ESA, and CSA."
-    }
-  ]
-  ...
-}
 
+#### Schemas
+
+GET: `/api/schemas`
+
+GET (full or partial name): `/api/schemas?name=names`
+
+RESPONSE:
+
+```json
+[
+  {
+  "name": "names",
+  "description": "Satellite's names or callsigns.",
+  "fields": [
+    {
+      "name": "reference",
+      "hidden": true,
+      "type": "url",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "verified",
+      "hidden": true,
+      "type": "verified",
+      "required": true
+    },
+    {
+      "name": "validated",
+      "hidden": true,
+      "type": "validated",
+      "required": true
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "allowedValues": [],
+      "required": true,
+      "isUnique": true,
+      "stringMax": 50
+    },
+    ... // more fields
+  ],
+  ... // more data
+}
+  ... // more related schemas
+]
 ```
 
 ### Partner API
 
-The partner API allows registered partners with PROBE API keys to go beyond the public API GET requests. The partner API is used mainly for PATCH, POST, and DELETE requests, as well as GET requests of more detailed information. Below is a list of example requests:
+The partner API allows registered partners with PROBE API keys to go beyond the public API GET requests. The partner API is used mainly for PATCH, POST, and DELETE requests,
+as well as GET requests of more detailed information.
+
+#### Welcome Message
 
 GET: `/api/partner/:key`
 
 RESPONSE: `"Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
+
+#### Satellites
+
+**WIP**
+
+#### Schemas
+
+**WIP**
 
 ## How To Contribute
 
@@ -188,18 +262,34 @@ show collections
 db.<collection name>.find()
 ```
 
-### Docker Development Image
+### Docker Development Build
 
-The Docker deployment is dependent on a `pm2.json` file to describe the configuration of your meteor application. A pm2.example.json is provided for filling-in. In addition, a `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README.
+The purpose of the Docker development build is to test a production build of the application, with conenctions to hosted services suchs as MongoDB and SMTPS. PM2 and alpine-node are used for ease-of-development and load balancing / app managment testing.
+
+The Docker deployment is dependent on the `pm2.json` and `.env` files to describe the configuration of your meteor application. A pm2.example.json is provided for filling-in and a `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README.
 
 Paste and run the following commands at the root of the project to build and run a docker image of PROBE on http://localhost:3000.
 
 ```
-chmod 777 scripts/devBuild.sh && scripts/devBuild.sh
+chmod 777 scripts/build-dev.sh && scripts/build-dev.sh
 docker run --rm --name probe --env-file src/private/.env -p 3000:3000 -t probe
 ```
 
-If you run into any build or docker errors, please ensure you try all of the following before submitting an issue:
+### Docker Production Build
+
+The Docker production is dependent on the `.env` file to describe the configuration of your meteor application. A `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README.
+
+Paste and run the following commands at the root of the project to build and run a docker image of PROBE on http://localhost:3000.
+
+```
+chmod 777 scripts/build-prod.sh && scripts/build-prod.sh
+```
+
+**WIP**
+
+### Docker Build Issues
+
+If you run into any Docker errors, please ensure you try all of the following before submitting an issue:
 
 1. `docker system prune -f -a` to remove all old images and volumes
 2. `docker container prune -f` / `docker volume prune -f` / `docker builder prune -f -a` / `docker image prune -f -a`
