@@ -101,8 +101,8 @@ export const SatelliteModal = ({
   const [user, schemas, sats, isLoadingSch, isLoadingSat] = useTracker(() => {
     const subSch = Meteor.subscribe("schemas");
     const subSat = Meteor.subscribe("satellites");
-    const schemas = SchemaCollection.find().fetch();
-    const sats = SatelliteCollection.find().fetch();
+    const schemas = SchemaCollection.find({ isDeleted: false }).fetch();
+    const sats = SatelliteCollection.find({ isDeleted: false }).fetch();
     const user = Meteor.user();
     return [user, schemas, sats, !subSch.ready(), !subSat.ready()];
   });
@@ -259,10 +259,10 @@ export const SatelliteModal = ({
 
   const handleToggleEdit = async (setValues, values, setErrors) => {
     await emptyDataRemover(values);
-    if (newSat && editing) handleClose();
-    if (editing) await setValues(initValues);
+    if (editing && newSat) handleClose();
+    if (editing && !newSat) await setValues(initValues);
     setEditing(!editing);
-    setErrors({});
+    if (setErrors) setErrors({});
   };
 
   const handleEdit = (setValues, dirty, touched, values, setErrors) => {
@@ -289,7 +289,7 @@ export const SatelliteModal = ({
           </span>
         ) : (
           <span>
-            Are you sure you want to delete all the changes made to this new
+            Are you sure you want to cancel all the changes made to this new
             satellite?
           </span>
         ),

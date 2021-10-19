@@ -121,7 +121,6 @@ export const SchemasTable = () => {
   const [selector, setSelector] = useState("");
   const [initialSchemaValues, setInitialSchemaValues] =
     useState(newSchemaValues);
-  const [showKey, setShowKey] = useState(false);
 
   const debounced = useDebouncedCallback((cell) => {
     if (
@@ -142,14 +141,7 @@ export const SchemasTable = () => {
   const [rows, schemas, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("schemas");
     const schemas = SchemaCollection.find({
-      $or: [
-        {
-          isDeleted: false,
-        },
-        {
-          isDeleted: undefined,
-        },
-      ],
+      isDeleted: false,
     }).fetch();
     const searchRegex = new RegExp(escapeRegExp(selector), "i");
     const rows = schemas

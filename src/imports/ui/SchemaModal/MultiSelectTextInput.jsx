@@ -15,6 +15,12 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 4,
     color: theme.palette.text.disabled,
   },
+  helpersError: {
+    marginLeft: 14,
+    marginTop: 0,
+    marginBottom: 4,
+    color: theme.palette.error.main,
+  },
 }));
 
 export const MultiSelectTextInput = ({
@@ -23,6 +29,8 @@ export const MultiSelectTextInput = ({
   allowedValues,
   disabled,
   setFieldValue,
+  currentStringMax,
+  errors,
 }) => {
   const classes = useStyles();
   const [inputText, setInputText] = useState("");
@@ -35,7 +43,18 @@ export const MultiSelectTextInput = ({
 
   const handleInputChange = (event, newInputValue) => {
     const options = newInputValue.split(/[,]+/);
-    const fieldValue = [...allowedValues, ...options]
+    const filteredOptions = options.map((option) => {
+      if (currentStringMax) {
+        if (option.length > currentStringMax) {
+          return option.substr(0, currentStringMax);
+        } else {
+          return option;
+        }
+      } else {
+        return option;
+      }
+    });
+    const fieldValue = [...allowedValues, ...filteredOptions]
       .map((x) => x.trim())
       .filter((x) => x);
 
@@ -44,6 +63,18 @@ export const MultiSelectTextInput = ({
     } else {
       setInputText(newInputValue);
     }
+  };
+
+  const allowedValuesErrorDetermination = (index) => {
+    let determination = false;
+    if (errors.fields) {
+      if (errors.fields[index]) {
+        if (errors.fields[index].allowedValues) {
+          determination = errors.fields[index].allowedValues;
+        }
+      }
+    }
+    return determination;
   };
 
   return (
@@ -73,6 +104,7 @@ export const MultiSelectTextInput = ({
           <TextField
             {...params}
             label="Allowed Strings"
+            error={allowedValuesErrorDetermination(index) ? true : false}
             variant="outlined"
             fullWidth
             margin="dense"
@@ -81,9 +113,15 @@ export const MultiSelectTextInput = ({
         component={Autocomplete}
       />
       {editing && (
-        <FormHelperText className={classes.helpers}>
-          OPTIONAL: Provide a list of allowed values delineated by commas. (E.g.
-          foo, baz, bar)
+        <FormHelperText
+          className={
+            allowedValuesErrorDetermination(index)
+              ? classes.helpersError
+              : classes.helpers
+          }
+        >
+          {allowedValuesErrorDetermination(index) ||
+            "OPTIONAL: Provide a list of allowed values delineated by commas"}
         </FormHelperText>
       )}
     </React.Fragment>

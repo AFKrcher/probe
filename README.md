@@ -258,13 +258,13 @@ application code via `process.env.<variable-name>`. Prior to development or depl
 
 For docker image running and production, several exports are needed to estabish connections to hosted services and to set the node environment. The following are the variables must be specified prior to running PROBE.
 
-| Variable  | Description                        | Example Setting                                              |
-| :-------- | :--------------------------------- | :----------------------------------------------------------- |
-| NODE_ENV  | Build and runtiem environment      | production                                                   |
-| ROOT_URL  | Base URL for hosted application    | localhost or probe.saberastro.com                            |
-| MAIL_URL  | Hosted SMTPS                       | smtps://email@email.com:uuid@smtp.host.com:pin/?options=true |
-| MONGO_URL | Hosted MongoDB instance            | "mongodbhost://user:password@cluster/dbname?options=true"    |
-| PORT      | Exposed port (may not be required) | "3000"                                                       |
+| Variable  | Description                        | Example Setting                                |
+| :-------- | :--------------------------------- | :--------------------------------------------- |
+| NODE_ENV  | Build and runtiem environment      | production                                     |
+| ROOT_URL  | Base URL for hosted application    | localhost or https://your.personal.url         |
+| MAIL_URL  | Hosted SMTPS                       | smtp://user:password@mailhost:port/            |
+| MONGO_URL | Hosted MongoDB instance            | mongodb://user:password@host:port/databasename |
+| PORT      | Exposed port (may not be required) | 3000                                           |
 
 ### Docker Development Build
 
@@ -323,17 +323,19 @@ The following is a list of notable packages and technologies used to build this 
 | use-debounce          | Runtime     | React debouncing hook                |
 | helmet                | Runtime     | CSP and HTTP header security         |
 | express               | Runtime     | HTTP utility methods                 |
+| chai                  | Development | Testing librar, utilities            |
 
 ### Meteor
 
-| Module/Library    | Environment | Description                               |
-| :---------------- | :---------- | :---------------------------------------- |
-| mongo             | Runtime     | NoSQL database for Meteor                 |
-| accounts-base     | Runtime     | Account management for Meteor             |
-| accounts-password | Runtime     | Password management for Meteor            |
-| alanning:roles    | Runtime     | Role management for Meteor                |
-| ddp-rate-limiter  | Runtime     | Limits method call and subscription rates |
-| underscore        | Runtime     | Extended higher-order methods             |
+| Module/Library      | Environment | Description                               |
+| :------------------ | :---------- | :---------------------------------------- |
+| mongo               | Runtime     | NoSQL database for Meteor                 |
+| accounts-base       | Runtime     | Account management for Meteor             |
+| accounts-password   | Runtime     | Password management for Meteor            |
+| alanning:roles      | Runtime     | Role management for Meteor                |
+| ddp-rate-limiter    | Runtime     | Limits method call and subscription rates |
+| underscore          | Runtime     | Extended higher-order methods             |
+| meteortesting:mocha | development | Testing library                           |
 
 ## License
 

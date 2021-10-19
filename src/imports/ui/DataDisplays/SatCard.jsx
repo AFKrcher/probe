@@ -96,14 +96,14 @@ export const SatCard = ({ width, height, satellite }) => {
     history.push(`/dashboard/${id}`);
   }
 
-  const handleVisualize = (e, url) => {
-    e.preventDefault();
+  const handleVisualize = (satellite, url) => {
     setPrompt({
       url: url,
       satellite: satellite,
     });
     setOpenVisualize(true);
   };
+
   return (
     <span>
       <VisualizeDialog body={prompt} />
@@ -209,10 +209,13 @@ export const SatCard = ({ width, height, satellite }) => {
                 <MenuItem
                   dense
                   onClick={(e) => {
-                    handleVisualize(
-                      e,
-                      `https://spacecockpit.saberastro.com/?SID=${satellite.noradID}&FS=${satellite.noradID}`
-                    );
+                    // Compare how SatTable takes the names.
+                    // Below is trying to display the names of the sat, but is not getting them. Possibly breaking the iframe.
+                    console.log("check", satellite.names);
+                    // handleVisualize(
+                    //   satellite.names[0].name,
+                    //   `https://spacecockpit.saberastro.com/?SID=${satellite.noradID}&FS=${satellite.noradID}`
+                    // );
                     handleClose(e);
                   }}
                 >
@@ -255,9 +258,9 @@ export const SatCard = ({ width, height, satellite }) => {
                   size="medium"
                   variant="outlined"
                   className={classes.cardButton}
-                  onClick={(e) =>
+                  onClick={() =>
                     handleVisualize(
-                      e,
+                      satellite.names[0].name,
                       `https://spacecockpit.saberastro.com/?SID=${satellite.noradID}&FS=${satellite.noradID}`
                     )
                   }
