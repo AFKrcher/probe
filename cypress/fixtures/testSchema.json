@@ -1,0 +1,274 @@
+{
+  "_id": "RFhpEWtu6wnLtmnoz",
+  "name": "testSchema",
+  "description": "testSchema",
+  "fields": [
+    {
+      "name": "reference",
+      "hidden": true,
+      "type": "url",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "verified",
+      "hidden": true,
+      "description": "",
+      "type": "verified"
+    },
+    {
+      "name": "validated",
+      "hidden": true,
+      "type": "validated",
+      "required": true
+    },
+    {
+      "name": "url",
+      "type": "url",
+      "allowedValues": [],
+      "required": false,
+      "min": null,
+      "max": null,
+      "stringMax": null
+    },
+    {
+      "name": "urlReq",
+      "type": "url",
+      "allowedValues": [],
+      "required": true,
+      "min": null,
+      "max": null,
+      "stringMax": null
+    },
+    {
+      "name": "date",
+      "type": "date",
+      "allowedValues": [],
+      "required": false,
+      "min": null,
+      "max": null,
+      "stringMax": null
+    },
+    {
+      "name": "dateReq",
+      "type": "date",
+      "allowedValues": [],
+      "required": true,
+      "min": null,
+      "max": null,
+      "stringMax": null
+    },
+    {
+      "name": "num",
+      "type": "number",
+      "allowedValues": [],
+      "required": false,
+      "min": null,
+      "max": null,
+      "stringMax": null
+    },
+    {
+      "name": "numReq",
+      "type": "number",
+      "allowedValues": [],
+      "required": true,
+      "min": null,
+      "max": null,
+      "stringMax": null
+    },
+    {
+      "name": "numMin",
+      "type": "number",
+      "allowedValues": [],
+      "required": false,
+      "min": "1",
+      "max": null,
+      "stringMax": null
+    },
+    {
+      "name": "numMax",
+      "type": "number",
+      "allowedValues": [],
+      "required": false,
+      "min": null,
+      "max": "10",
+      "stringMax": null
+    },
+    {
+      "name": "numMinMax",
+      "type": "number",
+      "allowedValues": [],
+      "required": false,
+      "min": "1",
+      "max": "8",
+      "stringMax": null
+    },
+    {
+      "name": "numMinMaxReq",
+      "type": "number",
+      "allowedValues": [],
+      "required": true,
+      "min": "1",
+      "max": "8",
+      "stringMax": null
+    },
+    {
+      "name": "string",
+      "type": "string",
+      "allowedValues": [],
+      "required": false,
+      "min": null,
+      "max": null,
+      "stringMax": null
+    },
+    {
+      "name": "stringReq",
+      "type": "string",
+      "allowedValues": [],
+      "required": true,
+      "min": null,
+      "max": null,
+      "stringMax": null
+    },
+    {
+      "name": "stringUUID",
+      "type": "string",
+      "allowedValues": [],
+      "required": false,
+      "min": null,
+      "max": null,
+      "stringMax": null,
+      "isUnique": true
+    },
+    {
+      "name": "stringUUIDReq",
+      "type": "string",
+      "allowedValues": [],
+      "required": true,
+      "min": null,
+      "max": null,
+      "stringMax": null,
+      "isUnique": true
+    },
+    {
+      "name": "stringAllowed",
+      "type": "string",
+      "allowedValues": ["string"],
+      "required": false,
+      "min": null,
+      "max": null,
+      "stringMax": null
+    },
+    {
+      "name": "stringAllowedReq",
+      "type": "string",
+      "allowedValues": ["string"],
+      "required": true,
+      "min": null,
+      "max": null,
+      "stringMax": null
+    },
+    {
+      "name": "stringAllowedUUID",
+      "type": "string",
+      "allowedValues": ["string", "string2"],
+      "required": false,
+      "min": null,
+      "max": null,
+      "stringMax": null,
+      "isUnique": true
+    },
+    {
+      "name": "stringAllowedUUIDReq",
+      "type": "string",
+      "allowedValues": ["string", "string2"],
+      "required": true,
+      "min": null,
+      "max": null,
+      "stringMax": null,
+      "isUnique": true
+    },
+    {
+      "name": "stringAllowedMax",
+      "type": "string",
+      "allowedValues": ["string", "string2"],
+      "required": false,
+      "min": null,
+      "max": null,
+      "stringMax": "7"
+    },
+    {
+      "name": "stringAllowedMaxReq",
+      "type": "string",
+      "allowedValues": ["string", "string2"],
+      "required": true,
+      "min": null,
+      "max": null,
+      "stringMax": "7"
+    },
+    {
+      "name": "stringAllowedMaxUUID",
+      "type": "string",
+      "allowedValues": ["string", "string2"],
+      "required": false,
+      "min": null,
+      "max": null,
+      "stringMax": "7",
+      "isUnique": true
+    },
+    {
+      "name": "stringAllowedMaxUUIDReq",
+      "type": "string",
+      "allowedValues": ["string", "string2"],
+      "required": true,
+      "min": null,
+      "max": null,
+      "stringMax": "7",
+      "isUnique": true
+    },
+    {
+      "name": "stringMax",
+      "type": "string",
+      "allowedValues": [],
+      "required": false,
+      "min": null,
+      "max": null,
+      "stringMax": "7"
+    },
+    {
+      "name": "stringMaxUUID",
+      "type": "string",
+      "allowedValues": [],
+      "required": false,
+      "min": null,
+      "max": null,
+      "stringMax": "7",
+      "isUnique": true
+    },
+    {
+      "name": "stringMaxReq",
+      "type": "string",
+      "allowedValues": [],
+      "required": true,
+      "min": null,
+      "max": null,
+      "stringMax": "7"
+    },
+    {
+      "name": "stringMaxReqUUID",
+      "type": "string",
+      "allowedValues": [],
+      "required": true,
+      "min": null,
+      "max": null,
+      "stringMax": "7",
+      "isUnique": true
+    }
+  ],
+  "isDeleted": false,
+  "createdOn": "2021-10-19T16:44:56.222Z",
+  "createdBy": "admin",
+  "modifiedOn": "2021-10-19T17:09:12.318Z",
+  "modifiedBy": "admin",
+  "adminCheck": false
+}

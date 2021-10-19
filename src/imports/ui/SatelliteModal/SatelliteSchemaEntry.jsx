@@ -432,9 +432,6 @@ export const SatelliteSchemaEntry = ({
                         )}
                         select={editing || editingSchema ? true : false}
                       >
-                        <MenuItem value="" disabled>
-                          <em>Allowed Values</em>
-                        </MenuItem>
                         {field.allowedValues.map((value, valueIndex) => {
                           return (
                             <MenuItem key={valueIndex} value={value}>
