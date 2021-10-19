@@ -34,7 +34,9 @@ The public API allows all users to obtain information on satellites and schemas 
 
 GET: `/api/`
 
-RESPONSE: `"Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
+RESPONSE:
+
+`"Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
 
 #### Satellites
 
@@ -194,7 +196,9 @@ as well as GET requests of more detailed information.
 
 GET: `/api/partner/:key`
 
-RESPONSE: `"Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
+RESPONSE:
+
+`"Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
 
 #### Satellites
 
@@ -206,6 +210,15 @@ RESPONSE: `"Welcome to the PROBE partner API! For documentation, please visit th
 
 ## How To Contribute
 
+### Git Processes
+
+1. Fork and clone the repository based on the [Installation](#Installation) instructions
+2. Ensure you have fetched and pulled the latest master/main branch of the repository
+3. Set-up your feature branches to the following standard: `feature/<feature name>-<username>`
+4. Ensure that any libraries or technologies that you use are properly listed in the dependency tree and in this README's [Libraries](#Libraries) section
+5. Contribute to the main/master repository through clear and succinct pull requests
+6. When not contributing code directly, generate issues on GitHub with context, problem statement, and, if possible, a suggested solution
+
 ### Installation
 
 1. Ensure you have NodeJs installed: https://nodejs.org/en/download/
@@ -215,14 +228,17 @@ RESPONSE: `"Welcome to the PROBE partner API! For documentation, please visit th
 5. Run `meteor run --port 3000`
 6. Go to `http://localhost:3000` and you should see the test app running.
 
-### Git Processes
+### Access MongoDB
 
-1. Fork and clone the repository
-2. Ensure you have fetched and pulled the latest master/main branch of the repository
-3. Set-up your feature branches to the following standard: `feature/<feature name>-<username>`
-4. Ensure that any libraries or technologies that you use are properly listed in the dependency tree and in this README's [Libraries](#Libraries) section
-5. Contribute to the main/master repository through clear and succinct pull requests
-6. When not contributing code directly, generate issues on GitHub with context, problem statement, and, if possible, a suggested solution
+1. Local, Non-Docker Development
+2. Meteor must be running
+3. In the command prompt run
+
+```
+meteor mongo
+show collections
+db.<collection name>.find()
+```
 
 ### Environment Variables
 
@@ -250,18 +266,6 @@ For docker image running and production, several exports are needed to estabish 
 | MONGO_URL | Hosted MongoDB instance            | "mongodbhost://user:password@cluster/dbname?options=true"    |
 | PORT      | Exposed port (may not be required) | "3000"                                                       |
 
-### Access MongoDB
-
-1. Local, Non-Docker Development
-2. Meteor must be running
-3. In the command prompt run
-
-```
-meteor mongo
-show collections
-db.<collection name>.find()
-```
-
 ### Docker Development Build
 
 The purpose of the Docker development build is to test a production build of the application, with conenctions to hosted services suchs as MongoDB and SMTPS. PM2 and alpine-node are used for ease-of-development and load balancing / app managment testing.
@@ -277,7 +281,7 @@ docker run --rm --name probe --env-file src/private/.env -p 3000:3000 -t probe
 
 ### Docker Production Build
 
-The Docker production is dependent on the `.env` file to describe the configuration of your meteor application. A `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README.
+The Docker production is dependent on the `.env` file to describe the configuration of your meteor application. A `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README. A Docker.example.prod is provided as a template for filling-out hosted service URIs.
 
 Paste and run the following commands at the root of the project to build and run a docker image of PROBE on http://localhost:3000.
 

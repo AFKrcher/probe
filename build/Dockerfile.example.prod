@@ -9,9 +9,9 @@ COPY bundle /app
 
 # Build for the image
 RUN cd /app/programs/server && npm install --production
-RUN	export ROOT_URL=url
-RUN export MONGO_URL=url
-RUN	export MAIL_URL=url
+RUN	export ROOT_URL='https://your.personal.url'
+RUN export MONGO_URL='mongodb://user:password@host:port/databasename'
+RUN	export MAIL_URL='smtp://user:password@mailhost:port/'
 
 EXPOSE 3000
 
