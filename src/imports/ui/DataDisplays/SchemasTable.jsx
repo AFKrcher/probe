@@ -30,7 +30,6 @@ import {
   GridToolbarDensitySelector,
 } from "@material-ui/data-grid";
 import VisibilityIcon from "@material-ui/icons/Visibility";
-import MouseIcon from "@material-ui/icons/Mouse";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -99,8 +98,13 @@ const newSchemaValues = {
       name: "verified",
       hidden: true,
       description: "",
-      type: "string",
-      allowedValues: ["true", "false"],
+      type: "verified",
+    },
+    {
+      name: "validated",
+      hidden: true,
+      type: "validated",
+      required: true,
     },
   ],
 };
@@ -294,7 +298,7 @@ export const SchemasTable = () => {
         desired <strong>schema</strong> below to view its details and edit the
         entry fields.
       </Typography>
-      <Key page="SchemasTable"/>
+      <Key page="SchemasTable" />
       <SearchBar
         setSelector={setSelector}
         multiple={false}

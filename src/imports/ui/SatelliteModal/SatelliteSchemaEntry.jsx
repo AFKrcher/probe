@@ -117,9 +117,29 @@ export const SatelliteSchemaEntry = ({
     300
   );
 
-  const debouncTwo = useDebouncedCallback((event) => {
-    setFieldValue(event.target.name, event.target.value);
-  }, 200);
+  const debounceTwo = useDebouncedCallback(
+    (event, validatedField, verifiedField) => {
+      setFieldValue(event.target.name, event.target.value);
+      // set validated to false if a field is modified and subsequently saved
+      setFieldValue(validatedField, [
+        {
+          method: "",
+          name: "",
+          validated: false,
+          validatedOn: "",
+        },
+      ]);
+      setFieldValue(verifiedField, [
+        {
+          method: "",
+          name: "",
+          verified: false,
+          verifiedOn: "",
+        },
+      ]);
+    },
+    200
+  );
 
   const refreshHelpers = () => {
     if (JSON.stringify(errors) !== "{}") {
@@ -167,6 +187,7 @@ export const SatelliteSchemaEntry = ({
     let newEntries = entries.map((entry) => entry);
     newEntries.splice(index, 1);
     await setFieldValue(schemaName, newEntries);
+
     setSatSchema(satelliteValidatorShaper(schemas, values, isUniqueList)); // generate new validation schema based on added entry
   };
 
@@ -196,7 +217,11 @@ export const SatelliteSchemaEntry = ({
           `${schema.name}.${entryIndex}.validated`,
           `${schema.name}.${entryIndex}.verified`
         );
-        debouncTwo(event);
+        debounceTwo(
+          event,
+          `${schema.name}.${entryIndex}.validated`,
+          `${schema.name}.${entryIndex}.verified`
+        );
       },
       onInput: (event) => {
         debounceOne(
@@ -204,7 +229,11 @@ export const SatelliteSchemaEntry = ({
           `${schema.name}.${entryIndex}.validated`,
           `${schema.name}.${entryIndex}.verified`
         );
-        debouncTwo(event);
+        debounceTwo(
+          event,
+          `${schema.name}.${entryIndex}.validated`,
+          `${schema.name}.${entryIndex}.verified`
+        );
       },
       error: filteredHelper(schema.name, entryIndex, fieldIndex) ? true : false,
       label: field.name,
