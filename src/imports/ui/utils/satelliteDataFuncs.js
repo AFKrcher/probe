@@ -266,8 +266,8 @@ export const satelliteValidatorShaper = (schemas, values, isUniqueList) => {
               break;
           }
           const baseFieldType = baseFieldSchema; // initialize vairable to store sub-schema type
-          // stores the yup fragments needed for each constraint
           const fieldSchemaMatrix = {
+            // stores the yup fragments needed for each constraint
             required: field.required
               ? baseFieldType.required(
                   `${path}-${entryCount}-${fieldCount}_${
@@ -337,29 +337,33 @@ export const satelliteValidatorShaper = (schemas, values, isUniqueList) => {
         fieldValidator
           .validate(entry, { abortEarly: true })
           .then((result) => {
+            // Yup's returned result object
             let resolved = // provides an identifier to delete the correct error upon successful validation
               "-" +
               value
                 .map((object) => {
-                  for (let key in result) {
+                  for (let key in object) {
+                    // transforms to ensure  "result" object will be matched with the original tested "value", to avoid stale errors
                     if (
                       Yup.date().isValidSync(result[key]) &&
-                      typeof result[key] !== "number"
+                      typeof result[key] !== "number" &&
+                      result[key]
                     ) {
-                      // Yup transforms date strings into date objects
-                      // the "result" object will be mismatched with the original tested "value", leading to stale errors
-                      // solution is to transform values back to dates
-                      object[key] = new Date(object[key]);
-                    } else if (parseInt(object[key])) {
+                      // Yup transforms date strings into date objects in the returned result objects
+                      // solution is to transform result values back to original values
+                      result[key] = object[key];
+                    } else if (parseInt(object[key]) && object[key]) {
                       // The original values that are integers are sent as strings
-                      // the "result" object will be mismatched with the original tested "value", leading to stale errors
                       // solution is to transform the values back to numbers
                       object[key] = parseInt(object[key]);
                     } else if (
-                      result[key] === undefined ||
-                      object[key] === undefined
+                      object[key] === undefined ||
+                      result[key] === undefined
                     ) {
-                      console.log(key);
+                      // the original value may contain undefined values
+                      // Yup removes these undefined values and their associated keys from the returned result object
+                      // the original object and result object need to be in-sync prior to the deep equality check
+                      // solution is to delete any undefined values and their associated keys from the original value object
                       delete object[key];
                       delete result[key];
                     }
@@ -370,7 +374,6 @@ export const satelliteValidatorShaper = (schemas, values, isUniqueList) => {
                 .toString() +
               "-";
             let key = Object.keys(errObj)[0];
-            console.log(value[0], result);
             if (!errObj[key]) {
               // if the errObj does not contain the key, empty the object of all stale errors
               errObj = {};
