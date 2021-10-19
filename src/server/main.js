@@ -45,9 +45,38 @@ const isValidUsername = (oldUsername, newUsername) => {
   return regex.test(newUsername) && oldCheck && newUsername.length < 32;
 };
 
+// let count = 0; // use this line to activate re-seeding (see below for code)
+
 Meteor.startup(() => {
   console.log("> PROBE server is starting-up...");
   console.log("> Checking environment variables...");
+
+  // if (count < 1) { // easy-to-activate re-seeding block (see above for count variable)
+  //   SatelliteCollection.remove({});
+  //   let satObj = [];
+  //   let satFiles = fs.readdirSync("./assets/app/satellite");
+  //   satFiles.forEach(function (file) {
+  //     let data = fs.readFileSync("./assets/app/satellite/" + file, "ascii");
+  //     satObj.push(JSON.parse(data));
+  //   });
+  //   satObj.forEach(function (data) {
+  //     SatelliteCollection.insert(data);
+  //   });
+  //   console.log("> SatelliteCollection Seeded");
+  //   SchemaCollection.remove({});
+  //   let shemaObj = [];
+  //   let schemaFiles = fs.readdirSync("./assets/app/schema");
+  //   schemaFiles.forEach(function (file) {
+  //     let data = fs.readFileSync("./assets/app/schema/" + file, "ascii");
+  //     shemaObj.push(JSON.parse(data));
+  //     14;
+  //   });
+  //   shemaObj.forEach(function (data) {
+  //     SchemaCollection.insert(data);
+  //   });
+  //   console.log("> SchemaCollection Seeded");
+  //   count++;
+  // }
 
   // See helmet.js for Content Security Policy (CSP) options
   WebApp.connectHandlers.use(helmet(helmetOptions()));
