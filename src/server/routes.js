@@ -124,7 +124,6 @@ WebApp.connectHandlers.use("/api/satellites", async (req, res) => {
           "names.name": { $regex: `${target}`, $options: "i" },
         }).fetch();
         if (result.length > 0 && result[0] !== undefined) {
-          console.log("result ", result[0]);
           res.writeHead(200);
           res.end(JSON.stringify(result));
         } else {
