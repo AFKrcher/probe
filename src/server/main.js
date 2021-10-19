@@ -315,10 +315,10 @@ Meteor.startup(() => {
   // Seed schema data
   if (SchemaCollection.find().count() < 26) {
     SchemaCollection.remove({});
-    var jsonObj = [];
-    files = fs.readdirSync("./assets/app/schema");
+    let jsonObj = [];
+    let files = fs.readdirSync("./assets/app/schema");
     files.forEach(function (file) {
-      data = fs.readFileSync("./assets/app/schema/" + file, "ascii");
+      let data = fs.readFileSync("./assets/app/schema/" + file, "ascii");
       jsonObj.push(JSON.parse(data));
       14;
     });
@@ -331,10 +331,10 @@ Meteor.startup(() => {
   // Seed satellite data
   if (SatelliteCollection.find().count() < 14) {
     SatelliteCollection.remove({});
-    var jsonObj = [];
-    files = fs.readdirSync("./assets/app/satellite");
+    let jsonObj = [];
+    let files = fs.readdirSync("./assets/app/satellite");
     files.forEach(function (file) {
-      data = fs.readFileSync("./assets/app/satellite/" + file, "ascii");
+      let data = fs.readFileSync("./assets/app/satellite/" + file, "ascii");
       jsonObj.push(JSON.parse(data));
     });
     jsonObj.forEach(function (data) {

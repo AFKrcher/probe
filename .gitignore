@@ -10,5 +10,6 @@
 # Build
 *src.tar.gz
 *bundle
-*pm2.json
+*pm2-dev.json
+*Dockerfile.prod
 
