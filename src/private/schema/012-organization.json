@@ -1,6 +1,12 @@
 {
   "name": "organization",
   "description": "Entity involved in any portion of the satellite's acquisition process and operation, as well as a description of the organization's responsibilities.",
+  "isDeleted": false,
+  "createdOn": "2021-10-05T16:58:33.834Z",
+  "createdBy": "admin",
+  "modifiedOn": "2021-10-05T17:01:08.444Z",
+  "modifiedBy": "admin",
+  "adminCheck": true,
   "fields": [
     {
       "name": "reference",

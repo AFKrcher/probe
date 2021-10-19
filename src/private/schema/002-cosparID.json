@@ -1,6 +1,12 @@
 {
   "name": "cosparID",
   "description": "International identifier assigned to artificial objects in space. Consists of the launch year, a 3-digit incrementing launch number of that year and up to a 3-letter code representing the sequential identifier of a piece in a launch.",
+  "isDeleted": false,
+  "createdOn": "2021-10-05T16:58:33.834Z",
+  "createdBy": "admin",
+  "modifiedOn": "2021-10-05T17:01:08.444Z",
+  "modifiedBy": "admin",
+  "adminCheck": true,
   "fields": [
     {
       "name": "reference",

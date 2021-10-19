@@ -578,7 +578,6 @@ Meteor.startup(() => {
       "checkIfBanned",
       "sendEmail",
       "registerUser",
-      "addError",
       "deleteError",
       "deleteAllErrors",
       "addNewSatellite",
@@ -594,8 +593,8 @@ Meteor.startup(() => {
       "restoreSchema",
       "adminCheckSchema",
     ],
-    limit: 5,
-    timeRange: 5000,
+    limit: 20,
+    timeRange: 10000,
   });
 
   console.log(
@@ -603,5 +602,4 @@ Meteor.startup(() => {
       NODE_ENV === "production" ? ":" + PORT : ""
     }`
   );
-  console.log();
 });

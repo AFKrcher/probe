@@ -227,21 +227,25 @@ export const SatellitesTable = () => {
         case "id":
           setSelector({
             noradID: { $regex: `${filterBy.value}` },
+            isDeleted: false,
           });
           break;
         case "names":
           setSelector({
             "names.name": { $regex: `${filterBy.value}`, $options: "i" },
+            isDeleted: false,
           });
           break;
         case "[object Object]":
           setSelector({
             noradID: { $in: Meteor.user().favorites },
+            isDeleted: false,
           });
           break;
         case "types":
           setSelector({
             "types.type": { $regex: `${filterBy.value}`, $options: "i" },
+            isDeleted: false,
           });
           break;
         case "orbits":
@@ -250,10 +254,10 @@ export const SatellitesTable = () => {
           });
           break;
         default:
-          setSelector({});
+          setSelector({ isDeleted: false });
       }
     } else {
-      setSelector({});
+      setSelector({ isDeleted: false });
     }
     selector["isDeleted"] = false;
   };
@@ -351,7 +355,10 @@ export const SatellitesTable = () => {
     if (selector?.noradID) {
       return setSelector({});
     } else {
-      return setSelector({ noradID: { $in: Meteor.user().favorites } });
+      return setSelector({
+        noradID: { $in: Meteor.user().favorites },
+        isDeleted: false,
+      });
     }
   };
 
@@ -483,8 +490,8 @@ export const SatellitesTable = () => {
       url: url,
       satellite: satellite,
     });
-    setOpenVisualize(true);
     debounced(false);
+    setOpenVisualize(true);
   };
 
   function handleDashboard(e, id) {
