@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 // Imports
 import { useTracker } from "meteor/react-meteor-data";
@@ -511,4 +512,13 @@ export const SchemaModal = ({
       </Dialog>
     </React.Fragment>
   );
+};
+
+// Prop checking
+SchemaModal.propTypes = {
+  show: PropTypes.bool,
+  newSchema: PropTypes.bool,
+  initValues: PropTypes.object,
+  handleClose: PropTypes.func,
+  admin: PropTypes.bool,
 };

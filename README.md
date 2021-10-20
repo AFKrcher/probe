@@ -17,8 +17,8 @@ The main focus of this application is data entry experience, data validation, an
 - Client: ReactJS
 - Server: Meteor/WebApp
 - Repository: [GitHub](https://github.com/AFKrcher/PSRA)
-- Staging Deployment: [PROBE](https://probe.saberastro.com)
-- Production Deployment: **WIP**
+- Staging Deployment: [PROBE]()
+- Production Deployment: [PROBE]()
 
 ## Usage
 
@@ -200,14 +200,6 @@ RESPONSE:
 
 `"Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
 
-#### Satellites
-
-**WIP**
-
-#### Schemas
-
-**WIP**
-
 ## How To Contribute
 
 ### Git Processes
@@ -218,6 +210,18 @@ RESPONSE:
 4. Ensure that any libraries or technologies that you use are properly listed in the dependency tree and in this README's [Libraries](#Libraries) section
 5. Contribute to the main/master repository through clear and succinct pull requests
 6. When not contributing code directly, generate issues on GitHub with context, problem statement, and, if possible, a suggested solution
+
+## Coding Standards
+
+The list below is meant to be a guide and not a rule-book. Please try your best to use this guide to build code that is readable and easy-to-understand for all contributors:
+
+- Use Prettier (preferred) or any other code formatting/linting extension to format the code properly
+- Use PropTypes to both annotate prop types for other contributors, and for development type-checking
+- Use comments to explain functions that may require a "why" or "how" for first-time viewers of the code
+- Remove all excess imports, declarations, styles, etc. that are not being used prior to pushing your code
+- Comment out non-functional prior to pushing your code
+- Run pre-existing Unit and Cypress tests prior to pushing your code (see [Testing](#Testing) for more details)
+- Write and run new Unit and Cypress tests for your added functionalities prior to pushing your code (see [Testing](#Testing) for more details)
 
 ### Installation
 
@@ -230,9 +234,9 @@ RESPONSE:
 
 ### Access MongoDB
 
-1. Local, Non-Docker Development
-2. Meteor must be running
-3. In the command prompt run
+1. Local, Non-Docker Build Development
+2. Meteor application must be already running
+3. In the command prompt run the following
 
 ```
 meteor mongo
@@ -266,6 +270,16 @@ For docker image running and production, several exports are needed to estabish 
 | MONGO_URL | Hosted MongoDB instance            | mongodb://user:password@host:port/databasename |
 | PORT      | Exposed port (may not be required) | 3000                                           |
 
+### Testing
+
+#### Unit Testing
+
+Unit testing uses Mocha and Chai. Please refer to the [Meteor Mocha](https://guide.meteor.com/testing.html#mocha) and [Chai](https://www.chaijs.com/) documentation for more information on usage and behaviour.
+
+#### Cypress Testing
+
+Cypress testing is used for integration and UI/UX testing of PROBE. Please refer to the [Cypress](https://www.cypress.io/) documentation for more information on usage and behaviour.
+
 ### Docker Development Build
 
 The purpose of the Docker development build is to test a production build of the application, with conenctions to hosted services suchs as MongoDB and SMTPS. PM2 and alpine-node are used for load-balancing, app-management, and CSP/HTTP testing.
@@ -288,8 +302,6 @@ Paste and run the following commands at the root of the project to build and run
 ```
 chmod 777 scripts/build-prod.sh && scripts/build-prod.sh
 ```
-
-**WIP**
 
 ### Docker Build Errors
 
