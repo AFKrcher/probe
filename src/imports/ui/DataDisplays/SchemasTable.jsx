@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
   },
   description: {
-    marginBottom: 20,
+    marginBottom: 15,
     marginTop: 10,
   },
   dataGrid: {
@@ -58,9 +58,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
     fontWeight: 500,
     fontSize: "14px",
-  },
-  gridCaption: {
-    color: theme.palette.text.disabled,
   },
   actions: {
     display: "flex",

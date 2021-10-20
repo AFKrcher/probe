@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
   key: {
     marginLeft: 10,
-    marginBottom: 25,
+    marginBottom: 20,
     display: "flex",
   },
   keyItems: {
@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
     fill: theme.palette.error.light,
   },
   showKey: {
-    marginTop: 10,
     marginBottom: 20,
     color: theme.palette.text.disabled,
     cursor: "pointer",
@@ -98,8 +97,7 @@ export const Key = ({ page }) => {
               <Typography gutterBottom variant="body2" className={classes.key}>
                 <DashboardIcon fontSize="small" className={classes.keyItems} />
                 <span className={classes.keyItems}>–</span>
-                Open the satellite dashboard - allows users to view satellite
-                data and provides users with a shareable URL
+                Open the satellite dashboard with a shareable URL
               </Typography>
               <Typography gutterBottom variant="body2" className={classes.key}>
                 <img
