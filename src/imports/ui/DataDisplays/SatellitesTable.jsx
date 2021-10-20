@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   description: {
-    marginBottom: 20,
+    marginBottom: 15,
     marginTop: 10,
   },
   gridContainer: {
@@ -81,9 +81,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
     fontWeight: 500,
     fontSize: "14px",
-  },
-  gridCaption: {
-    color: theme.palette.text.disabled,
   },
   actions: {
     display: "flex",
@@ -419,8 +416,8 @@ export const SatellitesTable = () => {
                 >
                   <img
                     src="/assets/saberastro.png"
-                    width="24px"
-                    height="24px"
+                    width="22px"
+                    height="22px"
                   />
                 </IconButton>
               </Tooltip>
@@ -563,12 +560,14 @@ export const SatellitesTable = () => {
           <strong>satellite</strong>.
         </Typography>
         <Key page="SatellitesTable" />
+
         <SearchBar
           filter={filter}
           setFilter={setFilter}
           selector={selector}
           setSelector={setSelector}
         />
+
         <div className={classes.gridContainer}>
           <DataGrid
             className={classes.dataGrid}
