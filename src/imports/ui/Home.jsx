@@ -50,14 +50,16 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 5,
   },
   miniButton: {
-    marginBottom: 30,
-    marginTop: 10,
+    marginBottom: 20,
   },
   showcase: {
     marginTop: 15,
   },
+  showcaseDivider: {
+    marginBottom: 30,
+  },
   secondaryShowcase: {
-    marginTop: 15,
+    marginTop: 40,
   },
   card: {
     marginTop: -10,
@@ -100,6 +102,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// breakpoints based on device width / height
+const dividerBreak = 800;
+const dividerTextBreak = 1000;
+const cardFlexBreak = 600;
+
 export const Home = () => {
   const classes = useStyles();
 
@@ -125,23 +132,17 @@ export const Home = () => {
         onClick={minimize}
         className={classes.miniButton}
       >
-        {mini ? "Maximize View" : "Minimize View"}
+        {mini ? "Satellite Cards View" : "Minimized Grid View"}
       </Button>
     );
   };
 
   const cardSpace = () => {
-    if (height && width) {
-      if (Math.round(height / (width / 5)) > 10) {
-        return 10;
-      } else if (width > 1000) {
-        return 4;
-      } else {
-        return Math.round(height / (width / 5));
-      }
-    } else {
-      return 5;
-    }
+    if (width > 1000) return 4;
+    if (width < 1000 && width > 750) return 5;
+    if (width < 750 && width > cardFlexBreak) return 6;
+    if (width < cardFlexBreak && width > 400) return 8;
+    if (width < 400) return 10;
   };
 
   const [sats, otherSats, isLoading, favorites, user] = useTracker(() => {
@@ -287,7 +288,9 @@ export const Home = () => {
                 </span>
                 <Grid
                   container
-                  justifyContent={width > 650 ? "flex-start" : "center"}
+                  justifyContent={
+                    width > cardFlexBreak ? "flex-start" : "center"
+                  }
                   spacing={cardSpace()}
                   className={classes.card}
                 >
@@ -320,6 +323,11 @@ export const Home = () => {
 
             {/* Secondary showcase for the rest of the satellites and/or not-logged in users */}
             <div className={classes.secondaryShowcase}>
+              {favorites?.length > 0 && (
+                <Grid item className={classes.showcaseDivider}>
+                  <Divider />
+                </Grid>
+              )}
               {isLoading ? (
                 <span className={classes.showcaseHeader}>
                   <Skeleton
@@ -344,7 +352,7 @@ export const Home = () => {
               )}
               <Grid
                 container
-                justifyContent={width > 650 ? "flex-start" : "center"}
+                justifyContent={width > cardFlexBreak ? "flex-start" : "center"}
                 spacing={cardSpace()}
                 className={classes.card}
               >
@@ -379,17 +387,17 @@ export const Home = () => {
                 alignItems="center"
                 className={classes.loadMoreContainer}
               >
-                <Grid item xs={width > 800 ? 5 : 3}>
+                <Grid item xs={width > dividerBreak ? 5 : 3}>
                   <Divider />
                 </Grid>
                 <Grid
                   item
-                  xs={width > 800 ? 2 : 6}
+                  xs={width > dividerBreak ? 2 : 6}
                   container
                   justifyContent="center"
                 >
                   <Typography
-                    variant={width > 1000 ? "body1" : "caption"}
+                    variant={width > dividerTextBreak ? "body1" : "caption"}
                     className={classes.loadMore}
                     onClick={() => {
                       if (showLoadMore()) setPage(page + 1);
@@ -400,7 +408,7 @@ export const Home = () => {
                       : `${showLoadMore() ? "Load" : "No"} More`}
                   </Typography>
                 </Grid>
-                <Grid item xs={width > 800 ? 5 : 4}>
+                <Grid item xs={width > dividerBreak ? 5 : 4}>
                   <Divider />
                 </Grid>
               </Grid>
