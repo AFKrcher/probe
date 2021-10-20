@@ -74,6 +74,9 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.info.light,
     },
   },
+  toolbarSpacer: {
+    marginBottom: 75,
+  },
   toolbarContainer: {
     margin: 5,
   },
@@ -81,6 +84,13 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
     fontWeight: 500,
     fontSize: "14px",
+  },
+  searchBarContainer: {
+    position: "relative",
+    marginTop: -70,
+    bottom: -135,
+    zIndex: 1,
+    margin: 20,
   },
   actions: {
     display: "flex",
@@ -198,11 +208,13 @@ export const SatellitesTable = () => {
 
   function CustomToolbar() {
     return (
-      <GridToolbarContainer className={classes.toolbarContainer}>
-        <GridToolbarColumnsButton className={classes.toolbar} />
-        <GridToolbarFilterButton className={classes.toolbar} />
-        <GridToolbarDensitySelector className={classes.toolbar} />
-      </GridToolbarContainer>
+      <div className={classes.toolbarSpacer}>
+        <GridToolbarContainer className={classes.toolbarContainer}>
+          <GridToolbarColumnsButton className={classes.toolbar} />
+          <GridToolbarFilterButton className={classes.toolbar} />
+          <GridToolbarDensitySelector className={classes.toolbar} />
+        </GridToolbarContainer>
+      </div>
     );
   }
 
@@ -528,12 +540,12 @@ export const SatellitesTable = () => {
           <Grid item xs>
             <Typography variant="h3">Satellites</Typography>
           </Grid>
-          {width > addButtonBreak ? (
+          {width > addButtonBreak && (
             <ProtectedFunctionality
               component={AddSatelliteButton}
               loginRequired={true}
             />
-          ) : null}
+          )}
         </Grid>
         {width < addButtonBreak ? (
           <div style={{ margin: "10px 0px 20px 0px" }}>
@@ -560,14 +572,14 @@ export const SatellitesTable = () => {
           <strong>satellite</strong>.
         </Typography>
         <Key page="SatellitesTable" />
-
-        <SearchBar
-          filter={filter}
-          setFilter={setFilter}
-          selector={selector}
-          setSelector={setSelector}
-        />
-
+        <div className={classes.searchBarContainer}>
+          <SearchBar
+            filter={filter}
+            setFilter={setFilter}
+            selector={selector}
+            setSelector={setSelector}
+          />
+        </div>
         <div className={classes.gridContainer}>
           <DataGrid
             className={classes.dataGrid}
@@ -611,7 +623,7 @@ export const SatellitesTable = () => {
           initValues={initialSatValues}
           handleClose={() => {
             setShowModal(false);
-            setInitialSatValues(newSatValues);
+            setTimeout(() => setInitialSatValues(newSatValues), 500);
           }}
           width={width}
           height={height}

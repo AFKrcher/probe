@@ -32,9 +32,12 @@ const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
   },
-  title: {
+  probe: {
     color: theme.palette.tertiary.main,
     filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
+  },
+  keySpacingIfNoFavorites: {
+    marginBottom: -15,
   },
   description: {
     marginTop: 10,
@@ -211,7 +214,11 @@ export const Home = () => {
 
   return (
     <div className={classes.root}>
-      <Container>
+      <Container
+        className={
+          favorites?.length > 0 ? null : classes.keySpacingIfNoFavorites
+        }
+      >
         {scrolled ? (
           <React.Fragment>
             <Tooltip title="Scroll back to top" placement="left" arrow>
@@ -244,7 +251,7 @@ export const Home = () => {
           </React.Fragment>
         ) : null}
         <Typography variant="h3">
-          Welcome to <strong className={classes.title}>PROBE</strong>!
+          Welcome to <strong className={classes.probe}>PROBE</strong>!
         </Typography>
         <Typography variant="body1" className={classes.description}>
           <strong>P</strong>ublicly <strong>R</strong>esearched{" "}

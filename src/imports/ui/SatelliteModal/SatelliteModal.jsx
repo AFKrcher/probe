@@ -47,7 +47,7 @@ const useStyles = makeStyles(() => ({
   gallery: {
     display: "flex",
     justifyContent: "center",
-    marginTop: -15,
+    marginTop: -10,
   },
   titleText: {
     fontSize: "25px",
@@ -407,7 +407,7 @@ export const SatelliteModal = ({
     <React.Fragment>
       <AlertDialog bodyAlert={alert} />
       <SnackBar bodySnackBar={snack} />
-      <Dialog open={show} scroll="paper" maxWidth="md" fullWidth>
+      <Dialog open={show} maxWidth="lg" fullWidth scroll="body">
         <div className={classes.modal}>
           <DialogTitle>
             <Typography className={classes.titleText}>
@@ -467,7 +467,11 @@ export const SatelliteModal = ({
                     style={decideHeight()}
                   >
                     <div className={classes.gallery}>
-                      <Gallery initValues={initValues} width={width} />
+                      <Gallery
+                        initValues={initValues}
+                        width={width}
+                        modal={true}
+                      />
                     </div>
                     <Typography className={classes.description}>
                       Last change made by{" "}

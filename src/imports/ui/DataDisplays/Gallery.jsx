@@ -22,7 +22,34 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: -10,
   },
   imageContainer: {
-    height: "24em",
+    height: "40ch",
+    width: "100%",
+    display: "block",
+    objectFit: "cover",
+    backgroundColor: "lightGray",
+  },
+  rootModal: {
+    marginTop: -5,
+    maxWidth: 700,
+    flexGrow: 1,
+    overflow: "hidden",
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
+    marginBottom: -10,
+  },
+  imageContainerModal: {
+    height: "50ch",
+    width: "100%",
+    display: "block",
+    objectFit: "cover",
+    backgroundColor: "lightGray",
+  },
+  rootDashboard: {
+    flexGrow: 1,
+    overflow: "hidden",
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
+  },
+  imageContainerDashboard: {
+    height: "50vh",
     width: "100%",
     display: "block",
     objectFit: "cover",
@@ -42,6 +69,8 @@ export const Gallery = ({
   width,
   description = false,
   clickable = false,
+  modal = false,
+  dashboard = false,
 }) => {
   const images = getSatImages(initValues);
   const classes = useStyles();
@@ -62,9 +91,21 @@ export const Gallery = ({
     setActiveStep(step);
   };
 
+  const decideStyle = (baseClass) => {
+    if (modal && baseClass === "root") return classes.rootModal;
+    if (modal && baseClass === "imageContainer")
+      return classes.imageContainerModal;
+    if (dashboard && baseClass === "root") return classes.rootDashboard;
+    if (dashboard && baseClass === "imageContainer")
+      return classes.imageContainerDashboard;
+    if (!modal && !dashboard && baseClass === "root") return classes.root;
+    if (!modal && !dashboard && baseClass === "imageContainer")
+      return classes.imageContainer;
+  };
+
   return (
     <span>
-      <Box className={classes.root}>
+      <Box className={decideStyle("root")}>
         <AutoPlaySwipeableViews
           autoplay={autoplay}
           interval={5000}
@@ -87,7 +128,7 @@ export const Gallery = ({
                 {Math.abs(activeStep - index) <= 2 ? (
                   <Box
                     component="img"
-                    className={classes.imageContainer}
+                    className={decideStyle("imageContainer")}
                     src={step.url}
                     alt={step.description}
                     onClick={() => {
@@ -102,7 +143,7 @@ export const Gallery = ({
           ) : (
             <Box
               component="img"
-              className={classes.imageContainer}
+              className={decideStyle("imageContainer")}
               src={images}
               alt="Satellite Placeholder"
             />
@@ -157,4 +198,6 @@ Gallery.propTypes = {
   width: PropTypes.number,
   description: PropTypes.bool,
   clickable: PropTypes.bool,
+  modal: PropTypes.bool,
+  dashboard: PropTypes.bool,
 };
