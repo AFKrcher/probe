@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Meteor } from "meteor/meteor";
 // Imports
 import { useTracker } from "meteor/react-meteor-data";
 import { SchemaCollection } from "../../api/schemas";
@@ -109,6 +110,9 @@ const newSchemaValues = {
   ],
 };
 
+// breakpoints based on device width / height
+const addButtonBreak = 650;
+
 export const SchemasTable = () => {
   const classes = useStyles();
 
@@ -191,7 +195,7 @@ export const SchemasTable = () => {
         container
         item
         xs
-        justifyContent={width > 650 ? "flex-end" : "flex-start"}
+        justifyContent={width > addButtonBreak ? "flex-end" : "flex-start"}
       >
         <Button
           variant="contained"
@@ -258,14 +262,14 @@ export const SchemasTable = () => {
           <Typography variant="h3">Schemas</Typography>
         </Grid>
         <Grid container item xs justifyContent="flex-end">
-          {width > 650 ? (
+          {width > addButtonBreak ? (
             <ProtectedFunctionality
               component={AddSchemaButton}
               loginRequired={true}
             />
           ) : null}
         </Grid>
-        {width < 650 ? (
+        {width < addButtonBreak ? (
           <div style={{ margin: "10px 0px 10px 0px" }}>
             {
               <ProtectedFunctionality

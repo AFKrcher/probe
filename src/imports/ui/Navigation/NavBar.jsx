@@ -67,6 +67,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const actionsBreak = 650;
+
 export const NavBar = ({ theme, toggleTheme }) => {
   const { setOpenAlert, setOpenSnack } = useContext(HelpersContext);
 
@@ -101,7 +103,7 @@ export const NavBar = ({ theme, toggleTheme }) => {
                 <strong>PROBE</strong>
               </Typography>
             </Tooltip>
-            {width > 650 ? (
+            {width > actionsBreak ? (
               <React.Fragment>
                 <Button
                   disableElevation
@@ -158,7 +160,7 @@ export const NavBar = ({ theme, toggleTheme }) => {
               </React.Fragment>
             ) : null}
           </div>
-          {width > 650 ? (
+          {width > actionsBreak ? (
             <div edge="end" className={classes.dropDown}>
               <DropDown theme={theme} toggleTheme={toggleTheme} />
             </div>

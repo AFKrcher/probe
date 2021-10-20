@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor";
 import { SatelliteCollection } from "/imports/api/satellites";
 import { SchemaCollection } from "/imports/api/schemas";
 import express from "express";
