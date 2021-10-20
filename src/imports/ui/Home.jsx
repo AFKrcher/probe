@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { Meteor } from "meteor/meteor";
 // Imports
 import useWindowSize from "./Hooks/useWindowSize.jsx";
 import { useTracker } from "meteor/react-meteor-data";
-import { useHistory } from "react-router";
 
 // Components
 import { SatCard } from "./DataDisplays/SatCard.jsx";
@@ -49,7 +49,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 5,
   },
   miniButton: {
-    marginBottom: 15,
+    marginBottom: 30,
+    marginTop: 10,
   },
   showcase: {
     marginTop: 15,

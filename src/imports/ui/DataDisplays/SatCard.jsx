@@ -69,6 +69,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// breakpoints based on device width / height
+const body1Break = 1200;
+const titleh6Break = 650;
+const body2Break = 400;
+const actionsBreak = 725;
+const descriptionShowBreak = 240;
+const descriptionCutoffBreak = 350;
+
 export const SatCard = ({ width, height, satellite }) => {
   const classes = useStyles();
   const history = useHistory();
@@ -118,42 +126,57 @@ export const SatCard = ({ width, height, satellite }) => {
         height={height}
       />
       <Card className={classes.satCard} elevation={4} raised={true}>
-        <CardMedia
-          className={classes.cardImage}
-          // style={{
-          //   cursor: satellite.images?.length > 1 ? "grab" : "default"
-          // }}
-        >
+        <CardMedia className={classes.cardImage}>
           <Gallery initValues={satellite} autoplay={false} width={width} />
         </CardMedia>
         <CardContent className={classes.cardDesc}>
           <Typography
-            variant={width > 1200 ? "h5" : width > 650 ? "h6" : "body1"}
+            variant={
+              width > body1Break ? "h5" : width > titleh6Break ? "h6" : "body1"
+            }
             className={classes.satName}
           >
             <strong>{getSatName(satellite)}</strong>
           </Typography>
           <Typography
             gutterBottom
-            variant={width > 1200 ? "body1" : width > 400 ? "body2" : "caption"}
+            variant={
+              width > body1Break
+                ? "body1"
+                : width > body2Break
+                ? "body2"
+                : "caption"
+            }
           >
             COSPAR ID:{" "}
             {satellite.cosparID ? satellite.cosparID[0].cosparID : "N/A"}
           </Typography>
-          {width < 400 && <br />}
+          {width < body2Break && <br />}
           <Typography
             gutterBottom
-            variant={width > 1200 ? "body1" : width > 400 ? "body2" : "caption"}
+            variant={
+              width > body1Break
+                ? "body1"
+                : width > body2Break
+                ? "body2"
+                : "caption"
+            }
           >
             NORAD ID: {getSatID(satellite)}
           </Typography>
-          {width < 400 && <br />}
+          {width < body2Break && <br />}
           <Typography
-            variant={width > 1200 ? "body1" : width > 400 ? "body2" : "caption"}
+            variant={
+              width > body1Break
+                ? "body1"
+                : width > body2Break
+                ? "body2"
+                : "caption"
+            }
           >
-            {width > 240 ? (
+            {width > descriptionShowBreak ? (
               <React.Fragment>
-                {width > 350
+                {width > descriptionCutoffBreak
                   ? getSatDesc(satellite)
                   : getSatDesc(satellite).substr(0, 100) + "..."}
               </React.Fragment>
@@ -163,7 +186,7 @@ export const SatCard = ({ width, height, satellite }) => {
         <CardActions
           className={classes.cardActions}
           style={
-            width < 650
+            width < actionsBreak
               ? { justifyContent: "space-around" }
               : {
                   justifyContent: "space-between",
@@ -172,7 +195,7 @@ export const SatCard = ({ width, height, satellite }) => {
                 }
           }
         >
-          {width < 650 ? (
+          {width < actionsBreak ? (
             <React.Fragment>
               <Button
                 variant="outlined"
@@ -209,13 +232,10 @@ export const SatCard = ({ width, height, satellite }) => {
                 <MenuItem
                   dense
                   onClick={(e) => {
-                    // Compare how SatTable takes the names.
-                    // Below is trying to display the names of the sat, but is not getting them. Possibly breaking the iframe.
-                    console.log("check", satellite.names);
-                    // handleVisualize(
-                    //   satellite.names[0].name,
-                    //   `https://spacecockpit.saberastro.com/?SID=${satellite.noradID}&FS=${satellite.noradID}`
-                    // );
+                    handleVisualize(
+                      satellite.names[0]?.name,
+                      `https://spacecockpit.saberastro.com/?SID=${satellite.noradID}&FS=${satellite.noradID}`
+                    );
                     handleClose(e);
                   }}
                 >

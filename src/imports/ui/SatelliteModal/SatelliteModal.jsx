@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { Meteor } from "meteor/meteor";
 // Imports
 import { useTracker } from "meteor/react-meteor-data";
 import { SchemaCollection } from "../../api/schemas";
@@ -10,6 +11,7 @@ import {
 } from "../utils/satelliteDataFuncs.js";
 import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
 import { Formik, Form } from "formik";
+import { _ } from "meteor/underscore";
 
 // Components
 import { SatelliteForm } from "./SatelliteForm";
@@ -79,6 +81,10 @@ const useStyles = makeStyles(() => ({
     padding: "0px 7px 0px 7px",
   },
 }));
+
+// breakpoints based on device width / height
+const actionsBreak = 600;
+const deleteButtonTextBreak = 825;
 
 export const SatelliteModal = ({
   show,
@@ -266,7 +272,7 @@ export const SatelliteModal = ({
   };
 
   const handleEdit = (setValues, dirty, touched, values, setErrors) => {
-    if ((editing || editingOne) && dirty && Object.keys(touched).length) {
+    if ((editing || editingOne) && dirty && !_.isEmpty(touched)) {
       setAlert({
         title: initValues.names ? (
           <span>
@@ -441,6 +447,8 @@ export const SatelliteModal = ({
               errors,
               setErrors,
               isSubmitting,
+              isValid,
+              isValidating,
               values,
               setValues,
               setFieldValue,
@@ -501,26 +509,36 @@ export const SatelliteModal = ({
                         return (
                           <React.Fragment>
                             <Button
-                              size={width && width < 600 ? "small" : "medium"}
+                              size={
+                                width && width < actionsBreak
+                                  ? "small"
+                                  : "medium"
+                              }
                               variant="contained"
                               color="secondary"
                               startIcon={
-                                width && width < 600 ? null : <DeleteIcon />
+                                width && width < actionsBreak ? null : (
+                                  <DeleteIcon />
+                                )
                               }
                               onClick={() => handleDeleteDialog(values)}
                             >
-                              {admin && width > 825
+                              {admin && width > deleteButtonTextBreak
                                 ? "Delete Forever"
                                 : "Delete"}
                             </Button>
                             {admin && values.isDeleted ? (
                               <Button
-                                size={width && width < 600 ? "small" : "medium"}
+                                size={
+                                  width && width < actionsBreak
+                                    ? "small"
+                                    : "medium"
+                                }
                                 variant="contained"
                                 color="primary"
                                 onClick={() => handleRestore(values)}
                                 startIcon={
-                                  width && width < 600 ? null : (
+                                  width && width < actionsBreak ? null : (
                                     <RestorePageIcon />
                                   )
                                 }
@@ -539,10 +557,12 @@ export const SatelliteModal = ({
                       component={() => {
                         return (
                           <Button
-                            size={width && width < 600 ? "small" : "medium"}
+                            size={
+                              width && width < actionsBreak ? "small" : "medium"
+                            }
                             variant="contained"
                             color={
-                              editing && dirty && Object.keys(touched).length
+                              editing && dirty && !_.isEmpty(touched)
                                 ? "secondary"
                                 : "default"
                             }
@@ -556,8 +576,8 @@ export const SatelliteModal = ({
                               );
                             }}
                             startIcon={
-                              width && width < 600 ? null : editing ? (
-                                dirty && Object.keys(touched).length ? (
+                              width && width < actionsBreak ? null : editing ? (
+                                dirty && !_.isEmpty(touched) ? (
                                   <DeleteIcon />
                                 ) : null
                               ) : (
@@ -579,23 +599,31 @@ export const SatelliteModal = ({
                     !values.adminCheck && (
                       <React.Fragment>
                         <Button
-                          size={width && width < 600 ? "small" : "medium"}
+                          size={
+                            width && width < actionsBreak ? "small" : "medium"
+                          }
                           variant="contained"
                           color="primary"
                           onClick={() => handleVerifyData(values, setValues)}
                           startIcon={
-                            width && width < 600 ? null : <VerifiedIcon />
+                            width && width < actionsBreak ? null : (
+                              <VerifiedIcon />
+                            )
                           }
                         >
                           Verify
                         </Button>
                         <Button
-                          size={width && width < 600 ? "small" : "medium"}
+                          size={
+                            width && width < actionsBreak ? "small" : "medium"
+                          }
                           variant="contained"
                           color="primary"
                           onClick={() => handleValidateData(values, setValues)}
                           startIcon={
-                            width && width < 600 ? null : <ValidatedIcon />
+                            width && width < actionsBreak ? null : (
+                              <ValidatedIcon />
+                            )
                           }
                         >
                           Validate
@@ -604,34 +632,40 @@ export const SatelliteModal = ({
                     )}
                   {!editing && !editingOne && (
                     <Button
-                      size={width && width < 600 ? "small" : "medium"}
+                      size={width && width < actionsBreak ? "small" : "medium"}
                       variant="contained"
                       onClick={() => {
                         handleClose();
                         setEditingOne(false);
                         setErrors({});
                       }}
-                      startIcon={width && width < 600 ? null : <CloseIcon />}
+                      startIcon={
+                        width && width < actionsBreak ? null : <CloseIcon />
+                      }
                     >
                       Close
                     </Button>
                   )}
                   {editing && !editingOne && (
                     <Button
-                      size={width && width < 600 ? "small" : "medium"}
+                      size={width && width < actionsBreak ? "small" : "medium"}
                       type="submit"
                       variant="contained"
                       color="primary"
-                      startIcon={width && width < 600 ? null : <SaveIcon />}
+                      startIcon={
+                        width && width < actionsBreak ? null : <SaveIcon />
+                      }
                       disabled={
-                        Object.entries(errors).length > 0 ||
+                        isValidating ||
+                        isSubmitting ||
+                        !isValid ||
                         !dirty ||
-                        Object.entries(touched).length === 0
+                        _.isEmpty(touched)
                           ? true
                           : false
                       }
                     >
-                      {isSubmitting ? (
+                      {isSubmitting || isValidating ? (
                         <CircularProgress
                           size={25}
                           className={classes.loadingSave}

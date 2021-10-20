@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { Meteor } from "meteor/meteor";
 // Imports
 import { useTracker } from "meteor/react-meteor-data";
 import { Formik, Form } from "formik";
@@ -6,6 +7,7 @@ import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import { schemaValidatorShaper } from "../utils/schemaDataFuncs.js";
 import useWindowSize from "../Hooks/useWindowSize.jsx";
 import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
+import { _ } from "meteor/underscore";
 
 // Components
 import { SchemaForm } from "./SchemaForm";
@@ -63,6 +65,10 @@ const useStyles = makeStyles(() => ({
     overflow: "hidden",
   },
 }));
+
+// breakpoints based on device width / height
+const actionsBreak = 600;
+const deleteButtonTextBreak = 825;
 
 export const SchemaModal = ({
   show,
@@ -334,13 +340,13 @@ export const SchemaModal = ({
             errors,
             setErrors,
             isSubmitting,
+            isValidating,
             values,
             touched,
             setValues,
             setFieldValue,
             initValues,
             dirty,
-            isValidating,
           }) => (
             <Form>
               {isLoading ? (
@@ -388,24 +394,30 @@ export const SchemaModal = ({
                           return (
                             <React.Fragment>
                               <Button
-                                size={width < 500 ? "small" : "medium"}
+                                size={width < actionsBreak ? "small" : "medium"}
                                 variant="contained"
                                 color="secondary"
-                                startIcon={width < 500 ? null : <DeleteIcon />}
+                                startIcon={
+                                  width < actionsBreak ? null : <DeleteIcon />
+                                }
                                 onClick={handleDeleteDialog}
                               >
-                                {admin && width > 825
+                                {admin && width > deleteButtonTextBreak
                                   ? "Delete Forever"
                                   : "Delete"}
                               </Button>
                               {admin && values.isDeleted ? (
                                 <Button
-                                  size={width < 500 ? "small" : "medium"}
+                                  size={
+                                    width < actionsBreak ? "small" : "medium"
+                                  }
                                   variant="contained"
                                   color="primary"
                                   onClick={handleRestore}
                                   startIcon={
-                                    width < 500 ? null : <RestorePageIcon />
+                                    width < actionsBreak ? null : (
+                                      <RestorePageIcon />
+                                    )
                                   }
                                 >
                                   Restore
@@ -423,11 +435,11 @@ export const SchemaModal = ({
                   component={() => {
                     return (
                       <Button
-                        size={width < 500 ? "small" : "medium"}
+                        size={width < actionsBreak ? "small" : "medium"}
                         variant="contained"
                         color={editing && dirty ? "secondary" : "default"}
                         startIcon={
-                          width < 500 ? null : editing ? (
+                          width < actionsBreak ? null : editing ? (
                             dirty ? (
                               <DeleteIcon />
                             ) : null
@@ -448,36 +460,34 @@ export const SchemaModal = ({
 
                 {!editing && admin && !values.isDeleted && (
                   <Button
-                    size={width < 500 ? "small" : "medium"}
+                    size={width < actionsBreak ? "small" : "medium"}
                     variant="contained"
                     color="primary"
                     onClick={handleApprove}
-                    startIcon={width < 500 ? null : <CheckIcon />}
+                    startIcon={width < actionsBreak ? null : <CheckIcon />}
                   >
                     Approve
                   </Button>
                 )}
                 {!editing && (
                   <Button
-                    size={width < 500 ? "small" : "medium"}
+                    size={width < actionsBreak ? "small" : "medium"}
                     variant="contained"
                     onClick={handleClose}
-                    startIcon={width < 500 ? null : <CloseIcon />}
+                    startIcon={width < actionsBreak ? null : <CloseIcon />}
                   >
                     Close
                   </Button>
                 )}
                 {editing && (
                   <Button
-                    size={width < 500 ? "small" : "medium"}
+                    size={width < actionsBreak ? "small" : "medium"}
                     type="submit"
                     variant="contained"
                     color="primary"
-                    startIcon={width < 500 ? null : <SaveIcon />}
+                    startIcon={width < actionsBreak ? null : <SaveIcon />}
                     disabled={
-                      Object.entries(errors).length > 0 ||
-                      !dirty ||
-                      isValidating
+                      !_.isEmpty(errors) || !dirty || isValidating
                         ? true
                         : false
                     }

@@ -45,13 +45,13 @@ const isValidUsername = (oldUsername, newUsername) => {
   return regex.test(newUsername) && oldCheck && newUsername.length < 32;
 };
 
-// let count = 0; // use this line to activate re-seeding (see below for code)
+// let count = 0; // use this line and the code block below to activate re-seeding
 
 Meteor.startup(() => {
   console.log("> PROBE server is starting-up...");
   console.log("> Checking environment variables...");
 
-  // if (count < 1) { // easy-to-activate re-seeding block (see above for count variable)
+  // if (count < 1) { // re-seeding block that fires once upon server spin-up (see above for count variable)
   //   SatelliteCollection.remove({});
   //   let satObj = [];
   //   let satFiles = fs.readdirSync("./assets/app/satellite");
