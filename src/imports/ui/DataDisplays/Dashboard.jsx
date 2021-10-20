@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Meteor } from "meteor/meteor";
 // Imports
 import { useLocation } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
@@ -11,7 +12,6 @@ import { Gallery } from "./Gallery.jsx";
 import {
   Container,
   CircularProgress,
-  DataGrid,
   Grid,
   makeStyles,
   Paper,
@@ -105,9 +105,9 @@ export const Dashboard = () => {
                     ? sat.descriptionLong[0].descriptionLong
                     : null}
                 </p>
-                {Object.keys(sat).map((key) => {
+                {Object.keys(sat).map((key, index) => {
                   if (sat[key].length > 1 && typeof sat[key] === "object") {
-                    return <div>{mapper(key)}</div>;
+                    return <div key={index}>{mapper(key)}</div>;
                   }
                 })}
               </Item>

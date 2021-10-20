@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 // imports
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
@@ -147,4 +148,13 @@ export const Gallery = ({
       ) : null}
     </span>
   );
+};
+
+// Prop checking
+Gallery.propTypes = {
+  initValues: PropTypes.object,
+  autoplay: PropTypes.bool,
+  width: PropTypes.number,
+  description: PropTypes.bool,
+  clickable: PropTypes.bool,
 };
