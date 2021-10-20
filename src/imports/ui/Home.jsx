@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
   description: {
     marginTop: 10,
+    marginBottom: 15,
   },
   miniDescription: {
     marginBottom: 10,

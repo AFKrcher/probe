@@ -7,7 +7,6 @@ import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
-    marginBottom: 25,
     backgroundColor: theme.palette.grid.background,
     width: "50%",
   },
