@@ -291,17 +291,18 @@ chmod 777 scripts/build-prod.sh && scripts/build-prod.sh
 
 **WIP**
 
-### Docker Build Issues
+### Docker Build Errors
 
-If you run into any Docker errors, please ensure you try all of the following before submitting an issue:
+If you run into any build errors, please ensure you try all of the following before submitting an issue:
 
-1. `docker system prune -f -a` to remove all old images and volumes
-2. `docker container prune -f` / `docker volume prune -f` / `docker builder prune -f -a` / `docker image prune -f -a`
-3. Restart Docker and/or restart your computer
-4. Logout and login to Docker
-5. Reset settings to Factory Defaults
-6. Go to `~/.docker/config.json` and ensure that `credStore: "desktop.exe` is properly written into the file
-7. Check the Dockerfile and script to ensure relative paths lead to the correct files/folders
+- `docker system prune -f -a` to remove all old images and volumes
+- `docker container prune -f` / `docker volume prune -f` / `docker builder prune -f -a` / `docker image prune -f -a`
+- `docker rmi $(docker images --filter “dangling=true” -q --no-trunc)` to remove any dangling images that you don't need
+- Restart Docker and/or restart your computer
+- Logout and login to Docker
+- Reset Docker to factory default settings
+- Go to `~/.docker/config.json` and ensure that `credStore: "desktop.exe` is properly written into the file
+- Check the Dockerfile and script to ensure relative paths lead to the correct files/folders
 
 ## Libraries
 

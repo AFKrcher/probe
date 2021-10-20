@@ -25,11 +25,15 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "block",
     objectFit: "cover",
+    backgroundColor: "lightGray",
   },
   mobileStepper: {
     backgroundColor: "transparent",
   },
 }));
+
+// breakpoints based on device width / height
+const actionsBreak = 600;
 
 export const Gallery = ({
   initValues,
@@ -110,7 +114,7 @@ export const Gallery = ({
             activeStep={activeStep}
             position="bottom"
             nextButton={
-              width < 600 ? (
+              width < actionsBreak ? (
                 <div />
               ) : (
                 <Button
@@ -123,7 +127,7 @@ export const Gallery = ({
               )
             }
             backButton={
-              width < 600 ? (
+              width < actionsBreak ? (
                 <div />
               ) : (
                 <Button
