@@ -258,7 +258,7 @@ export const SatelliteSchemaEntry = ({
         !field.isUnique &&
         field.name !== "name" &&
         entry[field.name]?.length > 100,
-      minRows: Math.ceil(entry[field.name]?.length / 100) || 3,
+      minRows: Math.ceil(entry[field.name]?.length / 110) || 3,
       maxRows: 10,
       component:
         editing || editingSchema

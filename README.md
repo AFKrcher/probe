@@ -352,19 +352,17 @@ The following is a list of notable packages and technologies used to build this 
 | use-debounce          | Runtime     | React debouncing hook                |
 | helmet                | Runtime     | CSP and HTTP header security         |
 | express               | Runtime     | HTTP utility methods                 |
-| chai                  | Development | Testing library, utilities            |
 
 ### Meteor
 
-| Module/Library      | Environment | Description                               |
-| :------------------ | :---------- | :---------------------------------------- |
-| mongo               | Runtime     | NoSQL database for Meteor                 |
-| accounts-base       | Runtime     | Account management for Meteor             |
-| accounts-password   | Runtime     | Password management for Meteor            |
-| alanning:roles      | Runtime     | Role management for Meteor                |
-| ddp-rate-limiter    | Runtime     | Limits method call and subscription rates |
-| underscore          | Runtime     | Extended higher-order methods             |
-| meteortesting:mocha | development | Testing library                           |
+| Module/Library    | Environment | Description                               |
+| :---------------- | :---------- | :---------------------------------------- |
+| mongo             | Runtime     | NoSQL database for Meteor                 |
+| accounts-base     | Runtime     | Account management for Meteor             |
+| accounts-password | Runtime     | Password management for Meteor            |
+| alanning:roles    | Runtime     | Role management for Meteor                |
+| ddp-rate-limiter  | Runtime     | Limits method call and subscription rates |
+| underscore        | Runtime     | Extended higher-order methods             |
 
 ## License
 

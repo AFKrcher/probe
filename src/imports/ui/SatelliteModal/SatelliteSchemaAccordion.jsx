@@ -27,7 +27,7 @@ import CloseIcon from "@material-ui/icons/Close";
 const useStyles = makeStyles((theme) => ({
   accordionBody: {
     backgroundColor: theme.palette.action.hover,
-    width: "1000px",
+    width: "100%",
     overflow: "hidden",
   },
   accordionHeader: {
