@@ -5,9 +5,23 @@ This open source project seeks to design a system that allows a community to mai
 ## Table of Contents
 
 1.  [Overview](#Overview)
-2.  [How To Contribute](#How-To-Contribute)
-3.  [Libraries](#Libraries)
-4.  [License](#License)
+2.  [Usage](#Usage)
+    - [Application](#Application)
+    - [Public API](#Public-API)
+    - [Partner API](#Partner-API)
+3.  [How To Contribute](#How-To-Contribute)
+    - [Git](#Git)
+    - [Coding Standards](#Coding-Standards)
+    - [Installation](#Installation)
+    - [Access MongoDB](#Access-MongoDB)
+    - [Environment Variables](#Environment-Variables)
+    - [Build Exports](#Build-Exports)
+    - [Testing](#Testing)
+    - [Docker Builds](#Docker-Builds)
+4.  [Libraries](#Libraries)
+    - [NPM](#NPM)
+    - [Meteor](#Meteor)
+5.  [License](#License)
 
 ## Overview
 
@@ -211,7 +225,7 @@ RESPONSE:
 5. Contribute to the main/master repository through clear and succinct pull requests
 6. When not contributing code directly, generate issues on GitHub with context, problem statement, and, if possible, a suggested solution
 
-## Coding Standards
+### Coding Standards
 
 The list below is meant to be a guide and not a rule-book. Please try your best to use this guide to build code that is readable and easy-to-understand for all contributors:
 
@@ -258,7 +272,7 @@ application code via `process.env.<variable-name>`. Prior to development or depl
 | ADMIN_PASSWORD       | Password for admin account in development | password        |
 | PROBE_API_KEY        | PROBE API access key                      | password        | server        |
 
-### MongoDB and Mail Exports
+### Build Exports
 
 For docker image running and production, several exports are needed to estabish connections to hosted services and to set the node environment. The following are the variables must be specified prior to running PROBE.
 
@@ -280,7 +294,9 @@ Unit testing uses Mocha and Chai. Please refer to the [Meteor Mocha](https://gui
 
 Cypress testing is used for integration and UI/UX testing of PROBE. Please refer to the [Cypress](https://www.cypress.io/) documentation for more information on usage and behaviour.
 
-### Docker Development Build
+### Docker Builds
+
+#### Docker Development
 
 The purpose of the Docker development build is to test a production build of the application, with conenctions to hosted services suchs as MongoDB and SMTPS. PM2 and alpine-node are used for load-balancing, app-management, and CSP/HTTP testing.
 
@@ -293,7 +309,7 @@ chmod 777 scripts/build-dev.sh && scripts/build-dev.sh
 docker run --rm --name probe --env-file src/private/.env -p 3000:3000 -t probe
 ```
 
-### Docker Production Build
+#### Docker Production
 
 The Docker production is dependent on the `.env` file to describe the configuration of your meteor application. A `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README. A Docker.example.prod is provided as a template for filling-out hosted service URIs.
 
@@ -303,7 +319,7 @@ Paste and run the following commands at the root of the project to build and run
 chmod 777 scripts/build-prod.sh && scripts/build-prod.sh
 ```
 
-### Docker Build Errors
+#### Docker Errors
 
 If you run into any build errors, please ensure you try all of the following before submitting an issue:
 
