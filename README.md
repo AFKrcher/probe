@@ -231,9 +231,9 @@ The list below is meant to be a guide and not a rule-book. Please try your best 
 
 - Use Prettier (preferred) or any other code formatting/linting extension to format the code properly
 - Use PropTypes to both annotate prop types for other contributors, and for development type-checking
-- Use comments to explain functions that may require a "why" or "how" for first-time viewers of the code
+- Use comments to explain functions that may result in a "why" or "how" from first-time viewers of the code
 - Remove all excess imports, declarations, styles, etc. that are not being used prior to pushing your code
-- Comment out non-functional prior to pushing your code
+- Comment out non-functional or non-tested code prior to pushing your code
 - Run pre-existing Unit and Cypress tests prior to pushing your code (see [Testing](#Testing) for more details)
 - Write and run new Unit and Cypress tests for your added functionalities prior to pushing your code (see [Testing](#Testing) for more details)
 
@@ -278,7 +278,7 @@ For docker image running and production, several exports are needed to estabish 
 
 | Variable  | Description                        | Example Setting                                |
 | :-------- | :--------------------------------- | :--------------------------------------------- |
-| NODE_ENV  | Build and runtiem environment      | production                                     |
+| NODE_ENV  | Build and runtime environment      | production                                     |
 | ROOT_URL  | Base URL for hosted application    | localhost or https://your.personal.url         |
 | MAIL_URL  | Hosted SMTPS                       | smtp://user:password@mailhost:port/            |
 | MONGO_URL | Hosted MongoDB instance            | mongodb://user:password@host:port/databasename |
