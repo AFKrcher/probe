@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 // Components
 import { SatelliteSchemaEntry } from "./SatelliteSchemaEntry";
 import useWindowSize from "../Hooks/useWindowSize.jsx";
+import { _ } from "meteor/underscore";
 
 // @material-ui
 import {
@@ -71,6 +72,10 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 2.5,
   },
 }));
+
+// breakpoints based on device width / height
+const gridSpaceTitleChipBreak = 1000;
+const accordionActionsBreak = 800;
 
 export const SatelliteSchemaAccordion = ({
   dirty,
@@ -172,7 +177,7 @@ export const SatelliteSchemaAccordion = ({
             <Grid
               item
               className={classes.accordionHeader}
-              xs={width > 1000 ? 11 : 10}
+              xs={width > gridSpaceTitleChipBreak ? 11 : 10}
             >
               <Chip
                 size="small"
@@ -186,7 +191,7 @@ export const SatelliteSchemaAccordion = ({
               </Tooltip>
             </Grid>
             {!editing &&
-            width > 800 &&
+            width > accordionActionsBreak &&
             (accordionBeingEdited === schemaIndex ||
               accordionBeingEdited === -1) ? (
               <Grid item className={classes.iconButtons} xs="auto">
@@ -210,9 +215,7 @@ export const SatelliteSchemaAccordion = ({
                     <IconButton
                       className={classes.saveIcon}
                       disabled={
-                        Object.entries(errors).length > 0 ||
-                        !dirty ||
-                        Object.entries(touched).length === 0
+                        !_.isEmpty(errors) || !dirty || _.isEmpty(touched)
                           ? true
                           : false
                       }

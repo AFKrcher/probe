@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Meteor } from "meteor/meteor";
 // Imports
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import HelpersContext from "./Dialogs/HelpersContext.jsx";

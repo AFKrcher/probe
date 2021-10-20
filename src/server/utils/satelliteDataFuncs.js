@@ -152,11 +152,7 @@ export const satelliteValidatorShaper = (values, initValues) => {
               field.type === "string" && field.isUnique
                 ? baseFieldType.notOneOf(
                     isUniqueList(path, schemaField),
-                    `${path}-${entryCount}-${fieldCount}_A satellite with ${schemaField} of ${
-                      value[entryCount][schemaField]
-                        ? value[entryCount][schemaField].trim()
-                        : "N/A"
-                    } already exists.`
+                    `${path}-${entryCount}-${fieldCount}_A satellite with ${schemaField} of ${value[entryCount][schemaField]} already exists.`
                   )
                 : false,
             min:

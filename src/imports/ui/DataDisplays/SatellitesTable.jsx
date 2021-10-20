@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
+import { Meteor } from "meteor/meteor";
 // Imports
 import { Link, useHistory } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
-import { Meteor } from "meteor/meteor";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import useWindowSize from "../Hooks/useWindowSize.jsx";
 import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
@@ -122,6 +122,9 @@ const useStyles = makeStyles((theme) => ({
 const newSatValues = {
   noradID: "",
 };
+
+// breakpoints based on device width / height
+const addButtonBreak = 650;
 
 export const SatellitesTable = () => {
   const classes = useStyles();
@@ -506,7 +509,7 @@ export const SatellitesTable = () => {
         container
         item
         xs
-        justifyContent={width > 650 ? "flex-end" : "flex-start"}
+        justifyContent={width > addButtonBreak ? "flex-end" : "flex-start"}
       >
         <Button
           variant="contained"
@@ -528,14 +531,14 @@ export const SatellitesTable = () => {
           <Grid item xs>
             <Typography variant="h3">Satellites</Typography>
           </Grid>
-          {width > 650 ? (
+          {width > addButtonBreak ? (
             <ProtectedFunctionality
               component={AddSatelliteButton}
               loginRequired={true}
             />
           ) : null}
         </Grid>
-        {width < 650 ? (
+        {width < addButtonBreak ? (
           <div style={{ margin: "10px 0px 20px 0px" }}>
             <ProtectedFunctionality
               component={AddSatelliteButton}

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Field } from "formik";
 import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
 import { decideVerifiedValidated } from "../utils/satelliteDataFuncs";
+import { _ } from "meteor/underscore";
 
 // @material-ui
 import {
@@ -68,6 +69,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// breakpoints based on device width / height
+const adornmentBreak = 1000;
+
 export const SatelliteSchemaEntry = ({
   entryIndex,
   schema,
@@ -95,7 +99,11 @@ export const SatelliteSchemaEntry = ({
       obj[`${event.target.name}`] = true;
       setTouched(obj);
       // Needed in order for errors to be properly set or cleared after Formik completes a check on the satellite data
-      setFieldValue(event.target.name, event.target.value);
+      const value =
+        typeof event.target.value === "string"
+          ? event.target.value.trim()
+          : event.target.value;
+      setFieldValue(event.target.name, value);
       // set validated to false if a field is modified and subsequently saved
       setFieldValue(validatedField, [
         {
@@ -119,7 +127,11 @@ export const SatelliteSchemaEntry = ({
 
   const debounceTwo = useDebouncedCallback(
     (event, validatedField, verifiedField) => {
-      setFieldValue(event.target.name, event.target.value);
+      const value =
+        typeof event.target.value === "string"
+          ? event.target.value.trim()
+          : event.target.value;
+      setFieldValue(event.target.name, value);
       // set validated to false if a field is modified and subsequently saved
       setFieldValue(validatedField, [
         {
@@ -142,7 +154,7 @@ export const SatelliteSchemaEntry = ({
   );
 
   const refreshHelpers = () => {
-    if (JSON.stringify(errors) !== "{}") {
+    if (!_.isEmpty(errors)) {
       setHelpers(Object.keys(errors));
     } else {
       setHelpers(null);
@@ -296,7 +308,7 @@ export const SatelliteSchemaEntry = ({
                 endAdornment: (
                   <span
                     style={
-                      field.length > 300 && width < 1000
+                      field.length > 300 && width < adornmentBreak
                         ? {
                             display: "flex",
                             flexDirection: "column",
@@ -345,7 +357,7 @@ export const SatelliteSchemaEntry = ({
                         )}
                       </InputAdornment>
                     </Tooltip>
-                    {field.length > 300 && width < 1000 ? (
+                    {field.length > 300 && width < adornmentBreak ? (
                       <div style={{ marginTop: 40 }} />
                     ) : null}
                     <Tooltip
@@ -357,7 +369,9 @@ export const SatelliteSchemaEntry = ({
                         classes
                       )}
                       placement={
-                        field.length > 300 && width < 1000 ? "bottom" : "top"
+                        field.length > 300 && width < adornmentBreak
+                          ? "bottom"
+                          : "top"
                       }
                       arrow
                     >
