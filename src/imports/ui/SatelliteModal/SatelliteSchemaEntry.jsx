@@ -93,45 +93,22 @@ export const SatelliteSchemaEntry = ({
 
   const [helpers, setHelpers] = useState(null);
 
-  const debounceOne = useDebouncedCallback(
-    (event, validatedField, verifiedField) => {
-      let obj = {};
-      obj[`${event.target.name}`] = true;
-      setTouched(obj);
-      // Needed in order for errors to be properly set or cleared after Formik completes a check on the satellite data
-      const value =
-        typeof event.target.value === "string"
-          ? event.target.value.trim()
-          : event.target.value;
-      setFieldValue(event.target.name, value);
-      // set validated to false if a field is modified and subsequently saved
-      setFieldValue(validatedField, [
-        {
-          method: "",
-          name: "",
-          validated: false,
-          validatedOn: "",
-        },
-      ]);
-      setFieldValue(verifiedField, [
-        {
-          method: "",
-          name: "",
-          verified: false,
-          verifiedOn: "",
-        },
-      ]);
-    },
-    500
-  );
+  const debounceOne = useDebouncedCallback((event) => {
+    // trim the value of whitespace if string
+    const value =
+      typeof event.target.value === "string"
+        ? event.target.value.trim()
+        : event.target.value;
+    setFieldValue(event.target.name, value);
+  }, 1000);
 
   const debounceTwo = useDebouncedCallback(
     (event, validatedField, verifiedField) => {
-      const value =
-        typeof event.target.value === "string"
-          ? event.target.value.trim()
-          : event.target.value;
-      setFieldValue(event.target.name, value);
+      // set object to touched explicitly
+      let obj = {};
+      obj[`${event.target.name}`] = true;
+      setTouched(obj);
+
       // set validated to false if a field is modified and subsequently saved
       setFieldValue(validatedField, [
         {
@@ -150,7 +127,7 @@ export const SatelliteSchemaEntry = ({
         },
       ]);
     },
-    400
+    1000
   );
 
   const refreshHelpers = () => {
@@ -175,7 +152,7 @@ export const SatelliteSchemaEntry = ({
     return helper;
   };
 
-  const helper = (field) => {
+  const helper = (field, index) => {
     let helper = null;
     if (field.min || field.max) {
       if (field.min && field.max)
@@ -224,11 +201,7 @@ export const SatelliteSchemaEntry = ({
       },
       defaultValue: entry[`${field.name}`] || "",
       onChange: (event) => {
-        debounceOne(
-          event,
-          `${schema.name}.${entryIndex}.validated`,
-          `${schema.name}.${entryIndex}.verified`
-        );
+        debounceOne(event);
         debounceTwo(
           event,
           `${schema.name}.${entryIndex}.validated`,
@@ -236,11 +209,7 @@ export const SatelliteSchemaEntry = ({
         );
       },
       onInput: (event) => {
-        debounceOne(
-          event,
-          `${schema.name}.${entryIndex}.validated`,
-          `${schema.name}.${entryIndex}.verified`
-        );
+        debounceOne(event);
         debounceTwo(
           event,
           `${schema.name}.${entryIndex}.validated`,
@@ -452,7 +421,7 @@ export const SatelliteSchemaEntry = ({
                     </Typography>
                   ) : editingSchema ? (
                     <Typography variant="caption" className={classes.helpers}>
-                      {helper(field)}
+                      {helper(field, fieldIndex)}
                     </Typography>
                   ) : null}
                 </div>

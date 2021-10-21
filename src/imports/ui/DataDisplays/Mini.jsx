@@ -52,6 +52,9 @@ const useStyles = makeStyles((theme) => ({
   satName: {
     fontWeight: 600,
   },
+  satDesc: {
+    marginTop: 5,
+  },
 }));
 
 export const Mini = () => {
@@ -70,6 +73,7 @@ export const Mini = () => {
           "names.name": 1,
           "orbits.orbit": 1,
           "descriptionShort.descriptionShort": 1,
+          "cosparID.cosparID": 1,
         },
       }
     )
@@ -96,6 +100,39 @@ export const Mini = () => {
     setOpen(true);
   };
 
+  const gridItem = (sat, index) => {
+    return (
+      <Grid item key={index} xs="auto" className={classes.card}>
+        <Tooltip
+          arrow
+          className={classes.tooltip}
+          title={
+            <span className={classes.description}>
+              <Typography variant="h6" className={classes.satName}>
+                {sat.names ? sat.names[0]?.name : "N/A"}
+              </Typography>
+              <Typography variant="caption">
+                NORAD ID: {sat.noradID ? sat.noradID : "N/A"}
+              </Typography>
+              <Typography variant="caption">
+                COSPAR ID: {sat.cosparID ? sat.cosparID[0]?.cosparID : "N/A"}
+              </Typography>
+              <Typography variant="body2" className={classes.satDesc}>
+                {sat.descriptionShort
+                  ? sat.descriptionShort[0]?.descriptionShort
+                  : "No description available"}
+              </Typography>
+            </span>
+          }
+        >
+          <Typography variant="body2" onClick={() => openCard(sat)}>
+            {sat.noradID}
+          </Typography>
+        </Tooltip>
+      </Grid>
+    );
+  };
+
   return (
     <Grid container spacing={1}>
       <span className={classes.container}>
@@ -120,75 +157,9 @@ export const Mini = () => {
                     {sats.map((sat, index) => {
                       if (sat.orbits) {
                         if (sat.orbits[0].orbit === regime)
-                          return (
-                            <Grid
-                              item
-                              key={index}
-                              xs="auto"
-                              className={classes.card}
-                            >
-                              <Tooltip
-                                arrow
-                                className={classes.tooltip}
-                                title={
-                                  <span className={classes.description}>
-                                    <Typography
-                                      variant="body1"
-                                      className={classes.satName}
-                                    >
-                                      {sat.names ? sat.names[0]?.name : "N/A"}
-                                    </Typography>
-                                    <Typography variant="body2">
-                                      {
-                                        sat.descriptionShort[0]
-                                          ?.descriptionShort
-                                      }
-                                    </Typography>
-                                  </span>
-                                }
-                              >
-                                <Typography
-                                  variant="body2"
-                                  onClick={() => openCard(sat)}
-                                >
-                                  {sat.noradID}
-                                </Typography>
-                              </Tooltip>
-                            </Grid>
-                          );
+                          return gridItem(sat, index);
                       } else if (regime === "Undetermined" && !sat.orbit) {
-                        return (
-                          <Grid item key={index} xs="auto">
-                            <Tooltip
-                              arrow
-                              className={classes.tooltip}
-                              title={
-                                <span className={classes.description}>
-                                  <Typography
-                                    variant="body1"
-                                    className={classes.satName}
-                                  >
-                                    {sat.names ? sat.names[0]?.name : "N/A"}
-                                  </Typography>
-                                  <Typography variant="body2">
-                                    {sat.descriptionShort
-                                      ? sat.descriptionShort[0]
-                                          ?.descriptionShort
-                                      : "No description available"}
-                                  </Typography>
-                                </span>
-                              }
-                            >
-                              <Typography
-                                variant="body2"
-                                onClick={() => openCard(sat)}
-                                className={classes.card}
-                              >
-                                {sat.noradID}
-                              </Typography>
-                            </Tooltip>
-                          </Grid>
-                        );
+                        return gridItem(sat, index);
                       }
                     })}
                   </Grid>
