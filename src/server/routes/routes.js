@@ -1,65 +1,21 @@
 import { SatelliteCollection } from "/imports/api/satellites";
 import { SchemaCollection } from "/imports/api/schemas";
+import { partnerRoutes } from "./partner";
 import express from "express";
 import dotenv from "dotenv";
 
+// Partner routes
 dotenv.config({
   path: Assets.absoluteFilePath(".env"), // .env file in the private folder
 });
-
 const { PROBE_API_KEY } = process.env;
-
 const app = express();
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
 WebApp.connectHandlers.use(app);
+partnerRoutes(app, PROBE_API_KEY);
 
-app.get("/api/partner/:key", (req, res) => {
-  const response =
-    req.params.key === PROBE_API_KEY
-      ? "Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
-      : "Unauthorized [401]";
-  const status = req.params.key === PROBE_API_KEY ? 200 : 401;
-  res.setHeader("Content-Type", "application/json");
-  res.writeHead(status);
-  res.end(JSON.stringify(response));
-});
-
-app.post("/api/partner/:key", (req, res) => {
-  const response =
-    req.params.key === PROBE_API_KEY
-      ? "Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
-      : "Unauthorized [401]";
-  const status = req.params.key === PROBE_API_KEY ? 200 : 401;
-  res.setHeader("Content-Type", "application/json");
-  res.writeHead(status);
-  res.end(JSON.stringify(response));
-});
-
-app.patch("/api/partner/:key", (req, res) => {
-  const response =
-    req.params.key === PROBE_API_KEY
-      ? "Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
-      : "Unauthorized [401]";
-  const status = req.params.key === PROBE_API_KEY ? 200 : 401;
-  res.setHeader("Content-Type", "application/json");
-  res.writeHead(status);
-  res.end(JSON.stringify(response));
-});
-
-app.put("/api/partner/:key", (req, res) => {
-  const response =
-    req.params.key === PROBE_API_KEY
-      ? "Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
-      : "Unauthorized [401]";
-  const status = req.params.key === PROBE_API_KEY ? 200 : 401;
-  res.setHeader("Content-Type", "application/json");
-  res.writeHead(status);
-  res.end(JSON.stringify(response));
-});
-
+// Public satellite routes
 WebApp.connectHandlers.use("/api/satellites", async (req, res) => {
   async function getSats() {
     let error;
@@ -206,6 +162,7 @@ WebApp.connectHandlers.use("/api/satellites", async (req, res) => {
   getSats();
 });
 
+// Public schema routes
 WebApp.connectHandlers.use("/api/schemas", (req, res) => {
   function getSchema() {
     let error;
@@ -232,6 +189,7 @@ WebApp.connectHandlers.use("/api/schemas", (req, res) => {
   getSchema();
 });
 
+// Public welcome route
 WebApp.connectHandlers.use("/api", (req, res) => {
   res.setHeader("Content-Type", "application/json");
   res.writeHead(200);
