@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 
-export const helmetOptions = () => {
+export const helmetOptions = (forExpress) => {
   const self = "'self'";
   const data = "data:";
   const unsafeEval = "'unsafe-eval'";
@@ -13,22 +13,24 @@ export const helmetOptions = () => {
   const usesHttps = s.length > 0;
   const connectSrc = [self, `http${s}://${domain}`, `ws${s}://${domain}`];
 
+  const srcOpts = forExpress ? [self] : [self, unsafeEval];
+
   const options = {
     contentSecurityPolicy: {
       blockAllMixedContent: true,
       directives: {
-        defaultSrc: [self, unsafeInline],
-        scriptSrc: [self, unsafeInline],
-        childSrc: [self, unsafeInline],
+        defaultSrc: srcOpts,
+        scriptSrc: srcOpts,
+        childSrc: srcOpts,
         connectSrc: connectSrc.concat(allowedOrigins),
         fontSrc: [self, data, unsafeInline],
-        formAction: [self, unsafeInline],
+        formAction: srcOpts,
         frameAncestors: [self],
         frameSrc: ["*"],
         imgSrc: ["*"],
-        manifestSrc: [self, unsafeInline],
-        mediaSrc: [self, unsafeInline],
-        objectSrc: [self, unsafeInline],
+        manifestSrc: srcOpts,
+        mediaSrc: srcOpts,
+        objectSrc: srcOpts,
         sandbox: [
           "allow-forms",
           "allow-modals",
@@ -64,7 +66,7 @@ export const helmetOptions = () => {
     },
   };
 
-  if (!usesHttps && Meteor.isDevelopment) {
+  if (!usesHttps && Meteor.isDevelopment && !forExpress) {
     delete options.contentSecurityPolicy.directives.blockAllMixedContent;
     options.contentSecurityPolicy.directives.scriptSrc = [
       self,

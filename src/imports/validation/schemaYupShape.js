@@ -3,21 +3,28 @@
  **/
 
 import * as Yup from "yup";
+import { SchemaCollection } from "/imports/api/schemas";
 
-export const schemaValidatorShaper = (initValues, isUniqueList, schemas) => {
+export const schemaValidatorShaper = (initialName) => {
   return Yup.object().shape({
     _id: Yup.string(),
     name: Yup.string()
-      .notOneOf(isUniqueList(initValues, schemas), (obj) =>
-        obj.value
-          ? `The schema name, ${obj.value}, already exists `
-          : "Required"
+      .test(
+        "uniqueName",
+        (obj) =>
+          obj.value
+            ? `The schema name, "${obj.value}", already exists`
+            : "Required",
+        (value) =>
+          SchemaCollection.findOne({ name: value })?.name !== initialName
+            ? SchemaCollection.find({ name: value }).count() === 0
+            : true
       )
       .matches(
         /^[a-zA-Z0-9]*$/g,
         "Schema name must only contain letters and numbers"
       )
-      .test("camelCase", "Schema name must be camelCase", (value, context) => {
+      .test("camelCase", "Schema name must be camelCase", (value) => {
         return value
           ? (value !== value.toLowerCase() &&
               value !== value.toUpperCase() &&
@@ -41,7 +48,7 @@ export const schemaValidatorShaper = (initValues, isUniqueList, schemas) => {
               /^[a-zA-Z0-9]*$/g,
               "Name must only contain letters and numbers"
             )
-            .test("camelCase", "Name must be camelCase", (value, context) => {
+            .test("camelCase", "Name must be camelCase", (value) => {
               return value
                 ? (value !== value.toLowerCase() &&
                     value !== value.toUpperCase() &&
@@ -82,7 +89,7 @@ export const schemaValidatorShaper = (initValues, isUniqueList, schemas) => {
               return schema.test(
                 "maximum-length",
                 `Options must not exceed ${stringMax} characters`,
-                (value, context) => {
+                (value) => {
                   const testArr = value.filter(
                     (option) => option.length > stringMax
                   );

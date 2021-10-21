@@ -1,12 +1,12 @@
-import { satelliteValidatorShaper } from "../utils/satelliteDataFuncs";
+import { satelliteValidatorShaper } from "../helpers/satelliteDataFuncs";
 import {
   userHasVerifiedData,
   machineHasVerifiedData,
-} from "../utils/verificationFuncs";
+} from "../helpers/verificationFuncs";
 import {
   userHasValidatedData,
   machineHasValidatedData,
-} from "../utils/validationFuncs";
+} from "../helpers/validationFuncs";
 
 export const satelliteMethods = (Meteor, Roles, SatelliteCollection) => {
   return Meteor.methods({
