@@ -27,7 +27,6 @@ export const MultiSelectTextInput = ({
   editing,
   index,
   allowedValues,
-  disabled,
   setFieldValue,
   currentStringMax,
   errors,
@@ -99,7 +98,7 @@ export const MultiSelectTextInput = ({
         inputValue={inputText}
         onChange={handleChange}
         onInputChange={handleInputChange}
-        disabled={disabled}
+        disabled={!editing}
         renderInput={(params) => (
           <TextField
             {...params}

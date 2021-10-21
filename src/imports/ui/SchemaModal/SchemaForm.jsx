@@ -1,5 +1,5 @@
 import React from "react";
-import { Field, FieldArray } from "formik";
+import { FastField, Field, FieldArray } from "formik";
 // Components
 import { SchemaFormField } from "./SchemaFormField";
 
@@ -70,45 +70,61 @@ export const SchemaForm = ({
     setValues({ ...formValues, fields });
   };
 
+  const nameProps = (fast) => {
+    return {
+      name: "name",
+      label: "Schema Name",
+      placeholder: "camelCase",
+      margin: "dense",
+      required: true,
+      fullWidth: true,
+      variant: "outlined",
+      disabled: !fast,
+      component: TextField,
+      maxLength: 255,
+      autoComplete: "off",
+    };
+  };
+
+  const descProps = (fast) => {
+    return {
+      name: "description",
+      label: "Schema Description",
+      placeholder:
+        "Use this field to describe why this schema is important and how a user should enter data into the fields that are defined in this schema.",
+      margin: "dense",
+      required: true,
+      fullWidth: true,
+      variant: "outlined",
+      multiline: true,
+      color: "primary",
+      rows: 4,
+      disabled: !fast,
+      component: TextField,
+      maxLength: 500,
+      autoComplete: "off",
+    };
+  };
+
   return (
     <Grid container spacing={1}>
       <Grid container item>
         <Grid item xs={12}>
-          <Field
-            name="name"
-            label="Schema Name"
-            placeholder="camelCase"
-            margin="dense"
-            required
-            fullWidth
-            variant="outlined"
-            disabled={!editing}
-            component={TextField}
-            maxLength={255}
-            autoComplete="off"
-          />
+          {editing ? (
+            <FastField {...nameProps(true)} />
+          ) : (
+            <Field {...nameProps(false)} />
+          )}
         </Grid>
-
         <Typography variant="caption" className={classes.helpers}>
           {editing ? `${formValues.name.length} / 50` : null}
         </Typography>
         <Grid item xs={12}>
-          <Field
-            name="description"
-            label="Schema Description"
-            placeholder="Use this field to describe why this schema is important and how a user should enter data into the fields that are defined in this schema."
-            margin="dense"
-            required
-            fullWidth
-            variant="outlined"
-            multiline
-            color="primary"
-            rows={4}
-            disabled={!editing}
-            component={TextField}
-            maxLength={500}
-            autoComplete="off"
-          />
+          {editing ? (
+            <FastField {...descProps(true)} />
+          ) : (
+            <Field {...descProps(false)} />
+          )}
           {editing && (
             <Typography variant="caption" className={classes.helpers}>
               {editing ? `${formValues.description.length} / 255` : null}

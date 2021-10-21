@@ -99,7 +99,13 @@ export const Mini = () => {
   return (
     <Grid container spacing={1}>
       <span className={classes.container}>
-        <Dialog open={open} onClose={closeCard} maxWidth="xs" fullWidth>
+        <Dialog
+          open={open}
+          onClose={closeCard}
+          maxWidth="xs"
+          fullWidth
+          scroll="body"
+        >
           <SatCard satellite={sat} width={width} height={height} />
         </Dialog>
         {isLoadingSats || isLoadingSchemas ? null : (

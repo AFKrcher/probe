@@ -119,6 +119,7 @@ export const Dashboard = () => {
                   clickable={true}
                   description={true}
                   autoplay={false}
+                  dashboard={true}
                 />
                 {sat.organization ? mapper("organization") : null}
                 <br />

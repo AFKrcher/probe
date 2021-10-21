@@ -36,8 +36,8 @@ import RestorePageIcon from "@material-ui/icons/RestorePage";
 
 const useStyles = makeStyles(() => ({
   title: {
-    marginBottom: -5,
-    marginTop: -5,
+    marginBottom: 10,
+    marginTop: 0,
   },
   titleText: {
     fontSize: "25px",
@@ -316,7 +316,7 @@ export const SchemaModal = ({
     <React.Fragment>
       <AlertDialog bodyAlert={alert} />
       <SnackBar bodySnackBar={snack} />
-      <Dialog open={show} scroll="paper" maxWidth="md" fullWidth>
+      <Dialog open={show} maxWidth="md" fullWidth scroll="body">
         <DialogTitle className={classes.title}>
           <Typography className={classes.titleText}>
             {newSchema ? (
