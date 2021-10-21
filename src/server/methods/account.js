@@ -20,7 +20,6 @@ export const accountMethods = (Meteor, Accounts, Roles, UsersCollection) => {
         return "Username already exists.";
       }
     },
-
     emailExists: (email) => {
       if (Accounts.findUserByEmail(email)) {
         return `That email is already in use`;
@@ -28,7 +27,6 @@ export const accountMethods = (Meteor, Accounts, Roles, UsersCollection) => {
         return;
       }
     },
-
     addUserToRole: (user, role) => {
       if (Roles.userIsInRole(Meteor.userId(), "admin")) {
         Roles.addUsersToRoles(Accounts.findUserByUsername(user.username), role);
@@ -41,14 +39,19 @@ export const accountMethods = (Meteor, Accounts, Roles, UsersCollection) => {
         }
         UsersCollection.update(
           { _id: user._id },
-          Accounts.findUserByUsername(user.username)
+          {
+            $set: {
+              roles: Meteor.roleAssignment
+                .find({ _id: Meteor.userId() })
+                .fetch(),
+            },
+          }
         );
         return `${user._id} added to ${role}`;
       } else {
         return "Unauthorized [401]";
       }
     },
-
     deleteAccount: (id) => {
       if (
         Meteor.userId() === id ||
@@ -61,12 +64,14 @@ export const accountMethods = (Meteor, Accounts, Roles, UsersCollection) => {
         return "Unauthorized [401]";
       }
     },
-
     updateUsername: (id, user, newUsername) => {
       if (Meteor.userId() === id) {
         if (isValidUsername(user, newUsername)) {
           Accounts.setUsername(id, newUsername);
-          UsersCollection.update({ _id: id }, Meteor.user());
+          UsersCollection.update(
+            { _id: id },
+            { $set: { username: Meteor.user().username } }
+          );
           return `Account changes successfully made`;
         } else {
           return `The provided username, ${newUsername}, is invalid`;
@@ -75,14 +80,16 @@ export const accountMethods = (Meteor, Accounts, Roles, UsersCollection) => {
         return "Unauthorized [401]";
       }
     },
-
     updateEmail: (id, email, newEmail) => {
       if (Meteor.userId() === id) {
         if (isValidEmail(email, newEmail)) {
           Accounts.removeEmail(id, email);
           Accounts.addEmail(id, newEmail);
           Accounts.sendVerificationEmail(id, newEmail);
-          UsersCollection.update({ _id: id }, Meteor.user());
+          UsersCollection.update(
+            { _id: id },
+            { $set: { emails: Meteor.user().emails } }
+          );
           return `Account changes successfully made`;
         } else {
           return `The provided email, ${newEmail}, is invalid`;
@@ -91,7 +98,6 @@ export const accountMethods = (Meteor, Accounts, Roles, UsersCollection) => {
         return "Unauthorized [401]";
       }
     },
-
     addToFavorites: (user, noradID) => {
       if (Meteor.userId) {
         let favorites = Meteor.user().favorites;
@@ -101,19 +107,28 @@ export const accountMethods = (Meteor, Accounts, Roles, UsersCollection) => {
           favorites.splice(favorites.indexOf(noradID), 1);
         }
         Meteor.users.update(user, { $set: { favorites: favorites } });
+        UsersCollection.update(
+          { _id: user },
+          { $set: { favorites: favorites } }
+        );
         return Meteor.user().favorites;
       } else {
         return ["Unauthorized [401]"];
       }
     },
-
     removeRole: (user, role) => {
       if (Roles.userIsInRole(Meteor.userId(), "admin")) {
         try {
           Roles.removeUsersFromRoles(user._id, role);
           UsersCollection.update(
             { _id: user._id },
-            Accounts.findUserByUsername(user.username)
+            {
+              $set: {
+                roles: Meteor.roleAssignment
+                  .find({ _id: Meteor.userId() })
+                  .fetch(),
+              },
+            }
           );
           return `User ${user._id} added to role ${role}`;
         } catch (err) {
@@ -123,13 +138,11 @@ export const accountMethods = (Meteor, Accounts, Roles, UsersCollection) => {
         return "Unauthorized [401]";
       }
     },
-
     checkIfBanned: (user) => {
       let userFinder =
         Accounts.findUserByUsername(user) || Accounts.findUserByEmail(user);
       return Roles.userIsInRole(userFinder?._id, "dummies");
     },
-
     sendEmail: (id, email) => {
       if (Meteor.userId() === id) {
         Accounts.sendVerificationEmail(id, email);
@@ -137,7 +150,6 @@ export const accountMethods = (Meteor, Accounts, Roles, UsersCollection) => {
         return "Unauthorized [401]";
       }
     },
-
     registerUser: (email, username, password) => {
       if (isValidEmail(null, email) && isValidUsername(null, username)) {
         try {
