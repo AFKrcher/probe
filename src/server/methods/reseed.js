@@ -17,6 +17,7 @@ export const reseed = (
     SatelliteCollection.remove({});
     SchemaCollection.remove({});
     UsersCollection.remove({});
+    Meteor.users.remove({});
     ErrorsCollection.remove({});
     count++;
   }
@@ -41,8 +42,13 @@ export const reseed = (
   // User creation after-actions
   Accounts.onCreateUser((_, user) => {
     user["favorites"] = [];
-    user["roles"] = [];
-    UsersCollection.insert(user);
+    UsersCollection.insert({
+      _id: user._id,
+      createdAt: user.createdAt,
+      username: user.username,
+      emails: user.emails,
+      favorites: user.favorites,
+    });
     return user;
   });
 
@@ -100,9 +106,19 @@ export const reseed = (
   if (UsersCollection.find().count() < 1) {
     UsersCollection.remove({});
     const users = Meteor.users
-      .find({}, { fields: { _id: 1, username: 1, emails: 1, roles: 1 } })
+      .find(
+        {},
+        {
+          fields: {
+            _id: 1,
+            username: 1,
+            emails: 1,
+            favorites: 1,
+            createdAt: 1,
+          },
+        }
+      )
       .fetch();
-    // UsersCollection.remove({}); // change the "=== 0" to "> 0" to wipe the userList
     users.forEach((user) => UsersCollection.insert(user));
     console.log("> UsersCollection Seeded");
   }

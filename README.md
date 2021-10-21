@@ -42,7 +42,7 @@ The application should be intuitive and easy-to-use, even for a first-time user.
 
 ### Public API
 
-The public API allows all users to obtain information on satellites and schemas produced by PROBE. Queries can be made to obtain specific satellites or schemas. Below is a list of example requests:
+The public API allows all users to obtain information on satellites and schemas produced by PROBE. Queries in the form of GET requests can be made to obtain specific satellites or schemas. POST, DELETE, PUT, and PATCH requests are not allowed to the public. Below is a list of example requests:
 
 #### Welcome Message
 
@@ -69,7 +69,7 @@ RESPONSE:
 ```json
 [
   {
-    "_id": "fTTviYiQRoMLdRC26",
+    "_id": "fTTviYiQRoMLdR3RC",
     "isDeleted": false,
     "noradID": "25544",
     "createdOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)",
@@ -163,6 +163,7 @@ RESPONSE:
 ```json
 [
   {
+  "_id": "fTTviYiQRoMLdRC26",
   "name": "names",
   "description": "Satellite's names or callsigns.",
   "fields": [
@@ -208,11 +209,64 @@ as well as GET requests of more detailed information.
 
 #### Welcome Message
 
-GET: `/api/partner/:key`
+GET (POST, DELETE, PUT, PATCH): `/api/partner/:key`
 
 RESPONSE:
 
-`"Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
+`"Welcome PROBE partner! There are <# OF ENDPOINTS> <REQUEST TYPE> endpoints to access on this route. For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
+
+#### Errors
+
+GET: `/api/partner/:key/errors`
+
+RESPONSE:
+
+```json
+[
+    {
+        "_id": "rWpQxiu37AyQAs9gP",
+        "user": "Not Logged-In",
+        "time": "2021-10-21T19:32:43.391Z",
+        "msg": "Database Reset",
+        "source": "Test Error",
+        "error": {}
+    },
+    {
+        "_id": "g2dAKHM2dRyWcyD8M",
+        "user": "hM7zz8qJn7cRWkGaA",
+        "time": "2021-10-21T19:32:43.382Z",
+        "msg": "Uncaught TypeError: e.replace is not a function",
+        "source": "http://localhost:8080/packages/modules.js?hash=4a3f16632098133332566398182d4c7791e8daca"
+    },
+    ... // more errors
+]
+```
+
+#### Users
+
+GET: `/api/partner/:key/users`
+
+RESPONSE:
+
+```json
+[
+    {
+        "_id": "bwAqW5YGPSLGuqY86",
+        "createdAt": "2021-10-21T19:32:43.456Z",
+        "username": "admin",
+        "emails": [
+            {
+                "address": "admin@saberastro.com",
+                "verified": false
+            }
+        ],
+        "favorites": [
+            "25544"
+        ]
+    }
+    ... // more users
+]
+```
 
 ## How To Contribute
 

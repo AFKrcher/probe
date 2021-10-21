@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 // Imports
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import HelpersContext from "./Dialogs/HelpersContext.jsx";
-import ProtectedRoute from "./utils/ProtectedRoute.jsx";
+import ProtectedRoute from "./Helpers/ProtectedRoute.jsx";
 
 // Components
 import { Admin } from "./Admin/Admin";

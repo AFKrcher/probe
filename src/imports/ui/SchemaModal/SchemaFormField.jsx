@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 // Imports
 import { Field, FastField } from "formik";
-import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
 
 // Components
 import { MultiSelectTextInput } from "./MultiSelectTextInput";
@@ -52,10 +51,6 @@ export const SchemaFormField = ({
   const [touched, setTouched] = useState(false);
   const [currentStringMax, setCurrentStringMax] = useState(field.stringMax);
   const classes = useStyles();
-
-  const debounce = useDebouncedCallback((event) => {
-    setFieldValue(event.target.name, event.target.value);
-  }, 1000);
 
   const onChange = (event) => {
     setFieldValue(event.target.name, event.target.value);
@@ -126,7 +121,7 @@ export const SchemaFormField = ({
         name: `fields.${index}.name`,
       },
       value: field.name,
-      onChange: debounce,
+      onChange: onChange,
       label: "Field Name or Units",
       placeholder: "camelCase",
       margin: "dense",
@@ -149,7 +144,7 @@ export const SchemaFormField = ({
         name: `fields.${index}.type`,
       },
       value: field.type,
-      onChange: debounce,
+      onChange: onChange,
       disabled: !fast,
       component: Select,
       onBlur: handleBlur,
@@ -192,7 +187,7 @@ export const SchemaFormField = ({
         inputProps: {
           name: `fields.${index}.min`,
         },
-        onChange: debounce,
+        onChange: onChange,
         label: "Minimum Value",
         margin: "dense",
         defaultValue: field.min,
@@ -209,7 +204,7 @@ export const SchemaFormField = ({
         inputProps: {
           name: `fields.${index}.max`,
         },
-        onChange: debounce,
+        onChange: onChange,
         defaultValue: field.max,
         error: errorDetermination(index, "max"),
         label: "Maximum Value",

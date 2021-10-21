@@ -5,17 +5,19 @@ export const schemaMethods = (
   schemaValidatorShaper
 ) => {
   return Meteor.methods({
+    provideSchemaValidator: () => {
+      return schemaValidatorShaper;
+    },
     addNewSchema: (initValues, values) => {
       if (Meteor.userId()) {
         let error = null;
-        const schemas = SchemaCollection.find().fetch();
         values["isDeleted"] = false;
         values["createdOn"] = new Date();
         values["createdBy"] = Meteor.user().username;
         values["modifiedOn"] = new Date();
         values["modifiedBy"] = Meteor.user().username;
         values["adminCheck"] = false;
-        schemaValidatorShaper(initValues, schemas)
+        schemaValidatorShaper(initValues.name)
           .validate(values)
           .then(() => {
             return SchemaCollection.insert(values);
@@ -32,7 +34,6 @@ export const schemaMethods = (
     updateSchema: (initValues, values) => {
       if (Meteor.userId()) {
         let error = null;
-        const schemas = SchemaCollection.find().fetch();
         if (!values["createdOn"] || !values["createdBy"]) {
           values["createdOn"] = new Date();
           values["createdBy"] = Meteor.user().username;
@@ -41,7 +42,7 @@ export const schemaMethods = (
         values["modifiedOn"] = new Date();
         values["modifiedBy"] = Meteor.user().username;
         values["adminCheck"] = false;
-        schemaValidatorShaper(initValues, schemas)
+        schemaValidatorShaper(initValues.name)
           .validate(values)
           .then(() => {
             return SchemaCollection.update({ _id: values._id }, values);

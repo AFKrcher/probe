@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Meteor } from "meteor/meteor";
+
 // Imports
 import { Link, useHistory } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import useWindowSize from "../Hooks/useWindowSize.jsx";
-import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
+import ProtectedFunctionality from "../Helpers/ProtectedFunctionality.jsx";
 import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
 
 // Components
@@ -31,7 +32,6 @@ import {
   GridToolbarContainer,
   GridToolbarColumnsButton,
   GridToolbarFilterButton,
-  GridToolbarExport,
   getGridStringOperators,
   GridToolbarDensitySelector,
 } from "@material-ui/data-grid";
@@ -39,6 +39,7 @@ import StarIcon from "@material-ui/icons/Star";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import DashboardIcon from "@material-ui/icons/Dashboard";
+import Download from "@material-ui/icons/GetApp";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,6 +83,11 @@ const useStyles = makeStyles((theme) => ({
     margin: 5,
   },
   toolbar: {
+    color: theme.palette.text.primary,
+    fontWeight: 500,
+    fontSize: "14px",
+  },
+  downloadBar: {
     color: theme.palette.text.primary,
     fontWeight: 500,
     fontSize: "14px",
@@ -176,49 +182,39 @@ export const SatellitesTable = () => {
     if (sortOrbit) return { orbits: sortOrbit };
   };
 
-  const [rows, isLoadingSchemas, isLoadingSats, count] = useTracker(() => {
-    const subSchemas = Meteor.subscribe("satellites");
-    const subSats = Meteor.subscribe("satellites");
-    const count = SatelliteCollection.find(selector).count();
-    const sats = SatelliteCollection.find(selector, {
-      limit: limiter,
-      skip: page * limiter,
-      sort: decideSort(),
-    }).fetch();
-    const rows = sats.map((sat) => {
-      return {
-        id: sat.noradID,
-        names: sat.names?.map((name) => name.names || name.name).join(", "),
-        types: sat.types
-          ? sat.types
-              .map((type) => type.type)
-              .sort((a, b) => a.localeCompare(b))
-              .join(", ")
-          : "",
-        orbits: sat.orbits
-          ? sat.orbits.map((entry) => entry.orbit).join(", ")
-          : "",
-        description: sat.descriptionShort
-          ? sat.descriptionShort[0]?.descriptionShort
-          : null,
-      };
-    });
-    rows.getRows = count;
-    return [rows, !subSchemas.ready(), !subSats.ready(), count];
-  });
+  const [sats, rows, isLoadingSchemas, isLoadingSats, count] = useTracker(
+    () => {
+      const subSchemas = Meteor.subscribe("satellites");
+      const subSats = Meteor.subscribe("satellites");
+      const count = SatelliteCollection.find(selector).count();
+      const sats = SatelliteCollection.find(selector, {
+        limit: limiter,
+        skip: page * limiter,
+        sort: decideSort(),
+      }).fetch();
 
-  function CustomToolbar() {
-    return (
-      <div className={classes.toolbarSpacer}>
-        <GridToolbarContainer className={classes.toolbarContainer}>
-          <GridToolbarColumnsButton className={classes.toolbar} />
-          <GridToolbarFilterButton className={classes.toolbar} />
-          <GridToolbarDensitySelector className={classes.toolbar} />
-          <GridToolbarExport className={classes.toolbar} />
-        </GridToolbarContainer>
-      </div>
-    );
-  }
+      const rows = sats.map((sat) => {
+        return {
+          id: sat.noradID,
+          names: sat.names?.map((name) => name.names || name.name).join(", "),
+          types: sat.types
+            ? sat.types
+                .map((type) => type.type)
+                .sort((a, b) => a.localeCompare(b))
+                .join(", ")
+            : "",
+          orbits: sat.orbits
+            ? sat.orbits.map((entry) => entry.orbit).join(", ")
+            : "",
+          description: sat.descriptionShort
+            ? sat.descriptionShort[0]?.descriptionShort
+            : null,
+        };
+      });
+      rows.getRows = count;
+      return [sats, rows, !subSchemas.ready(), !subSats.ready(), count];
+    }
+  );
 
   const handleAddNewSatellite = () => {
     setInitialSatValues(newSatValues);
@@ -318,6 +314,105 @@ export const SatellitesTable = () => {
     setTimeout(() => setOpenSnack(true), 500);
   };
 
+  const jsonDownload = () => {
+    let str = JSON.stringify(sats);
+    let uri = "data:application/json;charset=utf-8," + encodeURIComponent(str);
+    let element = document.createElement("a");
+
+    element.setAttribute("href", uri);
+    element.setAttribute(
+      "download",
+      `${new Date().toISOString()}_Probe_SatTable.json`
+    );
+    element.click();
+    element.remove();
+  };
+
+  const exportTableToCSV = (html, fileName) => {
+    const replacer = (key, val) => (val === null ? "" : val);
+    const cols = Object.keys(sats[0]);
+    const csv = [
+      cols.join(","),
+      ...sats.map((row) =>
+        cols.map((col) => JSON.stringify(row[col], replacer)).join(",")
+      ),
+    ].join("\r\n");
+    downloadCSV(csv, fileName);
+
+    // var csv = [];
+    // let rows = [];
+    // let cols = [];
+    // sats.map((sat) => {
+    //   Object.keys(sat).map((key) => {
+    //     if (cols.indexOf(key) === -1) {
+    //       cols.push(key);
+    //     }
+    //   });
+    // });
+    // csv.push(cols);
+    // sats.map((sat) => {
+    //   let row = [];
+    //   cols.map((col) => {
+    //     if (typeof sat[col] === "object") {
+    //       let str = JSON.stringify(sat[col]);
+    //       row.push({ str });
+    //     } else {
+    //       row.push(sat[col]);
+    //     }
+    //   });
+    //   csv.push(row);
+    // });
+    // downloadCSV(csv.join("\n"), fileName);
+  };
+
+  const downloadCSV = (csv, filename) => {
+    let csvFile;
+    let downloadLink;
+
+    csvFile = new Blob([csv], { type: "text/csv" });
+    downloadLink = document.createElement("a");
+    downloadLink.download = filename;
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+  };
+
+  const CustomToolbar = () => {
+    return (
+      <div className={classes.toolbarSpacer}>
+        <GridToolbarContainer className={classes.toolbarContainer}>
+          <GridToolbarColumnsButton className={classes.toolbar} />
+          <GridToolbarFilterButton className={classes.toolbar} />
+          <GridToolbarDensitySelector className={classes.toolbar} />
+          <Button
+            size="small"
+            onClick={jsonDownload}
+            className={classes.downloadBar}
+            color="primary"
+          >
+            <Download fontSize="small" />
+            Export JSON
+          </Button>
+          <Button
+            color="primary"
+            className={classes.downloadBar}
+            size="small"
+            onClick={() =>
+              exportTableToCSV(
+                sats,
+                `${new Date().toISOString()}_PROBE_SatTable.csv`
+              )
+            }
+          >
+            <Download fontSize="small" />
+            Export CSV
+          </Button>
+        </GridToolbarContainer>
+      </div>
+    );
+  };
+
   const renderFavoriteButton = (params) => {
     const favoritesNameShortener = () => {
       const names = params.row.names;
@@ -385,6 +480,7 @@ export const SatellitesTable = () => {
         sortable: false,
         field: "actions",
         headerName: "ACTIONS",
+        disableExport: true,
         width: 200,
         align: "left",
         renderCell: function renderCellButtons(satellite) {
@@ -463,6 +559,7 @@ export const SatellitesTable = () => {
         minWidth: 200,
         editable: false,
         filterable: false,
+        hide: true,
       },
       {
         headerAlign: "left",
@@ -617,7 +714,6 @@ export const SatellitesTable = () => {
             }}
           />
         </div>
-
         <Popper open={showPopper} value={popperBody} />
         <SatelliteModal
           show={showModal}
