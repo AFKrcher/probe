@@ -75,7 +75,7 @@ const initialYupShapeGenerator = (initValues, sats, isUniqueList) => {
       .notOneOf(
         isUniqueList(initValues, sats, null, "noradID"),
         (obj) =>
-          `A satellite with noradID of ${obj.value} already exists in our records or has been temporarily archived.`
+          `A satellite with NORAD ID of ${obj.value} already exists in our records or has been temporarily archived.`
       ),
     adminCheck: Yup.boolean().required(),
     modifiedOn: Yup.date().required(),

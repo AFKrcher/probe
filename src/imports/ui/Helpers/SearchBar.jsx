@@ -8,7 +8,7 @@ import SearchIcon from "@material-ui/icons/Search";
 const useStyles = makeStyles((theme) => ({
   textField: {
     backgroundColor: theme.palette.grid.background,
-    width: "50%",
+    width: "100%",
   },
 }));
 

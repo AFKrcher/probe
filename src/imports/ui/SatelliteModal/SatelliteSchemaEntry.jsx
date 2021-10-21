@@ -122,7 +122,7 @@ export const SatelliteSchemaEntry = ({
         },
       ]);
     },
-    300
+    500
   );
 
   const debounceTwo = useDebouncedCallback(
@@ -150,7 +150,7 @@ export const SatelliteSchemaEntry = ({
         },
       ]);
     },
-    200
+    400
   );
 
   const refreshHelpers = () => {
@@ -258,7 +258,7 @@ export const SatelliteSchemaEntry = ({
         !field.isUnique &&
         field.name !== "name" &&
         entry[field.name]?.length > 100,
-      minRows: Math.ceil(entry[field.name]?.length / 100) || 3,
+      minRows: Math.ceil(entry[field.name]?.length / 120) || 3,
       maxRows: 10,
       component:
         editing || editingSchema
@@ -309,32 +309,19 @@ export const SatelliteSchemaEntry = ({
                   <span
                     style={
                       field.length > 300 && width < adornmentBreak
-                        ? {
-                            display: "flex",
-                            flexDirection: "column",
-                          }
-                        : {
-                            display: "flex",
-                            flexDirection: "row",
-                          }
+                        ? { display: "flex", flexDirection: "column" }
+                        : { display: "flex", flexDirection: "row" }
                     }
                   >
                     <Tooltip
-                      title={
-                        decideVerifiedValidated(
-                          verified,
-                          true,
-                          false,
-                          true,
-                          classes
-                        )
+                      title={decideVerifiedValidated(
                         // decideVerifiedValidated takes the following arguments
-                        //    1. array of verification or validation objects
-                        //    2. whether it is a verification (true) or validation (false)
-                        //    3. whether it is a styling decision
-                        //    4. whether it is an icon decision
-                        //    5. the useStyles classes
-                      }
+                        verified, // 1. array of verification or validation objects
+                        true, // 2. whether it is a verification (true) or validation (false)
+                        false, // 3. whether it is a styling decision
+                        true, // 4. whether it is an icon decision
+                        classes // 5. the useStyles classes
+                      )}
                       placement="top"
                       arrow
                     >
