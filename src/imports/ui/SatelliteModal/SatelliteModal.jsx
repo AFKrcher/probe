@@ -8,8 +8,8 @@ import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import {
   emptyDataRemover,
   satelliteValidatorShaper,
-} from "../utils/satelliteDataFuncs.js";
-import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
+} from "../utils/satelliteDataFuncs";
+import ProtectedFunctionality from "../Helpers/ProtectedFunctionality.jsx";
 import { Formik, Form } from "formik";
 import { _ } from "meteor/underscore";
 

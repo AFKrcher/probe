@@ -10,7 +10,7 @@ import { SchemaCollection } from "/imports/api/schemas";
 import { SatelliteCollection } from "/imports/api/satellites";
 import { UsersCollection } from "/imports/api/users";
 import { ErrorsCollection } from "/imports/api/errors";
-import { schemaValidatorShaper } from "./utils/schemaDataFuncs";
+import { schemaValidatorShaper } from "/imports/validation/schemaYupShape";
 
 // Routes
 import "./routes/routes";

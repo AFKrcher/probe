@@ -6,7 +6,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import useWindowSize from "../Hooks/useWindowSize.jsx";
-import ProtectedFunctionality from "../utils/ProtectedFunctionality.jsx";
+import ProtectedFunctionality from "../Helpers/ProtectedFunctionality.jsx";
 import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
 
 // Components
@@ -83,6 +83,11 @@ const useStyles = makeStyles((theme) => ({
     margin: 5,
   },
   toolbar: {
+    color: theme.palette.text.primary,
+    fontWeight: 500,
+    fontSize: "14px",
+  },
+  downloadBar: {
     color: theme.palette.text.primary,
     fontWeight: 500,
     fontSize: "14px",
@@ -207,10 +212,6 @@ export const SatellitesTable = () => {
         };
       });
       rows.getRows = count;
-      // sats.map(sat =>{
-      //   console.log(Object.keys(sat))
-      //   console.log(Object.values(sat))
-      // })
       return [sats, rows, !subSchemas.ready(), !subSats.ready(), count];
     }
   );
@@ -316,15 +317,18 @@ export const SatellitesTable = () => {
   const jsonDownload = () => {
     let str = JSON.stringify(sats);
     let uri = "data:application/json;charset=utf-8," + encodeURIComponent(str);
-    console.log(uri);
     let element = document.createElement("a");
+
     element.setAttribute("href", uri);
-    element.setAttribute("download", "probe.json");
+    element.setAttribute(
+      "download",
+      `${new Date().toISOString()}_Probe_SatTable.json`
+    );
     element.click();
     element.remove();
   };
 
-  function exportTableToCSV(html, fileName) {
+  const exportTableToCSV = (html, fileName) => {
     const replacer = (key, val) => (val === null ? "" : val);
     const cols = Object.keys(sats[0]);
     const csv = [
@@ -336,34 +340,34 @@ export const SatellitesTable = () => {
     downloadCSV(csv, fileName);
 
     // var csv = [];
-    // let rows = []
-    // let cols = []
-    // sats.map(sat =>{
-    //   Object.keys(sat).map(key =>{
-    //     if(cols.indexOf(key) === -1){
-    //       cols.push(key)
+    // let rows = [];
+    // let cols = [];
+    // sats.map((sat) => {
+    //   Object.keys(sat).map((key) => {
+    //     if (cols.indexOf(key) === -1) {
+    //       cols.push(key);
     //     }
-    //   })
-    // })
-    // csv.push(cols)
-    // sats.map(sat =>{
-    //   let row = []
-    //   cols.map(col =>{
-    //     if(typeof sat[col] === "object"){
-    //       let str = JSON.stringify(sat[col])
-    // row.push({str})
-    //     }else{
-    //       row.push(sat[col])
+    //   });
+    // });
+    // csv.push(cols);
+    // sats.map((sat) => {
+    //   let row = [];
+    //   cols.map((col) => {
+    //     if (typeof sat[col] === "object") {
+    //       let str = JSON.stringify(sat[col]);
+    //       row.push({ str });
+    //     } else {
+    //       row.push(sat[col]);
     //     }
-    //   })
-    //   csv.push(row)
-    // })
+    //   });
+    //   csv.push(row);
+    // });
     // downloadCSV(csv.join("\n"), fileName);
-  }
+  };
 
-  function downloadCSV(csv, filename) {
-    var csvFile;
-    var downloadLink;
+  const downloadCSV = (csv, filename) => {
+    let csvFile;
+    let downloadLink;
 
     csvFile = new Blob([csv], { type: "text/csv" });
     downloadLink = document.createElement("a");
@@ -372,7 +376,7 @@ export const SatellitesTable = () => {
     downloadLink.style.display = "none";
     document.body.appendChild(downloadLink);
     downloadLink.click();
-  }
+  };
 
   const CustomToolbar = () => {
     return (
@@ -381,13 +385,28 @@ export const SatellitesTable = () => {
           <GridToolbarColumnsButton className={classes.toolbar} />
           <GridToolbarFilterButton className={classes.toolbar} />
           <GridToolbarDensitySelector className={classes.toolbar} />
-          <Button onClick={jsonDownload}>
-            <Download />
-            JSON
+          <Button
+            size="small"
+            onClick={jsonDownload}
+            className={classes.downloadBar}
+            color="primary"
+          >
+            <Download fontSize="small" />
+            Export JSON
           </Button>
-          <Button onClick={() => exportTableToCSV(sats, "test.csv")}>
-            <Download />
-            CSV
+          <Button
+            color="primary"
+            className={classes.downloadBar}
+            size="small"
+            onClick={() =>
+              exportTableToCSV(
+                sats,
+                `${new Date().toISOString()}_PROBE_SatTable.csv`
+              )
+            }
+          >
+            <Download fontSize="small" />
+            Export CSV
           </Button>
         </GridToolbarContainer>
       </div>

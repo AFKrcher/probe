@@ -3,7 +3,7 @@
  **/
 
 import * as Yup from "yup";
-import { SchemaCollection } from "../../api/schemas";
+import { SchemaCollection } from "/imports/api/schemas";
 
 export const schemaValidatorShaper = (initialName) => {
   return Yup.object().shape({
