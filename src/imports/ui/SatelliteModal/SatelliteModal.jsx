@@ -429,7 +429,10 @@ export const SatelliteModal = ({
               </span>
               <IconButton
                 size="small"
-                onClick={handleClose}
+                onClick={() => {
+                  handleClose();
+                  setTimeout(() => setEditingOne(false), 500);
+                }}
                 className={classes.closeIcon}
               >
                 <CloseIcon />

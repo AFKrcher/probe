@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 // Imports
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
-import { Field } from "formik";
+import { FastField } from "formik";
 
 // Components
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
@@ -188,19 +188,21 @@ export const SatelliteForm = ({
     setSchemaAddition(!schemaAddition);
   };
 
-  const fieldProps = {
-    value: values.noradID || "",
-    name: "noradID",
-    label: "NORAD ID",
-    margin: "dense",
-    required: true,
-    fullWidth: true,
-    variant: "outlined",
-    component: TextField,
-    onChange: onChange,
-    onInput: onChange,
-    disabled: !editing,
-    autoComplete: "off",
+  const noradIDProps = (fast) => {
+    return {
+      value: values.noradID || "",
+      name: "noradID",
+      label: "NORAD ID",
+      margin: "dense",
+      required: true,
+      fullWidth: true,
+      variant: "outlined",
+      component: TextField,
+      onChange: onChange,
+      onInput: onChange,
+      disabled: !fast,
+      autoComplete: "off",
+    };
   };
 
   return (
@@ -209,7 +211,11 @@ export const SatelliteForm = ({
       <Grid container item>
         <Grid item xs={12}>
           <Paper className={classes.noradID}>
-            <Field {...fieldProps} />
+            {editing ? (
+              <FastField {...noradIDProps(editing)} />
+            ) : (
+              <FastField {...noradIDProps(false)} />
+            )}
           </Paper>
         </Grid>
       </Grid>
