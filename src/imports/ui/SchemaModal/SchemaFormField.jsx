@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+// Imports
 import { Field, FastField } from "formik";
+import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
 
 // Components
 import { MultiSelectTextInput } from "./MultiSelectTextInput";
@@ -50,6 +52,10 @@ export const SchemaFormField = ({
   const [touched, setTouched] = useState(false);
   const [currentStringMax, setCurrentStringMax] = useState(field.stringMax);
   const classes = useStyles();
+
+  const debounce = useDebouncedCallback((event) => {
+    setFieldValue(event.target.name, event.target.value);
+  }, 1000);
 
   const onChange = (event) => {
     setFieldValue(event.target.name, event.target.value);
@@ -120,7 +126,7 @@ export const SchemaFormField = ({
         name: `fields.${index}.name`,
       },
       value: field.name,
-      onChange: onChange,
+      onChange: debounce,
       label: "Field Name or Units",
       placeholder: "camelCase",
       margin: "dense",
@@ -143,12 +149,41 @@ export const SchemaFormField = ({
         name: `fields.${index}.type`,
       },
       value: field.type,
-      onChange: onChange,
+      onChange: debounce,
       disabled: !fast,
       component: Select,
       onBlur: handleBlur,
       error: errorDetermination(index, "type") && touched ? true : false,
     };
+  };
+
+  const dataTypeOptions = () => {
+    const options = [
+      "string",
+      "number",
+      "date",
+      "url",
+      "changelog",
+      "verified",
+      "validated",
+    ];
+    const hidden = ["changelog", "verified", "validated"]; // options that are not production-ready or are hidden metadata
+
+    return options.map((option, index) => {
+      if (hidden.includes(option)) {
+        return (
+          <MenuItem value={option} key={index} style={{ display: "none" }}>
+            {option}
+          </MenuItem>
+        );
+      } else {
+        return (
+          <MenuItem value={option} key={index}>
+            {option}
+          </MenuItem>
+        );
+      }
+    });
   };
 
   const decideFastNumberFields = () => {
@@ -157,7 +192,7 @@ export const SchemaFormField = ({
         inputProps: {
           name: `fields.${index}.min`,
         },
-        onChange: onChange,
+        onChange: debounce,
         label: "Minimum Value",
         margin: "dense",
         defaultValue: field.min,
@@ -174,7 +209,7 @@ export const SchemaFormField = ({
         inputProps: {
           name: `fields.${index}.max`,
         },
-        onChange: onChange,
+        onChange: debounce,
         defaultValue: field.max,
         error: errorDetermination(index, "max"),
         label: "Maximum Value",
@@ -358,36 +393,10 @@ export const SchemaFormField = ({
             </InputLabel>
             {editing ? (
               <FastField {...dataTypeProps(true)}>
-                <MenuItem value="string">String</MenuItem>
-                <MenuItem value="number">Number</MenuItem>
-                <MenuItem value="date">Date</MenuItem>
-                <MenuItem value="url">URL</MenuItem>
-                <MenuItem value="changelog" style={{ display: "none" }}>
-                  Changelog
-                </MenuItem>
-                <MenuItem value="verified" style={{ display: "none" }}>
-                  Verified
-                </MenuItem>
-                <MenuItem value="validated" style={{ display: "none" }}>
-                  Validated
-                </MenuItem>
+                {dataTypeOptions()}
               </FastField>
             ) : (
-              <Field {...dataTypeProps(false)}>
-                <MenuItem value="string">String</MenuItem>
-                <MenuItem value="number">Number</MenuItem>
-                <MenuItem value="date">Date</MenuItem>
-                <MenuItem value="url">URL</MenuItem>
-                <MenuItem value="changelog" style={{ display: "none" }}>
-                  Changelog
-                </MenuItem>
-                <MenuItem value="verified" style={{ display: "none" }}>
-                  Verified
-                </MenuItem>
-                <MenuItem value="validated" style={{ display: "none" }}>
-                  Validated
-                </MenuItem>
-              </Field>
+              <Field {...dataTypeProps(false)}>{dataTypeOptions()}</Field>
             )}
           </FormControl>
           {editing && errorDetermination(index, "type") && touched && (
