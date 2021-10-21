@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 // Imports
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
-import { FastField } from "formik";
+import { FastField, Field } from "formik";
 
 // Components
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
@@ -212,9 +212,9 @@ export const SatelliteForm = ({
         <Grid item xs={12}>
           <Paper className={classes.noradID}>
             {editing ? (
-              <FastField {...noradIDProps(editing)} />
+              <FastField {...noradIDProps(true)} />
             ) : (
-              <FastField {...noradIDProps(false)} />
+              <Field {...noradIDProps(false)} />
             )}
           </Paper>
         </Grid>

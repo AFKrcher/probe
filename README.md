@@ -263,7 +263,7 @@ application code via `process.env.<variable-name>`. Prior to development or depl
 
 ### Access MongoDB
 
-1. Local, Non-Docker Build Development
+1. Local access on non-Docker build
 2. Meteor application must be already running
 3. In the command prompt run the following
 
@@ -326,6 +326,7 @@ chmod 777 scripts/build-prod.sh && scripts/build-prod.sh
 
 If you run into any build errors, please ensure you try all of the following before submitting an issue:
 
+- Modify the commands in the scripts and this README based on your OS and terminal
 - `docker system prune -f -a` to remove all old images and volumes
 - `docker container prune -f` / `docker volume prune -f` / `docker builder prune -f -a` / `docker image prune -f -a`
 - `docker rmi $(docker images --filter “dangling=true” -q --no-trunc)` to remove any dangling images that you don't need
