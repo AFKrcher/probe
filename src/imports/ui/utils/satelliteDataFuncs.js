@@ -250,10 +250,52 @@ export const satelliteValidatorShaper = (schemas, values, isUniqueList) => {
               );
               break;
             case "validated":
-              baseFieldSchema = Yup.array();
+              baseFieldSchema = Yup.array()
+                .required()
+                .of(
+                  Yup.object().shape({
+                    validated: Yup.boolean(),
+                    method: Yup.string().when("validated", {
+                      is: true,
+                      then: Yup.string().oneOf(["user", "machine"]).required(),
+                      otherwise: Yup.string(),
+                    }),
+                    name: Yup.string().when("validated", {
+                      is: true,
+                      then: Yup.string().required(),
+                      otherwise: Yup.string(),
+                    }),
+                    validatedOn: Yup.date().when("validated", {
+                      is: true,
+                      then: Yup.date().required(),
+                      otherwise: Yup.date(),
+                    }),
+                  })
+                );
               break;
             case "verified":
-              baseFieldSchema = Yup.array();
+              baseFieldSchema = Yup.array()
+                .required()
+                .of(
+                  Yup.object().shape({
+                    verified: Yup.boolean(),
+                    method: Yup.string().when("verified", {
+                      is: true,
+                      then: Yup.string().oneOf(["user", "machine"]).required(),
+                      otherwise: Yup.string(),
+                    }),
+                    name: Yup.string().when("verified", {
+                      is: true,
+                      then: Yup.string().required(),
+                      otherwise: Yup.string(),
+                    }),
+                    verifiedOn: Yup.date().when("verified", {
+                      is: true,
+                      then: Yup.date().required(),
+                      otherwise: Yup.date(),
+                    }),
+                  })
+                );
               break;
             case "changelog":
               baseFieldSchema = Yup.array();
@@ -341,11 +383,13 @@ export const satelliteValidatorShaper = (schemas, values, isUniqueList) => {
                   for (let key in object) {
                     // transforms to ensure  "result" object will be matched with the original tested "value", to avoid stale errors
                     if (
-                      Yup.date().isValidSync(result[key]) &&
-                      typeof result[key] !== "number" &&
-                      result[key]
+                      (Yup.date().isValidSync(result[key]) &&
+                        typeof result[key] !== "number" &&
+                        result[key]) ||
+                      key === "verified" ||
+                      key === "validated"
                     ) {
-                      // Yup transforms date strings into date objects in the returned result objects
+                      // Yup transforms date strings (also inside validated & verified) into date objects in the returned result objects
                       // solution is to transform result values back to original values
                       result[key] = object[key];
                     } else if (parseInt(object[key]) && object[key]) {

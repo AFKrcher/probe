@@ -243,20 +243,9 @@ The list below is meant to be a guide and not a rule-book. Please try your best 
 2. Install Meteor here: https://www.meteor.com/developers/install
 3. Clone the repo `git clone https://github.com/justinthelaw/probe.git`
 4. Inside the `/src` run `meteor npm install`
-5. Run `meteor run --port 3000`
-6. Go to `http://localhost:3000` and you should see the test app running.
-
-### Access MongoDB
-
-1. Local, Non-Docker Build Development
-2. Meteor application must be already running
-3. In the command prompt run the following
-
-```
-meteor mongo
-show collections
-db.<collection name>.find()
-```
+5. Read and completed the steps in the [Environment Variables](#Environment-Variables) section
+6. Run `meteor run --port 3000`
+7. Go to `http://localhost:3000` and you should see the test app running
 
 ### Environment Variables
 
@@ -269,8 +258,20 @@ application code via `process.env.<variable-name>`. Prior to development or depl
 
 | Environment Variable | Description                               | Example Setting | Applicability |
 | :------------------- | :---------------------------------------- | :-------------- | :------------ |
-| ADMIN_PASSWORD       | Password for admin account in development | password        |
+| ADMIN_PASSWORD       | Password for admin account in development | password        | server        |
 | PROBE_API_KEY        | PROBE API access key                      | password        | server        |
+
+### Access MongoDB
+
+1. Local, Non-Docker Build Development
+2. Meteor application must be already running
+3. In the command prompt run the following
+
+```
+meteor mongo
+show collections
+db.<collection name>.find()
+```
 
 ### Build Exports
 
@@ -296,6 +297,8 @@ Cypress testing is used for integration and UI/UX testing of PROBE. Please refer
 
 ### Docker Builds
 
+**NOTE:** Please ensure that you have read and completed the steps in the [Environment Variables](#Environment-Variables) and [Build Exports](#Build-Exports) sections prior to attempting a Docker build/run.
+
 #### Docker Development
 
 The purpose of the Docker development build is to test a production build of the application, with conenctions to hosted services suchs as MongoDB and SMTPS. PM2 and alpine-node are used for load-balancing, app-management, and CSP/HTTP testing.
@@ -313,7 +316,7 @@ docker run --rm --name probe --env-file src/private/.env -p 3000:3000 -t probe
 
 The Docker production is dependent on the `.env` file to describe the configuration of your meteor application. A `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README. A Docker.example.prod is provided as a template for filling-out hosted service URIs.
 
-Paste and run the following commands at the root of the project to build and run a docker image of PROBE on http://localhost:3000.
+Paste and run the following commands at the root of the project to build and run a docker production image of PROBE.
 
 ```
 chmod 777 scripts/build-prod.sh && scripts/build-prod.sh

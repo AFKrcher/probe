@@ -35,6 +35,7 @@ export const helmetOptions = () => {
           "allow-same-origin",
           "allow-scripts",
           "allow-popups",
+          "allow-downloads",
         ],
         styleSrc: [self, unsafeInline],
         workerSrc: [self, "blob:"],

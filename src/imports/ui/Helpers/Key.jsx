@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Key = ({ page }) => {
+export const Key = ({ page, mini }) => {
   // Where page is the name of the component
   const classes = useStyles();
 
@@ -71,13 +71,13 @@ export const Key = ({ page }) => {
 
       {showKey && (
         <React.Fragment>
-          {Meteor.userId() && page === "SatellitesTable" ? (
+          {Meteor.userId() && page === "SatellitesTable" && (
             <Typography gutterBottom variant="body2" className={classes.key}>
               <StarIcon fontSize="small" className={classes.keyItemsStar} />
               <span className={classes.keyItems}>–</span>
               Add a satellite to your favorites list
             </Typography>
-          ) : null}
+          )}
           <Typography gutterBottom variant="body2" className={classes.key}>
             <VisibilityIcon fontSize="small" className={classes.keyItems} />
             {page !== "SchemasTable" ? (
@@ -111,20 +111,28 @@ export const Key = ({ page }) => {
               </Typography>
             </React.Fragment>
           )}
-          {page !== "Home" && (
+          {(page !== "Home" || mini) && (
             <Typography gutterBottom variant="body2" className={classes.key}>
               <MouseIcon fontSize="small" className={classes.keyItems} />
-              {page !== "SchemasTable" ? (
+              {page === "SatellitesTable" && (
                 <React.Fragment>
                   <span className={classes.keyItems}>–</span> Hover over or
                   click to view satellite description, Double-click to view
                   and/or modify a satellite's schemas or entries
                 </React.Fragment>
-              ) : (
+              )}
+              {page === "SchemasTable" && (
                 <React.Fragment>
                   <span className={classes.keyItems}>–</span> Hover over or
                   click a schema description to view, Double-click to view
                   and/or modify a schema's fields
+                </React.Fragment>
+              )}
+              {mini && (
+                <React.Fragment>
+                  <span className={classes.keyItems}>–</span> Hover over a NORAD
+                  ID to view the satellite name, COSPAR ID, and short
+                  description, click to view the satellite data card
                 </React.Fragment>
               )}
             </Typography>

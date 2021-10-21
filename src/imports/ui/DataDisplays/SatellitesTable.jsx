@@ -31,6 +31,7 @@ import {
   GridToolbarContainer,
   GridToolbarColumnsButton,
   GridToolbarFilterButton,
+  GridToolbarExport,
   getGridStringOperators,
   GridToolbarDensitySelector,
 } from "@material-ui/data-grid";
@@ -213,6 +214,7 @@ export const SatellitesTable = () => {
           <GridToolbarColumnsButton className={classes.toolbar} />
           <GridToolbarFilterButton className={classes.toolbar} />
           <GridToolbarDensitySelector className={classes.toolbar} />
+          <GridToolbarExport className={classes.toolbar} />
         </GridToolbarContainer>
       </div>
     );
