@@ -87,20 +87,11 @@ export const SchemaModal = ({
 
   const [editing, setEditing] = useState(newSchema || false);
 
-  const [schemas, user, isLoading] = useTracker(() => {
+  const [user, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("schemas");
-    const schemas = SchemaCollection.find().fetch();
     const user = Meteor.user();
-    return [schemas, user, !sub.ready()];
+    return [user, !sub.ready()];
   });
-
-  const isUniqueList = (initValues, schemas) => {
-    return schemas.map((schema) => {
-      if (initValues.name !== schema.name) {
-        return schema.name;
-      }
-    });
-  };
 
   useEffect(() => {
     setEditing(newSchema || false);
@@ -330,11 +321,7 @@ export const SchemaModal = ({
         </DialogTitle>
         <Formik
           initialValues={initValues}
-          validationSchema={schemaValidatorShaper(
-            initValues,
-            isUniqueList,
-            schemas
-          )}
+          validationSchema={schemaValidatorShaper(initValues.name)}
           onSubmit={handleSubmit}
         >
           {({

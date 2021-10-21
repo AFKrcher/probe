@@ -443,8 +443,6 @@ export const SatelliteModal = ({
             initialValues={initValues}
             onSubmit={handleSubmit}
             validationSchema={satSchema}
-            validateOnChange={true}
-            validateOnBlur={true}
           >
             {({
               errors,
