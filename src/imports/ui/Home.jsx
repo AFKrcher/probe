@@ -219,7 +219,7 @@ export const Home = () => {
           favorites?.length > 0 ? null : classes.keySpacingIfNoFavorites
         }
       >
-        {scrolled ? (
+        {scrolled && (
           <React.Fragment>
             <Tooltip title="Scroll back to top" placement="left" arrow>
               <IconButton className={classes.scrollUp} onClick={handleScrollUp}>
@@ -249,7 +249,7 @@ export const Home = () => {
               </Tooltip>
             )}
           </React.Fragment>
-        ) : null}
+        )}
         <Typography variant="h3">
           Welcome to <strong className={classes.probe}>PROBE</strong>!
         </Typography>
@@ -259,7 +259,7 @@ export const Home = () => {
           most complete and easy to use resource for satellite data and
           information. 100% Open Source, 100% Machine Readable.
         </Typography>
-        <Key page="Home" />
+        <Key page="Home" mini={mini} />
       </Container>
       {/* Minified view of all satellite cards */}
       <Container className={classes.showcase}>
@@ -271,7 +271,7 @@ export const Home = () => {
                 All Satellites
               </Typography>
               <Typography variant="body1" className={classes.miniDescription}>
-                Satellites are listed by NORAD ID and organized by orbit
+                Satellites are listed by NORAD ID and organized by orbit.
               </Typography>
             </span>
             <Mini />
