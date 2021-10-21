@@ -1,10 +1,15 @@
+// Dependencies
+import express from "express";
+import dotenv from "dotenv";
+import helmet from "helmet";
+
+// Imports
 import { SatelliteCollection } from "/imports/api/satellites";
 import { SchemaCollection } from "/imports/api/schemas";
 import { partnerRoutes } from "./partner";
-import express from "express";
-import dotenv from "dotenv";
+import { helmetOptions } from "../security/helmet";
 
-// Partner routes
+// Partner routes on ExpressJS
 dotenv.config({
   path: Assets.absoluteFilePath(".env"), // .env file in the private folder
 });
@@ -12,8 +17,9 @@ const { PROBE_API_KEY } = process.env;
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-WebApp.connectHandlers.use(app);
+app.use(helmet(helmetOptions(true /* express-only helmet CSP headers*/)));
 partnerRoutes(app, PROBE_API_KEY);
+WebApp.connectHandlers.use(app);
 
 // Public satellite routes
 WebApp.connectHandlers.use("/api/satellites", async (req, res) => {
