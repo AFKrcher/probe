@@ -42,7 +42,7 @@ The application should be intuitive and easy-to-use, even for a first-time user.
 
 ### Public API
 
-The public API allows all users to obtain information on satellites and schemas produced by PROBE. Queries in the form of GET requests can be made to obtain specific satellites or schemas. POST, PUT, and PATCH requests are not allowed to the public. Below is a list of example requests:
+The public API allows all users to obtain information on satellites and schemas produced by PROBE. Queries in the form of GET requests can be made to obtain specific satellites or schemas. POST, DELETE, PUT, and PATCH requests are not allowed to the public. Below is a list of example requests:
 
 #### Welcome Message
 
@@ -208,11 +208,11 @@ as well as GET requests of more detailed information.
 
 #### Welcome Message
 
-GET (POST, PUT, PATCH): `/api/partner/:key`
+GET (POST, DELETE, PUT, PATCH): `/api/partner/:key`
 
 RESPONSE:
 
-`"Welcome to the PROBE partner API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."` (`"Partner made an empty {POST, PUT, PATCH} request!"`)
+"Welcome PROBE partner! There are <\# OF ENDPOINTS\> <\REQUEST TYPE\> endpoints to access on this route. For documentation, please visit the README at https://github.com/justinthelaw/PROBE."
 
 ## How To Contribute
 
