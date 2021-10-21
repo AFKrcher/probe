@@ -39,7 +39,6 @@
     "testModule": "tests/main.js"
   },
   "devDependencies": {
-    "chai": "^4.3.4",
     "cypress": "^8.5.0"
   }
 }

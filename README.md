@@ -288,7 +288,7 @@ For docker image running and production, several exports are needed to estabish 
 
 #### Unit Testing
 
-Unit testing uses Mocha and Chai. Please refer to the [Meteor Mocha](https://guide.meteor.com/testing.html#mocha) and [Chai](https://www.chaijs.com/) documentation for more information on usage and behaviour.
+Unit testing uses React's testing-library. Please refer to the [testing-library](https://testing-library.com/docs/react-testing-library/intro/) documentation for more information on usage and behaviour.
 
 #### Cypress Testing
 
