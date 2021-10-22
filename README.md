@@ -52,6 +52,7 @@ RESPONSE:
 
 `"Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
 
+------
 #### Satellites
 
 GET: `/api/satellites`
@@ -152,6 +153,7 @@ RESPONSE:
 ]
 ```
 
+------
 #### Schemas
 
 GET: `/api/schemas`
@@ -202,6 +204,7 @@ RESPONSE:
 ]
 ```
 
+------
 ### Partner API
 
 The partner API allows registered partners with PROBE API keys to go beyond the public API GET requests. The partner API is used mainly for PATCH, POST, and DELETE requests,
@@ -219,6 +222,7 @@ RESPONSE:
 
 `"Welcome PROBE partner! There are <# OF ENDPOINTS> <REQUEST TYPE> endpoints on this route. For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
 
+------
 #### Errors
 
 GET: `/api/partner/:key/errors`
@@ -246,6 +250,7 @@ RESPONSE:
 ]
 ```
 
+------
 #### Users
 
 GET: `/api/partner/:key/users`
@@ -272,6 +277,7 @@ RESPONSE:
 ]
 ```
 
+-----
 PATCH: `/api/partner/:key/users`
 
 BODY:
@@ -290,6 +296,7 @@ RESPONSE:
 
 `bwAqW5YGPSLGuqY87 added to role: admin`
 
+------
 #### Satellites
 
 POST: `/api/partner/:key/satellites`
@@ -310,7 +317,9 @@ BODY:
 
 RESPONSE:
 
-`Satellite of NORAD ID 99999 being processed PROBE - you should see your satellite on the website soon!`
+`Satellite of NORAD ID 99999 being processed by PROBE - you should see your satellite on the website soon!`
+
+------
 
 ## How To Contribute
 
