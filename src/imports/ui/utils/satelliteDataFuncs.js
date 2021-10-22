@@ -1,7 +1,3 @@
-/**
- * PLEASE ENSURE THAT ANY CHANGES MADE TO VALIDATION SCHEMA ARE REFLECTED IN SERVER-SIDE VALIDATIONS
- **/
-
 import * as Yup from "yup";
 import React from "react";
 import { _ } from "meteor/underscore";
