@@ -2,6 +2,7 @@
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Accounts } from "meteor/accounts-base";
+import { WebAppInternals } from "meteor/webapp";
 import helmet from "helmet";
 import dotenv from "dotenv";
 
@@ -42,7 +43,8 @@ Meteor.startup(() => {
   );
 
   // See helmet.js for Content Security Policy (CSP) options
-  WebApp.connectHandlers.use(helmet(helmetOptions()));
+  WebAppInternals.setInlineScriptsAllowed(false);
+  WebApp.connectHandlers.use(helmet(helmetOptions(false, ROOT_URL)));
 
   // Publish roles
   Meteor.publish("roles", () => {
