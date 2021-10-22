@@ -24,13 +24,13 @@ const useStyles = makeStyles((theme) => ({
   },
   meetTheTeam: {
     marginTop: 30,
-    marginBottom: 30,
+    marginBottom: 40,
   },
   image: {
     display: "block",
     objectFit: "cover",
     verticalAlign: "middle",
-    width: "auto",
+    width: "230px",
     height: "230px",
     border: "2.5px solid",
     borderColor: theme.palette.primary,

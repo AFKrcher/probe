@@ -12,6 +12,7 @@ import { SatelliteCollection } from "/imports/api/satellites";
 import { UsersCollection } from "/imports/api/users";
 import { ErrorsCollection } from "/imports/api/errors";
 import { schemaValidatorShaper } from "/imports/validation/schemaYupShape";
+import { satelliteValidatorShaper } from "/imports/validation/satelliteYupShape";
 
 // Routes
 import "./routes/routes";
@@ -39,7 +40,7 @@ Meteor.startup(() => {
   console.log(
     typeof ADMIN_PASSWORD === "string" && typeof PROBE_API_KEY === "string"
       ? "> Environment variables loaded!"
-      : "> Could not load environment variables. Please check the code and restart the server."
+      : "> Could not load environment variables. Please check ~/private/.env and restart the server."
   );
 
   // See helmet.js for Content Security Policy (CSP) options
@@ -84,11 +85,23 @@ Meteor.startup(() => {
   });
 
   // Account Methods
-  accountMethods(Meteor, Accounts, Roles, UsersCollection);
+  accountMethods(Meteor, Accounts, Roles, UsersCollection, PROBE_API_KEY);
   // Satellite Methods
-  satelliteMethods(Meteor, Roles, SatelliteCollection);
+  satelliteMethods(
+    Meteor,
+    Roles,
+    SatelliteCollection,
+    satelliteValidatorShaper,
+    PROBE_API_KEY
+  );
   // Schema methods
-  schemaMethods(Meteor, Roles, SchemaCollection, schemaValidatorShaper);
+  schemaMethods(
+    Meteor,
+    Roles,
+    SchemaCollection,
+    schemaValidatorShaper,
+    PROBE_API_KEY
+  );
   // Error methods
   errorMethods(Meteor, ErrorsCollection);
 
@@ -121,11 +134,11 @@ Meteor.startup(() => {
       "restoreSchema",
       "adminCheckSchema",
     ],
-    limit: 20,
-    timeRange: 10000,
+    limit: 5, // limits method calls to 5 requests per 5 seconds
+    timeRange: 5000,
   });
 
-  // Reseeeding functions
+  // Reseeding functions
   reseed(
     Meteor,
     Roles,

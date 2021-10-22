@@ -1,4 +1,5 @@
 // Dependencies
+import { Meteor } from "meteor/meteor";
 import express from "express";
 import dotenv from "dotenv";
 import helmet from "helmet";
@@ -17,7 +18,8 @@ const { PROBE_API_KEY } = process.env;
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(helmet(helmetOptions(true /* express-only helmet CSP headers*/)));
+app.use(helmet(helmetOptions(true))); // Express-only CSP options
+app.use(Meteor.bindEnvironment((req, res, next) => next())); // Fiber binding for Express
 partnerRoutes(app, PROBE_API_KEY);
 WebApp.connectHandlers.use(app);
 
