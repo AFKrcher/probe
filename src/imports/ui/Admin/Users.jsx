@@ -26,6 +26,7 @@ import {
   GridToolbarColumnsButton,
   GridToolbarFilterButton,
   GridToolbarDensitySelector,
+  GridToolbarExport,
 } from "@material-ui/data-grid";
 import CloseIcon from "@material-ui/icons/Close";
 
@@ -99,6 +100,12 @@ export const Users = () => {
         <GridToolbarColumnsButton className={classes.toolbar} />
         <GridToolbarFilterButton className={classes.toolbar} />
         <GridToolbarDensitySelector className={classes.toolbar} />
+        <GridToolbarExport
+          className={classes.toolbar}
+          csvOptions={{
+            fileName: `${new Date().toISOString()}_PROBE_UsersTable.json`,
+          }}
+        />
       </GridToolbarContainer>
     );
   }

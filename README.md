@@ -464,6 +464,10 @@ BODY:
 }
 ```
 
+```js
+const allowedRoles = ["dummies", "moderator", "machine", "admin"];
+```
+
 RESPONSE:
 
 `bwAqW5YGPSLGuqY87 added to role: admin`

@@ -15,12 +15,15 @@ dotenv.config({
   path: Assets.absoluteFilePath(".env"), // .env file in the private folder
 });
 const { PROBE_API_KEY } = process.env;
+
+const allowedRoles = ["dummies", "moderator", "machine", "admin"];
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(helmet(helmetOptions(true))); // Express-only CSP options
 app.use(Meteor.bindEnvironment((req, res, next) => next())); // Fiber binding for Express
-partnerRoutes(app, PROBE_API_KEY);
+partnerRoutes(app, allowedRoles, PROBE_API_KEY);
 WebApp.connectHandlers.use(app);
 
 // Public satellite routes
