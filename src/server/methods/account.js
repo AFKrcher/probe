@@ -16,6 +16,7 @@ export const accountMethods = (
   Meteor,
   Accounts,
   Roles,
+  allowedRoles,
   UsersCollection,
   PROBE_API_KEY
 ) => {
@@ -37,7 +38,7 @@ export const accountMethods = (
       // key is only for PROBE owner API manipulation
       if (
         Roles.userIsInRole(Meteor.userId(), "admin") ||
-        key === PROBE_API_KEY
+        (key === PROBE_API_KEY && allowedRoles.includes(role))
       ) {
         Roles.addUsersToRoles(Accounts.findUserByUsername(user.username), role);
         if (role === "dummies") {
@@ -47,14 +48,6 @@ export const accountMethods = (
             { multi: true }
           );
         }
-        UsersCollection.update(
-          { _id: user._id },
-          {
-            $set: {
-              roles: Meteor.roleAssignment.find({ _id: user._id }).fetch(),
-            },
-          }
-        );
         return `${user._id} added to role: ${role}`;
       } else {
         return "Unauthorized [401]";

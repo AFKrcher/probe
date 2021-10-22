@@ -5,6 +5,7 @@ let count = 0;
 export const reseed = (
   Meteor,
   Roles,
+  allowedRoles,
   Accounts,
   SatelliteCollection,
   SchemaCollection,
@@ -23,10 +24,9 @@ export const reseed = (
   }
 
   // Role creation
-  Roles.createRole("admin", { unlessExists: true });
-  Roles.createRole("moderator", { unlessExists: true });
-  Roles.createRole("machine", { unlessExists: true });
-  Roles.createRole("dummies", { unlessExists: true });
+  allowedRoles.forEach((role) =>
+    Roles.createRole(role, { unlessExists: true })
+  );
 
   // Email verification and password reset emails
   Accounts.config({

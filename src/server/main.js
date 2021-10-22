@@ -33,6 +33,7 @@ dotenv.config({
 });
 
 const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT, NODE_ENV } = process.env;
+const allowedRoles = ["dummies", "moderator", "machine", "admin"]; // please ensure these are reflected in the routes.js API
 
 Meteor.startup(() => {
   console.log("> PROBE server is starting-up...");
@@ -85,7 +86,14 @@ Meteor.startup(() => {
   });
 
   // Account Methods
-  accountMethods(Meteor, Accounts, Roles, UsersCollection, PROBE_API_KEY);
+  accountMethods(
+    Meteor,
+    Accounts,
+    Roles,
+    allowedRoles,
+    UsersCollection,
+    PROBE_API_KEY
+  );
   // Satellite Methods
   satelliteMethods(
     Meteor,
@@ -142,6 +150,7 @@ Meteor.startup(() => {
   reseed(
     Meteor,
     Roles,
+    allowedRoles,
     Accounts,
     SatelliteCollection,
     SchemaCollection,

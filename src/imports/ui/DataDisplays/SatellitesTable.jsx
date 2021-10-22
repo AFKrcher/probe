@@ -13,7 +13,8 @@ import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
 import { SearchBar } from "../Helpers/SearchBar.jsx";
 import VisualizeDialog from "../Dialogs/VisualizeDialog";
 import { SatelliteModal } from "../SatelliteModal/SatelliteModal";
-import { SatelliteCollection } from "../../api/satellites";
+import { SatelliteCollection } from "/imports/api/satellites";
+import { SchemaCollection } from "/imports/api/schemas";
 import SnackBar from "../Dialogs/SnackBar.jsx";
 import { Popper } from "../Dialogs/Popper.jsx";
 import { Key } from "../Helpers/Key.jsx";
@@ -186,17 +187,20 @@ export const SatellitesTable = () => {
     if (sortOrbit) return { orbits: sortOrbit };
   };
 
-  const [sats, rows, isLoadingSchemas, isLoadingSats, count] = useTracker(
-    () => {
-      const subSchemas = Meteor.subscribe("satellites");
+  const [sats, schemas, rows, isLoadingSchemas, isLoadingSats, count] =
+    useTracker(() => {
+      const subSchemas = Meteor.subscribe("schemas");
       const subSats = Meteor.subscribe("satellites");
+      const schemas = SchemaCollection.find(
+        {},
+        { fields: { name: 1 } }
+      ).fetch();
       const count = SatelliteCollection.find(selector).count();
       const sats = SatelliteCollection.find(selector, {
         limit: limiter,
         skip: page * limiter,
         sort: decideSort(),
       }).fetch();
-
       const rows = sats.map((sat) => {
         return {
           id: sat.noradID,
@@ -216,9 +220,15 @@ export const SatellitesTable = () => {
         };
       });
       rows.getRows = count;
-      return [sats, rows, !subSchemas.ready(), !subSats.ready(), count];
-    }
-  );
+      return [
+        sats,
+        schemas,
+        rows,
+        !subSchemas.ready(),
+        !subSats.ready(),
+        count,
+      ];
+    });
 
   const handleAddNewSatellite = () => {
     setInitialSatValues(newSatValues);
@@ -326,55 +336,61 @@ export const SatellitesTable = () => {
     element.setAttribute("href", uri);
     element.setAttribute(
       "download",
-      `${new Date().toISOString()}_Probe_SatTable.json`
+      `${new Date().toISOString()}_PROBE_SatTable.json`
     );
     element.click();
     element.remove();
   };
 
   const exportTableToCSV = (html, fileName) => {
-    const replacer = (key, val) => (val === null ? "" : val);
-    const cols = Object.keys(sats[0]);
-    const csv = [
-      cols.join(","),
-      ...sats.map((row) =>
-        cols.map((col) => JSON.stringify(row[col], replacer)).join(",")
-      ),
-    ].join("\r\n");
-    downloadCSV(csv, fileName);
+    const tempArr = schemas
+      .map((schema) => schema.name)
+      .sort((a, b) => a.localeCompare(b));
+    const cols = [
+      "_id",
+      "modifiedOn",
+      "modifiedBy",
+      "createdOn",
+      "createdBy",
+      "adminCheck",
+      "machineCheck",
+      ...tempArr,
+    ];
+    const rows = sats.map((sat) => {
+      let satRow = [];
+      for (let i = 0; i < cols.length; i++) {
+        satRow.push(
+          sat[`${cols[i]}`] ? JSON.stringify(sat[`${cols[i]}`]) : "N/A"
+        );
+      }
+      return satRow;
+    });
 
-    // var csv = [];
-    // let rows = [];
-    // let cols = [];
-    // sats.map((sat) => {
-    //   Object.keys(sat).map((key) => {
-    //     if (cols.indexOf(key) === -1) {
-    //       cols.push(key);
-    //     }
-    //   });
-    // });
-    // csv.push(cols);
-    // sats.map((sat) => {
-    //   let row = [];
-    //   cols.map((col) => {
-    //     if (typeof sat[col] === "object") {
-    //       let str = JSON.stringify(sat[col]);
-    //       row.push({ str });
-    //     } else {
-    //       row.push(sat[col]);
-    //     }
-    //   });
-    //   csv.push(row);
-    // });
-    // downloadCSV(csv.join("\n"), fileName);
+    let content = [cols, ...rows];
+    let csvData = "";
+
+    for (let i = 0; i < content.length; i++) {
+      let value = content[i];
+
+      for (let j = 0; j < value.length; j++) {
+        let innerValue = value[j] === null ? "" : value[j].toString();
+        let result = innerValue.replace(/"/g, '""');
+        if (result.search(/("|,|\n)/g) >= 0) result = '"' + result + '"';
+        if (j > 0) csvData += ",";
+        csvData += result;
+      }
+
+      csvData += "\n";
+    }
+
+    downloadCSV(csvData, fileName);
   };
 
-  const downloadCSV = (csv, filename) => {
-    let csvFile;
-    let downloadLink;
+  const downloadCSV = (csvData) => {
+    let filename = `${new Date().toISOString()}_PROBE_SatTable.csv`;
 
-    csvFile = new Blob([csv], { type: "text/csv" });
-    downloadLink = document.createElement("a");
+    let csvFile = new Blob([csvData], { type: "text/csv" });
+    let downloadLink = document.createElement("a");
     downloadLink.download = filename;
     downloadLink.href = window.URL.createObjectURL(csvFile);
     downloadLink.style.display = "none";
@@ -402,12 +418,7 @@ export const SatellitesTable = () => {
             color="primary"
             className={classes.downloadBar}
             size="small"
-            onClick={() =>
-              exportTableToCSV(
-                sats,
-                `${new Date().toISOString()}_PROBE_SatTable.csv`
-              )
-            }
+            onClick={() => exportTableToCSV(sats)}
           >
             <Download fontSize="small" className={classes.downloadIcon} />
             {width > addButtonBreak ? "Export CSV" : "CSV"}
