@@ -75,9 +75,7 @@ export const App = () => {
       user: user,
       time: new Date().toISOString(),
       msg: msg,
-      source:
-        source.substr(source.indexOf("?") + 1, source.length) +
-        ` at ${line} at character ${character}`,
+      source: source + ` at ${line} at character ${character}`,
     };
     Meteor.call("addError", obj);
     return true;
