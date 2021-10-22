@@ -215,7 +215,7 @@ export const Settings = () => {
         if (err) {
           setAlert({
             title: "Error Encountered",
-            text: err.message || err,
+            text: err?.message || err,
             actions: null,
             closeAction: "Close",
           });
@@ -232,7 +232,7 @@ export const Settings = () => {
         if (err) {
           setAlert({
             title: "Error Encountered",
-            text: err.message || err,
+            text: err?.message || err,
             actions: null,
             closeAction: "Close",
           });
@@ -246,15 +246,15 @@ export const Settings = () => {
 
     if (isValidPassword(oldPassword, newPassword, confirm)) {
       Accounts.changePassword(oldPassword, newPassword, (err, res) => {
-        if (err) {
+        if (err || res) {
           setAlert({
             title: "Error Encountered",
-            text: err.message || err,
+            text: err?.message || err || res,
             actions: null,
             closeAction: "Close",
           });
           setOpenAlert(true);
-        } else if (res) {
+        } else {
           setDisabled(true);
           setOpenSnack(true);
         }
