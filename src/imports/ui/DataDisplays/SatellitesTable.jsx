@@ -92,6 +92,10 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 500,
     fontSize: "14px",
   },
+  downloadIcon: {
+    marginRight: 3,
+    marginLeft: -5,
+  },
   searchBarContainer: {
     position: "relative",
     marginTop: -70,
@@ -391,8 +395,8 @@ export const SatellitesTable = () => {
             className={classes.downloadBar}
             color="primary"
           >
-            <Download fontSize="small" />
-            Export JSON
+            <Download fontSize="small" className={classes.downloadIcon} />
+            {width > addButtonBreak ? "Export JSON" : "JSON"}
           </Button>
           <Button
             color="primary"
@@ -405,8 +409,8 @@ export const SatellitesTable = () => {
               )
             }
           >
-            <Download fontSize="small" />
-            Export CSV
+            <Download fontSize="small" className={classes.downloadIcon} />
+            {width > addButtonBreak ? "Export CSV" : "CSV"}
           </Button>
         </GridToolbarContainer>
       </div>

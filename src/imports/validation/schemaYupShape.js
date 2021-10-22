@@ -1,7 +1,3 @@
-/**
- * PLEASE ENSURE THAT ANY CHANGES MADE HERE ARE REFLECTED IN SERVER-SIDE VALIDATIONS
- **/
-
 import * as Yup from "yup";
 import { SchemaCollection } from "/imports/api/schemas";
 

@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 
-export const helmetOptions = (forExpress) => {
+export const helmetOptions = (forExpress, rootURL) => {
   const self = "'self'";
   const data = "data:";
   const unsafeEval = "'unsafe-eval'";
@@ -10,7 +10,6 @@ export const helmetOptions = (forExpress) => {
   const url = Meteor.absoluteUrl();
   const domain = url.replace(/http(s)*:\/\//, "").replace(/\/$/, "");
   const s = url.match(/(?!=http)s(?=:\/\/)/) ? "s" : "";
-  const usesHttps = s.length > 0;
   const connectSrc = [self, `http${s}://${domain}`, `ws${s}://${domain}`];
 
   const srcOpts = forExpress ? [self] : [self, unsafeEval];
@@ -20,7 +19,7 @@ export const helmetOptions = (forExpress) => {
       blockAllMixedContent: true,
       directives: {
         defaultSrc: srcOpts,
-        scriptSrc: srcOpts,
+        scriptSrc: [self],
         childSrc: srcOpts,
         connectSrc: connectSrc.concat(allowedOrigins),
         fontSrc: [self, data, unsafeInline],
@@ -65,15 +64,6 @@ export const helmetOptions = (forExpress) => {
       permittedPolicies: "none",
     },
   };
-
-  if (!usesHttps && Meteor.isDevelopment && !forExpress) {
-    delete options.contentSecurityPolicy.directives.blockAllMixedContent;
-    options.contentSecurityPolicy.directives.scriptSrc = [
-      self,
-      unsafeEval,
-      unsafeInline,
-    ];
-  }
 
   return options;
 };
