@@ -202,8 +202,9 @@ The following is a list of notable packages and technologies used to build this 
 
 This software is licensed under the [ISC](./LICENSE) license. For more terms, privacy policy, or questions, please contact the contributors directly.
 
-API Documentation
 ---
+
+## API Documentation
 
 ### Public API
 
@@ -413,7 +414,7 @@ RESPONSE:
         "user": "hM7zz8qJn7cRWkGaA",
         "time": "2021-10-21T19:32:43.382Z",
         "msg": "Uncaught TypeError: e.replace is not a function",
-        "source": "http://localhost:8080/packages/modules.js?hash=4a3f16632098133332566398182d4c7791e8daca"
+        "source": "hash=4a3f16632098133332566398182d4c7791e8daca on line 73502 at character 6450"
     },
     ... // more errors
 ]
@@ -492,4 +493,3 @@ RESPONSE:
 `Satellite of NORAD ID 99999 being processed by PROBE - you should see your satellite on the website soon!`
 
 ---
-
