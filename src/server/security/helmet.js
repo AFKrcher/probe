@@ -11,6 +11,7 @@ export const helmetOptions = (forExpress, rootURL) => {
   const domain = url.replace(/http(s)*:\/\//, "").replace(/\/$/, "");
   const s = url.match(/(?!=http)s(?=:\/\/)/) ? "s" : "";
   const connectSrc = [self, `http${s}://${domain}`, `ws${s}://${domain}`];
+  const usesHttps = s.length > 0;
 
   const srcOpts = forExpress ? [self] : [self, unsafeEval];
 
@@ -65,5 +66,13 @@ export const helmetOptions = (forExpress, rootURL) => {
     },
   };
 
+  if (!usesHttps && Meteor.isDevelopment && !forExpress) {
+    delete options.contentSecurityPolicy.directives.blockAllMixedContent;
+    options.contentSecurityPolicy.directives.scriptSrc = [
+      self,
+      unsafeEval,
+      unsafeInline,
+    ];
+  }
   return options;
 };

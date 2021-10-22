@@ -10,7 +10,7 @@ export const schemaMethods = (
     },
     addNewSchema: (initValues, values) => {
       if (Meteor.userId()) {
-        let error = null;
+        let error;
         values["isDeleted"] = false;
         values["createdOn"] = new Date();
         values["createdBy"] = Meteor.user().username;
@@ -33,7 +33,7 @@ export const schemaMethods = (
     },
     updateSchema: (initValues, values) => {
       if (Meteor.userId()) {
-        let error = null;
+        let error;
         if (!values["createdOn"] || !values["createdBy"]) {
           values["createdOn"] = new Date();
           values["createdBy"] = Meteor.user().username;
@@ -58,10 +58,20 @@ export const schemaMethods = (
     },
     deleteSchema: (values) => {
       if (Meteor.userId()) {
+        let error;
         values["isDeleted"] = true;
         values["modifiedOn"] = new Date();
         values["modifiedBy"] = Meteor.user().username;
-        SchemaCollection.update({ _id: values._id }, values);
+        schemaValidatorShaper(values.name)
+          .validate(values)
+          .then(() => {
+            return SchemaCollection.insert(values);
+          })
+          .catch((err) => {
+            console.log(err);
+            error = err;
+          });
+        return error;
       } else {
         return "Unauthorized [401]";
       }
@@ -81,10 +91,20 @@ export const schemaMethods = (
         Roles.userIsInRole(Meteor.userId(), "admin") ||
         Roles.userIsInRole(Meteor.userId(), "moderator")
       ) {
+        let error;
         values["isDeleted"] = false;
         values["modifiedOn"] = new Date();
         values["modifiedBy"] = Meteor.user().username;
-        SchemaCollection.update({ _id: values._id }, values);
+        schemaValidatorShaper(values.name)
+          .validate(values)
+          .then(() => {
+            return SchemaCollection.insert(values);
+          })
+          .catch((err) => {
+            console.log(err);
+            error = err;
+          });
+        return error;
       } else {
         return "Unauthorized [401]";
       }
@@ -94,8 +114,18 @@ export const schemaMethods = (
         Roles.userIsInRole(Meteor.userId(), "admin") ||
         Roles.userIsInRole(Meteor.userId(), "moderator")
       ) {
+        let error;
         values["adminCheck"] = true;
-        SchemaCollection.update({ _id: values._id }, values);
+        schemaValidatorShaper(values.name)
+          .validate(values)
+          .then(() => {
+            return SchemaCollection.insert(values);
+          })
+          .catch((err) => {
+            console.log(err);
+            error = err;
+          });
+        return error;
       } else {
         return "Unauthorized [401]";
       }

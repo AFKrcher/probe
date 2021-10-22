@@ -5,10 +5,8 @@ import { useTracker } from "meteor/react-meteor-data";
 import { SchemaCollection } from "../../api/schemas";
 import { SatelliteCollection } from "../../api/satellites";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
-import {
-  emptyDataRemover,
-  satelliteValidatorShaper,
-} from "../utils/satelliteDataFuncs";
+import { emptyDataRemover } from "../utils/satelliteDataFuncs";
+import { satelliteValidatorShaper } from "/imports/validation/satelliteYupShape";
 import ProtectedFunctionality from "../Helpers/ProtectedFunctionality.jsx";
 import { Formik, Form } from "formik";
 import { _ } from "meteor/underscore";
@@ -152,7 +150,7 @@ export const SatelliteModal = ({
     emptyDataRemover(values); // remove schemas that were added by the user but contain no entries
 
     if (newSat) {
-      Meteor.call("addNewSatellite", values, initValues, (err, res) => {
+      Meteor.call("addNewSatellite", initValues, values, (err, res) => {
         if (res || err) {
           console.log(res || err);
         } else {
@@ -169,7 +167,7 @@ export const SatelliteModal = ({
         }
       });
     } else {
-      Meteor.call("updateSatellite", values, initValues, (err, res) => {
+      Meteor.call("updateSatellite", initValues, values, (err, res) => {
         if (res || err) {
           console.log(res || err);
         } else {

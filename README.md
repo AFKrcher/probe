@@ -207,13 +207,17 @@ RESPONSE:
 The partner API allows registered partners with PROBE API keys to go beyond the public API GET requests. The partner API is used mainly for PATCH, POST, and DELETE requests,
 as well as GET requests of more detailed information.
 
+All POST, PATCH, DELETE, or PUT requests are processed by the server and reflected in the web application asynchrounously. You will need to perform a GET request or visit the web application to confirm the success of your requests.
+
+All POST, PATCH, DELETE, or PUT requests made with improper format will respond with: `You must provide a request body IAW the PROBE API documentation.`
+
 #### Welcome Message
 
 GET (POST, DELETE, PUT, PATCH): `/api/partner/:key`
 
 RESPONSE:
 
-`"Welcome PROBE partner! There are <# OF ENDPOINTS> <REQUEST TYPE> endpoints to access on this route. For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
+`"Welcome PROBE partner! There are <# OF ENDPOINTS> <REQUEST TYPE> endpoints on this route. For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
 
 #### Errors
 
@@ -268,6 +272,46 @@ RESPONSE:
 ]
 ```
 
+PATCH: `/api/partner/:key/users`
+
+BODY:
+
+```json
+{
+  "user": {
+    "username": "user",
+    "_id": "bwAqW5YGPSLGuqY87"
+  },
+  "role": "admin"
+}
+```
+
+RESPONSE:
+
+`bwAqW5YGPSLGuqY87 added to role: admin`
+
+#### Satellites
+
+POST: `/api/partner/:key/satellites`
+
+BODY:
+
+```json
+{
+  "noradID": "99999",
+  "names": [
+    {
+      "reference": "https://www.test.com",
+      "name": "Test"
+    }
+  ]
+}
+```
+
+RESPONSE:
+
+`Satellite of NORAD ID 99999 being processed PROBE - you should see your satellite on the website soon!`
+
 ## How To Contribute
 
 ### Git Processes
@@ -314,6 +358,7 @@ application code via `process.env.<variable-name>`. Prior to development or depl
 | :------------------- | :---------------------------------------- | :-------------- | :------------ |
 | ADMIN_PASSWORD       | Password for admin account in development | password        | server        |
 | PROBE_API_KEY        | PROBE API access key                      | password        | server        |
+| INLINE_RUNTIME_CHUNK | Disables unsafe-inline script source      | false           | client        |
 
 ### Access MongoDB
 
@@ -387,7 +432,7 @@ If you run into any build errors, please ensure you try all of the following bef
 - Restart Docker and/or restart your computer
 - Logout and login to Docker
 - Reset Docker to factory default settings
-- Go to `~/.docker/config.json` and ensure that `credStore: "desktop.exe` is properly written into the file
+- Go to `~/.docker/config.json` and ensure that `credStore: <storage environment>` is properly written into the file
 - Check the Dockerfile and script to ensure relative paths lead to the correct files/folders
 
 ## Libraries
@@ -403,7 +448,7 @@ The following is a list of notable packages and technologies used to build this 
 | formik-material-ui    | Development | Formik + MUI compatability library   |
 | react-swipeable-views | Development | Picture gallery component            |
 | dotenv                | Development | Configuration .env reader            |
-| meteor                | Runtime     | App adaptation library for Meteor    |
+| meteor                | Runtime     | App adaptation library               |
 | react                 | Runtime     | Web-application framework            |
 | react-dom             | Runtime     | DOM renderer for React               |
 | yup                   | Runtime     | Object schema and validation library |
@@ -413,14 +458,14 @@ The following is a list of notable packages and technologies used to build this 
 
 ### Meteor
 
-| Module/Library    | Environment | Description                               |
-| :---------------- | :---------- | :---------------------------------------- |
-| mongo             | Runtime     | NoSQL database for Meteor                 |
-| accounts-base     | Runtime     | Account management for Meteor             |
-| accounts-password | Runtime     | Password management for Meteor            |
-| alanning:roles    | Runtime     | Role management for Meteor                |
-| ddp-rate-limiter  | Runtime     | Limits method call and subscription rates |
-| underscore        | Runtime     | Extended higher-order methods             |
+| Module/Library    | Environment | Description                   |
+| :---------------- | :---------- | :---------------------------- |
+| mongo             | Runtime     | NoSQL database                |
+| accounts-base     | Runtime     | Account management            |
+| accounts-password | Runtime     | Password management           |
+| alanning:roles    | Runtime     | Role management               |
+| ddp-rate-limiter  | Runtime     | Time and call limiter         |
+| underscore        | Runtime     | Extended higher-order methods |
 
 ## License
 

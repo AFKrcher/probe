@@ -36,9 +36,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.tertiary.main,
     filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
   },
-  keySpacingIfNoFavorites: {
-    marginBottom: -15,
-  },
   description: {
     marginTop: 10,
     marginBottom: 15,
@@ -60,9 +57,10 @@ const useStyles = makeStyles((theme) => ({
   },
   showcaseDivider: {
     marginBottom: 30,
+    marginTop: 40,
   },
   secondaryShowcase: {
-    marginTop: 40,
+    marginTop: 15,
   },
   card: {
     marginTop: -10,
