@@ -109,7 +109,7 @@ export const SatelliteSchemaEntry = ({
       obj[`${event.target.name}`] = true;
       setTouched(obj);
 
-      // set validated to false if a field is modified and subsequently saved
+      // set verified/validated to false if a field is modified and subsequently saved
       setFieldValue(validatedField, [
         {
           method: "",

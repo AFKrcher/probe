@@ -69,13 +69,15 @@ export const App = () => {
     setTheme((theme) => (theme === themes.dark ? themes.light : themes.dark));
   };
 
-  window.onerror = function (msg, source) {
+  window.onerror = function (msg, source, line, character) {
     const user = Meteor.userId() || "Not Logged-In";
     const obj = {
       user: user,
-      time: new Date(),
+      time: new Date().toISOString(),
       msg: msg,
-      source: source,
+      source:
+        source.substr(source.indexOf("?") + 1, source.length) +
+        ` at ${line} at character ${character}`,
     };
     Meteor.call("addError", obj);
     return true;
