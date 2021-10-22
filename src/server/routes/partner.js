@@ -4,7 +4,12 @@ import { ErrorsCollection } from "/imports/api/errors";
 
 const baseURL = "/api/partner/:key";
 
-export const partnerRoutes = (app, PROBE_API_KEY, partnerAPIKeys = false) => {
+export const partnerRoutes = (
+  app,
+  allowedRoles,
+  PROBE_API_KEY,
+  partnerAPIKeys = false
+) => {
   const keyCheck = (key, ownersOnly = false) => {
     // In the future, there may be partner-specific API keys, where as PROBE_API_KEY is for owners only
     // Below is a check for standard PROBE partners
@@ -120,7 +125,8 @@ export const partnerRoutes = (app, PROBE_API_KEY, partnerAPIKeys = false) => {
         if (
           typeof user._id === "string" &&
           typeof user.username === "string" &&
-          typeof role === "string"
+          typeof role === "string" &&
+          allowedRoles.includes(role)
         ) {
           Meteor.call("addUserToRole", user, role, req.params.key);
         } else {
