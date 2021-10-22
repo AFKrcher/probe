@@ -12,7 +12,13 @@ const isValidUsername = (oldUsername, newUsername) => {
   return regex.test(newUsername) && oldCheck && newUsername.length < 32;
 };
 
-export const accountMethods = (Meteor, Accounts, Roles, UsersCollection) => {
+export const accountMethods = (
+  Meteor,
+  Accounts,
+  Roles,
+  UsersCollection,
+  PROBE_API_KEY
+) => {
   // Account creation and managment methods
   return Meteor.methods({
     userExists: (username) => {
@@ -27,8 +33,12 @@ export const accountMethods = (Meteor, Accounts, Roles, UsersCollection) => {
         return;
       }
     },
-    addUserToRole: (user, role) => {
-      if (Roles.userIsInRole(Meteor.userId(), "admin")) {
+    addUserToRole: (user, role, key = false) => {
+      // key is only for PROBE owner API manipulation
+      if (
+        Roles.userIsInRole(Meteor.userId(), "admin") ||
+        key === PROBE_API_KEY
+      ) {
         Roles.addUsersToRoles(Accounts.findUserByUsername(user.username), role);
         if (role === "dummies") {
           Meteor.users.update(
@@ -41,13 +51,11 @@ export const accountMethods = (Meteor, Accounts, Roles, UsersCollection) => {
           { _id: user._id },
           {
             $set: {
-              roles: Meteor.roleAssignment
-                .find({ _id: Meteor.userId() })
-                .fetch(),
+              roles: Meteor.roleAssignment.find({ _id: user._id }).fetch(),
             },
           }
         );
-        return `${user._id} added to ${role}`;
+        return `${user._id} added to role: ${role}`;
       } else {
         return "Unauthorized [401]";
       }
@@ -98,19 +106,16 @@ export const accountMethods = (Meteor, Accounts, Roles, UsersCollection) => {
         return "Unauthorized [401]";
       }
     },
-    addToFavorites: (user, noradID) => {
-      if (Meteor.userId) {
+    addToFavorites: (id, noradID) => {
+      if (Meteor.userId()) {
         let favorites = Meteor.user().favorites;
         if (favorites.indexOf(noradID) === -1) {
           favorites.push(noradID);
         } else {
           favorites.splice(favorites.indexOf(noradID), 1);
         }
-        Meteor.users.update(user, { $set: { favorites: favorites } });
-        UsersCollection.update(
-          { _id: user },
-          { $set: { favorites: favorites } }
-        );
+        Meteor.users.update(id, { $set: { favorites: favorites } });
+        UsersCollection.update({ _id: id }, { $set: { favorites: favorites } });
         return Meteor.user().favorites;
       } else {
         return ["Unauthorized [401]"];
@@ -130,7 +135,7 @@ export const accountMethods = (Meteor, Accounts, Roles, UsersCollection) => {
               },
             }
           );
-          return `User ${user._id} added to role ${role}`;
+          return `User ${user._id} removed from role: ${role}`;
         } catch (err) {
           return err;
         }

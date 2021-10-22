@@ -129,7 +129,7 @@ export const reseed = (
     console.log("> ErrorsCollection Seeded");
     const errors = {
       user: "Not Logged-In",
-      time: new Date(),
+      time: new Date().toISOString(),
       msg: "Database Reset",
       source: "Test Error",
       error: {},

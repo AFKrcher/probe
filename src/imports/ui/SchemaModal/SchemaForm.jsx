@@ -117,7 +117,7 @@ export const SchemaForm = ({
           )}
         </Grid>
         <Typography variant="caption" className={classes.helpers}>
-          {editing ? `${formValues.name.length} / 50` : null}
+          {editing ? `${formValues.name?.length} / 50` : null}
         </Typography>
         <Grid item xs={12}>
           {editing ? (
@@ -127,7 +127,7 @@ export const SchemaForm = ({
           )}
           {editing && (
             <Typography variant="caption" className={classes.helpers}>
-              {editing ? `${formValues.description.length} / 255` : null}
+              {editing ? `${formValues.description?.length} / 255` : null}
             </Typography>
           )}
         </Grid>
@@ -135,7 +135,7 @@ export const SchemaForm = ({
       <FieldArray
         name="fields"
         render={() =>
-          formValues.fields.map((field, i) => {
+          formValues.fields?.map((field, i) => {
             return !field.hidden ? (
               <React.Fragment key={`fragment-${i}`}>
                 <Grid

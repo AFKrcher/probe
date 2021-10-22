@@ -3,8 +3,10 @@ export const errorMethods = (Meteor, ErrorsCollection) => {
     addError: (obj) => {
       ErrorsCollection.insert(obj);
       if (ErrorsCollection.find().count() > 50) {
-        console.log("Clearing ErrorsCollection");
-        ErrorsCollection.remove({});
+        const tempArr = ErrorsCollection.find().fetch();
+        tempArr.shift(); // remove the oldest error
+        ErrorsCollection.remove({}); // remove all errors
+        tempArr.forEach((obj) => ErrorsCollection.insert(obj)); // re-insert all errors
       }
     },
     deleteError: (id) => {
