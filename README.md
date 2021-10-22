@@ -7,8 +7,7 @@ This open source project seeks to design a system that allows a community to mai
 1.  [Overview](#Overview)
 2.  [Usage](#Usage)
     - [Application](#Application)
-    - [Public API](#Public-API)
-    - [Partner API](#Partner-API)
+    - [API](#API)
 3.  [How To Contribute](#How-To-Contribute)
     - [Git](#Git)
     - [Coding Standards](#Coding-Standards)
@@ -40,286 +39,9 @@ The main focus of this application is data entry experience, data validation, an
 
 The application should be intuitive and easy-to-use, even for a first-time user. If something is not clear, tooltips, keys, and captions are sprinkled throughout the application to guide the user on how things work. If you think the UI/UX is not user-friendly enough, please submit an issue and a suggestion on how we can fix it.
 
-### Public API
+### API
 
-The public API allows all users to obtain information on satellites and schemas produced by PROBE. Queries in the form of GET requests can be made to obtain specific satellites or schemas. POST, DELETE, PUT, and PATCH requests are not allowed to the public. Below is a list of example requests:
-
-#### Welcome Message
-
-GET: `/api/`
-
-RESPONSE:
-
-`"Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
-
-------
-#### Satellites
-
-GET: `/api/satellites`
-
-GET (full or partial name): `/api/satellites?name=International`
-
-GET (full or partial NORAD ID): `/api/satellites?name=25544`
-
-GET (full or partial orbit): `/api/satellites?name=LEO`
-
-GET (full or partial type): `/api/satellites?name=research`
-
-RESPONSE:
-
-```json
-[
-  {
-    "_id": "fTTviYiQRoMLdR3RC",
-    "isDeleted": false,
-    "noradID": "25544",
-    "createdOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)",
-    "createdBy": "admin",
-    "modifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)",
-    "modifiedBy": "admin",
-    "adminCheck": true,
-    "machineCheck": false,
-    "names": [
-      {
-        "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
-        "verified": [
-          {
-            "method": "user",
-            "name": "admin",
-            "verified": true,
-            "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-          },
-          {
-            "method": "machine",
-            "name": "Layer8",
-            "verified": false,
-            "verifiedOn": ""
-          }
-        ],
-        "validated": [
-          {
-            "method": "user",
-            "name": "admin",
-            "validated": true,
-            "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-          },
-          {
-            "method": "machine",
-            "name": "Layer8",
-            "validated": false,
-            "validatedOn": ""
-          }
-        ],
-        "name": "International Space Station"
-      }
-    ],
-    "descriptionShort": [
-      {
-        "reference": "https://en.wikipedia.org/wiki/International_Space_Station",
-        "verified": [
-          {
-            "method": "user",
-            "name": "admin",
-            "verified": true,
-            "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-          },
-          {
-            "method": "machine",
-            "name": "Layer8",
-            "verified": false,
-            "verifiedOn": ""
-          }
-        ],
-        "validated": [
-          {
-            "method": "user",
-            "name": "admin",
-            "validated": true,
-            "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-          },
-          {
-            "method": "machine",
-            "name": "Layer8",
-            "validated": false,
-            "validatedOn": ""
-          }
-        ],
-        "descriptionShort": "The International Space Station is a modular space station in low Earth orbit. It is a multinational collaborative project involving five participating space agencies: NASA, Roscosmos, JAXA, ESA, and CSA."
-      }
-    ],
-    ... // more data
-  },
-  ... // more related satellites
-]
-```
-
-------
-#### Schemas
-
-GET: `/api/schemas`
-
-GET (full or partial name): `/api/schemas?name=names`
-
-RESPONSE:
-
-```json
-[
-  {
-  "_id": "fTTviYiQRoMLdRC26",
-  "name": "names",
-  "description": "Satellite's names or callsigns.",
-  "fields": [
-    {
-      "name": "reference",
-      "hidden": true,
-      "type": "url",
-      "allowedValues": [],
-      "required": true
-    },
-    {
-      "name": "verified",
-      "hidden": true,
-      "type": "verified",
-      "required": true
-    },
-    {
-      "name": "validated",
-      "hidden": true,
-      "type": "validated",
-      "required": true
-    },
-    {
-      "name": "name",
-      "type": "string",
-      "allowedValues": [],
-      "required": true,
-      "isUnique": true,
-      "stringMax": 50
-    },
-    ... // more fields
-  ],
-  ... // more data
-}
-  ... // more related schemas
-]
-```
-
-------
-### Partner API
-
-The partner API allows registered partners with PROBE API keys to go beyond the public API GET requests. The partner API is used mainly for PATCH, POST, and DELETE requests,
-as well as GET requests of more detailed information.
-
-All POST, PATCH, DELETE, or PUT requests are processed by the server and reflected in the web application asynchrounously. You will need to perform a GET request or visit the web application to confirm the success of your requests.
-
-All POST, PATCH, DELETE, or PUT requests made with improper format will respond with: `You must provide a request body IAW the PROBE API documentation.`
-
-#### Welcome Message
-
-GET (POST, DELETE, PUT, PATCH): `/api/partner/:key`
-
-RESPONSE:
-
-`"Welcome PROBE partner! There are <# OF ENDPOINTS> <REQUEST TYPE> endpoints on this route. For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
-
-------
-#### Errors
-
-GET: `/api/partner/:key/errors`
-
-RESPONSE:
-
-```json
-[
-    {
-        "_id": "rWpQxiu37AyQAs9gP",
-        "user": "Not Logged-In",
-        "time": "2021-10-21T19:32:43.391Z",
-        "msg": "Database Reset",
-        "source": "Test Error",
-        "error": {}
-    },
-    {
-        "_id": "g2dAKHM2dRyWcyD8M",
-        "user": "hM7zz8qJn7cRWkGaA",
-        "time": "2021-10-21T19:32:43.382Z",
-        "msg": "Uncaught TypeError: e.replace is not a function",
-        "source": "http://localhost:8080/packages/modules.js?hash=4a3f16632098133332566398182d4c7791e8daca"
-    },
-    ... // more errors
-]
-```
-
-------
-#### Users
-
-GET: `/api/partner/:key/users`
-
-RESPONSE:
-
-```json
-[
-    {
-        "_id": "bwAqW5YGPSLGuqY86",
-        "createdAt": "2021-10-21T19:32:43.456Z",
-        "username": "admin",
-        "emails": [
-            {
-                "address": "admin@saberastro.com",
-                "verified": false
-            }
-        ],
-        "favorites": [
-            "25544"
-        ]
-    }
-    ... // more users
-]
-```
-
------
-PATCH: `/api/partner/:key/users`
-
-BODY:
-
-```json
-{
-  "user": {
-    "username": "user",
-    "_id": "bwAqW5YGPSLGuqY87"
-  },
-  "role": "admin"
-}
-```
-
-RESPONSE:
-
-`bwAqW5YGPSLGuqY87 added to role: admin`
-
-------
-#### Satellites
-
-POST: `/api/partner/:key/satellites`
-
-BODY:
-
-```json
-{
-  "noradID": "99999",
-  "names": [
-    {
-      "reference": "https://www.test.com",
-      "name": "Test"
-    }
-  ]
-}
-```
-
-RESPONSE:
-
-`Satellite of NORAD ID 99999 being processed by PROBE - you should see your satellite on the website soon!`
-
-------
+Please see the API documentation in sections [Public API](#Public-API) and [Partner API](#Partner-API) at the bottom of this README.
 
 ## How To Contribute
 
@@ -479,3 +201,295 @@ The following is a list of notable packages and technologies used to build this 
 ## License
 
 This software is licensed under the [ISC](./LICENSE) license. For more terms, privacy policy, or questions, please contact the contributors directly.
+
+API Documentation
+---
+
+### Public API
+
+The public API allows all users to obtain information on satellites and schemas produced by PROBE. Queries in the form of GET requests can be made to obtain specific satellites or schemas. POST, DELETE, PUT, and PATCH requests are not allowed to the public. Below is a list of example requests:
+
+#### Welcome Message
+
+GET: `/api/`
+
+RESPONSE:
+
+`"Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
+
+---
+
+#### Satellites
+
+GET: `/api/satellites`
+
+GET (full or partial name): `/api/satellites?name=International`
+
+GET (full or partial NORAD ID): `/api/satellites?name=25544`
+
+GET (full or partial orbit): `/api/satellites?name=LEO`
+
+GET (full or partial type): `/api/satellites?name=research`
+
+RESPONSE:
+
+```json
+[
+  {
+    "_id": "fTTviYiQRoMLdR3RC",
+    "isDeleted": false,
+    "noradID": "25544",
+    "createdOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)",
+    "createdBy": "admin",
+    "modifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)",
+    "modifiedBy": "admin",
+    "adminCheck": true,
+    "machineCheck": false,
+    "names": [
+      {
+        "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
+        "verified": [
+          {
+            "method": "user",
+            "name": "admin",
+            "verified": true,
+            "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+          },
+          {
+            "method": "machine",
+            "name": "Layer8",
+            "verified": false,
+            "verifiedOn": ""
+          }
+        ],
+        "validated": [
+          {
+            "method": "user",
+            "name": "admin",
+            "validated": true,
+            "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+          },
+          {
+            "method": "machine",
+            "name": "Layer8",
+            "validated": false,
+            "validatedOn": ""
+          }
+        ],
+        "name": "International Space Station"
+      }
+    ],
+    "descriptionShort": [
+      {
+        "reference": "https://en.wikipedia.org/wiki/International_Space_Station",
+        "verified": [
+          {
+            "method": "user",
+            "name": "admin",
+            "verified": true,
+            "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+          },
+          {
+            "method": "machine",
+            "name": "Layer8",
+            "verified": false,
+            "verifiedOn": ""
+          }
+        ],
+        "validated": [
+          {
+            "method": "user",
+            "name": "admin",
+            "validated": true,
+            "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+          },
+          {
+            "method": "machine",
+            "name": "Layer8",
+            "validated": false,
+            "validatedOn": ""
+          }
+        ],
+        "descriptionShort": "The International Space Station is a modular space station in low Earth orbit. It is a multinational collaborative project involving five participating space agencies: NASA, Roscosmos, JAXA, ESA, and CSA."
+      }
+    ],
+    ... // more data
+  },
+  ... // more related satellites
+]
+```
+
+---
+
+#### Schemas
+
+GET: `/api/schemas`
+
+GET (full or partial name): `/api/schemas?name=names`
+
+RESPONSE:
+
+```json
+[
+  {
+  "_id": "fTTviYiQRoMLdRC26",
+  "name": "names",
+  "description": "Satellite's names or callsigns.",
+  "fields": [
+    {
+      "name": "reference",
+      "hidden": true,
+      "type": "url",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "verified",
+      "hidden": true,
+      "type": "verified",
+      "required": true
+    },
+    {
+      "name": "validated",
+      "hidden": true,
+      "type": "validated",
+      "required": true
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "allowedValues": [],
+      "required": true,
+      "isUnique": true,
+      "stringMax": 50
+    },
+    ... // more fields
+  ],
+  ... // more data
+}
+  ... // more related schemas
+]
+```
+
+---
+
+### Partner API
+
+The partner API allows registered partners with PROBE API keys to go beyond the public API GET requests. The partner API is used mainly for PATCH, POST, and DELETE requests,
+as well as GET requests of more detailed information.
+
+All POST, PATCH, DELETE, or PUT requests are processed by the server and reflected in the web application asynchrounously. You will need to perform a GET request or visit the web application to confirm the success of your requests.
+
+All POST, PATCH, DELETE, or PUT requests made with improper format will respond with: `You must provide a request body IAW the PROBE API documentation.`
+
+#### Welcome Message
+
+GET (POST, DELETE, PUT, PATCH): `/api/partner/:key`
+
+RESPONSE:
+
+`"Welcome PROBE partner! There are <# OF ENDPOINTS> <REQUEST TYPE> endpoints on this route. For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
+
+---
+
+#### Errors
+
+GET: `/api/partner/:key/errors`
+
+RESPONSE:
+
+```json
+[
+    {
+        "_id": "rWpQxiu37AyQAs9gP",
+        "user": "Not Logged-In",
+        "time": "2021-10-21T19:32:43.391Z",
+        "msg": "Database Reset",
+        "source": "Test Error",
+        "error": {}
+    },
+    {
+        "_id": "g2dAKHM2dRyWcyD8M",
+        "user": "hM7zz8qJn7cRWkGaA",
+        "time": "2021-10-21T19:32:43.382Z",
+        "msg": "Uncaught TypeError: e.replace is not a function",
+        "source": "http://localhost:8080/packages/modules.js?hash=4a3f16632098133332566398182d4c7791e8daca"
+    },
+    ... // more errors
+]
+```
+
+---
+
+#### Users
+
+GET: `/api/partner/:key/users`
+
+RESPONSE:
+
+```json
+[
+    {
+        "_id": "bwAqW5YGPSLGuqY86",
+        "createdAt": "2021-10-21T19:32:43.456Z",
+        "username": "admin",
+        "emails": [
+            {
+                "address": "admin@saberastro.com",
+                "verified": false
+            }
+        ],
+        "favorites": [
+            "25544"
+        ]
+    }
+    ... // more users
+]
+```
+
+---
+
+PATCH: `/api/partner/:key/users`
+
+BODY:
+
+```json
+{
+  "user": {
+    "username": "user",
+    "_id": "bwAqW5YGPSLGuqY87"
+  },
+  "role": "admin"
+}
+```
+
+RESPONSE:
+
+`bwAqW5YGPSLGuqY87 added to role: admin`
+
+---
+
+#### Satellites
+
+POST: `/api/partner/:key/satellites`
+
+BODY:
+
+```json
+{
+  "noradID": "99999",
+  "names": [
+    {
+      "reference": "https://www.test.com",
+      "name": "Test"
+    }
+  ]
+}
+```
+
+RESPONSE:
+
+`Satellite of NORAD ID 99999 being processed by PROBE - you should see your satellite on the website soon!`
+
+---
+
