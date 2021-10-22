@@ -414,7 +414,7 @@ RESPONSE:
         "user": "hM7zz8qJn7cRWkGaA",
         "time": "2021-10-21T19:32:43.382Z",
         "msg": "Uncaught TypeError: e.replace is not a function",
-        "source": "hash=4a3f16632098133332566398182d4c7791e8daca on line 73502 at character 6450"
+        "source": "http://localhost:8080/<source> on line 73502 at character 6450"
     },
     ... // more errors
 ]
