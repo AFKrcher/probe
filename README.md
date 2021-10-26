@@ -73,8 +73,8 @@ The list below is meant to be a guide and not a rule-book. Please try your best 
 3. Clone the repo `git clone https://github.com/justinthelaw/probe.git`
 4. Inside the `/src` run `meteor npm install`
 5. Read and completed the steps in the [Environment Variables](#Environment-Variables) section
-6. Run `meteor run --port 3000`
-7. Go to `http://localhost:3000` and you should see the test app running
+6. Run `meteor run --port 8080`
+7. Go to `http://localhost:8080` and you should see the test app running
 
 ### Environment Variables
 
@@ -85,11 +85,15 @@ in the following table.
 Environment variables maintained in the `.env` file are made available to the
 application code via `process.env.<variable-name>`. Prior to development or deployments, the following environment variables must be defined in the `.env` file. A `.env.example` has been provided in the `~/src/private` as a template.
 
-| Environment Variable | Description                               | Example Setting | Applicability |
-| :------------------- | :---------------------------------------- | :-------------- | :------------ |
-| ADMIN_PASSWORD       | Password for admin account in development | password        | server        |
-| PROBE_API_KEY        | PROBE API access key                      | password        | server        |
-| INLINE_RUNTIME_CHUNK | Disables unsafe-inline script source      | false           | client        |
+| Environment Variable | Description                               | Example Setting                                |
+| :------------------- | :---------------------------------------- | :--------------------------------------------- |
+| ADMIN_PASSWORD       | Password for admin account in development | password                                       |
+| PROBE_API_KEY        | PROBE API access key                      | password                                       |
+| INLINE_RUNTIME_CHUNK | Disables unsafe-inline script source      | false                                          |
+| PORT                 | Exposed port (may not be required)        | 3000                                           |
+| ROOT_URL             | Base URL for hosted application           | localhost or https://your.personal.url         |
+| MAIL_URL             | Hosted SMTPS                              | smtps://user:password@mailhost:port/           |
+| MONGO_URL            | Hosted MongoDB instance                   | mongodb://user:password@host:port/databasename |
 
 ### Access MongoDB
 
@@ -102,18 +106,6 @@ meteor mongo
 show collections
 db.<collection name>.find()
 ```
-
-### Build Exports
-
-For docker image running and production, several exports are needed to estabish connections to hosted services and to set the node environment. The following are the variables must be specified prior to running PROBE.
-
-| Variable  | Description                        | Example Setting                                |
-| :-------- | :--------------------------------- | :--------------------------------------------- |
-| NODE_ENV  | Build and runtime environment      | production                                     |
-| ROOT_URL  | Base URL for hosted application    | localhost or https://your.personal.url         |
-| MAIL_URL  | Hosted SMTPS                       | smtps://user:password@mailhost:port/           |
-| MONGO_URL | Hosted MongoDB instance            | mongodb://user:password@host:port/databasename |
-| PORT      | Exposed port (may not be required) | 3000                                           |
 
 ### Testing
 
@@ -131,26 +123,24 @@ Cypress testing is used for integration and UI/UX testing of PROBE. Please refer
 
 #### Docker Development
 
-The purpose of the Docker development build is to test a production build of the application, with conenctions to hosted services suchs as MongoDB and SMTPS. PM2 and alpine-node are used for load-balancing, app-management, and CSP/HTTP testing.
+The purpose of the Docker development build is to test a production build of the application, with conenctions to hosted services suchs as MongoDB and SMTPS. PM2 and alpine-node are used for load-balancing, app-management, and CSP/HTTP testing. PM2 configration settings can be configured in the `pm2.json` file.
 
 The Docker deployment is dependent on the `pm2.json` and `.env` files to describe the configuration of your meteor application. A pm2.example.json is provided for filling-in and a `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README.
 
-Paste and run the following commands at the root of the project to build and run a docker image of PROBE on http://localhost:3000.
+Paste and run the following command at the root of the project to build and run a docker image of PROBE on http://localhost:3000. Please note that `chmod +x` may not be necessary after your first run of the bash script.
 
 ```
 chmod +x scripts/build-dev.sh && scripts/build-dev.sh
-docker run --rm --name probe --env-file src/private/.env -p 3000:3000 -t probe-dev
 ```
 
 #### Docker Production
 
-The Docker production is dependent on the `.env` file to describe the configuration of your meteor application. A `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README. A Docker.example.prod is provided as a template for filling-out hosted service URIs.
+The Docker production build is dependent on the `.env` file to describe the configuration of your meteor application. A `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README. A Docker.example.prod is provided as a template for filling-out hosted service URIs.
 
-Paste and run the following commands at the root of the project to build and run a docker production image of PROBE.
+Paste and run the following command at the root of the project to build and run a docker production image of PROBE. Please note that `chmod +x` may not be necessary after your first run of the bash script.
 
 ```
 chmod +x scripts/build-prod.sh && scripts/build-prod.sh
-docker run --rm --name probe --env-file src/private/.env -p 3000:3000 -t probe-prod
 ```
 
 #### Docker Errors
@@ -163,7 +153,8 @@ If you run into any build errors, please ensure you try all of the following bef
 - `docker rmi $(docker images --filter “dangling=true” -q --no-trunc)` to remove any dangling images that you don't need
 - Restart Docker and/or restart your computer
 - Logout and login to Docker
-- Reset Docker to factory default settings
+- Ensure you have access to Iron Bank, else see the Dockerfile comments
+- Reset your Docker client to factory default settings
 - Go to `~/.docker/config.json` and ensure that `credStore: <storage environment>` is properly written into the file
 - Check the Dockerfile and script to ensure relative paths lead to the correct files/folders
 
