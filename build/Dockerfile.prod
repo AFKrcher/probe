@@ -1,4 +1,6 @@
-FROM node:14.16.1 AS BUILD_STAGE
+###### STAGE 1: Build the project and set up folder permissions
+# If you don't have access to Iron Bank, just use the node:14.16.1 image from Docker
+FROM registry1.dso.mil/ironbank/opensource/nodejs/nodejs14@sha256:1aa1227b8c3b3adf19280ce88a67ecf696d598ae94c8dbd3253415aa5efb8983 AS BUILD_STAGE
 USER root
 
 # Create the 'appuser' user and group used to launch processes
@@ -18,14 +20,10 @@ RUN cd /app/programs/server && npm install --production && npm cache clean --for
 USER appuser
 
 ###### STAGE: 2 Deploy to the hardened dotnet container.
-FROM node:14.16.1
+# If you don't have access to Iron Bank, just use the node:14.16.1 image from Docker
+FROM registry1.dso.mil/ironbank/opensource/nodejs/nodejs14@sha256:1aa1227b8c3b3adf19280ce88a67ecf696d598ae94c8dbd3253415aa5efb8983
 WORKDIR /app
 COPY --from=BUILD_STAGE /app .
-
-ENV ROOT_URL='http://localhost'
-ENV MONGO_URL='mongodb://user:password@host:port/databasename'
-ENV MAIL_URL='smtps://user:password@mailhost:port/'
-ENV PORT=3000
 
 EXPOSE 3000
 
