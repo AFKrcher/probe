@@ -14,7 +14,6 @@ This open source project seeks to design a system that allows a community to mai
     - [Installation](#Installation)
     - [Access MongoDB](#Access-MongoDB)
     - [Environment Variables](#Environment-Variables)
-    - [Build Exports](#Build-Exports)
     - [Testing](#Testing)
     - [Docker Builds](#Docker-Builds)
 4.  [Libraries](#Libraries)
@@ -68,6 +67,8 @@ The list below is meant to be a guide and not a rule-book. Please try your best 
 
 ### Installation
 
+Instructions for system dependencies and running the application in a non-Docker, local instance.
+
 1. Ensure you have NodeJs installed: https://nodejs.org/en/download/
 2. Install Meteor here: https://www.meteor.com/developers/install
 3. Clone the repo `git clone https://github.com/justinthelaw/probe.git`
@@ -102,7 +103,7 @@ application code via `process.env.<variable-name>`. Prior to development or depl
 
 ### Access MongoDB
 
-1. Local access on non-Docker build
+1. Local access on non-Docker instance
 2. Meteor application must be already running
 3. In the command prompt run the following
 
@@ -124,13 +125,13 @@ Cypress testing is used for integration and UI/UX testing of PROBE. Please refer
 
 ### Docker Builds
 
-**NOTE:** Please ensure that you have read and completed the steps in the [Environment Variables](#Environment-Variables) and [Build Exports](#Build-Exports) sections prior to attempting a Docker build/run.
+**NOTE:** Please ensure that you have read and completed the steps in the [Environment Variables](#Environment-Variables) section prior to attempting a Docker build or Docker run.
 
 #### Docker Development
 
-The purpose of the Docker development build is to test a production build of the application, with conenctions to hosted services suchs as MongoDB and SMTPS. PM2 and alpine-node are used for load-balancing, app-management, and CSP/HTTP testing. PM2 configration settings can be configured in the `pm2.json` file.
+The purpose of the Docker development build is to locally test a meteor-built intance of the application, with conenctions to hosted services suchs as MongoDB and SMTPS. PM2 and alpine-node are used for load-balancing, app-management, and CSP/HTTP testing. PM2 configration settings can be modified in the `pm2.json` file.
 
-The Docker deployment is dependent on the `pm2.json` and `.env` files to describe the configuration of your meteor application. A pm2.example.json is provided for filling-in and a `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README.
+This Docker build is dependent on the `pm2.json` and `.env` files to describe the configuration of your meteor application. A pm2.example.json is provided for filling-in and a `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README.
 
 Paste and run the following command at the root of the project to build and run a docker image of PROBE on http://localhost:3000. Please note that `chmod +x` may not be necessary after your first run of the bash script.
 
