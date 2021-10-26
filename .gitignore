@@ -5,12 +5,10 @@
 *node_modules
 
 # Secrets
-*.env
+*.env.dev
+*.env.prod
 
 # Build
 *src.tar.gz
 *bundle
-*pm2-dev.json
-*Dockerfile.prod
-*mongodb*.tgz
 

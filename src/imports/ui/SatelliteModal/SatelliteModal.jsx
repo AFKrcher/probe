@@ -111,39 +111,12 @@ export const SatelliteModal = ({
     return [user, schemas, sats, !subSch.ready(), !subSat.ready()];
   });
 
-  const isUniqueList = (path, field) => {
-    let list = [];
-    if (!path) {
-      for (let sat in sats) {
-        sats[sat][field] === initValues[field]
-          ? null
-          : list.push(sats[sat][field]);
-      }
-    } else if (initValues[path]) {
-      for (let sat in sats) {
-        let satEntries = sats[sat][path];
-        for (let entry in satEntries) {
-          if (initValues[path].length > 0 && initValues[path][entry]) {
-            if (
-              satEntries[entry][field] !== initValues[path][entry][field] &&
-              satEntries[entry][field] !== "N/A"
-            ) {
-              let item = satEntries[entry][field];
-              list.push(item);
-            }
-          }
-        }
-      }
-    }
-    return list;
-  };
-
   useEffect(() => {
     setEditing(dashboard ? newSat : newSat || false); // ensures that Add Satellite always opens as a new instance in edit-mode
   }, [newSat, show]);
 
   useEffect(() => {
-    setSatSchema(satelliteValidatorShaper(schemas, initValues, isUniqueList)); // generate new validation schema based on schema changes and the satellite being edited
+    setSatSchema(satelliteValidatorShaper(initValues, initValues)); // generate new validation schema based on schema changes and the satellite being edited
   }, [initValues, show, isLoadingSch]);
 
   const handleSubmit = (values, { setSubmitting }) => {
@@ -497,7 +470,6 @@ export const SatelliteModal = ({
                       initValues={initValues}
                       newSat={newSat}
                       setSatSchema={setSatSchema}
-                      isUniqueList={isUniqueList}
                       satelliteValidatorShaper={satelliteValidatorShaper}
                       setTouched={setTouched}
                       touched={touched}

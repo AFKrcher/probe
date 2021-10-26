@@ -57,7 +57,6 @@ export const SatelliteForm = ({
   editing,
   initValues,
   setSatSchema,
-  isUniqueList,
   satelliteValidatorShaper,
   setTouched,
   editingOne,
@@ -86,14 +85,12 @@ export const SatelliteForm = ({
           errors={errors}
           setErrors={setErrors}
           schema={schema}
-          schemas={schemas}
           entries={values[`${schema.name}`]}
           setFieldValue={setFieldValue}
           editing={editing}
           setValues={setValues}
           setSatSchema={setSatSchema}
           values={values}
-          isUniqueList={isUniqueList}
           satelliteValidatorShaper={satelliteValidatorShaper}
           setTouched={setTouched}
           initValues={initValues}
@@ -123,7 +120,7 @@ export const SatelliteForm = ({
     setFlag(!flag);
     toggleAddSchema();
 
-    await setSatSchema(satelliteValidatorShaper(schemas, values, isUniqueList));
+    await setSatSchema(satelliteValidatorShaper(values, initValues));
   };
 
   const handleDelete = async (name) => {
@@ -132,7 +129,7 @@ export const SatelliteForm = ({
     setFlag(!flag);
     setOpenAlert(false);
 
-    await setSatSchema(satelliteValidatorShaper(schemas, values, isUniqueList));
+    await setSatSchema(satelliteValidatorShaper(values, initValues));
 
     let obj = {};
     obj[name] = true;

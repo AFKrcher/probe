@@ -397,7 +397,7 @@ export const Settings = () => {
               >
                 Update your account
               </Button>
-              {Meteor.user().emails[0]?.verified}
+              {Meteor.user()?.emails[0]?.verified}
               <Button
                 id="verifyButton"
                 onClick={sendEmail}
