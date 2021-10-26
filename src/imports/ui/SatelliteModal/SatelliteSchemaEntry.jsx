@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 // Imports
 import { Field } from "formik";
 import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
-import { decideVerifiedValidated } from "../utils/satelliteDataFuncs";
+import { decideVerifiedValidatedAdornment } from "../utils/satelliteDataFuncs";
 import { _ } from "meteor/underscore";
 
 // @material-ui
@@ -82,8 +82,7 @@ export const SatelliteSchemaEntry = ({
   errors,
   entries,
   setSatSchema,
-  isUniqueList,
-  schemas,
+  initValues,
   satelliteValidatorShaper,
   setTouched,
   values,
@@ -177,7 +176,7 @@ export const SatelliteSchemaEntry = ({
     newEntries.splice(index, 1);
     await setFieldValue(schemaName, newEntries);
 
-    setSatSchema(satelliteValidatorShaper(schemas, values, isUniqueList)); // generate new validation schema based on added entry
+    setSatSchema(satelliteValidatorShaper(values, initValues)); // generate new validation schema based on added entry
   };
 
   const handleClick = (url) => {
@@ -283,8 +282,8 @@ export const SatelliteSchemaEntry = ({
                     }
                   >
                     <Tooltip
-                      title={decideVerifiedValidated(
-                        // decideVerifiedValidated takes the following arguments
+                      title={decideVerifiedValidatedAdornment(
+                        // decideVerifiedValidatedAdornment takes the following arguments
                         verified, // 1. array of verification or validation objects
                         true, // 2. whether it is a verification (true) or validation (false)
                         false, // 3. whether it is a styling decision
@@ -295,7 +294,7 @@ export const SatelliteSchemaEntry = ({
                       arrow
                     >
                       <InputAdornment
-                        className={decideVerifiedValidated(
+                        className={decideVerifiedValidatedAdornment(
                           verified,
                           true,
                           true,
@@ -304,7 +303,7 @@ export const SatelliteSchemaEntry = ({
                         )}
                         position="end"
                       >
-                        {decideVerifiedValidated(
+                        {decideVerifiedValidatedAdornment(
                           verified,
                           true,
                           false,
@@ -317,7 +316,7 @@ export const SatelliteSchemaEntry = ({
                       <div style={{ marginTop: 40 }} />
                     ) : null}
                     <Tooltip
-                      title={decideVerifiedValidated(
+                      title={decideVerifiedValidatedAdornment(
                         validated,
                         false,
                         false,
@@ -332,7 +331,7 @@ export const SatelliteSchemaEntry = ({
                       arrow
                     >
                       <InputAdornment
-                        className={decideVerifiedValidated(
+                        className={decideVerifiedValidatedAdornment(
                           validated,
                           false,
                           true,
@@ -341,7 +340,7 @@ export const SatelliteSchemaEntry = ({
                         )}
                         position="end"
                       >
-                        {decideVerifiedValidated(
+                        {decideVerifiedValidatedAdornment(
                           validated,
                           false,
                           false,

@@ -1,0 +1,27 @@
+version: "3.5"
+
+services:
+  mongo:
+    image: registry1.dso.mil/ironbank/opensource/mongodb/mongodb@sha256:b9effc7e3ccc39632866052a47121ccdb4762af0b477a197a6ef4f70e0ecec8a
+    env_file:
+      - ./src/private/.env.prod
+    ports:
+      - "${MONGO_PORT}:27017"
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  meteor:
+    build: ./build
+    env_file:
+      - ./src/private/.env.prod
+    environment:
+      NODE_ENV: production
+    ports:
+      - "${PORT}:3000"
+    depends_on:
+      mongo:
+        condition: service_healthy

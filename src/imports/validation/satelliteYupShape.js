@@ -24,7 +24,7 @@ const isUniqueList = (initValues, sats, path, field) => {
             satEntries[entry][field] !== initValues[path][entry][field] &&
             satEntries[entry][field] !== "N/A"
           ) {
-            let item = satEntries[entry][field].toLowerCase();
+            let item = satEntries[entry][field];
             list.push(item);
           }
         }
@@ -193,7 +193,7 @@ export const satelliteValidatorShaper = (values, initValues) => {
             isUnique:
               field.type === "string" && field.isUnique
                 ? baseFieldType.notOneOf(
-                    isUniqueList(path, schemaField),
+                    isUniqueList(initValues, sats, path, schemaField),
                     `${path}-${entryCount}-${fieldCount}_A satellite with ${schemaField} of ${value[entryCount][schemaField]} already exists.`
                   )
                 : false,
