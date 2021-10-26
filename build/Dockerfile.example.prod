@@ -1,19 +1,33 @@
-# Pull base image.
-FROM node:14
+FROM node:14.16.1 AS BUILD_STAGE
+USER root
 
-# Create app directory
-RUN mkdir -p /app
+# Create the 'appuser' user and group used to launch processes
+# The uid and gid will be set to 950 to avoid conflicts with offical users on the docker host.
+RUN groupadd -r appuser -g 950 && \
+  useradd -u 950 -m -d /home/appuser -r -g appuser -s /sbin/nologin -c "restricted docker account" appuser
 
-# Copy meteor build bundle
+RUN mkdir /app
 COPY bundle /app
+RUN chown -R appuser:appuser /app
+WORKDIR /app
 
-# Build for the image
-RUN cd /app/programs/server && npm install --production
-RUN	export ROOT_URL='https://your.personal.url'
-RUN export MONGO_URL='mongodb://user:password@host:port/databasename'
-RUN	export MAIL_URL='smtp://user:password@mailhost:port/'
+# Install all node_modules
+RUN cd /app/programs/server && npm install --production && npm cache clean --force
+
+# Switch to build stage 2 user
+USER appuser
+
+###### STAGE: 2 Deploy to the hardened dotnet container.
+FROM node:14.16.1
+WORKDIR /app
+COPY --from=BUILD_STAGE /app .
+
+ENV ROOT_URL='http://localhost'
+ENV MONGO_URL='mongodb://user:password@host:port/databasename'
+ENV MAIL_URL='smtps://user:password@mailhost:port/'
+ENV PORT=3000
 
 EXPOSE 3000
 
-# Final run command
-CMD ["node main.js"]
+# Run the database migration script before starting the program.
+ENTRYPOINT ["node", "/app/main.js", "--v"]

@@ -331,37 +331,20 @@ export const SatellitesTable = () => {
   const jsonDownload = () => {
     let str = JSON.stringify(sats);
     let uri = "data:application/json;charset=utf-8," + encodeURIComponent(str);
-    let element = document.createElement("a");
 
-    element.setAttribute("href", uri);
-    element.setAttribute(
-      "download",
-      `${new Date().toISOString()}_PROBE_SatTable.json`
-    );
-    element.click();
-    element.remove();
+    downloadFile(uri, "json");
   };
 
-  const exportTableToCSV = (html, fileName) => {
+  const exportTableToCSV = (html) => {
     const tempArr = schemas
       .map((schema) => schema.name)
       .sort((a, b) => a.localeCompare(b));
-    const cols = [
-      "_id",
-      "modifiedOn",
-      "modifiedBy",
-      "createdOn",
-      "createdBy",
-      "adminCheck",
-      "machineCheck",
-      ...tempArr,
-    ];
+
+    const cols = [...tempArr];
     const rows = sats.map((sat) => {
       let satRow = [];
       for (let i = 0; i < cols.length; i++) {
-        satRow.push(
-          sat[`${cols[i]}`] ? JSON.stringify(sat[`${cols[i]}`]) : "N/A"
-        );
+        satRow.push(sat[cols[i]] ? JSON.stringify(sat[cols[i]]) : "N/A");
       }
       return satRow;
     });
@@ -371,7 +354,6 @@ export const SatellitesTable = () => {
 
     for (let i = 0; i < content.length; i++) {
       let value = content[i];
-
       for (let j = 0; j < value.length; j++) {
         let innerValue = value[j] === null ? "" : value[j].toString();
         let result = innerValue.replace(/"/g, '""');
@@ -379,23 +361,27 @@ export const SatellitesTable = () => {
         if (j > 0) csvData += ",";
         csvData += result;
       }
-
       csvData += "\n";
     }
-
-    downloadCSV(csvData, fileName);
+    downloadFile(csvData, "csv");
   };
 
-  const downloadCSV = (csvData) => {
-    let filename = `${new Date().toISOString()}_PROBE_SatTable.csv`;
-
-    let csvFile = new Blob([csvData], { type: "text/csv" });
+  const downloadFile = (data, fileType) => {
     let downloadLink = document.createElement("a");
-    downloadLink.download = filename;
-    downloadLink.href = window.URL.createObjectURL(csvFile);
+    downloadLink.setAttribute(
+      "download",
+      `${new Date().toISOString()}_PROBE_SatTable.${fileType}`
+    ); // File name
+
+    if (fileType === "json") {
+      downloadLink.setAttribute("href", data);
+    } else {
+      let csvFile = new Blob([data], { type: "text/csv" });
+      downloadLink.href = window.URL.createObjectURL(csvFile);
+    }
     downloadLink.style.display = "none";
-    document.body.appendChild(downloadLink);
     downloadLink.click();
+    downloadLink.remove();
   };
 
   const CustomToolbar = () => {
