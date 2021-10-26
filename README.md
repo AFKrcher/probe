@@ -111,7 +111,7 @@ For docker image running and production, several exports are needed to estabish 
 | :-------- | :--------------------------------- | :--------------------------------------------- |
 | NODE_ENV  | Build and runtime environment      | production                                     |
 | ROOT_URL  | Base URL for hosted application    | localhost or https://your.personal.url         |
-| MAIL_URL  | Hosted SMTPS                       | smtp://user:password@mailhost:port/            |
+| MAIL_URL  | Hosted SMTPS                       | smtps://user:password@mailhost:port/           |
 | MONGO_URL | Hosted MongoDB instance            | mongodb://user:password@host:port/databasename |
 | PORT      | Exposed port (may not be required) | 3000                                           |
 
@@ -138,8 +138,8 @@ The Docker deployment is dependent on the `pm2.json` and `.env` files to describ
 Paste and run the following commands at the root of the project to build and run a docker image of PROBE on http://localhost:3000.
 
 ```
-chmod 777 scripts/build-dev.sh && scripts/build-dev.sh
-docker run --rm --name probe --env-file src/private/.env -p 3000:3000 -t probe
+chmod +x scripts/build-dev.sh && scripts/build-dev.sh
+docker run --rm --name probe --env-file src/private/.env -p 3000:3000 -t probe-dev
 ```
 
 #### Docker Production
@@ -149,7 +149,8 @@ The Docker production is dependent on the `.env` file to describe the configurat
 Paste and run the following commands at the root of the project to build and run a docker production image of PROBE.
 
 ```
-chmod 777 scripts/build-prod.sh && scripts/build-prod.sh
+chmod +x scripts/build-prod.sh && scripts/build-prod.sh
+docker run --rm --name probe --env-file src/private/.env -p 3000:3000 -t probe-prod
 ```
 
 #### Docker Errors

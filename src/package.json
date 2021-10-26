@@ -13,6 +13,7 @@
     "@material-ui/data-grid": "^4.0.0-alpha.37",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
+    "@testing-library/react": "^12.1.2",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "formik": "^2.2.9",

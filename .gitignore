@@ -12,4 +12,5 @@
 *bundle
 *pm2-dev.json
 *Dockerfile.prod
+*mongodb*.tgz
 
