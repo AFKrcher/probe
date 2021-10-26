@@ -3,5 +3,4 @@
 cd ./build && rm -rf src.tar.gz && rm -rf bundle
 cd ../src && meteor npm install && meteor build ../build
 cd ../build && tar xzf src.tar.gz
-docker build . --rm -f Dockerfile.prod -t probe-prod
-cd .. && docker run --rm --name probe --env-file src/private/.env -p 3000:3000 -t probe-prod
+docker-compose up -d --env-file src/private/.env.dev

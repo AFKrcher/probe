@@ -12,7 +12,9 @@ import { helmetOptions } from "../security/helmet";
 
 // Partner routes on ExpressJS
 dotenv.config({
-  path: Assets.absoluteFilePath(".env"), // .env file in the private folder
+  path: Assets.absoluteFilePath(
+    process.env.NODE_ENV === "development" ? ".env.dev" : ".env.prod"
+  ), // .env file in the private folder
 });
 const { PROBE_API_KEY } = process.env;
 

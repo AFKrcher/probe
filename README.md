@@ -79,21 +79,26 @@ The list below is meant to be a guide and not a rule-book. Please try your best 
 ### Environment Variables
 
 Environment variables that control the operation of the app are defined in the
-`.env` file in the application root. These variables and their usage are shown
-in the following table.
+`.env` in `~/src/private`. These variables and their usage are shown
+in the table below.
 
 Environment variables maintained in the `.env` file are made available to the
 application code via `process.env.<variable-name>`. Prior to development or deployments, the following environment variables must be defined in the `.env` file. A `.env.example` has been provided in the `~/src/private` as a template.
 
-| Environment Variable | Description                               | Example Setting                                |
-| :------------------- | :---------------------------------------- | :--------------------------------------------- |
-| ADMIN_PASSWORD       | Password for admin account in development | password                                       |
-| PROBE_API_KEY        | PROBE API access key                      | password                                       |
-| INLINE_RUNTIME_CHUNK | Disables unsafe-inline script source      | false                                          |
-| PORT                 | Exposed port (may not be required)        | 3000                                           |
-| ROOT_URL             | Base URL for hosted application           | localhost or https://your.personal.url         |
-| MAIL_URL             | Hosted SMTPS                              | smtps://user:password@mailhost:port/           |
-| MONGO_URL            | Hosted MongoDB instance                   | mongodb://user:password@host:port/databasename |
+**IMPORTANT**
+
+- A `.env.dev` must be created from the `.env.example` prior to a `meteor run --port 8080` or a Docker development build with `scripts/build-dev.sh`
+- A `.env.prod` must be created from the `.env.example` prior to a Docker production build with `scripts/build-prod.sh`
+
+| Environment Variable | Description                               | Example Setting                        |
+| :------------------- | :---------------------------------------- | :------------------------------------- |
+| ADMIN_PASSWORD       | Password for admin account in development | password                               |
+| PROBE_API_KEY        | PROBE API access key                      | password                               |
+| INLINE_RUNTIME_CHUNK | Disables unsafe-inline script source      | false                                  |
+| PORT                 | Exposed port (may not be required)        | 3000                                   |
+| ROOT_URL             | Base URL for hosted application           | localhost or https://your.personal.url |
+| MAIL_URL             | Hosted SMTPS                              | smtps://user:password@mailhost:port/   |
+| MONGO_URL            | Hosted MongoDB instance                   | mongodb://mongo:27017/database         |
 
 ### Access MongoDB
 

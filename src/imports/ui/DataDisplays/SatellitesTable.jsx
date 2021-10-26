@@ -667,9 +667,9 @@ export const SatellitesTable = () => {
               next page
             </Link>
           </Tooltip>
-          . Double-click on the <strong>satellite</strong> names in the table to
-          bring up the schemas and data associated with the{" "}
-          <strong>satellite</strong>.
+          . Filtering on satellites using tags in the search bar will allow you
+          to view the results in the table and export the results to a CSV or
+          JSON format.
         </Typography>
         <Key page="SatellitesTable" />
         <div className={classes.searchBarContainer}>

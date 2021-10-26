@@ -29,7 +29,9 @@ import { errorMethods } from "./methods/error";
 import { reseed } from "./methods/reseed";
 
 dotenv.config({
-  path: Assets.absoluteFilePath(".env"), // .env file in the private folder
+  path: Assets.absoluteFilePath(
+    process.env.NODE_ENV === "development" ? ".env.dev" : ".env.prod"
+  ), // .env file in the private folder
 });
 
 const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT, NODE_ENV } = process.env;
@@ -41,7 +43,7 @@ Meteor.startup(() => {
   console.log(
     typeof ADMIN_PASSWORD === "string" && typeof PROBE_API_KEY === "string"
       ? "> Environment variables loaded!"
-      : "> Could not load environment variables. Please check ~/private/.env and restart the server."
+      : "> Could not load environment variables. Please check the .env files in ~/private and restart the server."
   );
 
   // See helmet.js for Content Security Policy (CSP) options
