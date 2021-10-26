@@ -82,14 +82,12 @@ export const SatelliteSchemaAccordion = ({
   errors,
   setErrors,
   schema,
-  schemas,
   entries,
   setFieldValue,
   editing,
   setSatSchema,
   values,
   setValues,
-  isUniqueList,
   satelliteValidatorShaper,
   setTouched,
   touched,
@@ -121,7 +119,7 @@ export const SatelliteSchemaAccordion = ({
     );
     const newEntries = [...entries, schemaFields];
     await setFieldValue(schema.name, newEntries);
-    await setSatSchema(satelliteValidatorShaper(schemas, values, isUniqueList));
+    await setSatSchema(satelliteValidatorShaper(values, initValues));
   };
 
   const handleEditSchema = async () => {
@@ -249,8 +247,7 @@ export const SatelliteSchemaAccordion = ({
                 editingSchema={editing ? editing : editingSchema}
                 entries={entries}
                 setSatSchema={setSatSchema}
-                isUniqueList={isUniqueList}
-                schemas={schemas}
+                initValues={initValues}
                 satelliteValidatorShaper={satelliteValidatorShaper}
                 setTouched={setTouched}
                 values={values}

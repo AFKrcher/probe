@@ -39,7 +39,7 @@ export const getSatDesc = (satellite) => {
     : "";
 };
 
-export const decideVerifiedValidated = (
+export const decideVerifiedValidatedAdornment = (
   // decides the rendering of the validated / verified items for each of the satellite's fields
   array,
   verified,

@@ -1,0 +1,39 @@
+version: "3.5"
+
+services:
+  mongo:
+    image: registry1.dso.mil/ironbank/opensource/mongodb/mongodb@sha256:b9effc7e3ccc39632866052a47121ccdb4762af0b477a197a6ef4f70e0ecec8a
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    command:
+      - --storageEngine=wiredTiger
+    ports:
+      - "${MONGO_PORT}:27017"
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  meteor:
+    build:
+      dockerfile: ./Dockerfile.prod
+      context: ./build
+    restart: always
+    environment:
+      NODE_ENV: production
+      INLINE_RUNTIME_CHUNK: false
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      PROBE_API_KEY: ${PROBE_API_KEY}
+      PORT: ${PORT}
+      MONGO_URL: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:${MONGO_PORT}
+      MAIL_URL: ${MAIL_URL}
+      ROOT_URL: ${ROOT_URL}
+    ports:
+      - "${PORT}:3000"
+    depends_on:
+      mongo:
+        condition: service_healthy

@@ -299,9 +299,7 @@ export const SchemasTable = () => {
         </Tooltip>{" "}
         for usage examples. Each <strong>schema</strong> has a reference for
         where the data was found, a description describing what the data is, and
-        a number of data fields that contain the information. Double-click on a
-        desired <strong>schema</strong> below to view its details and edit the
-        entry fields.
+        a number of data fields that contain the information.
       </Typography>
       <Key page="SchemasTable" />
       <div className={classes.searchBarContainer}>
