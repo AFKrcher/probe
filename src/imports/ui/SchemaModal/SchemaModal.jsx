@@ -102,7 +102,7 @@ export const SchemaModal = ({
         handleClose();
         Meteor.call("addNewSchema", initValues, values, (err, res) => {
           if (res || err) {
-            console.log(res || err);
+            console.log(res?.toString() || err?.reason);
           } else {
             setOpenSnack(false);
             setSnack(
@@ -117,7 +117,7 @@ export const SchemaModal = ({
       } else {
         Meteor.call("updateSchema", initValues, values, (err, res) => {
           if (res || err) {
-            console.log(res || err);
+            console.log(res?.toString() || err?.reason);
           } else {
             setOpenSnack(false);
             setSnack(
@@ -141,9 +141,9 @@ export const SchemaModal = ({
     if (!admin) {
       Meteor.call("deleteSchema", initValues, (err, res) => {
         if (res || err) {
-          console.log(res || err);
+          console.log(res?.toString() || err?.reason);
         } else {
-          setOpenAlert(false);
+          console.log(false);
           setOpenSnack(false);
           setSnack(
             <span>
@@ -158,9 +158,9 @@ export const SchemaModal = ({
     } else {
       Meteor.call("actuallyDeleteSchema", initValues, (err, res) => {
         if (res || err) {
-          console.log(res || err);
+          console.log(res?.toString() || err?.reason);
         } else {
-          setOpenAlert(false);
+          console.log(false);
           setOpenSnack(false);
           setSnack(
             <span>
@@ -176,7 +176,7 @@ export const SchemaModal = ({
   };
 
   const handleDeleteDialog = () => {
-    setAlert({
+    console.log({
       title: admin ? (
         <span>
           Delete <strong>{initValues.name}</strong> Schema Forever?
@@ -210,7 +210,7 @@ export const SchemaModal = ({
       ),
       closeAction: "Cancel",
     });
-    setOpenAlert(true);
+    console.log(true);
   };
 
   const handleToggleEdit = async (setValues, setErrors) => {
@@ -222,7 +222,7 @@ export const SchemaModal = ({
 
   const handleEdit = (dirty, setValues, setErrors, values) => {
     if (editing && dirty) {
-      setAlert({
+      console.log({
         title: (
           <span>
             Delete changes on <strong>{values.name || "new schema"}</strong>?
@@ -241,7 +241,7 @@ export const SchemaModal = ({
             color="secondary"
             disableElevation
             onClick={() => {
-              setOpenAlert(false);
+              console.log(false);
               handleToggleEdit(setValues, setErrors);
             }}
           >
@@ -250,7 +250,7 @@ export const SchemaModal = ({
         ),
         closeAction: "Cancel",
       });
-      setOpenAlert(true);
+      console.log(true);
     } else {
       handleToggleEdit(setValues);
     }
@@ -260,9 +260,9 @@ export const SchemaModal = ({
     if (admin) {
       Meteor.call("adminCheckSchema", initValues, (err, res) => {
         if (res || err) {
-          console.log(res || err);
+          console.log(res?.toString() || err?.reason);
         } else {
-          setOpenAlert(false);
+          console.log(false);
           setOpenSnack(false);
           setSnack(
             <span>
@@ -280,9 +280,9 @@ export const SchemaModal = ({
   const handleRestore = () => {
     Meteor.call("restoreSchema", initValues, (err, res) => {
       if (res || err) {
-        console.log(res || err);
+        console.log(res?.toString() || err?.reason);
       } else {
-        setOpenAlert(false);
+        console.log(false);
         setOpenSnack(false);
         setSnack(
           <span>

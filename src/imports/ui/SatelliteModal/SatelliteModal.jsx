@@ -125,7 +125,7 @@ export const SatelliteModal = ({
     if (newSat) {
       Meteor.call("addNewSatellite", initValues, values, (err, res) => {
         if (res || err) {
-          console.log(res || err);
+          console.log(res?.toString() || err?.reason);
         } else {
           setOpenSnack(false);
           setSnack(
@@ -142,7 +142,7 @@ export const SatelliteModal = ({
     } else {
       Meteor.call("updateSatellite", initValues, values, (err, res) => {
         if (res || err) {
-          console.log(res || err);
+          console.log(res?.toString() || err?.reason);
         } else {
           setOpenSnack(false);
           setSnack(
@@ -167,9 +167,9 @@ export const SatelliteModal = ({
     if (!admin) {
       Meteor.call("deleteSatellite", values, (err, res) => {
         if (res || err) {
-          console.log(res || err);
+          console.log(res?.toString() || err?.reason);
         } else {
-          setOpenAlert(false);
+          setOpenconsole.log(false);
           handleClose();
           setOpenSnack(false);
           setSnack(
@@ -185,9 +185,9 @@ export const SatelliteModal = ({
     } else {
       Meteor.call("actuallyDeleteSatellite", values, (err, res) => {
         if (res || err) {
-          console.log(res || err);
+          console.log(res?.toString() || err?.reason);
         } else {
-          setOpenAlert(false);
+          setOpenconsole.log(false);
           setOpenSnack(false);
           setSnack(
             <span>
@@ -205,7 +205,7 @@ export const SatelliteModal = ({
   };
 
   const handleDeleteDialog = (values) => {
-    setAlert({
+    setconsole.log({
       title: (
         <span>
           Delete <strong>{values.names ? values.names[0].name : "N/A"}</strong>?
@@ -231,7 +231,7 @@ export const SatelliteModal = ({
       ),
       closeAction: "Cancel",
     });
-    setOpenAlert(true);
+    setOpenconsole.log(true);
   };
 
   const handleToggleEdit = async (setValues, values, setErrors) => {
@@ -244,7 +244,7 @@ export const SatelliteModal = ({
 
   const handleEdit = (setValues, dirty, touched, values, setErrors) => {
     if ((editing || editingOne) && dirty && !_.isEmpty(touched)) {
-      setAlert({
+      setconsole.log({
         title: initValues.names ? (
           <span>
             Delete changes on{" "}
@@ -277,7 +277,7 @@ export const SatelliteModal = ({
             color="secondary"
             disableElevation
             onClick={() => {
-              setOpenAlert(false);
+              setOpenconsole.log(false);
               handleToggleEdit(setValues, values, setErrors);
             }}
           >
@@ -286,7 +286,7 @@ export const SatelliteModal = ({
         ),
         closeAction: "Cancel",
       });
-      setOpenAlert(true);
+      setOpenconsole.log(true);
       setTimeout(() => setOpenSnack(false), 2000);
     } else {
       handleToggleEdit(setValues, values, setErrors);
@@ -304,7 +304,7 @@ export const SatelliteModal = ({
           if (err) {
             console.log(err);
           } else {
-            setOpenAlert(false);
+            setOpenconsole.log(false);
             setOpenSnack(false);
             setSnack(
               <span>
@@ -332,7 +332,7 @@ export const SatelliteModal = ({
           if (err) {
             console.log(err);
           } else {
-            setOpenAlert(false);
+            setOpenconsole.log(false);
             setOpenSnack(false);
             setSnack(
               <span>
@@ -352,9 +352,9 @@ export const SatelliteModal = ({
   const handleRestore = (values) => {
     Meteor.call("restoreSatellite", initValues, (err, res) => {
       if (res || err) {
-        console.log(res || err);
+        console.log(res?.toString() || err?.reason);
       } else {
-        setOpenAlert(false);
+        setOpenconsole.log(false);
         setOpenSnack(false);
         setSnack(
           <span>

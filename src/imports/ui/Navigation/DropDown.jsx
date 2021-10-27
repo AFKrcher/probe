@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { Meteor } from "meteor/meteor";
 // Imports
 import { Roles } from "meteor/alanning:roles";
 import { useTracker } from "meteor/react-meteor-data";
 import { Link } from "react-router-dom";
+import HelpersContext from "../Dialogs/HelpersContext.jsx";
+
+// Components
+import SnackBar from "../Dialogs/SnackBar.jsx";
 
 // @material-ui
 import {
@@ -84,7 +89,6 @@ export const DropDown = ({ theme, toggleTheme }) => {
   const handleLogout = (e) => {
     e.preventDefault();
     Meteor.logout();
-    setTimeout(() => location.reload());
   };
 
   return (
