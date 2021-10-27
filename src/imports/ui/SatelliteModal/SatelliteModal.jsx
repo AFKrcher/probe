@@ -3,7 +3,6 @@ import { Meteor } from "meteor/meteor";
 // Imports
 import { useTracker } from "meteor/react-meteor-data";
 import { SchemaCollection } from "../../api/schemas";
-import { SatelliteCollection } from "../../api/satellites";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import { emptyDataRemover } from "../utils/satelliteDataFuncs";
 import { satelliteValidatorShaper } from "/imports/validation/satelliteYupShape";
@@ -237,7 +236,12 @@ export const SatelliteModal = ({
     await emptyDataRemover(values);
     if (editing && newSat) handleClose();
     if (editing && !newSat) await setValues(initValues);
-    setEditing(!editing);
+    if (editing) {
+      handleClose();
+      setEditing(false);
+    } else {
+      setEditing(true);
+    }
     if (setErrors) setErrors({});
   };
 
@@ -428,7 +432,6 @@ export const SatelliteModal = ({
               setTouched,
             }) => (
               <Form>
-                {console.log(errors)}
                 {isLoadingSch || isLoadingSat ? (
                   <DialogContent className={classes.loadingDialog}>
                     <CircularProgress size={75} />
