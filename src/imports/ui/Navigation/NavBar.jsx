@@ -53,6 +53,15 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.text.primary,
     },
   },
+  navButtonAPI: {
+    backgroundColor: theme.palette.navigation.main,
+    color: theme.palette.text.primary,
+    marginLeft: "10px",
+    "&:hover": {
+      backgroundColor: theme.palette.navigation.hover,
+      color: theme.palette.text.primary,
+    },
+  },
   navButtonText: {
     filter: `drop-shadow(2px 2px 2px ${theme.palette.tertiary.shadow})`,
   },
@@ -67,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const actionsBreak = 650;
+const actionsBreak = 725;
 
 export const NavBar = ({ theme, toggleTheme }) => {
   const { setOpenAlert, setOpenSnack } = useContext(HelpersContext);
@@ -129,7 +138,7 @@ export const NavBar = ({ theme, toggleTheme }) => {
                   }}
                   to="/satellites"
                 >
-                  <span className={classes.navButtonText}> Satellites</span>
+                  <span className={classes.navButtonText}>Satellites</span>
                 </Button>
                 <Button
                   disableElevation
@@ -160,10 +169,15 @@ export const NavBar = ({ theme, toggleTheme }) => {
                 <Button
                   disableElevation
                   size="medium"
-                  className={classes.navButton}
+                  className={classes.navButtonAPI}
                   component={Link}
                   onClick={() => {
-                    window.open("https://github.com/afkrcher/probe#api-documentation", '_blank').focus()
+                    window
+                      .open(
+                        "https://github.com/afkrcher/probe#api-documentation",
+                        "_blank"
+                      )
+                      .focus();
                   }}
                 >
                   <span className={classes.navButtonText}>API</span>
