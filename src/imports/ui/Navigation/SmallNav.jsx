@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import { Meteor } from "meteor/meteor";
 // Imports
-import { useHistory } from "react-router";
 import { Roles } from "meteor/alanning:roles";
 import { useTracker } from "meteor/react-meteor-data";
 import { Link } from "react-router-dom";
@@ -56,8 +56,6 @@ const StyledMenuItem = withStyles((theme) => ({
 }))(MenuItem);
 
 export const SmallNav = ({ theme, toggleTheme }) => {
-  const history = useHistory();
-
   const [user, roles, isLoadingRoles] = useTracker(() => {
     const subRoles = Meteor.subscribe("roles");
     const user = Meteor.user()?.username;
@@ -77,7 +75,6 @@ export const SmallNav = ({ theme, toggleTheme }) => {
   const handleLogout = (e) => {
     e.preventDefault();
     Meteor.logout();
-    setTimeout(() => history.push("/"));
   };
 
   return (

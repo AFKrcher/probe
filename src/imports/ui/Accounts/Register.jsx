@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { Meteor } from "meteor/meteor";
 // Imports
-import { Accounts } from "meteor/accounts-base";
 import { useHistory } from "react-router";
 import * as Yup from "yup";
+import HelpersContext from "../Dialogs/HelpersContext.jsx";
+
+// Components
+import AlertDialog from "../Dialogs/AlertDialog.jsx";
+import SnackBar from "../Dialogs/SnackBar.jsx";
 
 // @material-ui
 import { Grid, Button, Tooltip } from "@material-ui/core";
@@ -31,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
 export const Register = () => {
   const classes = useStyles();
   const history = useHistory();
+
+  const { setOpenAlert, alert, setAlert, setSnack, snack, setOpenSnack } =
+    useContext(HelpersContext);
 
   const [passErr, setPassErr] = useState();
   const [confirmErr, setConfirmErr] = useState();
@@ -139,25 +147,37 @@ export const Register = () => {
     let username = document.getElementById("username")?.value;
     let password = document.getElementById("password")?.value;
 
-    Meteor.call("registerUser", email, username, password, (_, res) => {
+    Meteor.call("registerUser", email, username, password, async (err, res) => {
       if (res) {
-        Meteor.loginWithPassword(
+        await Meteor.loginWithPassword(
           {
             username: username,
           },
           password,
           (error) => {
-            if (error) alert(error);
+            if (error) {
+              setAlert({
+                title: "Error Encountered",
+                text: err?.reason,
+                actions: null,
+                closeAction: "Close",
+              });
+              setOpenAlert(true);
+            }
           }
         );
       }
-      alert(res);
-      if (!res.includes("error")) history.push("/");
+      if (!res?.includes("error")) {
+        await setSnack(res);
+        setOpenSnack(true);
+      }
     });
   };
 
   return (
     <Grid container justifyContent="center" alignItems="center">
+      <AlertDialog bodyAlert={alert} />
+      <SnackBar bodySnackBar={snack} />
       <FormControl className={classes.margin}>
         <form
           onSubmit={registerUser}

@@ -4,7 +4,7 @@ import { _ } from "meteor/underscore";
 DDPRateLimiter.setErrorMessage(({ timeToReset }) => {
   const time = Math.ceil(timeToReset / 1000);
   const seconds = time === 1 ? "second" : "seconds";
-  return `Easy on the gas, buddy. Too many requests. Try again in ${time} ${seconds}.`;
+  return `You have reached your request limit for this action. Please try again in ${time} ${seconds}.`;
 });
 
 const assignLimits = ({ methods, limit, timeRange }) => {
