@@ -31,7 +31,7 @@ import { reseed } from "./methods/reseed";
 dotenv.config({
   path: Assets.absoluteFilePath(
     process.env.NODE_ENV === "development" ? ".env.dev" : ".env.prod"
-  ), // .env file in the private folder
+  ), // .env.* file in the ~/src/private folder
 });
 
 const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT, NODE_ENV } = process.env;
