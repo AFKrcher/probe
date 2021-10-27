@@ -157,6 +157,17 @@ export const NavBar = ({ theme, toggleTheme }) => {
                 >
                   <span className={classes.navButtonText}>About</span>
                 </Button>
+                <Button
+                  disableElevation
+                  size="medium"
+                  className={classes.navButton}
+                  component={Link}
+                  onClick={() => {
+                    window.open("https://github.com/afkrcher/probe#api-documentation", '_blank').focus()
+                  }}
+                >
+                  <span className={classes.navButtonText}>API</span>
+                </Button>
               </React.Fragment>
             ) : null}
           </div>
