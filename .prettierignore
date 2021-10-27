@@ -1,0 +1,9 @@
+# Ignore docker files
+*docker*
+*Docker*
+
+# Ignore ignores
+.*ignore*
+
+# Ignore bach scripts
+*.sh

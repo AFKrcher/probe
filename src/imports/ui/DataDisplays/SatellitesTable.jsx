@@ -140,6 +140,13 @@ const useStyles = makeStyles((theme) => ({
 
 const newSatValues = {
   noradID: "",
+  isDeleted: null,
+  createdOn: null,
+  createdBy: null,
+  modifiedOn: null,
+  modifiedBy: null,
+  adminCheck: null,
+  machineCheck: null,
 };
 
 // breakpoints based on device width / height
@@ -335,7 +342,7 @@ export const SatellitesTable = () => {
     downloadFile(uri, "json");
   };
 
-  const exportTableToCSV = (html) => {
+  const exportTableToCSV = () => {
     const tempArr = schemas
       .map((schema) => schema.name)
       .sort((a, b) => a.localeCompare(b));
