@@ -20,6 +20,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import SatelliteIcon from "@material-ui/icons/Satellite";
 import StorageIcon from "@material-ui/icons/Storage";
 import ImportContacts from "@material-ui/icons/ImportContacts";
+import Code from "@material-ui/icons/Code";
 
 // CSS
 import { themes } from "../css/Themes.jsx";
@@ -112,6 +113,23 @@ export const SmallNav = ({ theme, toggleTheme }) => {
             <ImportContacts fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="About" />
+        </StyledMenuItem>
+        <StyledMenuItem
+          id="api"
+          component={Link}
+          onClick={() => {
+            window
+              .open(
+                "https://github.com/afkrcher/probe#api-documentation",
+                "_blank"
+              )
+              .focus();
+          }}
+        >
+          <ListItemIcon>
+            <Code fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="API" />
         </StyledMenuItem>
         <Divider component="li" />
         <StyledMenuItem onClick={toggleTheme}>
