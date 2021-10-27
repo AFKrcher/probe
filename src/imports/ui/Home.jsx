@@ -115,7 +115,7 @@ export const Home = () => {
   const [page, setPage] = useState(1);
   const [limiter] = useState(3);
   const [scrolled, setScrolled] = useState(false);
-  const [infiniteMode, setInfiniteMode] = useState(false);
+  const [infiniteMode, setInfiniteMode] = useState(true);
   const [mini, setMini] = useState(false);
 
   const count = SatelliteCollection.find().count();

@@ -147,7 +147,7 @@ Meteor.startup(() => {
   });
 
   rateLimit({
-    methods: ["sendEmail", "registerUser"],
+    methods: ["sendEmail", "registerUser", "forgotPassword"],
     limit: 1, // limits method calls to 1 request per 100 seconds
     timeRange: 100000,
   });
