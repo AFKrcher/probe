@@ -31,13 +31,16 @@ export default function PromptDialog({ body }) {
 
   const { openVisualize, setOpenVisualize } = useContext(HelpersContext);
 
-  const handleCancelAlert = () => {
-    setOpenVisualize(false);
-    body = null;
+  const handleCancelVisualize = async () => {
+    await setOpenVisualize(false);
   };
 
   return (
-    <Dialog open={openVisualize} onClose={handleCancelAlert} fullScreen={true}>
+    <Dialog
+      open={openVisualize}
+      onClose={handleCancelVisualize}
+      fullScreen={true}
+    >
       <DialogTitle>
         <div className={classes.modalHeader}>
           <Tooltip
@@ -62,7 +65,7 @@ export default function PromptDialog({ body }) {
             size="small"
             className={classes.modalButton}
             id="exitVisualize"
-            onClick={handleCancelAlert}
+            onClick={handleCancelVisualize}
           >
             <CloseIcon />
           </IconButton>

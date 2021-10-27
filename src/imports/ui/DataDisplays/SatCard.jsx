@@ -80,14 +80,14 @@ const descriptionCutoffBreak = 350;
 export const SatCard = ({ width, height, satellite }) => {
   const classes = useStyles();
   const history = useHistory();
-  const { setOpenVisualize } = useContext(HelpersContext);
+  const { setOpenVisualize, visualize, setVisualize } =
+    useContext(HelpersContext);
 
   const [showModal, setShowModal] = useState(false);
-  const [prompt, setPrompt] = useState();
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = (e) => {
+    setAnchorEl(e.currentTarget);
   };
 
   const handleClose = () => {
@@ -99,22 +99,23 @@ export const SatCard = ({ width, height, satellite }) => {
     setShowModal(true);
   }
 
-  function handleDashboard(e, id) {
+  function handleDashboard(e) {
     e.preventDefault();
-    history.push(`/dashboard/${id}`);
+    history.push(`/dashboard/${satellite.noradID}`);
   }
 
-  const handleVisualize = (satellite, url) => {
-    setPrompt({
-      url: url,
-      satellite: satellite,
+  const handleVisualize = () => {
+    setOpenVisualize(false);
+    setVisualize({
+      url: `https://spacecockpit.saberastro.com/?SID=${satellite.noradID}&FS=${satellite.noradID}`,
+      satellite: satellite.names[0]?.name,
     });
     setOpenVisualize(true);
   };
 
   return (
-    <span>
-      <VisualizeDialog body={prompt} />
+    <React.Fragment>
+      <VisualizeDialog body={visualize} />
       <SatelliteModal
         show={showModal}
         initValues={satellite}
@@ -223,22 +224,13 @@ export const SatCard = ({ width, height, satellite }) => {
                 <MenuItem
                   dense
                   onClick={(e) => {
-                    handleDashboard(e, satellite.noradID);
+                    handleDashboard(e);
                     handleClose(e);
                   }}
                 >
                   <DashboardIcon className={classes.iconButton} />
                 </MenuItem>
-                <MenuItem
-                  dense
-                  onClick={(e) => {
-                    handleVisualize(
-                      satellite.names[0]?.name,
-                      `https://spacecockpit.saberastro.com/?SID=${satellite.noradID}&FS=${satellite.noradID}`
-                    );
-                    handleClose(e);
-                  }}
-                >
+                <MenuItem dense onClick={handleVisualize}>
                   <img
                     src="/assets/saberastro.png"
                     width="27.5px"
@@ -264,7 +256,7 @@ export const SatCard = ({ width, height, satellite }) => {
                   size="medium"
                   variant="outlined"
                   className={classes.cardButton}
-                  onClick={(e) => handleDashboard(e, satellite.noradID)}
+                  onClick={handleDashboard}
                 >
                   <DashboardIcon className={classes.iconButton} />
                 </Button>
@@ -278,12 +270,7 @@ export const SatCard = ({ width, height, satellite }) => {
                   size="medium"
                   variant="outlined"
                   className={classes.cardButton}
-                  onClick={() =>
-                    handleVisualize(
-                      satellite.names[0].name,
-                      `https://spacecockpit.saberastro.com/?SID=${satellite.noradID}&FS=${satellite.noradID}`
-                    )
-                  }
+                  onClick={handleVisualize}
                 >
                   <img src="/assets/saberastro.png" width="27.5px" />
                 </Button>
@@ -292,6 +279,6 @@ export const SatCard = ({ width, height, satellite }) => {
           )}
         </CardActions>
       </Card>
-    </span>
+    </React.Fragment>
   );
 };
