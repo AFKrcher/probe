@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { Meteor } from "meteor/meteor";
 //Imports
 import { useTracker } from "meteor/react-meteor-data";
 import { Accounts } from "meteor/accounts-base";
@@ -66,17 +67,16 @@ export const Settings = () => {
 
   const deleteAccount = () => {
     setLoading(true);
-    Meteor.call("deleteAccount", id, (err, res) => {
+    Meteor.call("deleteAccount", id, (err) => {
       if (err) {
         setAlert({
           title: "Error Encountered",
-          text: err,
+          text: err.reason,
           actions: null,
           closeAction: "Close",
         });
-        return;
-      }
-      if (res) {
+        setOpenAlert(true);
+      } else {
         setLoading(false);
         setSnack("Your account has been successfully deleted");
         setOpenSnack(true);
@@ -85,17 +85,19 @@ export const Settings = () => {
   };
 
   const sendEmail = () => {
-    Meteor.call("sendEmail", id, email, (err, res) => {
+    Meteor.call("sendEmail", id, email, (err) => {
       if (err) {
         setAlert({
           title: "Error Encountered",
-          text: err,
+          text: err.reason,
           actions: null,
           closeAction: "Close",
         });
-      }
-      if (res) {
-        setSnack(res);
+        setOpenAlert(true);
+      } else {
+        setSnack(
+          `Verification email sent to ${email}. Please check your inbox for further instructions.`
+        );
         setOpenSnack(true);
       }
     });
@@ -202,7 +204,7 @@ export const Settings = () => {
     }
   };
 
-  const updateAccount = (e) => {
+  const updateAccount = async (e) => {
     e.preventDefault();
     const newEmail = e.target.newEmail?.value;
     const newUsername = e.target.newUsername?.value;
@@ -211,16 +213,16 @@ export const Settings = () => {
     const confirm = e.target.confirm?.value;
 
     if (isValidEmail(newEmail) && newEmail !== email) {
-      Meteor.call("updateEmail", id, email, newEmail, (err, res) => {
+      await Meteor.call("updateEmail", id, email, newEmail, (err) => {
         if (err) {
           setAlert({
             title: "Error Encountered",
-            text: err?.message || err,
+            text: err?.reason,
             actions: null,
             closeAction: "Close",
           });
           setOpenAlert(true);
-        } else if (res) {
+        } else {
           setDisabled(true);
           setOpenSnack(true);
         }
@@ -228,16 +230,16 @@ export const Settings = () => {
     }
 
     if (isValidUsername(newUsername) && newUsername !== user) {
-      Meteor.call("updateUsername", id, user, newUsername, (err, res) => {
+      await Meteor.call("updateUsername", id, user, newUsername, (err) => {
         if (err) {
           setAlert({
             title: "Error Encountered",
-            text: err?.message || err,
+            text: err?.reason,
             actions: null,
             closeAction: "Close",
           });
           setOpenAlert(true);
-        } else if (res) {
+        } else {
           setDisabled(true);
           setOpenSnack(true);
         }
@@ -245,11 +247,11 @@ export const Settings = () => {
     }
 
     if (isValidPassword(oldPassword, newPassword, confirm)) {
-      Accounts.changePassword(oldPassword, newPassword, (err, res) => {
-        if (err || res) {
+      await Accounts.changePassword(oldPassword, newPassword, (err) => {
+        if (err) {
           setAlert({
             title: "Error Encountered",
-            text: err?.message || err || res,
+            text: err?.reason,
             actions: null,
             closeAction: "Close",
           });
@@ -295,6 +297,8 @@ export const Settings = () => {
     } else if (isValidEmail(newEmail) && newEmail !== email) {
       setSnack(`Email successfully changed from ${email} to ${newEmail}`);
     }
+
+    setTimeout(() => window.location.reload(true), 3000);
   };
 
   return (
@@ -400,14 +404,17 @@ export const Settings = () => {
               {Meteor.user()?.emails[0]?.verified}
               <Button
                 id="verifyButton"
+                variant="outlined"
                 onClick={sendEmail}
                 fullWidth
                 className={classes.button}
+                disabled
               >
                 Verify your email
               </Button>
               <Button
                 id="deleteButton"
+                variant="outlined"
                 color="secondary"
                 onClick={deleteAccount}
                 fullWidth
