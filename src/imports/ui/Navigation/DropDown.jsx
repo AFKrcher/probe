@@ -86,9 +86,10 @@ export const DropDown = ({ theme, toggleTheme }) => {
     setAnchorEl(null);
   };
 
-  const handleLogout = (e) => {
+  const handleLogout = async (e) => {
     e.preventDefault();
-    Meteor.logout();
+    await Meteor.logout();
+    window.location.reload();
   };
 
   return (

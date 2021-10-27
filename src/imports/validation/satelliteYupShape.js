@@ -7,33 +7,6 @@ import { _ } from "meteor/underscore";
 import { SchemaCollection } from "/imports/api/schemas";
 import { SatelliteCollection } from "/imports/api/satellites";
 
-const isUniqueList = (initValues, sats, path, field) => {
-  let list = [];
-  if (!path) {
-    for (let sat in sats) {
-      sats[sat][field] === initValues[field]
-        ? null
-        : list.push(sats[sat][field]);
-    }
-  } else if (initValues[path]) {
-    for (let sat in sats) {
-      let satEntries = sats[sat][path];
-      for (let entry in satEntries) {
-        if (initValues[path].length > 0 && initValues[path][entry]) {
-          if (
-            satEntries[entry][field] !== initValues[path][entry][field] &&
-            satEntries[entry][field] !== "N/A"
-          ) {
-            let item = satEntries[entry][field];
-            list.push(item);
-          }
-        }
-      }
-    }
-  }
-  return list;
-};
-
 const schemaCleaner = (schemas, values) => {
   let schemaObj = {}; // object: {schema.name: {field.name: {field.type: string/number/date, field.allowedValues: [], required: field.required, min: field.min, max: field.max}}}
 
@@ -62,20 +35,30 @@ const schemaCleaner = (schemas, values) => {
   return schemaObj;
 };
 
-const initialYupShapeGenerator = (initValues, sats, isUniqueList) => {
+const initialYupShapeGenerator = (initValues) => {
   return {
     // NORAD ID and _id are always a part of the yup shape
-    _id: Yup.string().notOneOf(
-      isUniqueList(initValues, sats, null, "_id"),
-      "Something went wrong while assigning _id"
+    _id: Yup.string().test(
+      "uniqueID",
+      (obj) => `The _id, "${obj?.value}", already exists in our database`,
+      (value) =>
+        SatelliteCollection.findOne({ _id: value })?._id !== initValues._id &&
+        value
+          ? SatelliteCollection.find({ _id: value }).count() === 0
+          : true
     ),
     noradID: Yup.string()
       .required(`Required`)
       .matches(/^[0-9]+$/g, "Must be a positive number")
-      .notOneOf(
-        isUniqueList(initValues, sats, null, "noradID"),
+      .test(
+        "uniqueNORADID",
         (obj) =>
-          `A satellite with NORAD ID of ${obj.value} already exists in our records or has been temporarily archived.`
+          `The NORAD ID, "${obj?.value}", already exists in our database`,
+        (value) =>
+          SatelliteCollection.findOne({ noradID: value })?.noradID !==
+            initValues.noradID && value
+            ? SatelliteCollection.find({ noradID: value }).count() === 0
+            : true
       ),
     adminCheck: Yup.boolean().nullable(),
     machineCheck: Yup.boolean().nullable(),
@@ -87,9 +70,8 @@ const initialYupShapeGenerator = (initValues, sats, isUniqueList) => {
 };
 
 export const satelliteValidatorShaper = (values, initValues) => {
-  const sats = SatelliteCollection.find().fetch();
   const schemas = SchemaCollection.find().fetch();
-  let yupShape = initialYupShapeGenerator(initValues, sats, isUniqueList); // instantiation of base yupShape
+  let yupShape = initialYupShapeGenerator(initValues); // instantiation of base yupShape
   const cleanSchema = schemaCleaner(schemas, values); // generates a clean schema object for easier manipulation
 
   Yup.addMethod(Yup.mixed, "checkEachEntry", function (message) {
@@ -193,9 +175,31 @@ export const satelliteValidatorShaper = (values, initValues) => {
               : false,
             isUnique:
               field.type === "string" && field.isUnique
-                ? baseFieldType.notOneOf(
-                    isUniqueList(initValues, sats, path, schemaField),
-                    `${path}-${entryCount}-${fieldCount}_A satellite with ${schemaField} of ${value[entryCount][schemaField]} already exists.`
+                ? baseFieldType.test(
+                    "isUnique",
+                    `${path}-${entryCount}-${fieldCount}_A satellite with ${schemaField} of ${value[entryCount][schemaField]} already exists.`,
+                    (value) => {
+                      let or = [];
+                      if (initValues[path]) {
+                        initValues[path].forEach((entry, index) => {
+                          let tempObj = {};
+                          tempObj[`${path}.${schemaField}`] =
+                            initValues[path][index][schemaField];
+                          or.push(tempObj);
+                        });
+                      }
+                      let selector = { $or: or };
+                      let sat = SatelliteCollection.findOne(selector);
+                      if (sat) {
+                        selector = {};
+                        selector[`${path}.${schemaField}`] = value;
+                        return sat[path].find(
+                          (entry) => entry[schemaField] === value
+                        )
+                          ? true
+                          : SatelliteCollection.find(selector).count() === 0;
+                      }
+                    }
                   )
                 : false,
             min:

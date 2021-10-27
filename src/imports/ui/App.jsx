@@ -61,6 +61,10 @@ export const App = () => {
     actions: "", //components for user input
     closeAction: "", //name of closing action button, e.g. "Cancel"
   });
+  const [visualize, setVisualize] = useState({
+    url: "https://spacecockpit.saberastro.com/",
+    satellite: "",
+  });
   const [snack, setSnack] = useState(""); //snackbar body text
 
   const classes = useStyles();
@@ -94,6 +98,8 @@ export const App = () => {
         setOpenSnack,
         openVisualize,
         setOpenVisualize,
+        visualize,
+        setVisualize,
       }}
     >
       <ThemeProvider theme={theme}>

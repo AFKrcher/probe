@@ -29,7 +29,9 @@ export default function AlertDialog({ bodyAlert }) {
         <DialogActions
           style={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: bodyAlert?.actions
+              ? "space-between"
+              : "space-around",
             margin: "0px 15px 10px 15px",
           }}
         >

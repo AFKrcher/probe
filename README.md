@@ -58,7 +58,6 @@ Please see the API documentation in sections [Public API](#Public-API) and [Part
 The list below is meant to be a guide and not a rule-book. Please try your best to use this guide to build code that is readable and easy-to-understand for all contributors:
 
 - Use Prettier (preferred) or any other code formatting/linting extension to format the code properly
-- Use PropTypes to both annotate prop types for other contributors, and for development type-checking
 - Use comments to explain functions that may result in a "why" or "how" from first-time viewers of the code
 - Remove all excess imports, declarations, styles, etc. that are not being used prior to pushing your code
 - Comment out non-functional or non-tested code prior to pushing your code

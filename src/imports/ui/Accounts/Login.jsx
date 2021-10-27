@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 // Imports
 import { useHistory } from "react-router";
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
+import HelpersContext from "../Dialogs/HelpersContext.jsx";
+
+// Components
+import AlertDialog from "../Dialogs/AlertDialog.jsx";
 
 // @material-ui
 import {
@@ -47,7 +51,11 @@ const useStyles = makeStyles((theme) => ({
 
 export const Login = () => {
   const classes = useStyles();
+
   const history = useHistory();
+
+  const { setOpenAlert, alert, setAlert } = useContext(HelpersContext);
+
   const [error, setError] = useState();
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -125,25 +133,40 @@ export const Login = () => {
     history.push("/register");
   };
 
+  const forgotPasswordError = "Please enter a valid email";
+
   const forgotPassword = () => {
     let options = {};
     let username = document.getElementById("username").value;
     if (usernameRegex.test(username)) {
       options.email = username;
-      Accounts.forgotPassword(options, (res) => {
-        alert(
-          res || "An email has been sent with a link to reset your password."
-        );
+      Accounts.forgotPassword(options, async (err) => {
+        if (err) {
+          setAlert({
+            title: "Error Encountered",
+            text: err.reason,
+            actions: null,
+            closeAction: "Close",
+          });
+          setOpenAlert(true);
+        } else {
+          setAlert({
+            title: "Password Reset Email Sent",
+            text: "An email has been sent with instructions for resetting your password.",
+            actions: null,
+            closeAction: "Okay",
+          });
+          setOpenAlert(true);
+        }
       });
     } else {
-      setError("Please provide a valid email.");
+      setError(forgotPasswordError);
     }
   };
 
-  let username = document.getElementById("username")?.value;
-  let pass = document.getElementById("password")?.value;
   return (
     <Grid container justifyContent="center" alignItems="center">
+      <AlertDialog bodyAlert={alert} />
       {loading ? (
         <div className={classes.spinnerContainer}>
           <CircularProgress
@@ -170,8 +193,14 @@ export const Login = () => {
               id="password"
               label="Password"
               type="password"
-              error={error ? true : false}
-              helperText={error ? error : null}
+              error={error ? !error.includes(forgotPasswordError) : false}
+              helperText={
+                error
+                  ? error.includes(forgotPasswordError)
+                    ? null
+                    : error
+                  : null
+              }
               onChange={handleDisable}
               ref={(input) => (password = input)}
               className={classes.textField}
@@ -189,11 +218,7 @@ export const Login = () => {
             >
               Login
             </Button>
-            <Tooltip
-              title="Redirect to the account registration page"
-              placement="right"
-              arrow
-            >
+            <Tooltip title="To account registration" placement="right" arrow>
               <Button
                 id="register-instead"
                 className={classes.registerButton}
@@ -204,7 +229,7 @@ export const Login = () => {
               </Button>
             </Tooltip>
             <Tooltip
-              title="Enter a registered email above"
+              title="Send a password reset email"
               placement="right"
               arrow
             >

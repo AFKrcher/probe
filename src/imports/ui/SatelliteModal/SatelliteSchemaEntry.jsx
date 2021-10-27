@@ -114,7 +114,7 @@ export const SatelliteSchemaEntry = ({
           method: "",
           name: "",
           validated: false,
-          validatedOn: "",
+          validatedOn: new Date(),
         },
       ]);
       setFieldValue(verifiedField, [
@@ -122,7 +122,7 @@ export const SatelliteSchemaEntry = ({
           method: "",
           name: "",
           verified: false,
-          verifiedOn: "",
+          verifiedOn: new Date(),
         },
       ]);
     },
