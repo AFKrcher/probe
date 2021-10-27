@@ -73,7 +73,7 @@ Instructions for system dependencies and running the application in a non-Docker
 2. Install Meteor here: https://www.meteor.com/developers/install
 3. Clone the repo `git clone https://github.com/justinthelaw/probe.git`
 4. Inside the `/src` run `meteor npm install`
-5. Read and completed the steps in the [Environment Variables](#Environment-Variables) section
+5. Read and complete the steps in the [Environment Variables](#Environment-Variables) section
 6. Run `meteor run --port 8080`
 7. Go to `http://localhost:8080` and you should see the test app running
 
@@ -91,15 +91,17 @@ application code via `process.env.<variable-name>`. Prior to development or depl
 - A `.env.dev` must be created from the `.env.example` prior to a `meteor run --port 8080` or a Docker development build with `scripts/build-dev.sh`
 - A `.env.prod` must be created from the `.env.example` prior to a Docker production build with `scripts/build-prod.sh`
 
-| Environment Variable | Description                               | Example Setting                        |
-| :------------------- | :---------------------------------------- | :------------------------------------- |
-| ADMIN_PASSWORD       | Password for admin account in development | password                               |
-| PROBE_API_KEY        | PROBE API access key                      | password                               |
-| INLINE_RUNTIME_CHUNK | Disables unsafe-inline script source      | false                                  |
-| PORT                 | Exposed port (may not be required)        | 3000                                   |
-| ROOT_URL             | Base URL for hosted application           | localhost or https://your.personal.url |
-| MAIL_URL             | Hosted SMTPS                              | smtps://user:password@mailhost:port/   |
-| MONGO_URL            | Hosted MongoDB instance                   | mongodb://mongo:27017/database         |
+| Environment Variable | Description                               | Example Setting                      |
+| :------------------- | :---------------------------------------- | :----------------------------------- |
+| ADMIN_PASSWORD       | Password for admin account in development | password                             |
+| PROBE_API_KEY        | PROBE API access key                      | password                             |
+| INLINE_RUNTIME_CHUNK | Disables unsafe-inline script source      | false                                |
+| PORT                 | Exposed port (may not be required)        | 3000                                 |
+| ROOT_URL             | Base URL for hosted application           | http://localhost                     |
+| MAIL_URL             | Hosted SMTPS                              | smtps://user:password@mailhost:port/ |
+| MONGO_URL\*          | Hosted MongoDB instance                   | mongodb://mongo:27017/database       |
+
+\* Only required for Docker development build
 
 ### Access MongoDB
 
@@ -129,9 +131,9 @@ Cypress testing is used for integration and UI/UX testing of PROBE. Please refer
 
 #### Docker Development
 
-The purpose of the Docker development build is to locally test a meteor-built intance of the application, with conenctions to hosted services suchs as MongoDB and SMTPS. PM2 and alpine-node are used for load-balancing, app-management, and CSP/HTTP testing. PM2 configration settings can be modified in the `pm2.json` file.
+The purpose of the Docker development build is to locally test a meteor-built instance of the application, with conenctions to hosted services suchs as MongoDB and SMTPS. PM2 and alpine-node are used for load-balancing, app-management, and CSP/HTTP testing. PM2 configuration settings can be modified in the `pm2.json` file.
 
-This Docker build is dependent on the `pm2.json` and `.env` files to describe the configuration of your meteor application. A pm2.example.json is provided for filling-in and a `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README.
+This Docker build is dependent on the `pm2.json` and `.env` files to describe the configuration of your meteor application. A pm2.example.json is provided for filling-in and a `.env.example` is provided in `~/src/private` for environmental variable configuration as described in the [Environment Variables](#Environment-Variables) section of this README.
 
 Paste and run the following command at the root of the project to build and run a docker image of PROBE on http://localhost:3000. Please note that `chmod +x` may not be necessary after your first run of the bash script.
 
@@ -141,7 +143,7 @@ chmod +x scripts/build-dev.sh && scripts/build-dev.sh
 
 #### Docker Production
 
-The Docker production build is dependent on the `.env` file to describe the configuration of your meteor application. A `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README. A Docker.example.prod is provided as a template for filling-out hosted service URIs.
+The Docker production build is dependent on the `.env` file to describe the configuration of your meteor application. A `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README.
 
 Paste and run the following command at the root of the project to build and run a docker production image of PROBE. Please note that `chmod +x` may not be necessary after your first run of the bash script.
 
@@ -377,7 +379,7 @@ RESPONSE:
 The partner API allows registered partners with PROBE API keys to go beyond the public API GET requests. The partner API is used mainly for PATCH, POST, and DELETE requests,
 as well as GET requests of more detailed information.
 
-All POST, PATCH, DELETE, or PUT requests are processed by the server and reflected in the web application asynchrounously. You will need to perform a GET request or visit the web application to confirm the success of your requests.
+All POST, PATCH, DELETE, or PUT requests are processed by the server and reflected in the web application asynchronously. You will need to perform a GET request or visit the web application to confirm the success of your requests.
 
 All POST, PATCH, DELETE, or PUT requests made with improper format will respond with: `You must provide a request body IAW the PROBE API documentation.`
 
@@ -460,10 +462,6 @@ BODY:
   },
   "role": "admin"
 }
-```
-
-```js
-const allowedRoles = ["dummies", "moderator", "machine", "admin"];
 ```
 
 RESPONSE:
