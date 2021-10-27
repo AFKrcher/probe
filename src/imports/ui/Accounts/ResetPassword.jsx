@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 // Imports
 import { useLocation, useHistory } from "react-router-dom";
+import { Accounts } from "meteor/accounts-base";
 
 // @material-ui
 import { makeStyles } from "@material-ui/core/styles";
@@ -50,8 +51,8 @@ export const ResetPassword = () => {
     e.preventDefault();
     const newPassword = document.getElementById("password").value;
     Accounts.resetPassword(token, newPassword, (res, err) => {
-      if (err) alert(err);
-      if (res) alert(res);
+      if (err) alert(err?.reason);
+      if (res) alert(res?.toString());
     });
   };
 

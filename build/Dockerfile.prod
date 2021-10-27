@@ -1,31 +1,15 @@
-###### STAGE 1: Build the project and set up folder permissions
-# If you don't have access to Iron Bank, just use the node:14.16.1 image from Docker
-FROM registry1.dso.mil/ironbank/opensource/nodejs/nodejs14@sha256:1aa1227b8c3b3adf19280ce88a67ecf696d598ae94c8dbd3253415aa5efb8983 AS BUILD_STAGE
-USER root
-
-# Create the 'appuser' user and group used to launch processes
-# The uid and gid will be set to 950 to avoid conflicts with offical users on the docker host.
-RUN groupadd -r appuser -g 950 && \
-  useradd -u 950 -m -d /home/appuser -r -g appuser -s /sbin/nologin -c "restricted docker account" appuser
-
-RUN mkdir /app
-COPY bundle /app
-RUN chown -R appuser:appuser /app
-WORKDIR /app
-
-# Install all node_modules
-RUN cd /app/programs/server && npm install --production && npm cache clean --force
-
-# Switch to build stage 2 user
-USER appuser
-
-###### STAGE: 2 Deploy to the hardened dotnet container.
 # If you don't have access to Iron Bank, just use the node:14.16.1 image from Docker
 FROM registry1.dso.mil/ironbank/opensource/nodejs/nodejs14@sha256:1aa1227b8c3b3adf19280ce88a67ecf696d598ae94c8dbd3253415aa5efb8983
+
+USER root
+
 WORKDIR /app
-COPY --from=BUILD_STAGE /app .
+COPY bundle /app
+RUN cd /app/programs/server && npm install --production && npm cache clean --force
 
 EXPOSE 3000
+
+USER appuser
 
 # Run the database migration script before starting the program.
 ENTRYPOINT ["node", "/app/main.js", "--v"]

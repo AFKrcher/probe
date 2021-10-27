@@ -1,4 +1,5 @@
 import React from "react";
+import { Meteor } from "meteor/meteor";
 // Imports
 import { useTracker } from "meteor/react-meteor-data";
 import { ErrorsCollection } from "../../api/errors";
@@ -64,13 +65,13 @@ export const ErrorLog = () => {
 
   const deleteError = (id) => {
     Meteor.call("deleteError", id, (err, res) => {
-      if (err || res) console.log(err || res);
+      if (err || res) console.log(err?.reason || res?.toString());
     });
   };
 
   const deleteAllErrors = () => {
     Meteor.call("deleteAllErrors", (err, res) => {
-      if (err || res) console.log(err || res);
+      if (err || res) console.log(err?.reason || res?.toString());
     });
   };
 

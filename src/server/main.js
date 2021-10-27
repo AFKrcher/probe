@@ -41,9 +41,9 @@ Meteor.startup(() => {
   console.log("> PROBE server is starting-up...");
   console.log("> Checking environment variables...");
   console.log(
-    typeof ADMIN_PASSWORD === "string" && typeof PROBE_API_KEY === "string"
-      ? "> Environment variables loaded!"
-      : "> Could not load environment variables. Please check the .env files in ~/private and restart the server."
+    ADMIN_PASSWORD && PROBE_API_KEY && ROOT_URL && PORT && NODE_ENV
+      ? `> Environment variables for ${NODE_ENV} were loaded!`
+      : `> Error loading environment variables for ${NODE_ENV}. Please check the .env files in ~/private and restart the server.`
   );
 
   // See helmet.js for Content Security Policy (CSP) options
@@ -127,8 +127,6 @@ Meteor.startup(() => {
       "addToFavorites",
       "removeRole",
       "checkIfBanned",
-      "sendEmail",
-      "registerUser",
       "deleteError",
       "deleteAllErrors",
       "addNewSatellite",
@@ -146,6 +144,12 @@ Meteor.startup(() => {
     ],
     limit: 5, // limits method calls to 5 requests per 5 seconds
     timeRange: 5000,
+  });
+
+  rateLimit({
+    methods: ["sendEmail", "registerUser"],
+    limit: 1, // limits method calls to 1 request per 100 seconds
+    timeRange: 100000,
   });
 
   // Reseeding functions

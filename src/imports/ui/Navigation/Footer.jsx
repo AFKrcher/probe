@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
     filter: `drop-shadow(2px 2px 2px ${theme.palette.tertiary.shadow})`,
     "&:hover": {
-      color: "black",
+      color: theme.palette.info.light,
       filter: "none",
       cursor: "pointer",
     },

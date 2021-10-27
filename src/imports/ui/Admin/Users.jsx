@@ -1,6 +1,8 @@
 import React, { useState, useContext } from "react";
-import HelpersContext from "../Dialogs/HelpersContext.jsx";
+import { Meteor } from "meteor/meteor";
 // Imports
+import { Roles } from "meteor/alanning:roles";
+import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import { useTracker } from "meteor/react-meteor-data";
 import { UsersCollection } from "../../api/users";
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
@@ -171,21 +173,21 @@ export const Users = () => {
       user,
       role,
       (err, res) => {
-        if (err || res) console.log(err || res);
+        if (err || res) console.log(err?.reason || res?.toString());
       } // TODO: Use snackbar and alert
     );
   };
 
   const deleteAccount = (id) => {
     Meteor.call("deleteAccount", id, (err, res) => {
-      if (err || res) console.log(err || res); // TODO: Use snackbar and alert
+      if (err || res) console.log(err?.reason || res?.toString()); // TODO: Use snackbar and alert
     });
     setOpen(false);
   };
 
   const removeRole = (user, role) => {
     Meteor.call("removeRole", user, role, (err, res) => {
-      if (err || res) console.log(err || res); // TODO: Use snackbar and alert
+      if (err || res) console.log(err?.reason || res?.toString()); // TODO: Use snackbar and alert
     });
   };
 
