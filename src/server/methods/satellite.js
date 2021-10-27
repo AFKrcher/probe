@@ -1,11 +1,11 @@
 import {
   userHasVerifiedData,
   machineHasVerifiedData,
-} from "../helpers/verificationFuncs";
+} from "../utils/verificationFuncs";
 import {
   userHasValidatedData,
   machineHasValidatedData,
-} from "../helpers/validationFuncs";
+} from "../utils/validationFuncs";
 
 export const satelliteMethods = (
   Meteor,

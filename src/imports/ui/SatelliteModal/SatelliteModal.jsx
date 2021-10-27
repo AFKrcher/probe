@@ -102,13 +102,12 @@ export const SatelliteModal = ({
   const [editingOne, setEditingOne] = useState(false);
   const [satSchema, setSatSchema] = useState(null);
 
-  const [user, schemas, sats, isLoadingSch, isLoadingSat] = useTracker(() => {
+  const [user, schemas, isLoadingSch, isLoadingSat] = useTracker(() => {
     const subSch = Meteor.subscribe("schemas");
     const subSat = Meteor.subscribe("satellites");
     const schemas = SchemaCollection.find({ isDeleted: false }).fetch();
-    const sats = SatelliteCollection.find({ isDeleted: false }).fetch();
     const user = Meteor.user();
-    return [user, schemas, sats, !subSch.ready(), !subSat.ready()];
+    return [user, schemas, !subSch.ready(), !subSat.ready()];
   });
 
   useEffect(() => {
@@ -125,7 +124,7 @@ export const SatelliteModal = ({
     if (newSat) {
       Meteor.call("addNewSatellite", initValues, values, (err, res) => {
         if (res || err) {
-          console.log(res?.toString() || err?.reason);
+          console.log(res || err);
         } else {
           setOpenSnack(false);
           setSnack(
@@ -142,7 +141,7 @@ export const SatelliteModal = ({
     } else {
       Meteor.call("updateSatellite", initValues, values, (err, res) => {
         if (res || err) {
-          console.log(res?.toString() || err?.reason);
+          console.log(res || err);
         } else {
           setOpenSnack(false);
           setSnack(
@@ -167,9 +166,9 @@ export const SatelliteModal = ({
     if (!admin) {
       Meteor.call("deleteSatellite", values, (err, res) => {
         if (res || err) {
-          console.log(res?.toString() || err?.reason);
+          console.log(res || err);
         } else {
-          setOpenconsole.log(false);
+          setOpenAlert(false);
           handleClose();
           setOpenSnack(false);
           setSnack(
@@ -185,9 +184,9 @@ export const SatelliteModal = ({
     } else {
       Meteor.call("actuallyDeleteSatellite", values, (err, res) => {
         if (res || err) {
-          console.log(res?.toString() || err?.reason);
+          console.log(res || err);
         } else {
-          setOpenconsole.log(false);
+          setOpenAlert(false);
           setOpenSnack(false);
           setSnack(
             <span>
@@ -205,7 +204,7 @@ export const SatelliteModal = ({
   };
 
   const handleDeleteDialog = (values) => {
-    setconsole.log({
+    setAlert({
       title: (
         <span>
           Delete <strong>{values.names ? values.names[0].name : "N/A"}</strong>?
@@ -231,7 +230,7 @@ export const SatelliteModal = ({
       ),
       closeAction: "Cancel",
     });
-    setOpenconsole.log(true);
+    setOpenAlert(true);
   };
 
   const handleToggleEdit = async (setValues, values, setErrors) => {
@@ -244,7 +243,7 @@ export const SatelliteModal = ({
 
   const handleEdit = (setValues, dirty, touched, values, setErrors) => {
     if ((editing || editingOne) && dirty && !_.isEmpty(touched)) {
-      setconsole.log({
+      setAlert({
         title: initValues.names ? (
           <span>
             Delete changes on{" "}
@@ -277,7 +276,7 @@ export const SatelliteModal = ({
             color="secondary"
             disableElevation
             onClick={() => {
-              setOpenconsole.log(false);
+              setOpenAlert(false);
               handleToggleEdit(setValues, values, setErrors);
             }}
           >
@@ -286,7 +285,7 @@ export const SatelliteModal = ({
         ),
         closeAction: "Cancel",
       });
-      setOpenconsole.log(true);
+      setOpenAlert(true);
       setTimeout(() => setOpenSnack(false), 2000);
     } else {
       handleToggleEdit(setValues, values, setErrors);
@@ -304,7 +303,7 @@ export const SatelliteModal = ({
           if (err) {
             console.log(err);
           } else {
-            setOpenconsole.log(false);
+            setOpenAlert(false);
             setOpenSnack(false);
             setSnack(
               <span>
@@ -332,7 +331,7 @@ export const SatelliteModal = ({
           if (err) {
             console.log(err);
           } else {
-            setOpenconsole.log(false);
+            setOpenAlert(false);
             setOpenSnack(false);
             setSnack(
               <span>
@@ -352,9 +351,9 @@ export const SatelliteModal = ({
   const handleRestore = (values) => {
     Meteor.call("restoreSatellite", initValues, (err, res) => {
       if (res || err) {
-        console.log(res?.toString() || err?.reason);
+        console.log(res || err);
       } else {
-        setOpenconsole.log(false);
+        setOpenAlert(false);
         setOpenSnack(false);
         setSnack(
           <span>
@@ -429,6 +428,7 @@ export const SatelliteModal = ({
               setTouched,
             }) => (
               <Form>
+                {console.log(errors)}
                 {isLoadingSch || isLoadingSat ? (
                   <DialogContent className={classes.loadingDialog}>
                     <CircularProgress size={75} />

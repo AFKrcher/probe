@@ -77,11 +77,12 @@ const initialYupShapeGenerator = (initValues, sats, isUniqueList) => {
         (obj) =>
           `A satellite with NORAD ID of ${obj.value} already exists in our records or has been temporarily archived.`
       ),
-    adminCheck: Yup.boolean().required(),
-    modifiedOn: Yup.date().required(),
-    modifiedBy: Yup.string().required(),
-    createdOn: Yup.date().required(),
-    createdBy: Yup.string().required(),
+    adminCheck: Yup.boolean().nullable(),
+    machineCheck: Yup.boolean().nullable(),
+    modifiedOn: Yup.date().nullable(),
+    modifiedBy: Yup.string().nullable(),
+    createdOn: Yup.date().nullable(),
+    createdBy: Yup.string().nullable(),
   };
 };
 

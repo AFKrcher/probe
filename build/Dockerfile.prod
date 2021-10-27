@@ -9,7 +9,5 @@ RUN cd /app/programs/server && npm install --production && npm cache clean --for
 
 EXPOSE 3000
 
-USER appuser
-
 # Run the database migration script before starting the program.
 ENTRYPOINT ["node", "/app/main.js", "--v"]
