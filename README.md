@@ -55,7 +55,7 @@ GET: `/api/`
 
 RESPONSE:
 
-`"Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
+`"Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/afkrcher/probe#api-documentation."`
 
 ---
 
@@ -231,7 +231,7 @@ GET (POST, DELETE, PUT, PATCH): `/api/partner/:key`
 
 RESPONSE:
 
-`"Welcome PROBE partner! There are <# OF ENDPOINTS> <REQUEST TYPE> endpoints on this route. For documentation, please visit the README at https://github.com/justinthelaw/PROBE."`
+`"Welcome PROBE partner! There are <# OF ENDPOINTS> <REQUEST TYPE> endpoints on this route. For documentation, please visit the README at https://github.com/afkrcher/probe#api-documentation."`
 
 ---
 
@@ -516,7 +516,7 @@ Instructions for system dependencies and running the application in a non-Docker
 
 1. Ensure you have NodeJs installed: https://nodejs.org/en/download/
 2. Install Meteor here: https://www.meteor.com/developers/install
-3. Clone the repo `git clone https://github.com/justinthelaw/probe.git`
+3. Clone the repo `git clone https://github.com/afkrcher/probe#api-documentation.git`
 4. Inside the `/src` run `meteor npm install`
 5. Read and complete the steps in the [Environment Variables](#Environment-Variables) section
 6. Run `meteor run --port 8080`

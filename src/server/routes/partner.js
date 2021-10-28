@@ -83,7 +83,7 @@ export const partnerRoutes = (
     // TODO
     app.post(baseURL + "/satellites", async (req, res) => {
       let sat = req.body;
-      let response = `Satellite of NORAD ID ${sat?.noradID} being processed by PROBE - you should see your satellite on the website soon!`;
+      let response = `Satellite of NORAD ID ${sat?.noradID} is being processed by PROBE`;
       let status = 200;
       if (keyCheck(req.params.key)) {
         if (sat?.noradID && sat?.names?.length > 0) {
