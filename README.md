@@ -47,7 +47,7 @@ HTTP requests made to the PROBE public API routes are limited to 100/hour. Reque
 The public API allows all users to obtain information on satellites and schemas produced by PROBE. Queries in the form of GET requests can be made to obtain specific satellites or schemas. POST, DELETE, PUT, and PATCH requests are not allowed to the public. Below is a list of example requests:
 
 <details>
-<summary>Click to expand...</summary>
+<summary>Click to expand Public API details</summary>
 
 #### Welcome Message
 
@@ -223,7 +223,7 @@ All POST, PATCH, DELETE, or PUT requests are processed by the server and reflect
 All POST, PATCH, DELETE, or PUT requests made with improper format will respond with: `You must provide a request body IAW the PROBE API documentation.`
 
 <details>
-<summary>Click to expand...</summary>
+<summary>Click to expand Partner API details</summary>
 
 #### Welcome Message
 
@@ -314,6 +314,106 @@ RESPONSE:
 
 #### Satellites
 
+GET: `/api/partner/:key/satellites`
+
+GET (full or partial name): `/api/satellites?name=International`
+
+GET (full or partial NORAD ID): `/api/satellites?name=25544`
+
+GET (full or partial orbit): `/api/satellites?name=LEO`
+
+GET (full or partial type): `/api/satellites?name=research`
+
+RESPONSE:
+
+```json
+[
+  {
+    "_id": "fTTviYiQRoMLdR3RC",
+    "isDeleted": false,
+    "noradID": "25544",
+    "createdOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)",
+    "createdBy": "admin",
+    "modifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)",
+    "modifiedBy": "admin",
+    "adminCheck": true,
+    "machineCheck": false,
+    "names": [
+      {
+        "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
+        "verified": [
+          {
+            "method": "user",
+            "name": "admin",
+            "verified": true,
+            "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+          },
+          {
+            "method": "machine",
+            "name": "Layer8",
+            "verified": false,
+            "verifiedOn": ""
+          }
+        ],
+        "validated": [
+          {
+            "method": "user",
+            "name": "admin",
+            "validated": true,
+            "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+          },
+          {
+            "method": "machine",
+            "name": "Layer8",
+            "validated": false,
+            "validatedOn": ""
+          }
+        ],
+        "name": "International Space Station"
+      }
+    ],
+    "descriptionShort": [
+      {
+        "reference": "https://en.wikipedia.org/wiki/International_Space_Station",
+        "verified": [
+          {
+            "method": "user",
+            "name": "admin",
+            "verified": true,
+            "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+          },
+          {
+            "method": "machine",
+            "name": "Layer8",
+            "verified": false,
+            "verifiedOn": ""
+          }
+        ],
+        "validated": [
+          {
+            "method": "user",
+            "name": "admin",
+            "validated": true,
+            "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+          },
+          {
+            "method": "machine",
+            "name": "Layer8",
+            "validated": false,
+            "validatedOn": ""
+          }
+        ],
+        "descriptionShort": "The International Space Station is a modular space station in low Earth orbit. It is a multinational collaborative project involving five participating space agencies: NASA, Roscosmos, JAXA, ESA, and CSA."
+      }
+    ],
+    ... // more data
+  },
+  ... // more related satellites
+]
+```
+
+---
+
 POST: `/api/partner/:key/satellites`
 
 BODY:
@@ -335,6 +435,56 @@ RESPONSE:
 `Satellite of NORAD ID 99999 being processed by PROBE - you should see your satellite on the website soon!`
 
 ---
+
+#### Schemas
+
+GET: `/api/partner/:key/schemas`
+
+GET (full or partial name): `/api/schemas?name=names`
+
+RESPONSE:
+
+```json
+[
+  {
+  "_id": "fTTviYiQRoMLdRC26",
+  "name": "names",
+  "description": "Satellite's names or callsigns.",
+  "fields": [
+    {
+      "name": "reference",
+      "hidden": true,
+      "type": "url",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "verified",
+      "hidden": true,
+      "type": "verified",
+      "required": true
+    },
+    {
+      "name": "validated",
+      "hidden": true,
+      "type": "validated",
+      "required": true
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "allowedValues": [],
+      "required": true,
+      "isUnique": true,
+      "stringMax": 50
+    },
+    ... // more fields
+  ],
+  ... // more data
+}
+  ... // more related schemas
+]
+```
 
 </details>
 
