@@ -36,7 +36,7 @@ export const ResetPassword = () => {
 
   const [passErr, setPassErr] = useState();
   const [confirmErr, setConfirmErr] = useState();
-  const [touched, setTouched] = useState(false);
+  const [disabled, setDisabled] = useState(true);
 
   const location = useLocation();
   const history = useHistory();
@@ -50,32 +50,29 @@ export const ResetPassword = () => {
   const handleReset = (e) => {
     e.preventDefault();
     const newPassword = document.getElementById("password").value;
-    Accounts.resetPassword(token, newPassword, (res, err) => {
+    Accounts.resetPassword(token, newPassword, (err, res) => {
       if (err) alert(err?.reason);
-      if (res) alert(res?.toString());
+      if (res) alert("Password updated.");
     });
   };
 
   const validatePassword = () => {
     let pass = document.getElementById("password").value;
     let confirm = document.getElementById("confirm").value;
-    const regex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
-    if (pass) {
-      setTouched(true);
-      if (!regex.test(pass)) {
-        setPassErr(
-          "Must be at least 8 characters long, and contain 1 lowercase, 1 uppercase, and 1 special character"
-        );
+    if (pass && pass.length < 8) {
+      setPassErr(
+        "Must be at least 8 characters long, and should contain at least 1 lowercase, 1 uppercase, and 1 special character"
+      );
+    } else {
+      setPassErr(null);
+    }
+    if (pass && confirm) {
+      if (confirm === pass) {
+        setConfirmErr(null);
+        setDisabled(false);
       } else {
-        setPassErr(null);
-      }
-      if (pass && confirm) {
-        if (confirm === pass) {
-          setConfirmErr(null);
-        } else {
-          setConfirmErr("Passwords do not match!");
-        }
+        setConfirmErr("Passwords do not match");
+        setDisabled(true);
       }
     }
   };
@@ -106,7 +103,7 @@ export const ResetPassword = () => {
             className={classes.textField}
           />
           <Button
-            disabled={!touched || confirmErr || passErr ? true : false}
+            disabled={disabled}
             variant="outlined"
             className={classes.loginButton}
             color="primary"

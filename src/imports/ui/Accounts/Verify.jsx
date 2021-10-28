@@ -11,9 +11,7 @@ import AlertDialog from "../Dialogs/AlertDialog.jsx";
 
 export const Verify = () => {
   const location = useLocation();
-
   const { setOpenAlert, alert, setAlert } = useContext(HelpersContext);
-
   const token = location.search.slice(7, location.search.length);
 
   const buttonClick = (

@@ -408,7 +408,7 @@ export const Settings = () => {
                 onClick={sendEmail}
                 fullWidth
                 className={classes.button}
-                disabled
+                // disabled
               >
                 Verify your email
               </Button>

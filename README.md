@@ -185,6 +185,7 @@ The following is a list of notable packages and technologies used to build this 
 | use-debounce          | Runtime     | React debouncing hook                |
 | helmet                | Runtime     | CSP and HTTP header security         |
 | express               | Runtime     | HTTP utility methods                 |
+| express-rate-limiter  | Runtime     | Rate limiter for public API          |
 
 ### Meteor
 

@@ -110,17 +110,17 @@ export const satelliteValidatorShaper = (values, initValues) => {
                     method: Yup.string().when("validated", {
                       is: true,
                       then: Yup.string().oneOf(["user", "machine"]).required(),
-                      otherwise: Yup.string(),
+                      otherwise: Yup.string().nullable(),
                     }),
                     name: Yup.string().when("validated", {
                       is: true,
                       then: Yup.string().required(),
-                      otherwise: Yup.string(),
+                      otherwise: Yup.string().nullable(),
                     }),
                     validatedOn: Yup.date().when("validated", {
                       is: true,
                       then: Yup.date().required(),
-                      otherwise: Yup.date(),
+                      otherwise: Yup.date().nullable(),
                     }),
                   })
                 );
@@ -134,17 +134,17 @@ export const satelliteValidatorShaper = (values, initValues) => {
                     method: Yup.string().when("verified", {
                       is: true,
                       then: Yup.string().oneOf(["user", "machine"]).required(),
-                      otherwise: Yup.string(),
+                      otherwise: Yup.string().nullable(),
                     }),
                     name: Yup.string().when("verified", {
                       is: true,
                       then: Yup.string().required(),
-                      otherwise: Yup.string(),
+                      otherwise: Yup.string().nullable(),
                     }),
                     verifiedOn: Yup.date().when("verified", {
                       is: true,
                       then: Yup.date().required(),
-                      otherwise: Yup.date(),
+                      otherwise: Yup.date().nullable(),
                     }),
                   })
                 );

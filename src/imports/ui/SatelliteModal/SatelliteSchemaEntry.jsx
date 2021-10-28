@@ -111,18 +111,18 @@ export const SatelliteSchemaEntry = ({
       // set verified/validated to false if a field is modified and subsequently saved
       setFieldValue(validatedField, [
         {
-          method: "",
-          name: "",
+          method: null,
+          name: null,
           validated: false,
-          validatedOn: new Date(),
+          validatedOn: null,
         },
       ]);
       setFieldValue(verifiedField, [
         {
-          method: "",
-          name: "",
+          method: null,
+          name: null,
           verified: false,
-          verifiedOn: new Date(),
+          verifiedOn: null,
         },
       ]);
     },
