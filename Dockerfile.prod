@@ -1,8 +1,11 @@
-FROM node:14.16.1 AS BUILD_STAGE
-USER root 
-RUN npm install meteor -g
+FROM ubuntu:20.04 AS BUILD_STAGE
+
+RUN apt-get update -q && apt-get clean
+RUN apt-get install curl -y && (curl https://install.meteor.com/ | sh)
+
 WORKDIR /app
-COPY ../ /app 
+COPY . .
+
 RUN ./scripts/build-prod.sh
 
 
