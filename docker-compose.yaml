@@ -8,7 +8,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     volumes:
-       - /build/data:/docker-entrypoint-initdb.d/init-mongo-js:ro
+       - /build/data/db:/docker-entrypoint-initdb.d/init-mongo-js:ro
     command:
       - --storageEngine=wiredTiger
     command: mongod --quiet --logpath /dev/null

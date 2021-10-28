@@ -598,6 +598,8 @@ chmod +x scripts/build-dev.sh && scripts/build-dev.sh
 
 The Docker production build is dependent on the `.env` file to describe the configuration of your meteor application. A `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README.
 
+The `.env.prod` and `docker-compose.yml` must be configured properly in order to run on your deployment platform of choice. If your deployment does not use docker-compose or Docker at all, please be sure to reference the Docker files and environmental variables.
+
 Paste and run the following command at the root of the project to build and run a docker production image of PROBE using docker-compose. DO NOT use the `scripts/build-prod.sh`, as this script is for the Docker container to run later in the build process.
 
 ```
@@ -608,6 +610,7 @@ docker-compose --env-file src/private/.env.prod up --build
 
 If you run into any build errors, please ensure you try all of the following before submitting an issue:
 
+- Ensure that you run the commands noted above at the root of the project
 - Modify the commands in the scripts and this README based on your OS and terminal
 - `docker system prune -f -a` to remove all old images and volumes
 - `docker container prune -f` / `docker volume prune -f` / `docker builder prune -f -a` / `docker image prune -f -a`
