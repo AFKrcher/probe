@@ -1,10 +1,20 @@
+FROM node:14.16.1 AS BUILD_STAGE
+USER root 
+RUN npm install meteor -g
+WORKDIR /app
+COPY ../ /app 
+RUN ./scripts/build-prod.sh
+
+
+
+
 # If you don't have access to Iron Bank, just use the node:14.16.1 image from Docker
 FROM registry1.dso.mil/ironbank/opensource/nodejs/nodejs14@sha256:1aa1227b8c3b3adf19280ce88a67ecf696d598ae94c8dbd3253415aa5efb8983
 
 USER root
 
 WORKDIR /app
-COPY bundle /app
+COPY --from=BUILD_STAGE /app/build/bundle .
 RUN cd /app/programs/server && npm install --production && npm cache clean --force
 
 EXPOSE 3000
