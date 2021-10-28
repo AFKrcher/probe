@@ -40,14 +40,14 @@ The application should be intuitive and easy-to-use, even for a first-time user.
 
 ### API Documentation
 
-API calls for the public API routes are limited to 100/hour. Requests that go beyond this limit will experience a 1 hour cool-down period before they can make more requests. API calls made by PROBE partners have no limits.
+HTTP requests made to the PROBE public API routes are limited to 100/hour. Requests that go beyond this limit will experience a 1 hour cool-down period before more requests can be made. HTTP requests made to the PROBE partner API routes have no limits.
 
 ### Public API
 
-<details>
-<summary>Click to expand...<summary>
-
 The public API allows all users to obtain information on satellites and schemas produced by PROBE. Queries in the form of GET requests can be made to obtain specific satellites or schemas. POST, DELETE, PUT, and PATCH requests are not allowed to the public. Below is a list of example requests:
+
+<details>
+<summary>Click to expand...</summary>
 
 #### Welcome Message
 
@@ -211,12 +211,9 @@ RESPONSE:
 ]
 ```
 
-<details>
+</details>
 
 ### Partner API
-
-<details>
-<summary>Click to expand...<summary>
 
 The partner API allows registered partners with PROBE API keys to go beyond the public API GET requests. The partner API is used mainly for PATCH, POST, and DELETE requests,
 as well as GET requests of more detailed information.
@@ -224,6 +221,9 @@ as well as GET requests of more detailed information.
 All POST, PATCH, DELETE, or PUT requests are processed by the server and reflected in the web application asynchronously. You will need to perform a GET request or visit the web application to confirm the success of your requests.
 
 All POST, PATCH, DELETE, or PUT requests made with improper format will respond with: `You must provide a request body IAW the PROBE API documentation.`
+
+<details>
+<summary>Click to expand...</summary>
 
 #### Welcome Message
 
@@ -336,7 +336,7 @@ RESPONSE:
 
 ---
 
-<details>
+</details>
 
 ## How To Contribute
 
