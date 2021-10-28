@@ -104,9 +104,9 @@ export const reseed = (
         return;
       } else if (UsersCollection.find().count() < 1) {
         Accounts.createUser({
-          email: "admin@saberastro.com",
+          email: "no-reply@saberastro.com",
           username: "admin",
-          password: ADMIN_PASSWORD, // only for local dev testing - password changed on deployment
+          password: ADMIN_PASSWORD, // only for dev testing - password changed on deployment
         });
         Roles.addUsersToRoles(Accounts.findUserByUsername("admin"), "admin");
         console.log("> Development Account Seeded");
