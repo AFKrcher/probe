@@ -11,7 +11,7 @@ import { getSats } from "../utils/satelliteDataFuncs";
 
 // Security
 import { helmetOptions } from "../security/helmet";
-import { publicAPILimiter } from "../security/apiLimit";
+// import { publicAPILimiter } from "../security/apiLimit";
 
 // Partner routes on ExpressJS
 dotenv.config({
@@ -41,7 +41,7 @@ WebApp.connectHandlers.use(app);
 partnerRoutes(app, getSats, getSchemas, allowedRoles, PROBE_API_KEY, null);
 
 // Public API limiter based on requester IP
-WebApp.connectHandlers.use(publicAPILimiter);
+// WebApp.connectHandlers.use(publicAPILimiter);
 
 // Public satellite routes
 WebApp.connectHandlers.use("/api/satellites", async (req, res) => {
