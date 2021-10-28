@@ -297,8 +297,6 @@ export const Settings = () => {
     } else if (isValidEmail(newEmail) && newEmail !== email) {
       setSnack(`Email successfully changed from ${email} to ${newEmail}`);
     }
-
-    setTimeout(() => window.location.reload(true), 3000);
   };
 
   return (
@@ -378,7 +376,7 @@ export const Settings = () => {
               />
               <TextField
                 id="confirm"
-                label="Re-Type New Password"
+                label="Confirm New Password"
                 type="password"
                 fullWidth
                 className={classes.textField}
@@ -403,14 +401,14 @@ export const Settings = () => {
               </Button>
               {!Meteor.user().emails[0].verified ? (
                 <Button
-                id="verifyButton"
-                variant="outlined"
-                onClick={sendEmail}
-                fullWidth
-                className={classes.button}
-              >
-               VERIFY YOUR EMAIL
-              </Button>
+                  id="verifyButton"
+                  variant="outlined"
+                  onClick={sendEmail}
+                  fullWidth
+                  className={classes.button}
+                >
+                  VERIFY YOUR EMAIL
+                </Button>
               ) : null}
               <Button
                 id="deleteButton"
