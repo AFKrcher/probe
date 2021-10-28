@@ -18,7 +18,7 @@ import { satelliteValidatorShaper } from "/imports/validation/satelliteYupShape"
 import "./routes/routes";
 
 // Security
-import { rateLimit } from "./security/ddp";
+import { methodRateLimit } from "./security/methodLimit";
 import { helmetOptions } from "./security/helmet";
 
 // Methods
@@ -116,7 +116,7 @@ Meteor.startup(() => {
   errorMethods(Meteor, ErrorsCollection);
 
   // Rate limits for preventing DDOS and spam
-  rateLimit({
+  methodRateLimit({
     methods: [
       "userExists",
       "emailExists",
@@ -141,15 +141,17 @@ Meteor.startup(() => {
       "actuallyDeleteSchema",
       "restoreSchema",
       "adminCheckSchema",
+      "resetPassword",
+      "loginWithPassword",
     ],
     limit: 5, // limits method calls to 5 requests per 5 seconds
     timeRange: 5000,
   });
 
-  rateLimit({
+  methodRateLimit({
     methods: ["sendEmail", "registerUser", "forgotPassword"],
-    limit: 1, // limits method calls to 1 request per 100 seconds
-    timeRange: 100000,
+    limit: 1, // limits method calls to 1 request per 60 seconds
+    timeRange: 60000,
   });
 
   // Reseeding functions

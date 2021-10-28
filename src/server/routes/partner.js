@@ -6,10 +6,13 @@ const baseURL = "/api/partner/:key";
 
 export const partnerRoutes = (
   app,
+  getSats,
+  getSchemas,
   allowedRoles,
   PROBE_API_KEY,
   partnerAPIKeys = false
 ) => {
+  // No Schema modification routes are provided - schemas must be generated or deleted via the client and approved by an Admin/Moderator before implementation
   const keyCheck = (key, ownersOnly = false) => {
     // In the future, there may be partner-specific API keys, where as PROBE_API_KEY is for owners only
     // Below is a check for standard PROBE partners
@@ -46,13 +49,35 @@ export const partnerRoutes = (
       res.writeHead(status);
       res.end(JSON.stringify(response));
     }),
+    // Satellites
+    app.use(baseURL + "/satellites", async (req, res) => {
+      let response = "Unauthorized [401]";
+      let status = 401;
+      if (keyCheck(req.params.key)) {
+        getSats(req, res);
+      } else {
+        res.setHeader("Content-Type", "application/json");
+        res.writeHead(status);
+        res.end(JSON.stringify(response));
+      }
+    }),
+
+    // Public schema routes
+    app.use(baseURL + "/schemas", (req, res) => {
+      let response = "Unauthorized [401]";
+      let status = 401;
+      if (keyCheck(req.params.key)) {
+        getSchemas(req, res);
+      } else {
+        res.setHeader("Content-Type", "application/json");
+        res.writeHead(status);
+        res.end(JSON.stringify(response));
+      }
+    }),
   ];
   const postRequests = [
     // No need to POST Errors, as Errors are meant only to be logged by the client
-    // No need to POST Accounts
-
-    // Schemas
-    // TODO
+    // No need to POST Accounts, must be done via client
 
     // Satellites
     // TODO
@@ -71,18 +96,18 @@ export const partnerRoutes = (
               sat[key].forEach((obj) => {
                 obj["validated"] = [
                   {
-                    method: "",
-                    name: "",
+                    method: null,
+                    name: null,
                     verified: false,
-                    verifiedOn: "",
+                    verifiedOn: null,
                   },
                 ];
                 obj["verified"] = [
                   {
-                    method: "",
-                    name: "",
+                    method: null,
+                    name: null,
                     validated: false,
-                    validatedOn: "",
+                    validatedOn: null,
                   },
                 ];
               });
@@ -149,8 +174,6 @@ export const partnerRoutes = (
     // No need to DELETE Accounts, role addition (banning) suffices
     // Satellites
     // TODO
-    // Schemas
-    // TODO
   ];
 
   // Array of all possible owner and partner requests
@@ -158,7 +181,7 @@ export const partnerRoutes = (
     // GET
     app.get(baseURL, (req, res) => {
       const response = keyCheck(req.params.key)
-        ? `Welcome PROBE partner! There are (${getRequests.length}) GET endpoints on this route. For documentation, please visit the README at https://github.com/justinthelaw/PROBE.`
+        ? `Welcome PROBE partner! There are (${getRequests.length}) GET endpoints on this route. For documentation, please visit the README at "https://github.com/afkrcher/probe#api-documentation".`
         : "Unauthorized [401]";
       const status = req.params.key === PROBE_API_KEY ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
@@ -169,7 +192,7 @@ export const partnerRoutes = (
     // POST
     app.post(baseURL, (req, res) => {
       const response = keyCheck(req.params.key)
-        ? `Welcome PROBE partner! There are (${postRequests.length}) POST endpoints on this route. For documentation, please visit the README at https://github.com/justinthelaw/PROBE.`
+        ? `Welcome PROBE partner! There are (${postRequests.length}) POST endpoints on this route. For documentation, please visit the README at "https://github.com/afkrcher/probe#api-documentation".`
         : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
@@ -180,7 +203,7 @@ export const partnerRoutes = (
     // PATCH
     app.patch(baseURL, (req, res) => {
       const response = keyCheck(req.params.key)
-        ? `Welcome PROBE partner! There are (${patchRequests.length}) PATCH endpoints on this route. For documentation, please visit the README at https://github.com/justinthelaw/PROBE.`
+        ? `Welcome PROBE partner! There are (${patchRequests.length}) PATCH endpoints on this route. For documentation, please visit the README at "https://github.com/afkrcher/probe#api-documentation".`
         : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
@@ -191,7 +214,7 @@ export const partnerRoutes = (
     // PUT
     app.put(baseURL, (req, res) => {
       const response = keyCheck(req.params.key)
-        ? `Welcome PROBE partner! There are (${putRequests.length}) PUT endpoints on this route. For documentation, please visit the README at https://github.com/justinthelaw/PROBE.`
+        ? `Welcome PROBE partner! There are (${putRequests.length}) PUT endpoints on this route. For documentation, please visit the README at "https://github.com/afkrcher/probe#api-documentation".`
         : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
@@ -202,7 +225,7 @@ export const partnerRoutes = (
     // DELETE
     app.delete(baseURL, (req, res) => {
       const response = keyCheck(req.params.key)
-        ? `Welcome PROBE partner! There are (${deleteRequests.length}) DELETE endpoints on this route. For documentation, please visit the README at https://github.com/justinthelaw/PROBE.`
+        ? `Welcome PROBE partner! There are (${deleteRequests.length}) DELETE endpoints on this route. For documentation, please visit the README at "https://github.com/afkrcher/probe#api-documentation".`
         : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");

@@ -39,6 +39,18 @@ export const reseed = (
     return Meteor.absoluteUrl(`/verify?token=${token}`);
   };
 
+  Accounts.emailTemplates.from = "PROBE <no-reply@probe.saberastro.com>";
+
+  Accounts.emailTemplates.resetPassword = {
+    subject() {
+      return "PROBE Password Reset";
+    },
+    text(user, url) {
+      return `${user.username}, please visit this page to reset your password: ${url}
+        \n If you did not request this, someone may be attempting unauthorized access your account.`;
+    },
+  };
+
   // User creation after-actions
   Accounts.onCreateUser((_, user) => {
     user["favorites"] = [];

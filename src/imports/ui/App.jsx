@@ -122,7 +122,7 @@ export const App = () => {
                   />
                 </Route>
                 <Route exact={true} path="/verify">
-                  <Verify />
+                  <ProtectedRoute component={Verify} loginRequired={true} />
                 </Route>
                 <Route exact={true} path="/settings">
                   <ProtectedRoute component={Settings} loginRequired={true} />

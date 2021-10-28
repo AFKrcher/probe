@@ -20,4 +20,4 @@ const assignLimits = ({ methods, limit, timeRange }) => {
   );
 };
 
-export const rateLimit = (options) => assignLimits(options);
+export const methodRateLimit = (options) => assignLimits(options);
