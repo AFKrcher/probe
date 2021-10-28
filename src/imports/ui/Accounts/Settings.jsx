@@ -401,17 +401,17 @@ export const Settings = () => {
               >
                 Update your account
               </Button>
-              {Meteor.user()?.emails[0]?.verified}
-              <Button
+              {!Meteor.user().emails[0].verified ? (
+                <Button
                 id="verifyButton"
                 variant="outlined"
                 onClick={sendEmail}
                 fullWidth
                 className={classes.button}
-                // disabled
               >
-                Verify your email
+               VERIFY YOUR EMAIL
               </Button>
+              ) : null}
               <Button
                 id="deleteButton"
                 variant="outlined"

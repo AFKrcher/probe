@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Meteor } from "meteor/meteor";
 // Imports
 import { useLocation } from "react-router-dom";
@@ -14,36 +14,38 @@ export const Verify = () => {
   const { setOpenAlert, alert, setAlert } = useContext(HelpersContext);
   const token = location.search.slice(7, location.search.length);
 
+  useEffect(() =>{
+    Accounts.verifyEmail(token, (err, res) => {
+      if(Meteor.user().emails[0].verified){
+        setAlert({
+          title: "Email Verified",
+          text: "Your email has been verified.",
+          closeAction: buttonClick
+        });
+        setOpenAlert(true);
+      }
+      else if (err || res) {
+        setAlert({
+          title: "Error Encountered",
+          text: err?.reason,
+          actions: null,
+          closeAction: buttonClick,
+        });
+        setOpenAlert(true);
+      }
+    });
+  })
+
   const buttonClick = (
     <span
       onClick={() => {
         window.location.href = "/";
       }}
     >
-      CLOSE
+     CLOSE
     </span>
   );
 
-  Accounts.verifyEmail(token, (err, res) => {
-    if (err || res) {
-      setAlert({
-        title: "Error Encountered",
-        text: err?.reason,
-        actions: null,
-        closeAction: buttonClick,
-      });
-      setOpenAlert(true);
-    } else {
-      setAlert({
-        title: "Success!",
-        text: `Welcome, ${
-          Meteor.user().username
-        }! Your email has been successfully verified. You can now use add, update, and delete data on the website as a user.`,
-        closeAction: buttonClick,
-      });
-      setOpenAlert(true);
-    }
-  });
 
   return (
     <React.Fragment>
