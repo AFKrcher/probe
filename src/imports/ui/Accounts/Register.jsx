@@ -226,7 +226,7 @@ export const Register = () => {
             error={confirmErr ? true : false}
             id="confirm"
             helperText={confirmErr}
-            label="Confirm password"
+            label="Confirm Password"
             onChange={validatePassword}
             onBlur={checkForm}
             type="password"
