@@ -1,7 +1,7 @@
 const rateLimit = require("express-rate-limit");
 
 const timeLimit = 1; // hours
-const maxLimit = 100; // limit each IP to 100 requests per windowMs
+const maxLimit = 1000; // limit each IP to 100 requests per windowMs
 
 // use express-rate-limit to generate a 1 hour, 100 request limiter
 export const publicAPILimiter = rateLimit({
