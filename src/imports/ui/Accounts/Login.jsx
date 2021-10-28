@@ -140,7 +140,7 @@ export const Login = () => {
     let username = document.getElementById("username").value;
     if (usernameRegex.test(username)) {
       options.email = username;
-      Accounts.forgotPassword(options, async (err) => {
+      Accounts.forgotPassword(options, (err) => {
         if (err) {
           setAlert({
             title: "Error Encountered",
