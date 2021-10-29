@@ -52,6 +52,7 @@ const useStyles = makeStyles(() => ({
 
 export const App = () => {
   const [theme, setTheme] = useState(themes.dark);
+
   const [openAlert, setOpenAlert] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
   const [openVisualize, setOpenVisualize] = useState(false);
