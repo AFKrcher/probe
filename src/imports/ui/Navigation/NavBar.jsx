@@ -170,7 +170,6 @@ export const NavBar = ({ theme, toggleTheme }) => {
                   disableElevation
                   size="medium"
                   className={classes.navButtonAPI}
-                  component={Link}
                   onClick={() => {
                     window
                       .open(

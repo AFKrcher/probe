@@ -60,11 +60,7 @@ Meteor.startup(() => {
           Meteor.roleAssignment.find(),
         ];
       } else {
-        return [
-          Meteor.users.find({ _id: Meteor.user()._id }),
-          Meteor.roles.find({ _id: Meteor.user()._id }),
-          Meteor.roleAssignment.find({ _id: Meteor.user()._id }),
-        ];
+        return [Meteor.roles.find(), Meteor.roleAssignment.find()];
       }
     } else {
       return [];

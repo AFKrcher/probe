@@ -1,13 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Meteor } from "meteor/meteor";
 // Imports
-import { Roles } from "meteor/alanning:roles";
 import { useTracker } from "meteor/react-meteor-data";
-import { Link } from "react-router-dom";
-import HelpersContext from "../Dialogs/HelpersContext.jsx";
-
-// Components
-import SnackBar from "../Dialogs/SnackBar.jsx";
+import { Link, useLocation, useHistory } from "react-router-dom";
+import ProtectedFunctionality from "../Helpers/ProtectedFunctionality.jsx";
 
 // @material-ui
 import {
@@ -30,7 +26,7 @@ import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 import { themes } from "../css/Themes.jsx";
 
 const useStyles = makeStyles((theme) => ({
-  settings: {
+  menuIcon: {
     color: theme.palette.tertiary.main,
     filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
   },
@@ -70,13 +66,15 @@ const StyledMenuItem = withStyles((theme) => ({
 export const DropDown = ({ theme, toggleTheme }) => {
   const classes = useStyles();
 
-  const [user, roles, isLoadingRoles] = useTracker(() => {
-    const subRoles = Meteor.subscribe("roles");
+  const [user] = useTracker(() => {
     const user = Meteor.user()?.username;
-    const roles = Roles.getRolesForUser(Meteor.userId());
-    return [user, roles, !subRoles.ready()];
+    return [user];
   });
+
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const location = useLocation();
+  const history = useHistory();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -89,7 +87,11 @@ export const DropDown = ({ theme, toggleTheme }) => {
   const handleLogout = async (e) => {
     e.preventDefault();
     await Meteor.logout();
-    window.location.reload();
+    if (location.pathname === "/") {
+      window.location.reload();
+    } else {
+      history.push("/");
+    }
   };
 
   return (
@@ -98,7 +100,7 @@ export const DropDown = ({ theme, toggleTheme }) => {
         onClick={handleClick}
         id="drop-down"
         disableElevation
-        className={classes.settings}
+        className={classes.menuIcon}
       >
         <SettingsIcon fontSize="medium" />
       </Button>
@@ -137,14 +139,21 @@ export const DropDown = ({ theme, toggleTheme }) => {
                 onClick={handleLogout}
               />
             </StyledMenuItem>
-            {roles.indexOf("admin") !== -1 || isLoadingRoles ? (
-              <StyledMenuItem id="admin" component={Link} to="/admin">
-                <ListItemIcon>
-                  <SupervisorAccountIcon />
-                </ListItemIcon>
-                <ListItemText id="role" primary="Admin Page" />
-              </StyledMenuItem>
-            ) : null}
+            <ProtectedFunctionality
+              component={() => {
+                return (
+                  <StyledMenuItem id="admin" component={Link} to="/admin">
+                    <ListItemIcon>
+                      <SupervisorAccountIcon />
+                    </ListItemIcon>
+                    <ListItemText id="role" primary="Admin Page" />
+                  </StyledMenuItem>
+                );
+              }}
+              requiredRoles={["admin", "moderator"]}
+              loginRequired={true}
+              skeleton={false}
+            />
           </div>
         ) : (
           <div>

@@ -37,10 +37,14 @@ export const accountMethods = (
     addUserToRole: (user, role, key = false) => {
       // key is only for PROBE owner API manipulation
       if (
-        Roles.userIsInRole(Meteor.userId(), "admin") ||
+        (Roles.userIsInRole(Meteor.userId(), "admin") &&
+          allowedRoles.includes(role)) ||
         (key === PROBE_API_KEY && allowedRoles.includes(role))
       ) {
-        Roles.addUsersToRoles(Accounts.findUserByUsername(user.username), role);
+        Roles.addUsersToRoles(
+          Accounts.findUserByUsername(user.username)._id,
+          role
+        );
         if (role === "dummies") {
           Meteor.users.update(
             user._id,
@@ -48,7 +52,7 @@ export const accountMethods = (
             { multi: true }
           );
         }
-        return `${user._id} added to role: ${role}`;
+        return `User ${user._id} added to role: ${role}`;
       } else {
         return "Unauthorized [401]";
       }

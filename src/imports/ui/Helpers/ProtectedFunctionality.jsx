@@ -24,7 +24,7 @@ export default function ProtectedFunctionality({
   const roleCheck = () => {
     // ensure that every role that is required to access the component is present in the user's roles
     return requiredRoles
-      ? requiredRoles.every((role) => roles.includes(role))
+      ? requiredRoles.map((role) => roles.includes(role)).includes(true)
       : true;
   };
 
