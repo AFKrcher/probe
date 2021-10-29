@@ -15,6 +15,7 @@ export const reseed = (
   reseed = false
 ) => {
   if (reseed && count === 0) {
+    // for a one time server start-up re-seed
     SatelliteCollection.remove({});
     SchemaCollection.remove({});
     UsersCollection.remove({});

@@ -1,12 +1,19 @@
 import React, { useState } from "react";
 import { Meteor } from "meteor/meteor";
 // Imports
-import { Roles } from "meteor/alanning:roles";
 import { useTracker } from "meteor/react-meteor-data";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import ProtectedFunctionality from "../Helpers/ProtectedFunctionality.jsx";
 
 // @material-ui
-import { withStyles, Menu, MenuItem, Button, Divider } from "@material-ui/core";
+import {
+  withStyles,
+  Menu,
+  MenuItem,
+  Button,
+  Divider,
+  makeStyles,
+} from "@material-ui/core";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -24,6 +31,13 @@ import Code from "@material-ui/icons/Code";
 
 // CSS
 import { themes } from "../css/Themes.jsx";
+
+const useStyles = makeStyles((theme) => ({
+  menuIcon: {
+    color: theme.palette.tertiary.main,
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
+  },
+}));
 
 const StyledMenu = withStyles({
   paper: {
@@ -57,13 +71,15 @@ const StyledMenuItem = withStyles((theme) => ({
 }))(MenuItem);
 
 export const SmallNav = ({ theme, toggleTheme }) => {
-  const [user, roles, isLoadingRoles] = useTracker(() => {
-    const subRoles = Meteor.subscribe("roles");
+  const classes = useStyles();
+
+  const [user] = useTracker(() => {
     const user = Meteor.user()?.username;
-    const roles = Roles.getRolesForUser(Meteor.userId());
-    return [user, roles, !subRoles.ready()];
+    return [user];
   });
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const location = useLocation();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -73,14 +89,24 @@ export const SmallNav = ({ theme, toggleTheme }) => {
     setAnchorEl(null);
   };
 
-  const handleLogout = (e) => {
+  const handleLogout = async (e) => {
     e.preventDefault();
-    Meteor.logout();
+    await Meteor.logout();
+    if (location.pathname === "/") {
+      window.location.reload();
+    } else {
+      history.push("/");
+    }
   };
 
   return (
     <React.Fragment>
-      <Button onClick={handleClick} id="drop-down" disableElevation>
+      <Button
+        onClick={handleClick}
+        id="drop-down"
+        disableElevation
+        className={classes.menuIcon}
+      >
         <MenuIcon fontSize="medium" />
       </Button>
       <StyledMenu
@@ -117,6 +143,7 @@ export const SmallNav = ({ theme, toggleTheme }) => {
         <StyledMenuItem
           id="api"
           component={Link}
+          to="/"
           onClick={() => {
             window
               .open(
@@ -166,14 +193,21 @@ export const SmallNav = ({ theme, toggleTheme }) => {
                 onClick={handleLogout}
               />
             </StyledMenuItem>
-            {roles.indexOf("admin") !== -1 || isLoadingRoles ? (
-              <StyledMenuItem id="admin" component={Link} to="/admin">
-                <ListItemIcon>
-                  <SupervisorAccountIcon />
-                </ListItemIcon>
-                <ListItemText id="role" primary="Admin Page" />
-              </StyledMenuItem>
-            ) : null}
+            <ProtectedFunctionality
+              component={() => {
+                return (
+                  <StyledMenuItem id="admin" component={Link} to="/admin">
+                    <ListItemIcon>
+                      <SupervisorAccountIcon />
+                    </ListItemIcon>
+                    <ListItemText id="role" primary="Admin Page" />
+                  </StyledMenuItem>
+                );
+              }}
+              requiredRoles={["admin", "moderator"]}
+              loginRequired={true}
+              skeleton={false}
+            />
           </div>
         ) : (
           <div>
