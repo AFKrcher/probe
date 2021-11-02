@@ -14,6 +14,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-around",
     gridGap: 40,
   },
+  titleContainer: {
+    marginBottom: 10,
+  },
   title: {
     color: theme.palette.tertiary.main,
     filter: `drop-shadow(3px 2px 2px ${theme.palette.tertiary.shadow})`,
@@ -22,9 +25,15 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
     textDecoration: "none",
   },
+  aboutParagraph: {
+    marginBottom: 10,
+  },
   meetTheTeam: {
     marginTop: 30,
     marginBottom: 40,
+  },
+  meetTheTeamParagraph: {
+    marginTop: 10,
   },
   image: {
     display: "block",
@@ -126,34 +135,38 @@ export const About = () => {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h3">
+      <Typography variant="h3" className={classes.titleContainer}>
         About <strong className={classes.title}>PROBE</strong>
       </Typography>
-      <p>
+      <Typography variant="body1" className={classes.aboutParagraph}>
         <strong>P</strong>ublicly <strong>R</strong>esearched <strong>O</strong>
         bservatory (PROBE) is a web application created by an incredible team of
         space enthusiasts who got together and gave up their weekend to complete
         this work during a Hackathon which took place over the 8th - 9th May
         2021.
-      </p>
-      <p>
+      </Typography>
+      <Typography variant="body1" className={classes.aboutParagraph}>
         Fueled by Pizza and Lofi, we had a lot of fun and hope you find this
         website helpful and useful! Now it is up to all of us to maintain and
         populate it!
-      </p>
-      <p>
+      </Typography>
+      <Typography variant="body1">
         After the Hackathon, a pair of developers, Justin and Archer, continued
         the development of the application starting in August 2021. Features
         were added to provide better data entry UX/UI and administrative
         capabilities, enhance application security, and enable integration with
         Saber Astronautics' Space Cockpit for data visualization and analysis.
-      </p>
+      </Typography>
       <div className={classes.meetTheTeam}>
         <Typography variant="h4">Meet the Team</Typography>
-        <p>Click on our profile pictures or names to connect with us!</p>
+        <Typography variant="body1" className={classes.meetTheTeamParagraph}>
+          Click on our profile pictures to connect with us! If you have
+          questions or issues, please click the see the footer at the bottom of
+          this page.
+        </Typography>
       </div>
       <Container>
-        <Grid container spacing={0} className={classes.avatars}>
+        <Grid container spacing={2} className={classes.avatars}>
           {TeamMembers.map((member, index) => {
             return (
               <Grid item xs key={index}>

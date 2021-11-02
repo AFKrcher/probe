@@ -76,6 +76,20 @@ export const Footer = () => {
       />
       <a
         target="_blank"
+        rel="noopener noreferrer"
+        href="mailto:justin.law@saberastro.com"
+        className={classes.link}
+      >
+        Contact Us
+      </a>
+      <Divider
+        orientation="vertical"
+        variant="middle"
+        className={classes.divider}
+        flexItem
+      />
+      <a
+        target="_blank"
         rel="noreferrer"
         href="https://github.com/justinthelaw/probe"
       >
