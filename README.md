@@ -496,8 +496,13 @@ RESPONSE:
 2. Ensure you have fetched and pulled the latest master/main branch of the repository
 3. Set-up your feature branches to the following standard: `feature/<feature name>-<username>`
 4. Ensure that any libraries or technologies that you use are properly listed in the dependency tree and in this README's [Libraries](#Libraries) section
-5. Contribute to the main/master repository through clear and succinct pull requests
-6. When not contributing code directly, generate issues on GitHub with context, problem statement, and, if possible, a suggested solution
+5. Contribute to the main/master repository through clear and succinct pull requests on GitHub
+
+- Use the pull request templates as written in the [.github/PULL_REQUEST_TEMPLATE](./.github/PULL_REQUEST_TEMPLATE) directory
+
+6. When not contributing code directly, generate clear and succinct issues on GitHub
+
+- Use the issues templates as written in the [.github/ISSUE_TEMPLATE](./.github/ISSUE_TEMPLATE) directory
 
 ### Coding Standards
 
