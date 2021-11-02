@@ -497,13 +497,10 @@ RESPONSE:
 3. Set-up your feature branches to the following standard: `feature/<feature name>-<username>`
 4. Ensure that any libraries or technologies that you use are properly listed in the dependency tree and in this README's [Libraries](#Libraries) section
 5. Contribute to the main/master repository through clear and succinct pull requests on GitHub
-
-- Use the pull request templates as written in the [.github/PULL_REQUEST_TEMPLATE](./.github/PULL_REQUEST_TEMPLATE) directory
-
+    - Use the pull request templates as written in the [.github/PULL_REQUEST_TEMPLATE](./.github/PULL_REQUEST_TEMPLATE) directory
 6. When not contributing code directly, generate clear and succinct issues on GitHub
-
-- Use the issues templates as written in the [.github/ISSUE_TEMPLATE](./.github/ISSUE_TEMPLATE) directory
-
+    - Use the issues templates as written in the [.github/ISSUE_TEMPLATE](./.github/ISSUE_TEMPLATE) directory
+    
 ### Coding Standards
 
 The list below is meant to be a guide and not a rule-book. Please try your best to use this guide to build code that is readable and easy-to-understand for all contributors:
