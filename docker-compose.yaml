@@ -23,7 +23,7 @@ services:
 
   meteor:
     build:
-      dockerfile: ./Dockerfile.prod
+      dockerfile: ./Dockerfile
       context: ./
     restart: always
     environment:
