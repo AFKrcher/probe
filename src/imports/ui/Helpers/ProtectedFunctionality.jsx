@@ -14,11 +14,14 @@ export default function ProtectedFunctionality({
   iconButton,
   skeleton,
 }) {
-  const [user, roles, isLoading] = useTracker(() => {
+  const [user, roles, verified, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("roles");
     const roles = Roles.getRolesForUser(Meteor.userId());
     const user = Meteor.user()?.username;
-    return [user, roles, !sub.ready()];
+    const verified = Meteor.user()?.emails
+      ? Meteor.user()?.emails[0]?.verified
+      : undefined;
+    return [user, roles, verified, !sub.ready()];
   });
 
   const roleCheck = () => {
@@ -34,7 +37,7 @@ export default function ProtectedFunctionality({
   };
 
   return !isLoading ? (
-    roleCheck() && loginCheck() ? (
+    roleCheck() && loginCheck() && verified ? (
       <Component />
     ) : null
   ) : skeleton || skeleton === undefined ? (
