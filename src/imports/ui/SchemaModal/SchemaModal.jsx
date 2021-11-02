@@ -143,7 +143,7 @@ export const SchemaModal = ({
         if (res || err) {
           console.log(res?.toString() || err?.reason);
         } else {
-          console.log(false);
+          setOpenAlert(false);
           setOpenSnack(false);
           setSnack(
             <span>
@@ -160,7 +160,7 @@ export const SchemaModal = ({
         if (res || err) {
           console.log(res?.toString() || err?.reason);
         } else {
-          console.log(false);
+          setOpenAlert(false);
           setOpenSnack(false);
           setSnack(
             <span>
@@ -176,7 +176,7 @@ export const SchemaModal = ({
   };
 
   const handleDeleteDialog = () => {
-    console.log({
+    setAlert({
       title: admin ? (
         <span>
           Delete <strong>{initValues.name}</strong> Schema Forever?
@@ -210,7 +210,7 @@ export const SchemaModal = ({
       ),
       closeAction: "Cancel",
     });
-    console.log(true);
+    setOpenAlert(true);
   };
 
   const handleToggleEdit = async (setValues, setErrors) => {
@@ -241,7 +241,6 @@ export const SchemaModal = ({
             color="secondary"
             disableElevation
             onClick={() => {
-              console.log(false);
               handleToggleEdit(setValues, setErrors);
             }}
           >

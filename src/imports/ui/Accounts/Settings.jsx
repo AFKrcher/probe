@@ -42,12 +42,14 @@ const useStyles = makeStyles((theme) => ({
   verifiedAdornment: {
     color: theme.palette.success.light,
     filter: `drop-shadow(1px 1px 1px ${theme.palette.tertiary.shadow})`,
-    cursor: "none",
+    cursor: "default",
+    marginBottom: 5,
   },
   unverifiedAdornment: {
     color: theme.palette.error.light,
     filter: `drop-shadow(1px 1px 1px ${theme.palette.tertiary.shadow})`,
-    cursor: "none",
+    cursor: "default",
+    marginBottom: 5,
   },
   spinnerContainer: {
     display: "flex",
@@ -70,7 +72,8 @@ export const Settings = () => {
   const [userErr, setUserErr] = useState();
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [adornment, setAdornment] = useState(null);
+  const [adornment, setAdornment] = useState(<></>);
+  const [adornmentTip, setAdornmentTip] = useState("");
 
   const [id, user, email, verified] = useTracker(() => {
     const id = Meteor.user()?._id;
@@ -88,10 +91,12 @@ export const Settings = () => {
           className={classes.verifiedAdornment}
         />
       );
+      setAdornmentTip("Email Verified");
     } else {
       setAdornment(
         <CancelIcon fontSize="small" className={classes.unverifiedAdornment} />
       );
+      setAdornmentTip("Email Not Verified");
     }
   }, [verified]);
 
@@ -254,7 +259,6 @@ export const Settings = () => {
           setOpenAlert(true);
         } else {
           setDisabled(true);
-          setOpenSnack(true);
         }
       });
     }
@@ -271,7 +275,6 @@ export const Settings = () => {
           setOpenAlert(true);
         } else {
           setDisabled(true);
-          setOpenSnack(true);
         }
       });
     }
@@ -288,7 +291,6 @@ export const Settings = () => {
           setOpenAlert(true);
         } else {
           setDisabled(true);
-          setOpenSnack(true);
         }
       });
     }
@@ -301,18 +303,21 @@ export const Settings = () => {
       newUsername !== user
     ) {
       setSnack("Successfully changed email, username, and password");
+      setOpenSnack(true);
     } else if (
       isValidPassword(oldPassword, newPassword, confirm) &&
       isValidUsername(newUsername) &&
       newUsername !== user
     ) {
       setSnack("Successfully changed username and password");
+      setOpenSnack(true);
     } else if (
       isValidEmail(newEmail) &&
       newEmail !== email &&
       isValidPassword(oldPassword, newPassword, confirm)
     ) {
       setSnack("Successfully changed email and password");
+      setOpenSnack(true);
     } else if (
       isValidUsername(newUsername) &&
       newUsername !== user &&
@@ -320,12 +325,16 @@ export const Settings = () => {
       newEmail !== email
     ) {
       setSnack("Successfully changed email and username");
+      setOpenSnack(true);
     } else if (isValidPassword(oldPassword, newPassword, confirm)) {
       setSnack("Successfully changed password");
+      setOpenSnack(true);
     } else if (isValidUsername(newUsername) && newUsername !== user) {
       setSnack(`Username successfully changed from ${user} to ${newUsername}`);
+      setOpenSnack(true);
     } else if (isValidEmail(newEmail) && newEmail !== email) {
       setSnack(`Email successfully changed from ${email} to ${newEmail}`);
+      setOpenSnack(true);
     }
   };
 
@@ -363,10 +372,7 @@ export const Settings = () => {
                 className={classes.textField}
                 InputProps={{
                   endAdornment: (
-                    <Tooltip
-                      title={verified ? "Email Verified" : "Email Not Verified"}
-                      placement="right"
-                    >
+                    <Tooltip title={adornmentTip} placement="right" arrow>
                       {adornment}
                     </Tooltip>
                   ),

@@ -32,7 +32,7 @@ export default function AlertDialog({ bodyAlert }) {
             justifyContent: bodyAlert?.actions
               ? "space-between"
               : "space-around",
-            margin: "0px 15px 10px 15px",
+            margin: "5px 15px 10px 15px",
           }}
         >
           {bodyAlert ? bodyAlert.actions : "empty actions"}
