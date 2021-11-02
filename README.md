@@ -1,7 +1,7 @@
 # Publicly Researched Observatory (PROBE)
 
 [![Made with Meteor](https://forthebadge.com/images/badges/made-with-meteor.svg)](https://www.meteor.com/)
-<a href="https://saberastro.com/" target="_blank" rel="noreferrer" ><img src="./.github/badges/maintained-by.svg" alt="Maintained by Saber Astronautics"/></a>
+<a href="https://saberastro.com/" target="_blank" rel="noreferrer" ><img src="./.github/badges/maintained-by-saber-astronautics.svg" alt="Maintained by Saber Astronautics"/></a>
 
 This open source project seeks to design a system that allows a community to maintain publicly sourced research and analysis data on satellites.
 
