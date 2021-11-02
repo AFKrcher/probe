@@ -14,27 +14,35 @@ export const Verify = () => {
   const { setOpenAlert, alert, setAlert } = useContext(HelpersContext);
   const token = location.search.slice(7, location.search.length);
 
-  useEffect(() =>{
-    Accounts.verifyEmail(token, (err, res) => {
-      if(Meteor.user().emails[0].verified){
-        setAlert({
-          title: "Email Verified",
-          text: "Your email has been verified.",
-          closeAction: buttonClick
-        });
-        setOpenAlert(true);
-      }
-      else if (err || res) {
-        setAlert({
-          title: "Error Encountered",
-          text: err?.reason,
-          actions: null,
-          closeAction: buttonClick,
-        });
-        setOpenAlert(true);
-      }
-    });
-  })
+  useEffect(() => {
+    if (Meteor.user()?.emails[0]?.verified) {
+      setAlert({
+        title: "Error Encountered",
+        text: "Your email has already been verified!",
+        closeAction: buttonClick,
+      });
+      setOpenAlert(true);
+    } else {
+      Accounts.verifyEmail(token, (err, res) => {
+        if (Meteor.user().emails[0].verified) {
+          setAlert({
+            title: "Email Verified",
+            text: "Your email has been successfully verified!",
+            closeAction: buttonClick,
+          });
+          setOpenAlert(true);
+        } else if (err || res) {
+          setAlert({
+            title: "Error Encountered",
+            text: err?.reason,
+            actions: null,
+            closeAction: buttonClick,
+          });
+          setOpenAlert(true);
+        }
+      });
+    }
+  }, []);
 
   const buttonClick = (
     <span
@@ -42,10 +50,9 @@ export const Verify = () => {
         window.location.href = "/";
       }}
     >
-     CLOSE
+      CLOSE
     </span>
   );
-
 
   return (
     <React.Fragment>
