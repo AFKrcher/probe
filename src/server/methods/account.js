@@ -160,7 +160,7 @@ export const accountMethods = (
             username: username,
             password: password,
           });
-          return `Welcome to PROBE, ${username}!`;
+          return `Welcome to PROBE, ${username}! A verification email has been sent to ${email}.`;
         } catch (err) {
           return err.message;
         }
