@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Meteor } from "meteor/meteor";
 //Imports
 import { useTracker } from "meteor/react-meteor-data";
@@ -18,8 +18,11 @@ import {
   TextField,
   FormControl,
   CircularProgress,
+  Tooltip,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
+import CancelIcon from "@material-ui/icons/Cancel";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -35,6 +38,16 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     marginTop: 20,
+  },
+  verifiedAdornment: {
+    color: theme.palette.success.light,
+    filter: `drop-shadow(1px 1px 1px ${theme.palette.tertiary.shadow})`,
+    cursor: "none",
+  },
+  unverifiedAdornment: {
+    color: theme.palette.error.light,
+    filter: `drop-shadow(1px 1px 1px ${theme.palette.tertiary.shadow})`,
+    cursor: "none",
   },
   spinnerContainer: {
     display: "flex",
@@ -57,13 +70,30 @@ export const Settings = () => {
   const [userErr, setUserErr] = useState();
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [adornment, setAdornment] = useState(null);
 
-  const [id, user, email] = useTracker(() => {
+  const [id, user, email, verified] = useTracker(() => {
     const id = Meteor.user()?._id;
     const user = Meteor.user()?.username;
     const email = Meteor.user()?.emails[0]?.address;
-    return [id, user, email];
+    const verified = Meteor.user()?.emails[0]?.verified;
+    return [id, user, email, verified];
   });
+
+  useEffect(() => {
+    if (verified) {
+      setAdornment(
+        <VerifiedUserIcon
+          fontSize="small"
+          className={classes.verifiedAdornment}
+        />
+      );
+    } else {
+      setAdornment(
+        <CancelIcon fontSize="small" className={classes.unverifiedAdornment} />
+      );
+    }
+  }, [verified]);
 
   const deleteAccount = () => {
     setLoading(true);
@@ -331,6 +361,16 @@ export const Settings = () => {
                 ref={(input) => (newEmail = input)}
                 fullWidth
                 className={classes.textField}
+                InputProps={{
+                  endAdornment: (
+                    <Tooltip
+                      title={verified ? "Email Verified" : "Email Not Verified"}
+                      placement="right"
+                    >
+                      {adornment}
+                    </Tooltip>
+                  ),
+                }}
                 onChange={() => {
                   validateForm();
                   validateEmailOnly();

@@ -31,6 +31,7 @@ import ZoomIn from "@material-ui/icons/ZoomIn";
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
+    width: "100%",
   },
   probe: {
     color: theme.palette.tertiary.main,
@@ -107,6 +108,10 @@ const useStyles = makeStyles((theme) => ({
 const dividerBreak = 800;
 const dividerTextBreak = 1000;
 const cardFlexBreak = 600;
+const cardSpaceBreakLarge = 1000;
+const cardSpaceBreakSmall = 600;
+const cardSpaceBreakMedium = 750;
+const cardSpaceBreakTiny = 400;
 
 export const Home = () => {
   const classes = useStyles();
@@ -139,11 +144,11 @@ export const Home = () => {
   };
 
   const cardSpace = () => {
-    if (width > 1000) return 4;
-    if (width < 1000 && width > 750) return 5;
-    if (width < 750 && width > cardFlexBreak) return 6;
-    if (width < cardFlexBreak && width > 400) return 8;
-    if (width < 400) return 10;
+    if (width > cardSpaceBreakLarge) return 4;
+    if (width < cardSpaceBreakLarge && width > cardSpaceBreakMedium) return 5;
+    if (width < cardSpaceBreakMedium && width > cardSpaceBreakSmall) return 6;
+    if (width < cardSpaceBreakSmall && width > cardSpaceBreakTiny) return 8;
+    if (width < cardSpaceBreakTiny) return 10;
   };
 
   const [sats, otherSats, isLoading, favorites, user] = useTracker(() => {
