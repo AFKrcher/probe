@@ -26,17 +26,21 @@ export default function ProtectedRoute({
 }) {
   const classes = useStyles();
 
-  const [user, roles, isLoading] = useTracker(() => {
+  const [user, roles, verified, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("roles");
     const roles = Roles.getRolesForUser(Meteor.userId());
     const user = Meteor.user()?.username;
-    return [user, roles, !sub.ready()];
+    const verified = Meteor.user()?.emails
+      ? Meteor.user()?.emails[0]?.verified
+      : undefined;
+    return [user, roles, verified, !sub.ready()];
   });
 
   const roleCheck = () => {
     // ensure that every role that is required to access the component is present in the user's roles
     return requiredRoles
-      ? requiredRoles.map((role) => roles.includes(role)).includes(true)
+      ? requiredRoles.map((role) => roles.includes(role)).includes(true) &&
+          verified
       : true;
   };
 

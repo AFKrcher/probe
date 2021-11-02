@@ -9,7 +9,7 @@ export const schemaMethods = (
       return schemaValidatorShaper;
     },
     addNewSchema: (initValues, values) => {
-      if (Meteor.userId()) {
+      if (Meteor.userId() && Meteor.user()?.emails[0]?.verified) {
         let error;
         values["isDeleted"] = false;
         values["createdOn"] = new Date();
@@ -20,7 +20,7 @@ export const schemaMethods = (
         schemaValidatorShaper(initValues.name)
           .validate(values)
           .then(() => {
-            return SchemaCollection.insert(values);
+            SchemaCollection.insert(values);
           })
           .catch((err) => {
             console.log(err);
@@ -32,7 +32,7 @@ export const schemaMethods = (
       }
     },
     updateSchema: (initValues, values) => {
-      if (Meteor.userId()) {
+      if (Meteor.userId() && Meteor.user()?.emails[0]?.verified) {
         let error;
         if (!values["createdOn"] || !values["createdBy"]) {
           values["createdOn"] = new Date();
@@ -45,7 +45,7 @@ export const schemaMethods = (
         schemaValidatorShaper(initValues.name)
           .validate(values)
           .then(() => {
-            return SchemaCollection.update({ _id: values._id }, values);
+            SchemaCollection.update({ _id: values._id }, values);
           })
           .catch((err) => {
             console.log(err);
@@ -57,7 +57,7 @@ export const schemaMethods = (
       }
     },
     deleteSchema: (values) => {
-      if (Meteor.userId()) {
+      if (Meteor.userId() && Meteor.user()?.emails[0]?.verified) {
         let error;
         values["isDeleted"] = true;
         values["modifiedOn"] = new Date();
@@ -65,7 +65,7 @@ export const schemaMethods = (
         schemaValidatorShaper(values.name)
           .validate(values)
           .then(() => {
-            return SchemaCollection.insert(values);
+            SchemaCollection.update({ _id: values._id }, values);
           })
           .catch((err) => {
             console.log(err);
@@ -98,7 +98,7 @@ export const schemaMethods = (
         schemaValidatorShaper(values.name)
           .validate(values)
           .then(() => {
-            return SchemaCollection.insert(values);
+            SchemaCollection.insert(values);
           })
           .catch((err) => {
             console.log(err);
@@ -119,7 +119,7 @@ export const schemaMethods = (
         schemaValidatorShaper(values.name)
           .validate(values)
           .then(() => {
-            return SchemaCollection.insert(values);
+            SchemaCollection.insert(values);
           })
           .catch((err) => {
             console.log(err);

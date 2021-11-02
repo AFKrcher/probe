@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     gridGap: 40,
   },
   titleContainer: {
-    marginBottom: 10,
+    marginBottom: 15,
   },
   title: {
     color: theme.palette.tertiary.main,
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 40,
   },
   meetTheTeamParagraph: {
-    marginTop: 10,
+    marginTop: 15,
   },
   image: {
     display: "block",

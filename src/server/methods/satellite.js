@@ -16,7 +16,11 @@ export const satelliteMethods = (
 ) => {
   return Meteor.methods({
     addNewSatellite: (initValues, values, key = false) => {
-      if (key ? key === PROBE_API_KEY : Meteor.userId()) {
+      if (
+        key
+          ? key === PROBE_API_KEY
+          : Meteor.userId() && Meteor.user()?.emails[0]?.verified
+      ) {
         let error;
         values["isDeleted"] = false;
         values["createdOn"] = new Date();
@@ -44,7 +48,7 @@ export const satelliteMethods = (
       }
     },
     updateSatellite: (initValues, values) => {
-      if (Meteor.userId()) {
+      if (Meteor.userId() && Meteor.user()?.emails[0]?.verified) {
         let error;
         if (!values) {
           values = initValues;
@@ -73,7 +77,7 @@ export const satelliteMethods = (
       }
     },
     deleteSatellite: (values) => {
-      if (Meteor.userId()) {
+      if (Meteor.userId() && Meteor.user()?.emails[0]?.verified) {
         let error;
         values["isDeleted"] = true;
         values["modifiedOn"] = new Date();

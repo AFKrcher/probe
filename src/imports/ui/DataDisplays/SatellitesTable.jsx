@@ -169,7 +169,7 @@ export const SatellitesTable = () => {
   const [newSat, setNewSat] = useState(true);
   const [initialSatValues, setInitialSatValues] = useState(newSatValues);
   const [page, setPage] = useState(0);
-  const [limiter, setLimiter] = useState(10);
+  const [limiter, setLimiter] = useState(5);
   const [sortNorad, setSortNorad] = useState(0);
   const [sortName, setSortName] = useState(0);
   const [sortType, setSortType] = useState(0);
@@ -693,7 +693,7 @@ export const SatellitesTable = () => {
             components={{
               Toolbar: CustomToolbar,
             }}
-            rowsPerPageOptions={[5, 10, 15, 20, 50, 100]}
+            rowsPerPageOptions={[5, 15, 30, 60, 120]}
             columns={columns}
             rows={rows}
             rowCount={count}
