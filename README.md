@@ -1,6 +1,7 @@
 # Publicly Researched Observatory (PROBE)
 
 [![forthebadge](https://forthebadge.com/images/badges/made-with-meteor.svg)](https://forthebadge.com)
+<img src="./.github/badges/maintained-by-saber-astronautics.svg" alt="Maintained by Saber Astronautics"/>
 
 This open source project seeks to design a system that allows a community to maintain publicly sourced research and analysis data on satellites.
 
