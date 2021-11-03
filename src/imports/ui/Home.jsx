@@ -1,16 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import { Meteor } from "meteor/meteor";
 // Imports
 import useWindowSize from "./Hooks/useWindowSize.jsx";
 import { useTracker } from "meteor/react-meteor-data";
-import HelpersContext from "./Dialogs/HelpersContext.jsx";
 
 // Components
 import { SatCard } from "./DataDisplays/SatCard.jsx";
 import { SatelliteCollection } from "../api/satellites";
 import { Key } from "./Helpers/Key.jsx";
 import { Mini } from "./DataDisplays/Mini.jsx";
-import AlertDialog from "./Dialogs/AlertDialog.jsx";
 
 // @material-ui
 import {
@@ -118,8 +116,6 @@ const cardSpaceBreakTiny = 400;
 export const Home = () => {
   const classes = useStyles();
 
-  const { setOpenAlert, alert, setAlert } = useContext(HelpersContext);
-
   const [width, height] = useWindowSize();
   const [page, setPage] = useState(1);
   const [limiter] = useState(3);
@@ -155,46 +151,29 @@ export const Home = () => {
     if (width < cardSpaceBreakTiny) return 10;
   };
 
-  const [sats, otherSats, verified, isLoading, favorites, user] = useTracker(
-    () => {
-      const sub = Meteor.subscribe("satellites");
-      const user = Meteor.user()?.username;
-      const favorites = Meteor.user()?.favorites;
-      const otherSats = SatelliteCollection.find(
-        {},
-        {
-          limit: limiter * page,
-        }
-      )
-        .fetch()
-        .filter((sat) => !sat.isDeleted);
-      const sats =
-        Meteor.userId() && favorites
-          ? // If user is logged in and has favorites
-            SatelliteCollection.find({
-              noradID: { $in: favorites },
-            })
-              .fetch()
-              .filter((sat) => !sat.isDeleted)
-          : otherSats;
-      const verified = Meteor.user()?.emails
-        ? Meteor.user()?.emails[0]?.verified
-        : undefined;
-      return [sats, otherSats, verified, !sub.ready(), favorites, user];
-    }
-  );
-
-  useEffect(() => {
-    if (!verified) {
-      setAlert({
-        text: "Please verify your email to start contributing to PROBE! If you haven't recieved an email, please visit your PROBE profile page to send another verification email.",
-        title: "Verify Your Email",
-        actions: null,
-        closeAction: "Close",
-      });
-      setOpenAlert(true);
-    }
-  }, []);
+  const [sats, otherSats, isLoading, favorites, user] = useTracker(() => {
+    const sub = Meteor.subscribe("satellites");
+    const user = Meteor.user({ fields: { username: 1 } })?.username;
+    const favorites = Meteor.user({ fields: { favorites: 1 } })?.favorites;
+    const otherSats = SatelliteCollection.find(
+      {},
+      {
+        limit: limiter * page,
+      }
+    )
+      .fetch()
+      .filter((sat) => !sat.isDeleted);
+    const sats =
+      Meteor.userId() && favorites
+        ? // If user is logged in and has favorites
+          SatelliteCollection.find({
+            noradID: { $in: favorites },
+          })
+            .fetch()
+            .filter((sat) => !sat.isDeleted)
+        : otherSats;
+    return [sats, otherSats, !sub.ready(), favorites, user];
+  });
 
   window.onscroll = () => {
     if (
@@ -238,7 +217,6 @@ export const Home = () => {
 
   return (
     <div className={classes.root}>
-      <AlertDialog bodyAlert={alert} />
       <Container
         className={
           favorites?.length > 0 ? null : classes.keySpacingIfNoFavorites
