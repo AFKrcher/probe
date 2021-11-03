@@ -225,7 +225,7 @@ export const Login = () => {
                 onClick={registerUser}
                 size="small"
               >
-                Register New
+                Register New Account
               </Button>
             </Tooltip>
             <Tooltip

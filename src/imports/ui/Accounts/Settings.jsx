@@ -348,7 +348,9 @@ export const Settings = () => {
       isValidUsername(newUsername) &&
       newUsername !== user
     ) {
-      setSnack("Successfully changed email, username, and password");
+      setSnack(
+        "Successfully changed email, username, and password! A verification email was sent to your new email."
+      );
       setOpenSnack(true);
     } else if (
       isValidPassword(oldPassword, newPassword, confirm) &&
@@ -362,7 +364,9 @@ export const Settings = () => {
       newEmail !== email &&
       isValidPassword(oldPassword, newPassword, confirm)
     ) {
-      setSnack("Successfully changed email and password");
+      setSnack(
+        "Successfully changed email and password! A verification email was sent to your new email."
+      );
       setOpenSnack(true);
     } else if (
       isValidUsername(newUsername) &&
@@ -370,7 +374,9 @@ export const Settings = () => {
       isValidEmail(newEmail) &&
       newEmail !== email
     ) {
-      setSnack("Successfully changed email and username");
+      setSnack(
+        "Successfully changed email and username! A verification email was sent to your new email."
+      );
       setOpenSnack(true);
     } else if (isValidPassword(oldPassword, newPassword, confirm)) {
       setSnack("Successfully changed password");
@@ -379,7 +385,9 @@ export const Settings = () => {
       setSnack(`Username successfully changed from ${user} to ${newUsername}`);
       setOpenSnack(true);
     } else if (isValidEmail(newEmail) && newEmail !== email) {
-      setSnack(`Email successfully changed from ${email} to ${newEmail}`);
+      setSnack(
+        `Email successfully changed from ${email} to ${newEmail}! A verification email was sent to your new email.`
+      );
       setOpenSnack(true);
     }
   };
