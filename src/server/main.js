@@ -164,12 +164,13 @@ Meteor.startup(() => {
     ADMIN_PASSWORD,
     ROOT_URL,
     PORT,
+    PM2,
     false // set this to true if you want to force a db re-seed on server restart
   );
 
   console.log(
     `=> PROBE server is running! Listening at ${ROOT_URL}${
-      NODE_ENV !== "production" || PM2 ? ":" + PORT : ""
+      NODE_ENV !== "production" && PM2 ? ":" + PORT : ""
     }`
   );
 });
