@@ -13,5 +13,5 @@ cd ../build && tar xzf src.tar.gz
 echo "=> Running docker build with the Dockerfile.dev..."
 docker build . --rm -f Dockerfile.dev -t probe-dev
 # Docker run with .env file
-echo "=> Spinning up docker image with name \"probe\"..."
-cd .. && docker run --rm --name probe --env-file src/private/.env.dev -p 3000:3000 -t probe-dev
+echo "=> Spinning up docker image with name \"probe\" using PM2..."
+cd .. && docker run --rm --name probe -e PM2=true --env-file src/private/.env.dev -p 3000:3000 -t probe-dev

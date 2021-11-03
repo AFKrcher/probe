@@ -26,7 +26,7 @@ import { satelliteMethods } from "./methods/satellite";
 import { accountMethods } from "./methods/account";
 import { schemaMethods } from "./methods/schema";
 import { errorMethods } from "./methods/error";
-import { reseed } from "./methods/reseed";
+import { startup } from "./methods/startup";
 
 dotenv.config({
   path: Assets.absoluteFilePath(
@@ -34,7 +34,8 @@ dotenv.config({
   ), // .env.* file in the ~/src/private folder
 });
 
-const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT, NODE_ENV } = process.env;
+const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT, NODE_ENV, PM2 } =
+  process.env;
 const allowedRoles = ["dummies", "moderator", "machine", "admin"]; // please ensure these are reflected in the routes.js API
 
 Meteor.startup(() => {
@@ -151,7 +152,7 @@ Meteor.startup(() => {
   });
 
   // Reseeding functions
-  reseed(
+  startup(
     Meteor,
     Roles,
     allowedRoles,
@@ -161,12 +162,14 @@ Meteor.startup(() => {
     ErrorsCollection,
     UsersCollection,
     ADMIN_PASSWORD,
+    ROOT_URL,
+    PORT,
     false // set this to true if you want to force a db re-seed on server restart
   );
 
   console.log(
     `=> PROBE server is running! Listening at ${ROOT_URL}${
-      NODE_ENV !== "production" ? ":" + PORT : ""
+      NODE_ENV !== "production" || PM2 ? ":" + PORT : ""
     }`
   );
 });
