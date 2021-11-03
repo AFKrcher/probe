@@ -194,48 +194,66 @@ export const SatellitesTable = () => {
     if (sortOrbit) return { orbits: sortOrbit };
   };
 
-  const [sats, schemas, rows, isLoadingSchemas, isLoadingSats, count] =
-    useTracker(() => {
-      const subSchemas = Meteor.subscribe("schemas");
-      const subSats = Meteor.subscribe("satellites");
-      const schemas = SchemaCollection.find(
-        {},
-        { fields: { name: 1 } }
-      ).fetch();
-      const count = SatelliteCollection.find(selector).count();
-      const sats = SatelliteCollection.find(selector, {
-        limit: limiter,
-        skip: page * limiter,
-        sort: decideSort(),
-      }).fetch();
-      const rows = sats.map((sat) => {
-        return {
-          id: sat.noradID,
-          names: sat.names?.map((name) => name.names || name.name).join(", "),
-          types: sat.types
-            ? sat.types
-                .map((type) => type.type)
-                .sort((a, b) => a.localeCompare(b))
-                .join(", ")
-            : "",
-          orbits: sat.orbits
-            ? sat.orbits.map((entry) => entry.orbit).join(", ")
-            : "",
-          description: sat.descriptionShort
-            ? sat.descriptionShort[0]?.descriptionShort
-            : null,
-        };
-      });
-      rows.getRows = count;
-      return [
-        sats,
-        schemas,
-        rows,
-        !subSchemas.ready(),
-        !subSats.ready(),
-        count,
-      ];
+  const [
+    sats,
+    schemas,
+    rows,
+    count,
+    user,
+    verified,
+    isLoadingSchemas,
+    isLoadingSats,
+  ] = useTracker(() => {
+    const subSchemas = Meteor.subscribe("schemas");
+    const subSats = Meteor.subscribe("satellites");
+    const user = Meteor.user({ fields: { username: 1 } })?.username;
+    const verified = Meteor.user()?.emails[0]
+      ? Meteor.user()?.emails[0]?.verified
+      : false;
+    const schemas = SchemaCollection.find({}, { fields: { name: 1 } }).fetch();
+    const count = SatelliteCollection.find(selector).count();
+    const sats = SatelliteCollection.find(selector, {
+      limit: limiter,
+      skip: page * limiter,
+      sort: decideSort(),
+    }).fetch();
+    const rows = sats.map((sat) => {
+      return {
+        id: sat.noradID,
+        names: sat.names?.map((name) => name.names || name.name).join(", "),
+        types: sat.types
+          ? sat.types
+              .map((type) => type.type)
+              .sort((a, b) => a.localeCompare(b))
+              .join(", ")
+          : "",
+        orbits: sat.orbits
+          ? sat.orbits.map((entry) => entry.orbit).join(", ")
+          : "",
+        description: sat.descriptionShort
+          ? sat.descriptionShort[0]?.descriptionShort
+          : null,
+      };
     });
+    rows.getRows = count;
+    return [
+      sats,
+      schemas,
+      rows,
+      count,
+      user,
+      verified,
+      !subSchemas.ready(),
+      !subSats.ready(),
+    ];
+  });
+
+  useEffect(() => {
+    if (user && !verified) {
+      setSnack("Please verify your email to start contributing to PROBE.");
+      setOpenSnack(true);
+    }
+  }, []);
 
   const handleAddNewSatellite = () => {
     setInitialSatValues(newSatValues);
