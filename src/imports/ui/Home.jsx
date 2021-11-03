@@ -52,9 +52,19 @@ const useStyles = makeStyles((theme) => ({
   },
   miniButton: {
     marginBottom: 20,
+    width: 215,
+  },
+  miniButtonShowcaseHeaderContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%",
   },
   showcase: {
     marginTop: 15,
+  },
+  descriptionDivider: {
+    marginBottom: 25,
+    marginTop: 25,
   },
   showcaseDivider: {
     marginBottom: 30,
@@ -266,13 +276,18 @@ export const Home = () => {
       </Container>
       {/* Minified view of all satellite cards */}
       <Container className={classes.showcase}>
+        <Grid item className={classes.descriptionDivider}>
+          <Divider />
+        </Grid>
         {mini ? (
           <React.Fragment>
             <span className={classes.showcaseHeader}>
-              {miniButton()}
-              <Typography variant="h4" gutterBottom>
-                All Satellites
-              </Typography>
+              <div className={classes.miniButtonShowcaseHeaderContainer}>
+                <Typography variant="h4" gutterBottom>
+                  All Satellites
+                </Typography>
+                {miniButton()}
+              </div>
               <Typography variant="body1" className={classes.miniDescription}>
                 Satellites are listed by NORAD ID and organized by orbit.
               </Typography>
@@ -285,16 +300,18 @@ export const Home = () => {
             {Meteor.userId() && favorites?.length > 0 && (
               <React.Fragment>
                 <span className={classes.showcaseHeader}>
-                  {miniButton()}
-                  <Typography variant="h4" gutterBottom>
-                    {favorites?.length > 0 ? (
-                      <React.Fragment>
-                        <strong>{user}</strong>'s Favorite Satellites
-                      </React.Fragment>
-                    ) : (
-                      <div style={{ marginBottom: -40 }}></div>
-                    )}
-                  </Typography>
+                  <div className={classes.miniButtonShowcaseHeaderContainer}>
+                    <Typography variant="h4" gutterBottom>
+                      {favorites?.length > 0 ? (
+                        <React.Fragment>
+                          <strong>{user}</strong>'s Favorite Satellites
+                        </React.Fragment>
+                      ) : (
+                        <div style={{ marginBottom: -40 }}></div>
+                      )}
+                    </Typography>
+                    {miniButton()}
+                  </div>
                 </span>
                 <Grid
                   container
@@ -354,10 +371,12 @@ export const Home = () => {
                 </span>
               ) : (
                 <span className={classes.showcaseHeader}>
-                  {!favorites?.length > 0 && miniButton()}
-                  <Typography variant="h4" gutterBottom>
-                    Satellite Data Cards
-                  </Typography>
+                  <div className={classes.miniButtonShowcaseHeaderContainer}>
+                    <Typography variant="h4" gutterBottom>
+                      Satellite Data Cards
+                    </Typography>
+                    {!favorites?.length > 0 && miniButton()}
+                  </div>
                 </span>
               )}
               <Grid
