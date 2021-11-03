@@ -17,10 +17,9 @@ export default function ProtectedFunctionality({
   const [user, roles, verified, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("roles");
     const roles = Roles.getRolesForUser(Meteor.userId());
-    const user = Meteor.user()?.username;
-    const verified = Meteor.user()?.emails
-      ? Meteor.user()?.emails[0]?.verified
-      : undefined;
+    const user = Meteor.user({ fields: { username: 1 } })?.username;
+    const verified = Meteor.user({ fields: { "emails.verified": 1 } })
+      ?.emails[0].verified;
     return [user, roles, verified, !sub.ready()];
   });
 

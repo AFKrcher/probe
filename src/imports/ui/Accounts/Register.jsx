@@ -167,8 +167,16 @@ export const Register = () => {
           }
         );
       }
-      if (!res?.includes("error")) {
-        await setSnack(res);
+      if (err) {
+        setAlert({
+          title: "Error Encountered",
+          text: err?.reason,
+          actions: null,
+          closeAction: "Close",
+        });
+        setOpenAlert(true);
+      } else if (!res?.includes("error")) {
+        setSnack(res);
         setOpenSnack(true);
       }
     });
