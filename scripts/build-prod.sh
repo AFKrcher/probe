@@ -13,3 +13,4 @@ cd ../build && tar xzf src.tar.gz
 echo "=> Installing node_modules inside bundle..."
 cd bundle/programs/server && meteor npm install --production --allow-superuser
 # We now have a fully ready to deploy program with all npm dependencies installed
+echo "=> PROBE is ready for deployment!"
