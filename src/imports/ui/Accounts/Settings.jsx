@@ -108,22 +108,8 @@ export const Settings = () => {
 
   useEffect(() => {
     if (user && !verified) {
-      setAlert({
-        text: "Please verify your email to start contributing to PROBE!",
-        title: "Verify Your Email",
-        actions: (
-          <Button
-            id="verifyButton"
-            variant="contained"
-            size="small"
-            onClick={sendEmail}
-          >
-            Send Another Verification Email
-          </Button>
-        ),
-        closeAction: "Close",
-      });
-      setOpenAlert(true);
+      setSnack("Please verify your email to start contributing to PROBE.");
+      setOpenSnack(true);
     }
   }, []);
 

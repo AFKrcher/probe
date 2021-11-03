@@ -169,7 +169,7 @@ export const SatellitesTable = () => {
   const [newSat, setNewSat] = useState(true);
   const [initialSatValues, setInitialSatValues] = useState(newSatValues);
   const [page, setPage] = useState(0);
-  const [limiter, setLimiter] = useState(5);
+  const [limiter, setLimiter] = useState(15);
   const [sortNorad, setSortNorad] = useState(0);
   const [sortName, setSortName] = useState(0);
   const [sortType, setSortType] = useState(0);
