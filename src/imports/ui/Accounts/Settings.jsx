@@ -81,8 +81,8 @@ export const Settings = () => {
 
   const [id, user, email, verified] = useTracker(() => {
     const id = Meteor.user({ fields: { _id: 1 } })?._id;
-    const user = Meteor.user({ fields: { username: 1 } })?.username;
     const email = Meteor.user()?.emails[0]?.address;
+    const user = Meteor.user({ fields: { username: 1 } })?.username;
     const verified = Meteor.user()?.emails[0]
       ? Meteor.user()?.emails[0]?.verified
       : false;

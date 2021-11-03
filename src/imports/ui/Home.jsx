@@ -80,10 +80,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 5,
     marginBottom: 15,
   },
-  skeletonMiniButton: {
-    borderRadius: 5,
-    marginBottom: 25,
-  },
   spinner: {
     color: theme.palette.text.primary,
   },
@@ -128,7 +124,7 @@ export const Home = () => {
 
   const [width, height] = useWindowSize();
   const [page, setPage] = useState(1);
-  const [limiter] = useState(3);
+  const [limiter] = useState(6);
   const [scrolled, setScrolled] = useState(false);
   const [infiniteMode, setInfiniteMode] = useState(true);
   const [mini, setMini] = useState(false);
@@ -276,9 +272,6 @@ export const Home = () => {
       </Container>
       {/* Minified view of all satellite cards */}
       <Container className={classes.showcase}>
-        <Grid item className={classes.descriptionDivider}>
-          <Divider />
-        </Grid>
         {mini ? (
           <React.Fragment>
             <span className={classes.showcaseHeader}>
@@ -357,15 +350,9 @@ export const Home = () => {
               )}
               {isLoading ? (
                 <span className={classes.showcaseHeader}>
-                  <Skeleton
-                    variant="rect"
-                    className={classes.skeletonMiniButton}
-                  >
-                    {miniButton()}
-                  </Skeleton>
                   <Skeleton variant="rect" className={classes.skeleton}>
                     <Typography variant="h4" gutterBottom>
-                      Admin's Favorite Satellites
+                      User's Favorite Satellites
                     </Typography>
                   </Skeleton>
                 </span>
