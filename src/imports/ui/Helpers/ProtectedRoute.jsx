@@ -1,5 +1,6 @@
 import React from "react";
 import { Meteor } from "meteor/meteor";
+import PropTypes from "prop-types";
 // Imports
 import { Roles } from "meteor/alanning:roles";
 import { Route, Redirect } from "react-router-dom";
@@ -73,3 +74,10 @@ export default function ProtectedRoute({
     </div>
   );
 }
+
+// Prop checking
+ProtectedRoute.propTypes = {
+  component: PropTypes.elementType,
+  loginRequired: PropTypes.bool,
+  requiredRoles: PropTypes.arrayOf(PropTypes.string),
+};

@@ -27,7 +27,7 @@ import CancelIcon from "@material-ui/icons/Cancel";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
-    marginTop: 25,
+    marginTop: 15,
     display: "flex",
     flexFlow: "column wrap",
     justifyContent: "center",
@@ -105,13 +105,6 @@ export const Settings = () => {
       setAdornmentTip("Email Not Verified");
     }
   }, [verified]);
-
-  useEffect(() => {
-    if (user && !verified) {
-      setSnack("Please verify your email to start contributing to PROBE.");
-      setOpenSnack(true);
-    }
-  }, []);
 
   const handleDeleteDialog = () => {
     setAlert({

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-
+import PropTypes from "prop-types";
 // @material-ui
 import { makeStyles, TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -104,4 +104,11 @@ export const SearchBar = ({
       />
     </div>
   );
+};
+
+// Prop checking
+SearchBar.propTypes = {
+  setSelector: PropTypes.func,
+  multiple: PropTypes.bool,
+  placeholder: PropTypes.string,
 };

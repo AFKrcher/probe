@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import PropTypes from "prop-types";
 // Imports
 import HelpersContext from "./HelpersContext.jsx";
 
@@ -82,3 +83,8 @@ export default function PromptDialog({ body }) {
     </Dialog>
   );
 }
+
+// Prop checking
+PromptDialog.propTypes = {
+  body: PropTypes.object,
+};

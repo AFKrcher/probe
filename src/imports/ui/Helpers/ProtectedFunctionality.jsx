@@ -1,5 +1,6 @@
 import React from "react";
 import { Meteor } from "meteor/meteor";
+import PropTypes from "prop-types";
 // Imports
 import { Roles } from "meteor/alanning:roles";
 import { useTracker } from "meteor/react-meteor-data";
@@ -48,3 +49,12 @@ export default function ProtectedFunctionality({
     </Skeleton>
   ) : null;
 }
+
+// Prop checking
+ProtectedFunctionality.propTypes = {
+  component: PropTypes.elementType,
+  loginRequired: PropTypes.bool,
+  requiredRoles: PropTypes.arrayOf(PropTypes.string),
+  iconButton: PropTypes.bool,
+  skeleton: PropTypes.bool,
+};

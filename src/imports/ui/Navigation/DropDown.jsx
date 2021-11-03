@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Meteor } from "meteor/meteor";
+import PropTypes from "prop-types";
 // Imports
 import { useTracker } from "meteor/react-meteor-data";
 import { Link, useLocation, useHistory } from "react-router-dom";
@@ -174,4 +175,10 @@ export const DropDown = ({ theme, toggleTheme }) => {
       </StyledMenu>
     </React.Fragment>
   );
+};
+
+// Prop checking
+DropDown.propTypes = {
+  theme: PropTypes.object,
+  toggleTheme: PropTypes.func,
 };

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-
+import PropTypes from "prop-types";
 // Imports
 import useWindowSize from "../Hooks/useWindowSize.jsx";
 import { Link } from "react-router-dom";
@@ -195,4 +195,10 @@ export const NavBar = ({ theme, toggleTheme }) => {
       </AppBar>
     </div>
   );
+};
+
+// Prop checking
+NavBar.propTypes = {
+  theme: PropTypes.object,
+  toggleTheme: PropTypes.func,
 };

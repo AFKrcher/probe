@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import PropTypes from "prop-types";
 // Imports
 import HelpersContext from "./HelpersContext.jsx";
 
@@ -45,3 +46,8 @@ export default function SimpleSnackbar({ bodySnackBar }) {
     </React.Fragment>
   );
 }
+
+// Prop checking
+SimpleSnackbar.propTypes = {
+  bodySnackBar: PropTypes.string,
+};
