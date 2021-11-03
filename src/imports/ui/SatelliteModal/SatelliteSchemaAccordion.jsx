@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Meteor } from "meteor/meteor";
 
 // Components
 import { SatelliteSchemaEntry } from "./SatelliteSchemaEntry";
@@ -194,7 +195,9 @@ export const SatelliteSchemaAccordion = ({
               accordionBeingEdited === -1) ? (
               <Grid item className={classes.iconButtons} xs="auto">
                 {!editingSchema ? (
-                  Meteor.userId() && ( // not using ProtectedFunctionality on this due to the noticeable lag of .map() in the parent
+                  Meteor.userId() &&
+                  Meteor.user({ fields: { "emails.verified": 1 } })?.emails[0]
+                    .verified && ( // not using ProtectedFunctionality due to rendering lag during .map() of accordions
                     <IconButton
                       className={classes.editIcon}
                       onClick={handleEditSchema}

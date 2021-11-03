@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Meteor } from "meteor/meteor";
 // Imports
 import { useTracker } from "meteor/react-meteor-data";
@@ -6,8 +6,10 @@ import { SchemaCollection } from "../../api/schemas";
 import ProtectedFunctionality from "../Helpers/ProtectedFunctionality.jsx";
 import useWindowSize from "../Hooks/useWindowSize.jsx";
 import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
+import HelpersContext from "../Dialogs/HelpersContext.jsx";
 
 // Components
+import SnackBar from "../Dialogs/SnackBar.jsx";
 import { SearchBar } from "../Helpers/SearchBar.jsx";
 import { Link } from "react-router-dom";
 import { SchemaModal } from "../SchemaModal/SchemaModal.jsx";
@@ -123,6 +125,8 @@ const addButtonBreak = 650;
 export const SchemasTable = () => {
   const classes = useStyles();
 
+  const { setOpenSnack, snack, setSnack } = useContext(HelpersContext);
+
   const [width] = useWindowSize();
 
   const [popperBody, setPopperBody] = useState(null);
@@ -149,8 +153,12 @@ export const SchemasTable = () => {
     return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
   }
 
-  const [rows, schemas, isLoading] = useTracker(() => {
+  const [rows, schemas, user, verified, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("schemas");
+    const user = Meteor.user({ fields: { username: 1 } })?.username;
+    const verified = Meteor.user()?.emails[0]
+      ? Meteor.user()?.emails[0]?.verified
+      : false;
     const schemas = SchemaCollection.find({
       isDeleted: false,
     }).fetch();
@@ -170,8 +178,15 @@ export const SchemasTable = () => {
           description: schema.description,
         };
       });
-    return [rows, schemas, !sub.ready()];
+    return [rows, schemas, user, verified, !sub.ready()];
   });
+
+  useEffect(() => {
+    if (user && !verified) {
+      setSnack("Please verify your email to start contributing to PROBE.");
+      setOpenSnack(true);
+    }
+  }, []);
 
   function CustomToolbar() {
     return (
@@ -266,6 +281,7 @@ export const SchemasTable = () => {
 
   return (
     <div className={classes.root}>
+      <SnackBar bodySnackBar={snack} />
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item xs>
           <Typography variant="h3">Schemas</Typography>
