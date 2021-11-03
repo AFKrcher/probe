@@ -14,6 +14,7 @@ export const startup = (
   ADMIN_PASSWORD,
   ROOT_URL,
   PORT,
+  PM2,
   reseed = false
 ) => {
   if (reseed && count === 0) {
@@ -36,16 +37,14 @@ export const startup = (
     sendVerificationEmail: true,
   });
   Accounts.urls.resetPassword = (token) => {
-    return Meteor.absoluteUrl(
-      `${ROOT_URL.includes("localhost") ? `:${PORT}` : ""}/reset?token=${token}`
-    );
+    return ROOT_URL.includes("localhost") && PM2
+      ? `${ROOT_URL}:${PORT}/reset?token=${token}`
+      : Meteor.absoluteUrl(`/reset?token=${token}`);
   };
   Accounts.urls.verifyEmail = (token) => {
-    return Meteor.absoluteUrl(
-      `${
-        ROOT_URL.includes("localhost") ? `:${PORT}` : ""
-      }/verify?token=${token}`
-    );
+    return ROOT_URL.includes("localhost") && PM2
+      ? `${ROOT_URL}:${PORT}/verify?token=${token}`
+      : Meteor.absoluteUrl(`/verify?token=${token}`);
   };
 
   Accounts.emailTemplates.from = "PROBE <no-reply@probe.saberastro.com>";
