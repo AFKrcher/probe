@@ -105,7 +105,7 @@ export const accountMethods = (
     },
     addToFavorites: (id, noradID) => {
       if (Meteor.userId()) {
-        let favorites = Meteor.user().favorites;
+        let favorites = Meteor.user({ fields: { favorites: 1 } })?.favorites;
         if (favorites.indexOf(noradID) === -1) {
           favorites.push(noradID);
         } else {
@@ -113,7 +113,7 @@ export const accountMethods = (
         }
         Meteor.users.update(id, { $set: { favorites: favorites } });
         UsersCollection.update({ _id: id }, { $set: { favorites: favorites } });
-        return Meteor.user().favorites;
+        return Meteor.user({ fields: { favorites: 1 } })?.favorites;
       } else {
         return ["Unauthorized [401]"];
       }

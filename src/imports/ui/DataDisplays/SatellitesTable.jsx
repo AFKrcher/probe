@@ -156,7 +156,6 @@ export const SatellitesTable = () => {
   const classes = useStyles();
 
   const history = useHistory();
-
   const { setOpenSnack, snack, setSnack, setOpenVisualize } =
     useContext(HelpersContext);
 
@@ -342,6 +341,7 @@ export const SatellitesTable = () => {
   const handleFavorite = (e, values, name, notFavorite) => {
     e.preventDefault();
     Meteor.call("addToFavorites", Meteor.userId(), values, (err, res) => {
+      console.log("res", res);
       return res;
     });
 

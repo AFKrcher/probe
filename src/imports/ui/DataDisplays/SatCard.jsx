@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import PropTypes from "prop-types";
 // Imports
 import { useHistory } from "react-router";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
@@ -281,4 +282,11 @@ export const SatCard = ({ width, height, satellite }) => {
       </Card>
     </React.Fragment>
   );
+};
+
+// Prop checking
+SatCard.propTypes = {
+  width: PropTypes.number,
+  height: PropTypes.number,
+  satellite: PropTypes.object,
 };
