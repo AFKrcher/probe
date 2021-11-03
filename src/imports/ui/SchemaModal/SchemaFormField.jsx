@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 // Imports
 import { Field, FastField } from "formik";
 
@@ -422,4 +423,13 @@ export const SchemaFormField = ({
       </Grid>
     </Grid>
   );
+};
+
+// Prop checking
+SchemaFormField.propTypes = {
+  errors: PropTypes.object,
+  index: PropTypes.number,
+  field: PropTypes.object,
+  setFieldValue: PropTypes.func,
+  editing: PropTypes.bool,
 };

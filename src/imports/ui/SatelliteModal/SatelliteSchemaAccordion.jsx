@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Meteor } from "meteor/meteor";
-
+import PropTypes from "prop-types";
 // Components
 import { SatelliteSchemaEntry } from "./SatelliteSchemaEntry";
 import useWindowSize from "../Hooks/useWindowSize.jsx";
@@ -82,8 +82,6 @@ export const SatelliteSchemaAccordion = ({
   dirty,
   errors,
   setErrors,
-  schema,
-  entries,
   setFieldValue,
   editing,
   setSatSchema,
@@ -94,12 +92,14 @@ export const SatelliteSchemaAccordion = ({
   touched,
   editingOne,
   setEditingOne,
-  schemaIndex,
-  accordionBeingEdited,
-  setAccordionBeingEdited,
   initValues,
   setOpenSnack,
   setSnack,
+  schema,
+  entries,
+  schemaIndex,
+  accordionBeingEdited,
+  setAccordionBeingEdited,
 }) => {
   const classes = useStyles();
 
@@ -276,4 +276,31 @@ export const SatelliteSchemaAccordion = ({
       </Accordion>
     </React.Fragment>
   );
+};
+
+// Prop checking
+SatelliteSchemaAccordion.propTypes = {
+  errors: PropTypes.object,
+  setErrors: PropTypes.func,
+  dirty: PropTypes.bool,
+  values: PropTypes.object,
+  schemas: PropTypes.array,
+  setValues: PropTypes.func,
+  setFieldValue: PropTypes.func,
+  editing: PropTypes.bool,
+  initValues: PropTypes.object,
+  setSatSchema: PropTypes.func,
+  satelliteValidatorShaper: PropTypes.func,
+  touched: PropTypes.object,
+  setTouched: PropTypes.func,
+  editingOne: PropTypes.bool,
+  setEditingOne: PropTypes.func,
+  setOpenSnack: PropTypes.func,
+  setSnack: PropTypes.func,
+  newSat: PropTypes.bool,
+  schema: PropTypes.object,
+  entries: PropTypes.array,
+  schemaIndex: PropTypes.number,
+  accordionBeingEdited: PropTypes.number,
+  setAccordionBeingEdited: PropTypes.func,
 };

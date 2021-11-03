@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 // Imports
 import { Field } from "formik";
 import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
@@ -151,7 +152,7 @@ export const SatelliteSchemaEntry = ({
     return helper;
   };
 
-  const helper = (field, index) => {
+  const helper = (field) => {
     let helper = null;
     if (field.min || field.max) {
       if (field.min && field.max)
@@ -450,4 +451,22 @@ export const SatelliteSchemaEntry = ({
       </Paper>
     </Grid>
   );
+};
+
+// Prop checking
+SatelliteSchemaEntry.propTypes = {
+  entryIndex: PropTypes.number,
+  schema: PropTypes.object,
+  entry: PropTypes.object,
+  setFieldValue: PropTypes.func,
+  editing: PropTypes.bool,
+  editingSchema: PropTypes.bool,
+  errors: PropTypes.object,
+  entries: PropTypes.array,
+  setSatSchema: PropTypes.func,
+  initValues: PropTypes.object,
+  satelliteValidatorShaper: PropTypes.func,
+  setTouched: PropTypes.func,
+  values: PropTypes.object,
+  width: PropTypes.number,
 };
