@@ -38,12 +38,12 @@ const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT, NODE_ENV } = process.env;
 const allowedRoles = ["dummies", "moderator", "machine", "admin"]; // please ensure these are reflected in the routes.js API
 
 Meteor.startup(() => {
-  console.log("> PROBE server is starting-up...");
-  console.log("> Checking environment variables...");
+  console.log("=> PROBE server is starting-up...");
+  console.log("=> Checking environment variables...");
   console.log(
     ADMIN_PASSWORD && PROBE_API_KEY && ROOT_URL && PORT && NODE_ENV
-      ? `> Environment variables for ${NODE_ENV} were loaded!`
-      : `> Error loading environment variables for ${NODE_ENV}. Please check the .env files in ~/private and restart the server.`
+      ? `=> Environment variables for ${NODE_ENV} were loaded!`
+      : `=> Error loading environment variables for ${NODE_ENV}. Please check the .env files in ~/private and restart the server.`
   );
 
   // See helmet.js for Content Security Policy (CSP) options
@@ -165,8 +165,8 @@ Meteor.startup(() => {
   );
 
   console.log(
-    `> PROBE server is running! Listening at ${ROOT_URL}${
-      NODE_ENV === "production" ? ":" + PORT : ""
+    `=> PROBE server is running! Listening at ${ROOT_URL}${
+      NODE_ENV !== "production" ? ":" + PORT : ""
     }`
   );
 });
