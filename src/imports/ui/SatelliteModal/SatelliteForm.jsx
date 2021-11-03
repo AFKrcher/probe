@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import PropTypes from "prop-types";
 // Imports
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import { FastField, Field } from "formik";
@@ -58,13 +59,13 @@ export const SatelliteForm = ({
   initValues,
   setSatSchema,
   satelliteValidatorShaper,
+  touched,
   setTouched,
   editingOne,
   setEditingOne,
   setOpenSnack,
   setSnack,
   newSat,
-  touched,
 }) => {
   const { setOpenAlert, alert, setAlert } = useContext(HelpersContext);
   const [schemaAddition, setSchemaAddition] = useState(false);
@@ -301,4 +302,26 @@ export const SatelliteForm = ({
       </Grid>
     </Grid>
   );
+};
+
+// Prop checking
+SatelliteForm.propTypes = {
+  errors: PropTypes.object,
+  setErrors: PropTypes.func,
+  dirty: PropTypes.bool,
+  values: PropTypes.object,
+  schemas: PropTypes.array,
+  setValues: PropTypes.func,
+  setFieldValue: PropTypes.func,
+  editing: PropTypes.bool,
+  initValues: PropTypes.object,
+  setSatSchema: PropTypes.func,
+  satelliteValidatorShaper: PropTypes.func,
+  touched: PropTypes.object,
+  setTouched: PropTypes.func,
+  editingOne: PropTypes.bool,
+  setEditingOne: PropTypes.func,
+  setOpenSnack: PropTypes.func,
+  setSnack: PropTypes.func,
+  newSat: PropTypes.bool,
 };

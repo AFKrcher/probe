@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import PropTypes from "prop-types";
 // Imports
 import { Field } from "formik";
 
@@ -125,4 +125,14 @@ export const MultiSelectTextInput = ({
       )}
     </React.Fragment>
   );
+};
+
+// Prop checking
+MultiSelectTextInput.propTypes = {
+  editing: PropTypes.bool,
+  index: PropTypes.number,
+  allowedValues: PropTypes.array,
+  setFieldValue: PropTypes.func,
+  currentStringMax: PropTypes.number,
+  errors: PropTypes.object,
 };
