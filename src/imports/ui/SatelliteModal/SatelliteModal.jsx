@@ -101,12 +101,12 @@ export const SatelliteModal = ({
   const [editingOne, setEditingOne] = useState(false);
   const [satSchema, setSatSchema] = useState(null);
 
-  const [user, schemas, isLoadingSch, isLoadingSat] = useTracker(() => {
+  const [username, schemas, isLoadingSch, isLoadingSat] = useTracker(() => {
     const subSch = Meteor.subscribe("schemas");
     const subSat = Meteor.subscribe("satellites");
     const schemas = SchemaCollection.find({ isDeleted: false }).fetch();
-    const user = Meteor.user();
-    return [user, schemas, !subSch.ready(), !subSat.ready()];
+    const username = Meteor.user({ fields: { username: 1 } })?.username;
+    return [username, schemas, !subSch.ready(), !subSat.ready()];
   });
 
   useEffect(() => {
@@ -450,8 +450,7 @@ export const SatelliteModal = ({
                     </div>
                     <Typography className={classes.description}>
                       Last change made by{" "}
-                      <strong>{`${values.modifiedBy || user.username}`}</strong>{" "}
-                      on{" "}
+                      <strong>{`${values.modifiedBy || username}`}</strong> on{" "}
                       <strong>
                         {values.modifiedOn
                           ? `${values.modifiedOn}`

@@ -269,7 +269,9 @@ export const SatellitesTable = () => {
           break;
         case "[object Object]":
           setSelector({
-            noradID: { $in: Meteor.user().favorites },
+            noradID: {
+              $in: Meteor.user({ fields: { favorites: 1 } })?.favorites,
+            },
             isDeleted: false,
           });
           break;
@@ -433,13 +435,19 @@ export const SatellitesTable = () => {
     };
 
     const checkIfFavorite = () => {
-      return Meteor.user()?.favorites?.indexOf(params.id) > -1;
+      return (
+        Meteor.user({ fields: { favorites: 1 } })?.favorites?.indexOf(
+          params.id
+        ) > -1
+      );
     };
 
     return (
       <Tooltip
         title={`${
-          Meteor.user()?.favorites?.indexOf(params.id) > -1
+          Meteor.user({ fields: { favorites: 1 } })?.favorites?.indexOf(
+            params.id
+          ) > -1
             ? `Remove ${favoritesNameShortener()} from favorites`
             : `Add ${favoritesNameShortener()} to favorites`
         }`}
@@ -473,7 +481,7 @@ export const SatellitesTable = () => {
       return setSelector({});
     } else {
       return setSelector({
-        noradID: { $in: Meteor.user().favorites },
+        noradID: { $in: Meteor.user({ fields: { favorites: 1 } })?.favorites },
         isDeleted: false,
       });
     }
