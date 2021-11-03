@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import PropTypes from "prop-types";
 // @material-ui
 import { makeStyles, Typography, Tooltip } from "@material-ui/core";
 import StarIcon from "@material-ui/icons/Star";
@@ -220,4 +220,10 @@ export const Key = ({ page, mini }) => {
       )}
     </span>
   );
+};
+
+// Prop checking
+Key.propTypes = {
+  page: PropTypes.string,
+  mini: PropTypes.bool,
 };

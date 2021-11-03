@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import PropTypes from "prop-types";
 // @material-ui
 import { makeStyles, Typography, Snackbar, Paper } from "@material-ui/core";
 
@@ -40,4 +40,10 @@ export const Popper = ({ open, value }) => {
       </Snackbar>
     </div>
   );
+};
+
+// Prop checking
+Popper.propTypes = {
+  open: PropTypes.bool,
+  value: PropTypes.string,
 };

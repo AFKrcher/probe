@@ -61,7 +61,11 @@ Meteor.startup(() => {
           Meteor.roleAssignment.find(),
         ];
       } else {
-        return [Meteor.roles.find(), Meteor.roleAssignment.find()];
+        return [
+          Meteor.users.find({ _id: Meteor.user()._id }),
+          Meteor.roles.find(),
+          Meteor.roleAssignment.find(),
+        ];
       }
     } else {
       return [];
@@ -165,7 +169,7 @@ Meteor.startup(() => {
     ROOT_URL,
     PORT,
     PM2, // checks to see if this is a Docker development test-build
-    false // set this to true if you want to force a db re-seed on server restart
+    true // set this to true if you want to force a db re-seed on server restart
   );
 
   console.log(

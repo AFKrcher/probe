@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Meteor } from "meteor/meteor";
+import PropTypes from "prop-types";
 // Imports
 import { useTracker } from "meteor/react-meteor-data";
 import { Link, useLocation } from "react-router-dom";
@@ -228,4 +229,10 @@ export const SmallNav = ({ theme, toggleTheme }) => {
       </StyledMenu>
     </React.Fragment>
   );
+};
+
+// Prop checking
+SmallNav.propTypes = {
+  theme: PropTypes.object,
+  toggleTheme: PropTypes.func,
 };

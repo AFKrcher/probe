@@ -52,11 +52,12 @@ const useStyles = makeStyles((theme) => ({
   },
   miniButton: {
     marginBottom: 20,
-    width: 215,
+    width: 230,
   },
   miniButtonShowcaseHeaderContainer: {
     display: "flex",
     justifyContent: "space-between",
+    alignItems: "center",
     width: "100%",
   },
   showcase: {
@@ -113,7 +114,7 @@ const useStyles = makeStyles((theme) => ({
 // breakpoints based on device width / height
 const dividerBreak = 800;
 const dividerTextBreak = 1000;
-const cardFlexBreak = 600;
+const cardFlexBreak = 1000;
 const cardSpaceBreakLarge = 1000;
 const cardSpaceBreakSmall = 600;
 const cardSpaceBreakMedium = 750;
@@ -136,15 +137,26 @@ export const Home = () => {
   };
 
   const miniButton = () => {
+    const miniButtonBreak = width > 750;
     return (
       <Button
         variant="contained"
-        size="small"
-        startIcon={mini ? <ZoomIn /> : <ZoomOut />}
+        startIcon={miniButtonBreak ? mini ? <ZoomIn /> : <ZoomOut /> : null}
         onClick={minimize}
         className={classes.miniButton}
+        style={miniButtonBreak ? {} : { width: 0 }}
       >
-        {mini ? "Satellite Cards View" : "Minimized Grid View"}
+        {mini ? (
+          miniButtonBreak ? (
+            "Satellite Cards View"
+          ) : (
+            <ZoomOut fontSize="small" />
+          )
+        ) : miniButtonBreak ? (
+          "Minimized Grid View"
+        ) : (
+          <ZoomIn fontSize="small" />
+        )}
       </Button>
     );
   };

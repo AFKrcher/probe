@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import PropTypes from "prop-types";
 // Imports
 import HelpersContext from "./HelpersContext.jsx";
 
@@ -44,3 +45,8 @@ export default function AlertDialog({ bodyAlert }) {
     </div>
   );
 }
+
+// Prop checking
+AlertDialog.propTypes = {
+  bodyAlert: PropTypes.object,
+};
