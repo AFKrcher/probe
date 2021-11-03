@@ -2,7 +2,7 @@ const fs = Npm.require("fs");
 
 let count = 0;
 
-export const reseed = (
+export const startup = (
   Meteor,
   Roles,
   allowedRoles,
@@ -12,6 +12,8 @@ export const reseed = (
   ErrorsCollection,
   UsersCollection,
   ADMIN_PASSWORD,
+  ROOT_URL,
+  PORT,
   reseed = false
 ) => {
   if (reseed && count === 0) {
@@ -31,13 +33,19 @@ export const reseed = (
 
   // Email verification and password reset emails
   Accounts.config({
-    sendVerificationEmail: false,
+    sendVerificationEmail: true,
   });
   Accounts.urls.resetPassword = (token) => {
-    return Meteor.absoluteUrl(`/reset?token=${token}`);
+    return Meteor.absoluteUrl(
+      `${ROOT_URL.includes("localhost") ? `:${PORT}` : ""}/reset?token=${token}`
+    );
   };
   Accounts.urls.verifyEmail = (token) => {
-    return Meteor.absoluteUrl(`/verify?token=${token}`);
+    return Meteor.absoluteUrl(
+      `${
+        ROOT_URL.includes("localhost") ? `:${PORT}` : ""
+      }/verify?token=${token}`
+    );
   };
 
   Accounts.emailTemplates.from = "PROBE <no-reply@probe.saberastro.com>";

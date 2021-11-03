@@ -6,7 +6,7 @@ RUN apt-get install curl -y && (curl https://install.meteor.com/ | sh)
 WORKDIR /app
 COPY . .
 
-RUN ./scripts/build-prod.sh
+RUN ./scripts/build-prod.sh --verbose
 
 # If you don't have access to Iron Bank, just use the node:14.16.1 image from Docker
 FROM registry1.dso.mil/ironbank/opensource/nodejs/nodejs14@sha256:1aa1227b8c3b3adf19280ce88a67ecf696d598ae94c8dbd3253415aa5efb8983
