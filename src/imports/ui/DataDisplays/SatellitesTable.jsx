@@ -340,10 +340,7 @@ export const SatellitesTable = () => {
 
   const handleFavorite = (e, values, name, notFavorite) => {
     e.preventDefault();
-    Meteor.call("addToFavorites", Meteor.userId(), values, (err, res) => {
-      console.log("res", res);
-      return res;
-    });
+    Meteor.call("addToFavorites", Meteor.userId(), values);
 
     setOpenSnack(false);
     setSnack(

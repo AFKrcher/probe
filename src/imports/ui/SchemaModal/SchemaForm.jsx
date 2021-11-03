@@ -1,5 +1,8 @@
 import React from "react";
+import PropTypes from "prop-types";
+// Imports
 import { FastField, Field, FieldArray } from "formik";
+
 // Components
 import { SchemaFormField } from "./SchemaFormField";
 
@@ -184,6 +187,18 @@ export const SchemaForm = ({
           </Button>
         )}
       </Grid>
+      {console.log(setFieldValue)}
     </Grid>
   );
+};
+
+// Prop checking
+SchemaForm.propTypes = {
+  touched: PropTypes.object,
+  errors: PropTypes.object,
+  formValues: PropTypes.object,
+  setValues: PropTypes.func,
+  setFieldValue: PropTypes.func,
+  editing: PropTypes.bool,
+  initValues: PropTypes.object,
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Meteor } from "meteor/meteor";
+import PropTypes from "prop-types";
 // Imports
 import { useTracker } from "meteor/react-meteor-data";
 import { SchemaCollection } from "../../api/schemas";
@@ -662,4 +663,16 @@ export const SatelliteModal = ({
       </Dialog>
     </React.Fragment>
   );
+};
+
+// Prop checking
+SatelliteModal.propTypes = {
+  show: PropTypes.bool,
+  newSat: PropTypes.bool,
+  initValues: PropTypes.object,
+  handleClose: PropTypes.func,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  admin: PropTypes.bool,
+  dashboard: PropTypes.bool,
 };

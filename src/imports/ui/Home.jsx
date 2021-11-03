@@ -41,27 +41,24 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
     marginBottom: 15,
   },
-  miniDescription: {
-    marginBottom: 10,
+  showcase: {
+    marginTop: 20,
   },
   showcaseHeader: {
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
-    marginBottom: 5,
-  },
-  miniButton: {
     marginBottom: 20,
-    width: 230,
+  },
+  miniDescription: {
+    marginTop: 15,
+    marginBottom: 10,
   },
   miniButtonShowcaseHeaderContainer: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
-  },
-  showcase: {
-    marginTop: 15,
   },
   descriptionDivider: {
     marginBottom: 25,
@@ -141,21 +138,21 @@ export const Home = () => {
     return (
       <Button
         variant="contained"
+        size="small"
         startIcon={miniButtonBreak ? mini ? <ZoomIn /> : <ZoomOut /> : null}
         onClick={minimize}
-        className={classes.miniButton}
-        style={miniButtonBreak ? {} : { width: 0 }}
+        style={{ width: miniButtonBreak ? 206 : 0 }}
       >
         {mini ? (
           miniButtonBreak ? (
             "Satellite Cards View"
           ) : (
-            <ZoomOut fontSize="small" />
+            <ZoomOut />
           )
         ) : miniButtonBreak ? (
           "Minimized Grid View"
         ) : (
-          <ZoomIn fontSize="small" />
+          <ZoomIn />
         )}
       </Button>
     );
@@ -288,9 +285,7 @@ export const Home = () => {
           <React.Fragment>
             <span className={classes.showcaseHeader}>
               <div className={classes.miniButtonShowcaseHeaderContainer}>
-                <Typography variant="h4" gutterBottom>
-                  All Satellites
-                </Typography>
+                <Typography variant="h4">All Satellites</Typography>
                 {miniButton()}
               </div>
               <Typography variant="body1" className={classes.miniDescription}>
@@ -306,7 +301,7 @@ export const Home = () => {
               <React.Fragment>
                 <span className={classes.showcaseHeader}>
                   <div className={classes.miniButtonShowcaseHeaderContainer}>
-                    <Typography variant="h4" gutterBottom>
+                    <Typography variant="h4">
                       {favorites?.length > 0 ? (
                         <React.Fragment>
                           <strong>{user}</strong>'s Favorite Satellites
@@ -363,7 +358,7 @@ export const Home = () => {
               {isLoading ? (
                 <span className={classes.showcaseHeader}>
                   <Skeleton variant="rect" className={classes.skeleton}>
-                    <Typography variant="h4" gutterBottom>
+                    <Typography variant="h4">
                       User's Favorite Satellites
                     </Typography>
                   </Skeleton>
@@ -371,9 +366,7 @@ export const Home = () => {
               ) : (
                 <span className={classes.showcaseHeader}>
                   <div className={classes.miniButtonShowcaseHeaderContainer}>
-                    <Typography variant="h4" gutterBottom>
-                      Satellite Data Cards
-                    </Typography>
+                    <Typography variant="h4">Satellite Data Cards</Typography>
                     {!favorites?.length > 0 && miniButton()}
                   </div>
                 </span>
