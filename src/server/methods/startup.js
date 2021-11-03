@@ -85,7 +85,7 @@ export const startup = (
     jsonObj.forEach(function (data) {
       SchemaCollection.insert(data);
     });
-    console.log("> SchemaCollection Seeded");
+    console.log("=> SchemaCollection Seeded");
   }
 
   // Seed satellite data
@@ -100,24 +100,33 @@ export const startup = (
     jsonObj.forEach(function (data) {
       SatelliteCollection.insert(data);
     });
-    console.log("> SatelliteCollection Seeded");
+    console.log("=> SatelliteCollection Seeded");
   }
 
   // Seed admin account for testing
   if (UsersCollection.find().count() < 1) {
-    Meteor.call("userExists", "admin", (err, res) => {
+    const name = "admin";
+    const email = "no-reply@saberastro.com";
+    Meteor.call("userExists", name, (err, res) => {
       if (err || res) {
         if (err && err.message !== "Username already exists.")
           console.log(`> ${err.message}`);
         return;
       } else if (UsersCollection.find().count() < 1) {
         Accounts.createUser({
-          email: "no-reply@saberastro.com",
-          username: "admin",
+          email: email,
+          username: name,
           password: ADMIN_PASSWORD, // only for dev testing - password changed on deployment
         });
-        Roles.addUsersToRoles(Accounts.findUserByUsername("admin"), "admin");
-        console.log("> Development Account Seeded");
+        console.log("=> Development Account Seeded");
+        Roles.addUsersToRoles(Accounts.findUserByUsername(name), "admin");
+        const id = Accounts.findUserByUsername(name)._id;
+        Meteor.users.update(
+          id,
+          { $set: { emails: [{ address: email, verified: true }] } },
+          { multi: true }
+        );
+        console.log("=> Development Account Verified");
       }
     });
   }
@@ -140,13 +149,12 @@ export const startup = (
       )
       .fetch();
     users.forEach((user) => UsersCollection.insert(user));
-    console.log("> UsersCollection Seeded");
+    console.log("=> UsersCollection Seeded");
   }
 
   // Seed sample error
   if (ErrorsCollection.find().count() < 1) {
     ErrorsCollection.remove({});
-    console.log("> ErrorsCollection Seeded");
     const errors = {
       user: "Not Logged-In",
       time: new Date().toISOString(),
@@ -155,5 +163,6 @@ export const startup = (
       error: {},
     };
     ErrorsCollection.insert(errors);
+    console.log("=> ErrorsCollection Seeded");
   }
 };
