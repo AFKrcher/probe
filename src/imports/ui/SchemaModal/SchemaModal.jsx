@@ -86,10 +86,10 @@ export const SchemaModal = ({
 
   const [editing, setEditing] = useState(newSchema || false);
 
-  const [user, isLoading] = useTracker(() => {
+  const [username, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("schemas");
-    const user = Meteor.user();
-    return [user, !sub.ready()];
+    const username = Meteor.user({ fields: { username: 1 } })?.username;
+    return [username, !sub.ready()];
   });
 
   useEffect(() => {
@@ -345,20 +345,16 @@ export const SchemaModal = ({
                   style={decideHeight()}
                 >
                   <Typography className={classes.description}>
-                    {user ? (
-                      <React.Fragment>
-                        Last change made by{" "}
-                        <strong>{`${
-                          values.modifiedBy || user.username
-                        }`}</strong>{" "}
-                        on{" "}
-                        <strong>
-                          {values.modifiedOn
-                            ? `${values.modifiedOn}`
-                            : `${new Date()}`}
-                        </strong>
-                      </React.Fragment>
-                    ) : null}
+                    Last change made by{" "}
+                    <strong>{`${
+                      values.modifiedBy || username || "N/A"
+                    }`}</strong>{" "}
+                    on{" "}
+                    <strong>
+                      {values.modifiedOn
+                        ? `${values.modifiedOn}`
+                        : `${new Date()}`}
+                    </strong>
                   </Typography>
                   <SchemaForm
                     touched={touched}

@@ -19,6 +19,7 @@ import {
   FormControl,
   CircularProgress,
   Tooltip,
+  Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
@@ -26,12 +27,15 @@ import CancelIcon from "@material-ui/icons/Cancel";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
-    marginTop: 30,
+    marginTop: 25,
     display: "flex",
     flexFlow: "column wrap",
     justifyContent: "center",
     alignItems: "center",
     width: "300px",
+  },
+  header: {
+    marginBottom: 40,
   },
   textField: {
     marginBottom: 10,
@@ -76,8 +80,8 @@ export const Settings = () => {
   const [adornmentTip, setAdornmentTip] = useState("");
 
   const [id, user, email, verified] = useTracker(() => {
-    const id = Meteor.user()?._id;
-    const user = Meteor.user()?.username;
+    const id = Meteor.user({ fields: { _id: 1 } })?._id;
+    const user = Meteor.user({ fields: { username: 1 } })?.username;
     const email = Meteor.user()?.emails[0]?.address;
     const verified = Meteor.user()?.emails[0]?.verified;
     return [id, user, email, verified];
@@ -100,7 +104,49 @@ export const Settings = () => {
     }
   }, [verified]);
 
+  useEffect(() => {
+    if (user && !verified) {
+      setAlert({
+        text: "Please verify your email to start contributing to PROBE!",
+        title: "Verify Your Email",
+        actions: (
+          <Button
+            id="verifyButton"
+            variant="contained"
+            size="small"
+            onClick={sendEmail}
+          >
+            Send Another Verification Email
+          </Button>
+        ),
+        closeAction: "Close",
+      });
+      setOpenAlert(true);
+    }
+  }, []);
+
+  const handleDeleteDialog = () => {
+    setAlert({
+      title: "Delete Your Account",
+      text: "Are you sure you want to delete your PROBE account and all of its associated data?",
+      actions: (
+        <Button
+          variant="contained"
+          size="small"
+          color="secondary"
+          disableElevation
+          onClick={deleteAccount}
+        >
+          Delete My Account
+        </Button>
+      ),
+      closeAction: "Cancel",
+    });
+    setOpenAlert(true);
+  };
+
   const deleteAccount = () => {
+    setOpenAlert(false);
     setLoading(true);
     Meteor.call("deleteAccount", id, (err) => {
       if (err) {
@@ -358,6 +404,9 @@ export const Settings = () => {
           className={classes.root}
         >
           <FormControl className={classes.formContainer}>
+            <Typography variant="h4" className={classes.header}>
+              <strong>Profile Settings</strong>
+            </Typography>
             <form
               id="settings"
               onSubmit={updateAccount}
@@ -445,7 +494,7 @@ export const Settings = () => {
               >
                 Update your account
               </Button>
-              {!Meteor.user().emails[0].verified ? (
+              {!verified ? (
                 <Button
                   id="verifyButton"
                   variant="outlined"
@@ -453,14 +502,14 @@ export const Settings = () => {
                   fullWidth
                   className={classes.button}
                 >
-                  VERIFY YOUR EMAIL
+                  Send verification email
                 </Button>
               ) : null}
               <Button
                 id="deleteButton"
                 variant="outlined"
                 color="secondary"
-                onClick={deleteAccount}
+                onClick={handleDeleteDialog}
                 fullWidth
                 className={classes.button}
               >
