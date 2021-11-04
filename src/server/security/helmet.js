@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 
-export const helmetOptions = (forExpress, rootURL) => {
+export const helmetOptions = (forExpress) => {
   const self = "'self'";
   const data = "data:";
   const unsafeEval = "'unsafe-eval'";

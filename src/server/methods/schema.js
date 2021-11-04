@@ -1,9 +1,6 @@
-export const schemaMethods = (
-  Meteor,
-  Roles,
-  SchemaCollection,
-  schemaValidatorShaper
-) => {
+import { schemaValidatorShaper } from "/imports/validation/schemaYupShape";
+
+export const schemaMethods = (Meteor, Roles, SchemaCollection) => {
   return Meteor.methods({
     provideSchemaValidator: () => {
       return schemaValidatorShaper;
@@ -78,8 +75,9 @@ export const schemaMethods = (
     },
     actuallyDeleteSchema: (values) => {
       if (
-        Roles.userIsInRole(Meteor.userId(), "admin") ||
-        Roles.userIsInRole(Meteor.userId(), "moderator")
+        (Roles.userIsInRole(Meteor.userId(), "admin") ||
+          Roles.userIsInRole(Meteor.userId(), "moderator")) &&
+        Meteor.user()?.emails[0]?.verified
       ) {
         SchemaCollection.remove(values._id);
       } else {
@@ -88,8 +86,9 @@ export const schemaMethods = (
     },
     restoreSchema: (values) => {
       if (
-        Roles.userIsInRole(Meteor.userId(), "admin") ||
-        Roles.userIsInRole(Meteor.userId(), "moderator")
+        (Roles.userIsInRole(Meteor.userId(), "admin") ||
+          Roles.userIsInRole(Meteor.userId(), "moderator")) &&
+        Meteor.user()?.emails[0]?.verified
       ) {
         let error;
         values["isDeleted"] = false;
@@ -111,8 +110,9 @@ export const schemaMethods = (
     },
     adminCheckSchema: (values) => {
       if (
-        Roles.userIsInRole(Meteor.userId(), "admin") ||
-        Roles.userIsInRole(Meteor.userId(), "moderator")
+        (Roles.userIsInRole(Meteor.userId(), "admin") ||
+          Roles.userIsInRole(Meteor.userId(), "moderator")) &&
+        Meteor.user()?.emails[0]?.verified
       ) {
         let error;
         values["adminCheck"] = true;

@@ -112,10 +112,9 @@ export const Users = () => {
     );
   }
 
-  const [rows, loading] = useTracker(() => {
+  const [rows, users, loading] = useTracker(() => {
     const sub = Meteor.subscribe("userList");
-    let users = UsersCollection.find().fetch();
-    if (!Meteor.userId()) users = [];
+    const users = UsersCollection.find().fetch();
     const rows = users.map((user) => {
       return {
         id: user._id,
@@ -126,7 +125,7 @@ export const Users = () => {
           .join(", "),
       };
     });
-    return [rows, !sub.ready()];
+    return [rows, users, !sub.ready()];
   });
 
   const columns = [
@@ -245,7 +244,7 @@ export const Users = () => {
               disableSelectionOnClick
               onRowDoubleClick={(e) => {
                 handleOpen(e.row);
-                setEditUser(Meteor.users.find({ _id: e.row.id }).fetch()[0]);
+                setEditUser(users.find((user) => user._id === e.row.id));
               }}
             />
           </Paper>

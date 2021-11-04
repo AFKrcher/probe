@@ -43,7 +43,7 @@ The application should be intuitive and easy-to-use, even for a first-time user.
 
 ### API Documentation
 
-HTTP requests made to the PROBE public API routes are limited to 100/hour. Requests that go beyond this limit will experience a 1 hour cool-down period before more requests can be made. HTTP requests made to the PROBE partner API routes have no limits.
+HTTP requests made to the PROBE public API routes are limited to 500/hour. Requests that go beyond this limit will experience a 1 hour cool-down period before more requests can be made. HTTP requests made to the PROBE partner API routes have no limits.
 
 ### Public API
 
@@ -558,8 +558,8 @@ For _PRODUCTION_ testing:
 | MONGO_INITDB_ROOT_USERNAME\*\* | MongoDB initial user                      | probe                                |
 | MONGO_INITDB_ROOT_PASSWORD\*\* | MongoDB initial user password             | password                             |
 
-\*Only required for Docker development build
-\*\*Only required for Docker production build
+\*Only required for a build that reaches out to a hosted MongoDB instance
+\*\*Only required for build that has a local, connected instance of MongoDB running
 
 ### Access MongoDB
 
