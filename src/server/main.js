@@ -2,6 +2,7 @@
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Accounts } from "meteor/accounts-base";
+import { WebApp } from "meteor/webapp";
 import { WebAppInternals } from "meteor/webapp";
 import helmet from "helmet";
 import dotenv from "dotenv";
@@ -11,8 +12,7 @@ import { SchemaCollection } from "/imports/api/schemas";
 import { SatelliteCollection } from "/imports/api/satellites";
 import { UsersCollection } from "/imports/api/users";
 import { ErrorsCollection } from "/imports/api/errors";
-import { schemaValidatorShaper } from "/imports/validation/schemaYupShape";
-import { satelliteValidatorShaper } from "/imports/validation/satelliteYupShape";
+import { allowedRoles } from "./utils/accountDataFuncs";
 
 // Routes
 import "./routes/routes";
@@ -36,7 +36,6 @@ dotenv.config({
 
 const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT, NODE_ENV, PM2 } =
   process.env;
-const allowedRoles = ["dummies", "moderator", "machine", "admin"]; // please ensure these are reflected in the routes.js API
 
 Meteor.startup(() => {
   console.log("=> PROBE server is starting-up...");
@@ -98,21 +97,9 @@ Meteor.startup(() => {
     PROBE_API_KEY
   );
   // Satellite Methods
-  satelliteMethods(
-    Meteor,
-    Roles,
-    SatelliteCollection,
-    satelliteValidatorShaper,
-    PROBE_API_KEY
-  );
+  satelliteMethods(Meteor, Roles, SatelliteCollection, PROBE_API_KEY);
   // Schema methods
-  schemaMethods(
-    Meteor,
-    Roles,
-    SchemaCollection,
-    schemaValidatorShaper,
-    PROBE_API_KEY
-  );
+  schemaMethods(Meteor, Roles, SchemaCollection, PROBE_API_KEY);
   // Error methods
   errorMethods(Meteor, ErrorsCollection);
 
@@ -145,13 +132,19 @@ Meteor.startup(() => {
       "resetPassword",
       "loginWithPassword",
     ],
-    limit: 5, // limits method calls to 5 requests per 5 seconds
-    timeRange: 5000,
+    limit: 10, // limits method calls to 10 requests per 10 seconds
+    timeRange: 10000,
   });
 
   methodRateLimit({
     methods: ["sendEmail", "registerUser", "forgotPassword"],
     limit: 1, // limits method calls to 1 request per 60 seconds
+    timeRange: 60000,
+  });
+
+  methodRateLimit({
+    methods: ["forgotPassword"],
+    limit: 5, // limits method calls to 5 requests per 60 seconds
     timeRange: 60000,
   });
 
@@ -169,7 +162,7 @@ Meteor.startup(() => {
     ROOT_URL,
     PORT,
     PM2, // checks to see if this is a Docker development test-build
-    true // set this to true if you want to force a db re-seed on server restart
+    false // set this to true if you want to force a db re-seed on server restart
   );
 
   console.log(

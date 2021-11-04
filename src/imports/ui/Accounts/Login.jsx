@@ -4,6 +4,10 @@ import { useHistory } from "react-router";
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
+import {
+  isValidEmail,
+  isValidUsername,
+} from "/imports/validation/accountYupShape";
 
 // Components
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
@@ -13,31 +17,45 @@ import {
   Grid,
   Button,
   makeStyles,
-  FormControl,
   TextField,
-  Tooltip,
   CircularProgress,
+  Paper,
+  Typography,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  margin: {
-    margin: theme.spacing(4),
-    width: "300px",
-  },
   formContainer: {
+    marginTop: 40,
+    padding: 20,
     display: "flex",
     flexFlow: "column wrap",
     justifyContent: "center",
     alignItems: "center",
+    width: "400px",
+    borderRadius: 10,
+  },
+  header: {
+    marginBottom: 25,
   },
   textField: {
     marginBottom: 10,
   },
   loginButton: {
     marginTop: 20,
+    marginBottom: 20,
+  },
+  registerForgotButtonContainer: {
+    display: "flex",
+    flexFlow: "column wrap",
+    justifyContent: "center",
+    alignItems: "center",
   },
   registerButton: {
-    marginTop: 20,
+    width: "60%",
+  },
+  forgotButton: {
+    marginTop: 10,
+    width: "60%",
   },
   spinnerContainer: {
     display: "flex",
@@ -60,12 +78,10 @@ export const Login = () => {
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const usernameRegex = /[~`!@.#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g;
-
   const handleDisable = () => {
     setError(null);
-    let username = document.getElementById("username").value;
-    let pass = document.getElementById("password").value;
+    const username = document.getElementById("username").value;
+    const pass = document.getElementById("password").value;
     if (username && pass && !error) {
       setDisabled(false);
     } else {
@@ -90,8 +106,8 @@ export const Login = () => {
 
   const loginUser = (e) => {
     e.preventDefault();
-    let username = e.target.username.value;
-    let password = e.target.password.value;
+    const username = e.target.username.value;
+    const password = e.target.password.value;
 
     setError(null);
     setLoading(true);
@@ -102,7 +118,7 @@ export const Login = () => {
         setError("This user has been banned.");
         setLoading(false);
       } else {
-        if (usernameRegex.test(username)) {
+        if (isValidEmail(null, username)) {
           Meteor.loginWithPassword(
             {
               email: username,
@@ -113,7 +129,7 @@ export const Login = () => {
               setLoading(false);
             }
           );
-        } else {
+        } else if (isValidUsername(null, username)) {
           Meteor.loginWithPassword(
             {
               username: username,
@@ -137,9 +153,9 @@ export const Login = () => {
 
   const forgotPassword = () => {
     let options = {};
-    let username = document.getElementById("username").value;
-    if (usernameRegex.test(username)) {
-      options.email = username;
+    const email = document.getElementById("username").value;
+    if (isValidEmail(null, email)) {
+      options.email = email;
       Accounts.forgotPassword(options, (err) => {
         if (err) {
           setAlert({
@@ -176,9 +192,13 @@ export const Login = () => {
           />
         </div>
       ) : (
-        <FormControl className={classes.margin}>
-          <form onSubmit={loginUser} className={classes.formContainer}>
+        <Paper className={classes.formContainer} elevation={3}>
+          <Typography variant="h4" className={classes.header}>
+            <strong>Login</strong>
+          </Typography>
+          <form onSubmit={loginUser}>
             <TextField
+              autoFocus={true}
               id="username"
               error={error ? true : false}
               helperText={error ? error : null}
@@ -218,31 +238,26 @@ export const Login = () => {
             >
               Login
             </Button>
-            <Tooltip title="To account registration" placement="right" arrow>
+            <div className={classes.registerForgotButtonContainer}>
               <Button
-                id="register-instead"
                 className={classes.registerButton}
+                id="register-instead"
                 onClick={registerUser}
                 size="small"
               >
                 Register New Account
               </Button>
-            </Tooltip>
-            <Tooltip
-              title="Send a password reset email"
-              placement="right"
-              arrow
-            >
               <Button
+                className={classes.forgotButton}
                 id="forgot-password"
                 onClick={forgotPassword}
                 size="small"
               >
                 Forgot Password?
               </Button>
-            </Tooltip>
+            </div>
           </form>
-        </FormControl>
+        </Paper>
       )}
     </Grid>
   );
