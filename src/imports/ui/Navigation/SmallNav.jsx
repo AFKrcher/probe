@@ -146,12 +146,7 @@ export const SmallNav = ({ theme, toggleTheme }) => {
           component={Link}
           to="/"
           onClick={() => {
-            window
-              .open(
-                "https://github.com/afkrcher/probe#api-documentation",
-                "_blank"
-              )
-              .focus();
+            window.open(`${Meteor.absoluteUrl("/api")}`, "_blank").focus();
           }}
         >
           <ListItemIcon>

@@ -1,16 +1,7 @@
-import * as Yup from "yup";
-
-const isValidEmail = (oldEmail, newEmail) => {
-  const oldCheck = oldEmail ? oldEmail !== newEmail : true;
-  const schema = Yup.string().email();
-  return schema.isValidSync(newEmail) && oldCheck && newEmail.length < 128;
-};
-
-const isValidUsername = (oldUsername, newUsername) => {
-  const oldCheck = oldUsername ? oldUsername !== newUsername : true;
-  const regex = /^[a-zA-Z0-9]{4,}$/g;
-  return regex.test(newUsername) && oldCheck && newUsername.length < 32;
-};
+import {
+  isValidEmail,
+  isValidUsername,
+} from "/imports/validation/accountYupShape";
 
 export const accountMethods = (
   Meteor,
@@ -37,9 +28,10 @@ export const accountMethods = (
     addUserToRole: (user, role, key = false) => {
       // key is only for PROBE owner API manipulation
       if (
-        (Roles.userIsInRole(Meteor.userId(), "admin") &&
+        ((Roles.userIsInRole(Meteor.userId(), "admin") &&
           allowedRoles.includes(role)) ||
-        (key === PROBE_API_KEY && allowedRoles.includes(role))
+          (key === PROBE_API_KEY && allowedRoles.includes(role))) &&
+        Meteor.user()?.emails[0]?.verified
       ) {
         Roles.addUsersToRoles(
           Accounts.findUserByUsername(user.username)._id,
@@ -69,9 +61,9 @@ export const accountMethods = (
         return "Unauthorized [401]";
       }
     },
-    updateUsername: (id, user, newUsername) => {
+    updateUsername: (id, oldUsername, newUsername) => {
       if (Meteor.userId() === id) {
-        if (isValidUsername(user, newUsername)) {
+        if (isValidUsername(oldUsername, newUsername)) {
           Accounts.setUsername(id, newUsername);
           UsersCollection.update(
             { _id: id },
@@ -85,10 +77,10 @@ export const accountMethods = (
         return "Unauthorized [401]";
       }
     },
-    updateEmail: (id, email, newEmail) => {
+    updateEmail: (id, oldEmail, newEmail) => {
       if (Meteor.userId() === id) {
-        if (isValidEmail(email, newEmail)) {
-          Accounts.removeEmail(id, email);
+        if (isValidEmail(oldEmail, newEmail)) {
+          Accounts.removeEmail(id, oldEmail);
           Accounts.addEmail(id, newEmail);
           Accounts.sendVerificationEmail(id, newEmail);
           UsersCollection.update(
@@ -104,7 +96,7 @@ export const accountMethods = (
       }
     },
     addToFavorites: (id, noradID) => {
-      if (Meteor.userId()) {
+      if (Meteor.userId() && Meteor.user()?.emails[0]?.verified) {
         let favorites = Meteor.user({ fields: { favorites: 1 } })?.favorites;
         if (favorites.indexOf(noradID) === -1) {
           favorites.push(noradID);
@@ -155,7 +147,7 @@ export const accountMethods = (
     registerUser: (email, username, password) => {
       if (isValidEmail(null, email) && isValidUsername(null, username)) {
         try {
-          Accounts.createUser({
+          Accounts.createUserVerifyingEmail({
             email: email,
             username: username,
             password: password,

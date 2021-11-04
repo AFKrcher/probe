@@ -1,24 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 // Imports
 import { useLocation, useHistory } from "react-router-dom";
 import { Accounts } from "meteor/accounts-base";
+import HelpersContext from "../Dialogs/HelpersContext.jsx";
+import {
+  isValidPassword,
+  isConfirmedPassword,
+} from "/imports/validation/accountYupShape";
 
 // @material-ui
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Button } from "@material-ui/core";
-import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
+import {
+  Grid,
+  Button,
+  makeStyles,
+  TextField,
+  Typography,
+  Paper,
+} from "@material-ui/core";
+import AlertDialog from "../Dialogs/AlertDialog.jsx";
+import SnackBar from "../Dialogs/SnackBar.jsx";
 
 const useStyles = makeStyles((theme) => ({
-  margin: {
-    margin: theme.spacing(4),
-    width: "300px",
-  },
   formContainer: {
+    marginTop: 40,
+    padding: 20,
     display: "flex",
     flexFlow: "column wrap",
     justifyContent: "center",
     alignItems: "center",
+    width: "400px",
+    borderRadius: 10,
+  },
+  header: {
+    marginBottom: 25,
   },
   textField: {
     marginBottom: 10,
@@ -33,6 +47,9 @@ const useStyles = makeStyles((theme) => ({
 
 export const ResetPassword = () => {
   const classes = useStyles();
+
+  const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } =
+    useContext(HelpersContext);
 
   const [passErr, setPassErr] = useState();
   const [confirmErr, setConfirmErr] = useState();
@@ -51,27 +68,49 @@ export const ResetPassword = () => {
     e.preventDefault();
     const newPassword = document.getElementById("password").value;
     Accounts.resetPassword(token, newPassword, (err, res) => {
-      if (err) alert(err?.reason);
-      if (res) alert("Password updated.");
+      if (err) {
+        setAlert({
+          title: "Error Encountered",
+          text: err.reason,
+          closeAction: "Okay",
+        });
+        setOpenAlert(true);
+      }
+      if (res) {
+        setSnack("Your password has been successfully reset!");
+        setOpenSnack(true);
+      }
     });
   };
 
   const validatePassword = () => {
-    let pass = document.getElementById("password").value;
-    let confirm = document.getElementById("confirm").value;
-    if (pass && pass.length < 8) {
-      setPassErr(
-        "Must be at least 8 characters long, and should contain at least 1 lowercase, 1 uppercase, and 1 special character"
-      );
+    const newPassword = document.getElementById("password")?.value;
+    const confirm = document.getElementById("confirm")?.value;
+
+    if (!isValidPassword(null, newPassword)) {
+      if (newPassword.length < 8) {
+        setPassErr(
+          newPassword.length > 128
+            ? "Cannot be longer than 128 characters"
+            : "Must be at least 8 characters long"
+        );
+      }
     } else {
-      setPassErr(null);
+      setPassErr();
+      setDisabled(false);
     }
-    if (pass && confirm) {
-      if (confirm === pass) {
-        setConfirmErr(null);
+
+    if (!isConfirmedPassword(newPassword, confirm)) {
+      setConfirmErr("Passwords do not match");
+    } else {
+      setConfirmErr();
+      setDisabled(false);
+    }
+
+    if (newPassword || confirm) {
+      if (newPassword && confirm) {
         setDisabled(false);
       } else {
-        setConfirmErr("Passwords do not match");
         setDisabled(true);
       }
     }
@@ -79,9 +118,15 @@ export const ResetPassword = () => {
 
   return (
     <Grid container justifyContent="center" alignItems="center">
-      <FormControl className={classes.margin}>
-        <form onSubmit={handleReset} className={classes.formContainer}>
+      <AlertDialog bodyAlert={alert} />
+      <SnackBar bodySnack={snack} />
+      <Paper className={classes.formContainer}>
+        <Typography variant="h4" className={classes.header}>
+          <strong>Reset Password</strong>
+        </Typography>
+        <form onSubmit={handleReset}>
           <TextField
+            autoFocus={true}
             id="password"
             label="New password"
             type="password"
@@ -113,7 +158,7 @@ export const ResetPassword = () => {
             Reset Password
           </Button>
         </form>
-      </FormControl>
+      </Paper>
     </Grid>
   );
 };

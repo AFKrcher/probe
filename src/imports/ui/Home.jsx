@@ -32,6 +32,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
     width: "100%",
+    marginLeft: -25,
+    marginRight: -25,
   },
   probe: {
     color: theme.palette.tertiary.main,
@@ -48,11 +50,11 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
-    marginBottom: 20,
+    marginBottom: 15,
   },
   miniDescription: {
-    marginTop: 15,
-    marginBottom: 10,
+    marginTop: 10,
+    marginBottom: 5,
   },
   miniButtonShowcaseHeaderContainer: {
     display: "flex",
@@ -141,7 +143,7 @@ export const Home = () => {
         size="small"
         startIcon={miniButtonBreak ? mini ? <ZoomIn /> : <ZoomOut /> : null}
         onClick={minimize}
-        style={{ width: miniButtonBreak ? 206 : 0 }}
+        style={{ width: miniButtonBreak ? 206 : 0, height: 35 }}
       >
         {mini ? (
           miniButtonBreak ? (
@@ -231,7 +233,7 @@ export const Home = () => {
   };
 
   return (
-    <div className={classes.root}>
+    <Container className={classes.root} disableGutters>
       <Container
         className={
           favorites?.length > 0 ? null : classes.keySpacingIfNoFavorites
@@ -437,6 +439,6 @@ export const Home = () => {
           </React.Fragment>
         )}
       </Container>
-    </div>
+    </Container>
   );
 };

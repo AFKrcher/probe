@@ -1,7 +1,3 @@
-/**
- * PLEASE ENSURE THAT ANY CHANGES MADE TO VALIDATION SCHEMA ARE REFLECTED IN CLIENT-SIDE UTILS
- **/
-
 import * as Yup from "yup";
 import { _ } from "meteor/underscore";
 import { SchemaCollection } from "/imports/api/schemas";

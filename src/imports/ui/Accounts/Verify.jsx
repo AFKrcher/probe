@@ -1,17 +1,22 @@
 import React, { useContext, useEffect } from "react";
 import { Meteor } from "meteor/meteor";
 // Imports
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { Accounts } from "meteor/accounts-base";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
 
 // Components
 import { Home } from "../Home.jsx";
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
+import SnackBar from "../Dialogs/SnackBar.jsx";
 
 export const Verify = () => {
   const location = useLocation();
-  const { setOpenAlert, alert, setAlert } = useContext(HelpersContext);
+  const history = useHistory();
+
+  const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } =
+    useContext(HelpersContext);
+
   const token = location.search.slice(7, location.search.length);
 
   useEffect(() => {
@@ -25,16 +30,13 @@ export const Verify = () => {
     } else {
       Accounts.verifyEmail(token, (err, res) => {
         if (Meteor.user().emails[0].verified) {
-          setAlert({
-            title: "Email Verified",
-            text: "Your email has been successfully verified!",
-            closeAction: buttonClick,
-          });
-          setOpenAlert(true);
+          setSnack("Your email has been successfully verified!");
+          setOpenSnack(true);
+          history.push("/");
         } else if (err || res) {
           setAlert({
             title: "Error Encountered",
-            text: err?.reason,
+            text: err?.reason || res?.toString(),
             actions: null,
             closeAction: buttonClick,
           });
@@ -47,7 +49,7 @@ export const Verify = () => {
   const buttonClick = (
     <span
       onClick={() => {
-        window.location.href = "/";
+        history.push("/");
       }}
     >
       CLOSE
@@ -57,6 +59,7 @@ export const Verify = () => {
   return (
     <React.Fragment>
       <AlertDialog bodyAlert={alert} />
+      <SnackBar bodySnack={snack} />
       <Home />
     </React.Fragment>
   );

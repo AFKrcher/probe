@@ -6,12 +6,12 @@ import {
   userHasValidatedData,
   machineHasValidatedData,
 } from "../utils/validationFuncs";
+import { satelliteValidatorShaper } from "/imports/validation/satelliteYupShape";
 
 export const satelliteMethods = (
   Meteor,
   Roles,
   SatelliteCollection,
-  satelliteValidatorShaper,
   PROBE_API_KEY
 ) => {
   return Meteor.methods({
@@ -98,8 +98,9 @@ export const satelliteMethods = (
     },
     actuallyDeleteSatellite: (values) => {
       if (
-        Roles.userIsInRole(Meteor.userId(), "admin") ||
-        Roles.userIsInRole(Meteor.userId(), "moderator")
+        (Roles.userIsInRole(Meteor.userId(), "admin") ||
+          Roles.userIsInRole(Meteor.userId(), "moderator")) &&
+        Meteor.user()?.emails[0]?.verified
       ) {
         SatelliteCollection.remove(values._id);
       } else {
@@ -108,8 +109,9 @@ export const satelliteMethods = (
     },
     restoreSatellite: (values) => {
       if (
-        Roles.userIsInRole(Meteor.userId(), "admin") ||
-        Roles.userIsInRole(Meteor.userId(), "moderator")
+        (Roles.userIsInRole(Meteor.userId(), "admin") ||
+          Roles.userIsInRole(Meteor.userId(), "moderator")) &&
+        Meteor.user()?.emails[0]?.verified
       ) {
         let error;
         values["isDeleted"] = false;
@@ -131,9 +133,10 @@ export const satelliteMethods = (
     },
     checkSatelliteData: (values, task, method) => {
       if (
-        Roles.userIsInRole(Meteor.userId(), "admin") ||
-        Roles.userIsInRole(Meteor.userId(), "moderator") ||
-        Roles.userIsInRole(Meteor.userId(), "machine")
+        (Roles.userIsInRole(Meteor.userId(), "admin") ||
+          Roles.userIsInRole(Meteor.userId(), "moderator") ||
+          Roles.userIsInRole(Meteor.userId(), "machine")) &&
+        Meteor.user()?.emails[0]?.verified
       ) {
         let tempValues = values;
         if (method === "user") {

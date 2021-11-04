@@ -4,32 +4,56 @@ import { Meteor } from "meteor/meteor";
 import { useHistory } from "react-router";
 import * as Yup from "yup";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
+import {
+  isValidEmail,
+  isValidUsername,
+  isValidPassword,
+  isConfirmedPassword,
+} from "/imports/validation/accountYupShape";
 
 // Components
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
 import SnackBar from "../Dialogs/SnackBar.jsx";
 
 // @material-ui
-import { Grid, Button, Tooltip } from "@material-ui/core";
-import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  Grid,
+  Button,
+  Typography,
+  Paper,
+  TextField,
+  makeStyles,
+} from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
-  margin: {
-    margin: theme.spacing(4),
-    width: "300px",
-  },
   formContainer: {
+    marginTop: 40,
+    padding: 20,
     display: "flex",
     flexFlow: "column wrap",
     justifyContent: "center",
     alignItems: "center",
+    width: "400px",
+    borderRadius: 10,
+  },
+  header: {
+    marginBottom: 25,
   },
   textField: {
     marginBottom: 10,
   },
-  button: {
+  registerButton: {
     marginTop: 20,
+  },
+  loginButtonContainer: {
+    display: "flex",
+    flexFlow: "column wrap",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "auto",
+  },
+  loginButton: {
+    marginTop: 20,
+    width: "60%",
   },
 }));
 
@@ -58,24 +82,10 @@ export const Register = () => {
     if (!email || !username || !password || !confirm) setDisabled(true);
   };
 
-  const isValidEmail = (email) => {
-    const schema = Yup.string().email();
-    return schema.isValidSync(email) && email.length <= 128;
-  };
-
-  const isValidUsername = (username) => {
-    const regex = /^[a-zA-Z0-9]{4,}$/g;
-    return regex.test(username) && username.length <= 32;
-  };
-
-  const isValidPassword = (password) => {
-    return password.length >= 8 && password.length < 128;
-  };
-
   const validateEmail = () => {
     let email = document.getElementById("email")?.value;
     if (email) {
-      if (isValidEmail(email)) {
+      if (isValidEmail(null, email)) {
         Meteor.call("emailExists", email, (_, res) => {
           if (res) {
             setEmailErr(res);
@@ -95,7 +105,7 @@ export const Register = () => {
   const validateUsername = () => {
     let username = document.getElementById("username")?.value;
     if (username) {
-      if (isValidUsername(username)) {
+      if (isValidUsername(null, username)) {
         Meteor.call("userExists", username, function (_, res) {
           if (res) {
             setUserErr(res);
@@ -117,27 +127,24 @@ export const Register = () => {
   const validatePassword = () => {
     let confirm = document.getElementById("confirm")?.value;
     let password = document.getElementById("password")?.value;
-    if (password) {
-      if (!isValidPassword(password)) {
-        setPassErr(
-          password.length >= 128
-            ? "Cannot be longer than 128 characters"
-            : "Must be at least 8 characters long, and should contain at least 1 lowercase, 1 uppercase, and 1 special character"
-        );
+    if (!isValidPassword(null, password, confirm)) {
+      if (password !== confirm) {
+        setPassErr();
       } else {
-        setPassErr(null);
-        setDisabled(false);
+        setPassErr(
+          password.length > 128
+            ? "Cannot be longer than 128 characters"
+            : "Must be at least 8 characters long"
+        );
+        setDisabled(true);
       }
-      if (password && confirm) {
-        if (confirm === password) {
-          setConfirmErr(null);
-          setDisabled(false);
-          checkForm();
-        } else {
-          setConfirmErr("Passwords do not match");
-          setDisabled(true);
-        }
-      }
+    } else if (!isConfirmedPassword(password, confirm)) {
+      setConfirmErr("Passwords do not match");
+      setDisabled(true);
+    } else {
+      setPassErr();
+      setConfirmErr();
+      setDisabled(false);
     }
   };
 
@@ -186,13 +193,13 @@ export const Register = () => {
     <Grid container justifyContent="center" alignItems="center">
       <AlertDialog bodyAlert={alert} />
       <SnackBar bodySnackBar={snack} />
-      <FormControl className={classes.margin}>
-        <form
-          onSubmit={registerUser}
-          onChange={checkForm}
-          className={classes.formContainer}
-        >
+      <Paper className={classes.formContainer} elevation={3}>
+        <Typography variant="h4" className={classes.header}>
+          <strong>Register</strong>
+        </Typography>
+        <form onSubmit={registerUser} onChange={checkForm}>
           <TextField
+            autoFocus={true}
             autoComplete="off"
             id="email"
             error={emailErr ? true : false}
@@ -248,22 +255,22 @@ export const Register = () => {
             type="submit"
             fullWidth
             disabled={disabled}
-            className={classes.button}
+            className={classes.registerButton}
           >
             Register User
           </Button>
-          <Tooltip title="Redirect to the login page" placement="right" arrow>
+          <div className={classes.loginButtonContainer}>
             <Button
               id="login-button"
               size="small"
-              className={classes.button}
+              className={classes.loginButton}
               onClick={loginRedirect}
             >
               Login Instead
             </Button>
-          </Tooltip>
+          </div>
         </form>
-      </FormControl>
+      </Paper>
     </Grid>
   );
 };
