@@ -47,7 +47,7 @@ export const satelliteMethods = (
         return "Unauthorized [401]";
       }
     },
-    updateSatellite: (initValues, values) => {
+    updateSatellite: async (initValues, values) => {
       if (Meteor.userId() && Meteor.user()?.emails[0]?.verified) {
         let error;
         if (!values) {

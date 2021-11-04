@@ -313,6 +313,7 @@ export const SchemasTable = () => {
         className={classes.dataGrid}
         columns={columns}
         rows={rows}
+        pageSize={25}
         loading={isLoading}
         autoHeight={true}
         disableSelectionOnClick

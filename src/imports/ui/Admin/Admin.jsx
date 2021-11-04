@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
   navbar: {
     backgroundColor: theme.palette.navigation.main,
     marginBottom: 10,
+    zIndex: 0,
   },
   tabContainer: {
     marginTop: 5,
@@ -55,7 +56,7 @@ export const Admin = () => {
 
   return (
     <React.Fragment>
-      <AppBar className={classes.navbar} position="sticky">
+      <AppBar className={classes.navbar} position="relative">
         <Toolbar className={classes.tabContainer}>
           <Button
             size="medium"

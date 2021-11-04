@@ -184,7 +184,7 @@ export const satelliteValidatorShaper = (values, initValues) => {
                           or.push(tempObj);
                         });
                       }
-                      let selector = { $or: or };
+                      let selector = or.length > 0 ? { $or: or } : {};
                       let sat = SatelliteCollection.findOne(selector);
                       if (sat) {
                         selector = {};

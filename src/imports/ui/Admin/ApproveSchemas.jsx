@@ -35,9 +35,30 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     backgroundColor: theme.palette.grid.background,
   },
-  header: {
+  name: {
     paddingTop: 12.5,
     paddingBottom: 12.5,
+    width: 100,
+  },
+  adminReview: {
+    paddingTop: 12.5,
+    paddingBottom: 12.5,
+    width: 150,
+  },
+  deletion: {
+    paddingTop: 12.5,
+    paddingBottom: 12.5,
+    width: 100,
+  },
+  modifiedOn: {
+    paddingTop: 12.5,
+    paddingBottom: 12.5,
+    width: 280,
+  },
+  modifiedBy: {
+    paddingTop: 12.5,
+    paddingBottom: 12.5,
+    width: 100,
   },
   tableRow: {
     "&:hover": {
@@ -48,12 +69,10 @@ const useStyles = makeStyles((theme) => ({
   warningIcon: {
     fill: theme.palette.warning.light,
     filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
-    marginLeft: 15,
   },
   errorIcon: {
     fill: theme.palette.error.light,
     filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
-    marginLeft: 15,
   },
   spinner: {
     color: theme.palette.text.primary,
@@ -109,12 +128,12 @@ export const ApproveSchemas = () => {
         <TableCell key={`schema-name-${i}`} className={classes.tableNameCol}>
           {schema.name}
         </TableCell>
-        <TableCell key={`schema-approve-${i}`}>
+        <TableCell key={`schema-approve-${i}`} align="center">
           {!schema.adminCheck ? (
             <ErrorOutlinedIcon className={classes.warningIcon} />
           ) : null}
         </TableCell>
-        <TableCell key={`schema-delete-${i}`}>
+        <TableCell key={`schema-delete-${i}`} align="center">
           {schema.isDeleted ? (
             <ErrorOutlinedIcon className={classes.errorIcon} />
           ) : null}
@@ -135,19 +154,19 @@ export const ApproveSchemas = () => {
         <Table size="small" aria-label="Schema table">
           <TableHead>
             <TableRow color="secondary">
-              <TableCell className={classes.header}>
-                <Typography variant="body2">SCHEMA NAME</Typography>
+              <TableCell className={classes.name}>
+                <Typography variant="body2">NAME</Typography>
               </TableCell>
-              <TableCell>
+              <TableCell className={classes.adminReview} align="center">
                 <Typography variant="body2">ADMIN REVIEW</Typography>
               </TableCell>
-              <TableCell>
+              <TableCell className={classes.deletion} align="center">
                 <Typography variant="body2">DELETION</Typography>
               </TableCell>
-              <TableCell>
+              <TableCell className={classes.modifiedOn}>
                 <Typography variant="body2">MODIFIED ON</Typography>
               </TableCell>
-              <TableCell>
+              <TableCell className={classes.modifiedBy}>
                 <Typography variant="body2">MODIFIED BY</Typography>
               </TableCell>
             </TableRow>
