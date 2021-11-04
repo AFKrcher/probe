@@ -471,7 +471,6 @@ export const SatelliteModal = ({
                       setFieldValue={setFieldValue}
                       editing={editing}
                       initValues={initValues}
-                      newSat={newSat}
                       setSatSchema={setSatSchema}
                       satelliteValidatorShaper={satelliteValidatorShaper}
                       setTouched={setTouched}

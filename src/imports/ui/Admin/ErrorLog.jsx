@@ -33,17 +33,33 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     backgroundColor: theme.palette.grid.background,
   },
-  header: {
+  message: {
     paddingTop: 12.5,
     paddingBottom: 12.5,
+    maxWidth: 200,
+  },
+  timing: {
+    paddingTop: 12.5,
+    paddingBottom: 12.5,
+    maxWidth: 150,
+  },
+  user: {
+    paddingTop: 12.5,
+    paddingBottom: 12.5,
+    maxWidth: 100,
+  },
+  actions: {
+    paddingTop: 12.5,
+    paddingBottom: 12.5,
+    maxWidth: 60,
   },
   tableRow: {
     "&:hover": {
       backgroundColor: theme.palette.action.hover,
     },
   },
-  timeCol: {
-    width: 300,
+  deleteButton: {
+    marginLeft: -8,
   },
   spinner: {
     color: theme.palette.text.primary,
@@ -93,19 +109,16 @@ export const ErrorLog = () => {
         <Table size="small" aria-label="Schema table">
           <TableHead>
             <TableRow color="secondary">
-              <TableCell className={classes.header}>
+              <TableCell className={classes.message}>
                 <Typography variant="body2">MESSAGE</Typography>
               </TableCell>
-              <TableCell>
-                <Typography variant="body2">SOURCE</Typography>
-              </TableCell>
-              <TableCell>
+              <TableCell className={classes.timing}>
                 <Typography variant="body2">TIMING</Typography>
               </TableCell>
-              <TableCell>
+              <TableCell className={classes.user}>
                 <Typography variant="body2">USER</Typography>
               </TableCell>
-              <TableCell>
+              <TableCell className={classes.actions}>
                 <Typography variant="body2">ACTIONS</Typography>
               </TableCell>
             </TableRow>
@@ -126,9 +139,6 @@ export const ErrorLog = () => {
                     <TableCell key={`error-message-${i}`}>
                       {error.msg}
                     </TableCell>
-                    <TableCell key={`error-source-${i}`}>
-                      {error.source}
-                    </TableCell>
                     <TableCell
                       key={`error-time-${i}`}
                     >{`${error.time}`}</TableCell>
@@ -139,9 +149,10 @@ export const ErrorLog = () => {
                     >
                       <IconButton
                         color="secondary"
+                        className={classes.deleteButton}
                         onClick={() => deleteError(error._id)}
                       >
-                        <DeleteIcon fontSize="small" />
+                        <DeleteIcon fontSize="medium" />
                       </IconButton>
                     </TableCell>
                   </TableRow>

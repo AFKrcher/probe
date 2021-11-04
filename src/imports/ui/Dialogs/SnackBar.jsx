@@ -49,5 +49,5 @@ export default function SimpleSnackbar({ bodySnackBar }) {
 
 // Prop checking
 SimpleSnackbar.propTypes = {
-  bodySnackBar: PropTypes.string,
+  bodySnackBar: PropTypes.node,
 };
