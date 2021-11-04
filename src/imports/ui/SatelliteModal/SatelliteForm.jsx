@@ -2,7 +2,8 @@ import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 // Imports
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
-import { FastField, Field } from "formik";
+import { Field } from "formik";
+import { _ } from "meteor/underscore";
 
 // Components
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
@@ -65,7 +66,6 @@ export const SatelliteForm = ({
   setEditingOne,
   setOpenSnack,
   setSnack,
-  newSat,
 }) => {
   const { setOpenAlert, alert, setAlert } = useContext(HelpersContext);
   const [schemaAddition, setSchemaAddition] = useState(false);
@@ -166,18 +166,6 @@ export const SatelliteForm = ({
     setOpenAlert(true);
   };
 
-  const onChange = (event) => {
-    setFieldValue(event.target.name, event.target.value);
-    if (newSat) {
-      let obj = {};
-      obj[event.target.name] = true;
-      setTouched(obj);
-    }
-    if (event.target.value?.length === 0) {
-      setTouched({});
-    }
-  };
-
   const onSchemaChange = (optionName) => {
     setAddSchema(optionName);
   };
@@ -186,7 +174,7 @@ export const SatelliteForm = ({
     setSchemaAddition(!schemaAddition);
   };
 
-  const noradIDProps = (fast) => {
+  const noradIDProps = () => {
     return {
       value: values.noradID || "",
       name: "noradID",
@@ -196,10 +184,11 @@ export const SatelliteForm = ({
       fullWidth: true,
       variant: "outlined",
       component: TextField,
-      onChange: onChange,
-      onInput: onChange,
-      disabled: !fast,
+      disabled: !editing,
       autoComplete: "off",
+      error: errors["noradID"] && !_.isEmpty(touched) ? true : false,
+      helperText:
+        errors["noradID"] && !_.isEmpty(touched) ? errors["noradID"] : "",
     };
   };
 
@@ -209,11 +198,7 @@ export const SatelliteForm = ({
       <Grid container item>
         <Grid item xs={12}>
           <Paper className={classes.noradID}>
-            {editing ? (
-              <FastField {...noradIDProps(true)} />
-            ) : (
-              <Field {...noradIDProps(false)} />
-            )}
+            <Field {...noradIDProps(false)} />
           </Paper>
         </Grid>
       </Grid>
@@ -323,5 +308,4 @@ SatelliteForm.propTypes = {
   setEditingOne: PropTypes.func,
   setOpenSnack: PropTypes.func,
   setSnack: PropTypes.func,
-  newSat: PropTypes.bool,
 };
