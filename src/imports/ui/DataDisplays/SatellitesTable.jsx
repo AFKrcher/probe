@@ -198,14 +198,12 @@ export const SatellitesTable = () => {
     schemas,
     rows,
     count,
-    user,
     verified,
     isLoadingSchemas,
     isLoadingSats,
   ] = useTracker(() => {
     const subSchemas = Meteor.subscribe("schemas");
     const subSats = Meteor.subscribe("satellites");
-    const user = Meteor.user({ fields: { username: 1 } })?.username;
     const verified = Meteor.user()?.emails[0]
       ? Meteor.user()?.emails[0]?.verified
       : false;
@@ -240,19 +238,11 @@ export const SatellitesTable = () => {
       schemas,
       rows,
       count,
-      user,
       verified,
       !subSchemas.ready(),
       !subSats.ready(),
     ];
   });
-
-  useEffect(() => {
-    if (user && !verified) {
-      setSnack("Please verify your email to start contributing to PROBE.");
-      setOpenSnack(true);
-    }
-  }, []);
 
   const handleAddNewSatellite = () => {
     setInitialSatValues(newSatValues);
@@ -605,7 +595,7 @@ export const SatellitesTable = () => {
       },
     ];
 
-    if (Meteor.userId()) {
+    if (Meteor.userId() && verified) {
       columns.unshift({
         field: (
           <Tooltip title="Toggle favorites filter" arrow placement="top-start">

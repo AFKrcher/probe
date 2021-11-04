@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import PropTypes from "prop-types";
+import { Meteor } from "meteor/meteor";
 // Imports
 import useWindowSize from "../Hooks/useWindowSize.jsx";
 import { Link } from "react-router-dom";
@@ -172,10 +173,7 @@ export const NavBar = ({ theme, toggleTheme }) => {
                   className={classes.navButtonAPI}
                   onClick={() => {
                     window
-                      .open(
-                        "https://github.com/afkrcher/probe#api-documentation",
-                        "_blank"
-                      )
+                      .open(`${Meteor.absoluteUrl("/api")}`, "_blank")
                       .focus();
                   }}
                 >

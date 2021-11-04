@@ -18,7 +18,7 @@ export const startup = (
   reseed = false
 ) => {
   if (reseed && count === 0) {
-    // for a one time server start-up re-seed
+    // For a one time server start-up re-seed
     SatelliteCollection.remove({});
     SchemaCollection.remove({});
     UsersCollection.remove({});
@@ -32,10 +32,12 @@ export const startup = (
     Roles.createRole(role, { unlessExists: true })
   );
 
-  // Email verification and password reset emails
+  // Accounts config
   Accounts.config({
     sendVerificationEmail: true,
   });
+
+  // Email verification and password reset emails
   Accounts.urls.resetPassword = (token) => {
     return ROOT_URL.includes("localhost") && PM2
       ? `${ROOT_URL}:${PORT}/reset?token=${token}`
@@ -47,15 +49,29 @@ export const startup = (
       : Meteor.absoluteUrl(`/verify?token=${token}`);
   };
 
+  // Email template settings
   Accounts.emailTemplates.from = "PROBE <no-reply@probe.saberastro.com>";
-
   Accounts.emailTemplates.resetPassword = {
     subject() {
       return "PROBE Password Reset";
     },
     text(user, url) {
-      return `${user.username}, please visit this page to reset your password: ${url}
-        \n If you did not request this, someone may be attempting unauthorized access your account.`;
+      return `${user.username},
+        \nPlease visit this page to reset your password: ${url}
+        \nIf you did not request this, someone may be attempting to gain unauthorized access your account. Please click the "Contact Us" button on PROBE to notify us if this email was sent to you without your permission.
+        \nThank you,\nThe PROBE Team`;
+    },
+  };
+  Accounts.emailTemplates.verifyEmail = {
+    subject() {
+      return "PROBE Email Verification";
+    },
+    text(user, url) {
+      return `${user.username},
+        \nPlease visit this page to verify your email: ${url}
+        \nUpon successful email verification, you will be able to access all of PROBE's features!
+        \nIf you did not request this, someone may be attempting to gain unauthorized access to your account. Please click the "Contact Us" button on PROBE to notify us if this email was sent to you without your permission.
+        \nThank you,\nThe PROBE Team`;
     },
   };
 

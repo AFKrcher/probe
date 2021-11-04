@@ -3,8 +3,13 @@ import { Meteor } from "meteor/meteor";
 //Imports
 import { useTracker } from "meteor/react-meteor-data";
 import { Accounts } from "meteor/accounts-base";
-import * as Yup from "yup";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
+import {
+  isValidEmail,
+  isValidUsername,
+  isValidPassword,
+  isConfirmedPassword,
+} from "/imports/validation/accountYupShape";
 
 // Components
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
@@ -16,10 +21,10 @@ import {
   Grid,
   Button,
   TextField,
-  FormControl,
   CircularProgress,
   Tooltip,
   Typography,
+  Paper,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
@@ -27,15 +32,17 @@ import CancelIcon from "@material-ui/icons/Cancel";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
-    marginTop: 15,
+    marginTop: 40,
+    padding: 20,
     display: "flex",
     flexFlow: "column wrap",
     justifyContent: "center",
     alignItems: "center",
-    width: "300px",
+    width: "400px",
+    borderRadius: 10,
   },
   header: {
-    marginBottom: 40,
+    marginBottom: 25,
   },
   textField: {
     marginBottom: 10,
@@ -165,72 +172,46 @@ export const Settings = () => {
     });
   };
 
-  const isValidEmail = () => {
-    let newEmail = document.getElementById("newEmail")?.value;
-    const schema = Yup.string().email();
-    return schema.isValidSync(newEmail) && newEmail?.length <= 128;
+  const isValidEmailCheck = () => {
+    const newEmail = document.getElementById("newEmail")?.value;
+    const oldEmail = email;
+    return isValidEmail(oldEmail, newEmail);
   };
 
-  const isValidUsername = () => {
-    let newUsername = document.getElementById("newUsername")?.value;
-    const regex = /^[a-zA-Z0-9]{4,}$/g;
-    return regex.test(newUsername) && newUsername?.length <= 32;
+  const isValidUsernameCheck = () => {
+    const newUsername = document.getElementById("newUsername")?.value;
+    const oldUsername = user;
+    return isValidUsername(oldUsername, newUsername);
   };
 
-  const isValidPassword = () => {
-    let oldPassword = document.getElementById("oldPassword")?.value;
-    let newPassword = document.getElementById("newPassword")?.value;
-    let confirm = document.getElementById("confirm")?.value;
+  const isValidPasswordCheck = (oldPassword, newPassword, confirm) => {
     return (
-      newPassword !== oldPassword &&
-      confirm === newPassword &&
-      newPassword?.length <= 128 &&
-      newPassword?.length >= 8
+      isValidPassword(oldPassword, newPassword) &&
+      isConfirmedPassword(newPassword, confirm)
     );
   };
 
   const validateNameOnly = () => {
-    let newUsername = document.getElementById("newUsername")?.value;
-    let oldPassword = document.getElementById("oldPassword")?.value;
-    let newPassword = document.getElementById("newPassword")?.value;
-    let confirm = document.getElementById("confirm")?.value;
-    user === newUsername && !confirm && !newPassword && !oldPassword
-      ? setDisabled(true)
-      : setDisabled(false);
+    !isValidUsernameCheck() && !isValidPasswordCheck()
+      ? setDisabled(true) +
+        setUserErr(
+          "Must be between 4 and 32 characters long and cannot contain special characters"
+        )
+      : setDisabled(false) + setUserErr();
   };
 
   const validateEmailOnly = () => {
-    let newEmail = document.getElementById("newEmail")?.value;
-    let oldPassword = document.getElementById("oldPassword")?.value;
-    let newPassword = document.getElementById("newPassword")?.value;
-    let confirm = document.getElementById("confirm")?.value;
-    email === newEmail && !confirm && !newPassword && !oldPassword
-      ? setDisabled(true)
-      : setDisabled(false);
+    !isValidEmailCheck() && !isValidPasswordCheck()
+      ? setDisabled(true) + setEmailErr("Invalid email address")
+      : setDisabled(false) + setEmailErr();
   };
 
-  const validateForm = () => {
-    let oldPassword = document.getElementById("oldPassword")?.value;
-    let newPassword = document.getElementById("newPassword")?.value;
-    let confirm = document.getElementById("confirm")?.value;
+  const validatePasswordOnly = () => {
+    const oldPassword = document.getElementById("oldPassword")?.value;
+    const newPassword = document.getElementById("newPassword")?.value;
+    const confirm = document.getElementById("confirm")?.value;
 
-    if (!isValidEmail()) {
-      setEmailErr("Invalid email address");
-    } else {
-      setEmailErr();
-      setDisabled(false);
-    }
-
-    if (!isValidUsername()) {
-      setUserErr(
-        "Must be between 4 and 32 characters long and cannot contain special characters"
-      );
-    } else {
-      setUserErr();
-      setDisabled(false);
-    }
-
-    if (newPassword && !isValidPassword()) {
+    if (!isValidPasswordCheck(oldPassword, newPassword, confirm)) {
       if (newPassword === oldPassword) {
         setPassErr("Old and new passwords are the same");
       } else if (newPassword !== confirm) {
@@ -239,30 +220,17 @@ export const Settings = () => {
         setPassErr(
           newPassword.length > 128
             ? "Cannot be longer than 128 characters"
-            : "Must be at least 8 characters long, and should contain at least 1 lowercase, 1 uppercase, and 1 special character"
+            : "Must be at least 8 characters long"
         );
-      }
-    } else {
-      setPassErr();
-      setDisabled(false);
-    }
-
-    if (
-      (confirm && newPassword && newPassword !== confirm) ||
-      (confirm && !newPassword)
-    ) {
-      setConfirmErr("Passwords do not match");
-    } else {
-      setConfirmErr();
-      setDisabled(false);
-    }
-
-    if (newPassword || oldPassword || confirm) {
-      if (newPassword && oldPassword && confirm) {
-        setDisabled(false);
-      } else {
         setDisabled(true);
       }
+    } else if (!isConfirmedPassword(newPassword, confirm)) {
+      setConfirmErr("Passwords do not match");
+      setDisabled(true);
+    } else {
+      setPassErr();
+      setConfirmErr();
+      setDisabled(false);
     }
   };
 
@@ -274,7 +242,15 @@ export const Settings = () => {
     const newPassword = e.target.newPassword?.value;
     const confirm = e.target.confirm?.value;
 
-    if (isValidEmail(newEmail) && newEmail !== email) {
+    const emailCheck = isValidEmailCheck();
+    const passwordCheck = isValidPasswordCheck(
+      oldPassword,
+      newPassword,
+      confirm
+    );
+    const nameCheck = isValidUsernameCheck();
+
+    if (emailCheck) {
       await Meteor.call("updateEmail", id, email, newEmail, (err) => {
         if (err) {
           setAlert({
@@ -285,12 +261,13 @@ export const Settings = () => {
           });
           setOpenAlert(true);
         } else {
+          setOpenSnack(true);
           setDisabled(true);
         }
       });
     }
 
-    if (isValidUsername(newUsername) && newUsername !== user) {
+    if (nameCheck) {
       await Meteor.call("updateUsername", id, user, newUsername, (err) => {
         if (err) {
           setAlert({
@@ -301,12 +278,13 @@ export const Settings = () => {
           });
           setOpenAlert(true);
         } else {
+          setOpenSnack(true);
           setDisabled(true);
         }
       });
     }
 
-    if (isValidPassword(oldPassword, newPassword, confirm)) {
+    if (passwordCheck) {
       await Accounts.changePassword(oldPassword, newPassword, (err) => {
         if (err) {
           setAlert({
@@ -317,59 +295,34 @@ export const Settings = () => {
           });
           setOpenAlert(true);
         } else {
+          setOpenSnack(true);
           setDisabled(true);
         }
       });
     }
 
-    if (
-      isValidEmail(newEmail) &&
-      newEmail !== email &&
-      isValidPassword(oldPassword, newPassword, confirm) &&
-      isValidUsername(newUsername) &&
-      newUsername !== user
-    ) {
+    if (emailCheck && passwordCheck && nameCheck) {
       setSnack(
         "Successfully changed email, username, and password! A verification email was sent to your new email."
       );
-      setOpenSnack(true);
-    } else if (
-      isValidPassword(oldPassword, newPassword, confirm) &&
-      isValidUsername(newUsername) &&
-      newUsername !== user
-    ) {
+    } else if (passwordCheck && nameCheck) {
       setSnack("Successfully changed username and password");
-      setOpenSnack(true);
-    } else if (
-      isValidEmail(newEmail) &&
-      newEmail !== email &&
-      isValidPassword(oldPassword, newPassword, confirm)
-    ) {
+    } else if (emailCheck && passwordCheck) {
       setSnack(
         "Successfully changed email and password! A verification email was sent to your new email."
       );
-      setOpenSnack(true);
-    } else if (
-      isValidUsername(newUsername) &&
-      newUsername !== user &&
-      isValidEmail(newEmail) &&
-      newEmail !== email
-    ) {
+    } else if (emailCheck && nameCheck) {
       setSnack(
         "Successfully changed email and username! A verification email was sent to your new email."
       );
-      setOpenSnack(true);
-    } else if (isValidPassword(oldPassword, newPassword, confirm)) {
+    } else if (passwordCheck) {
       setSnack("Successfully changed password");
-      setOpenSnack(true);
-    } else if (isValidUsername(newUsername) && newUsername !== user) {
-      setSnack(`Username successfully changed from ${user} to ${newUsername}`);
-      setOpenSnack(true);
-    } else if (isValidEmail(newEmail) && newEmail !== email) {
+    } else if (nameCheck) {
+      setSnack(`Successfully changed username from ${user} to ${newUsername}`);
+    } else if (emailCheck) {
       setSnack(
-        `Email successfully changed from ${email} to ${newEmail}! A verification email was sent to your new email.`
+        `Successfully changed email from ${email} to ${newEmail}! A verification email was sent to your new email.`
       );
-      setOpenSnack(true);
     }
   };
 
@@ -392,7 +345,7 @@ export const Settings = () => {
           alignItems="center"
           className={classes.root}
         >
-          <FormControl className={classes.formContainer}>
+          <Paper className={classes.formContainer} elevation={3}>
             <Typography variant="h4" className={classes.header}>
               <strong>Profile Settings</strong>
             </Typography>
@@ -415,9 +368,8 @@ export const Settings = () => {
                     </Tooltip>
                   ),
                 }}
-                onChange={() => {
-                  validateForm();
-                  validateEmailOnly();
+                onChange={(e) => {
+                  if (e.target.value !== email) validateEmailOnly();
                 }}
                 defaultValue={email}
                 error={emailErr ? true : false}
@@ -430,9 +382,8 @@ export const Settings = () => {
                 ref={(input) => (newUsername = input)}
                 fullWidth
                 className={classes.textField}
-                onChange={() => {
-                  validateForm();
-                  validateNameOnly();
+                onChange={(e) => {
+                  if (e.target.value !== user) validateNameOnly();
                 }}
                 defaultValue={user}
                 error={userErr ? true : false}
@@ -445,7 +396,9 @@ export const Settings = () => {
                 ref={(input) => (oldPassword = input)}
                 fullWidth
                 className={classes.textField}
-                onChange={validateForm}
+                onChange={(e) => {
+                  if (e.target.value) validatePasswordOnly();
+                }}
               />
               <TextField
                 id="newPassword"
@@ -454,7 +407,9 @@ export const Settings = () => {
                 ref={(input) => (newPassword = input)}
                 fullWidth
                 className={classes.textField}
-                onChange={validateForm}
+                onChange={(e) => {
+                  if (e.target.value) validatePasswordOnly();
+                }}
                 error={passErr ? true : false}
                 helperText={passErr}
               />
@@ -464,13 +419,15 @@ export const Settings = () => {
                 type="password"
                 fullWidth
                 className={classes.textField}
-                onChange={validateForm}
+                onChange={(e) => {
+                  if (e.target.value) validatePasswordOnly();
+                }}
                 error={confirmErr ? true : false}
                 helperText={confirmErr}
               />
               <Button
                 id="updateButton"
-                variant="outlined"
+                variant="contained"
                 color="primary"
                 type="submit"
                 fullWidth
@@ -486,7 +443,7 @@ export const Settings = () => {
               {!verified ? (
                 <Button
                   id="verifyButton"
-                  variant="outlined"
+                  variant="contained"
                   onClick={sendEmail}
                   fullWidth
                   className={classes.button}
@@ -496,7 +453,7 @@ export const Settings = () => {
               ) : null}
               <Button
                 id="deleteButton"
-                variant="outlined"
+                variant="contained"
                 color="secondary"
                 onClick={handleDeleteDialog}
                 fullWidth
@@ -505,7 +462,7 @@ export const Settings = () => {
                 Delete your account
               </Button>
             </form>
-          </FormControl>
+          </Paper>
         </Grid>
       )}
     </Container>

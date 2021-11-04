@@ -1,5 +1,4 @@
 import React from "react";
-
 // @material-ui
 import { Grid, makeStyles, Typography, Container } from "@material-ui/core";
 
@@ -14,9 +13,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-around",
     gridGap: 40,
   },
-  titleContainer: {
-    marginBottom: 15,
-  },
   title: {
     color: theme.palette.tertiary.main,
     filter: `drop-shadow(3px 2px 2px ${theme.palette.tertiary.shadow})`,
@@ -26,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
   },
   aboutParagraph: {
+    marginTop: 10,
     marginBottom: 10,
   },
   meetTheTeam: {
@@ -33,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 40,
   },
   meetTheTeamParagraph: {
-    marginTop: 15,
+    marginTop: 10,
   },
   image: {
     display: "block",
@@ -135,7 +132,7 @@ export const About = () => {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h3" className={classes.titleContainer}>
+      <Typography variant="h3">
         About <strong className={classes.title}>PROBE</strong>
       </Typography>
       <Typography variant="body1" className={classes.aboutParagraph}>
