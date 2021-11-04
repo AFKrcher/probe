@@ -39,9 +39,40 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     backgroundColor: theme.palette.grid.background,
   },
-  header: {
+  noradId: {
     paddingTop: 12.5,
     paddingBottom: 12.5,
+    width: 50,
+  },
+  names: {
+    paddingTop: 12.5,
+    paddingBottom: 12.5,
+    width: 200,
+  },
+  adminReview: {
+    paddingTop: 12.5,
+    paddingBottom: 12.5,
+    width: 100,
+  },
+  machineReview: {
+    paddingTop: 12.5,
+    paddingBottom: 12.5,
+    width: 100,
+  },
+  deletion: {
+    paddingTop: 12.5,
+    paddingBottom: 12.5,
+    width: 50,
+  },
+  modifiedOn: {
+    paddingTop: 12.5,
+    paddingBottom: 12.5,
+    width: 280,
+  },
+  modifiedBy: {
+    paddingTop: 12.5,
+    paddingBottom: 12.5,
+    width: 110,
   },
   filterableHeader: {
     display: "flex",
@@ -56,12 +87,13 @@ const useStyles = makeStyles((theme) => ({
   warningIcon: {
     fill: theme.palette.warning.light,
     filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
-    marginLeft: 15,
   },
   errorIcon: {
     fill: theme.palette.error.light,
     filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
-    marginLeft: 15,
+  },
+  filterButton: {
+    marginLeft: 5,
   },
   spinner: {
     color: theme.palette.text.primary,
@@ -127,17 +159,17 @@ export const ApproveSatellites = () => {
       >
         <TableCell key={`sat-id-${i}`}>{sat.noradID}</TableCell>
         <TableCell key={`sat-name-${i}`}>{sat.names[0].name}</TableCell>
-        <TableCell key={`sat-adminCheck-${i}`}>
+        <TableCell key={`sat-adminCheck-${i}`} align="center">
           {!sat.adminCheck ? (
             <ErrorOutlinedIcon className={classes.warningIcon} />
           ) : null}
         </TableCell>
-        <TableCell key={`sat-machineCheck-${i}`}>
+        <TableCell key={`sat-machineCheck-${i}`} align="center">
           {!sat.machineCheck ? (
             <ErrorOutlinedIcon className={classes.warningIcon} />
           ) : null}
         </TableCell>
-        <TableCell key={`sat-delete-${i}`}>
+        <TableCell key={`sat-delete-${i}`} align="center">
           {sat.isDeleted ? (
             <ErrorOutlinedIcon className={classes.errorIcon} />
           ) : null}
@@ -158,13 +190,13 @@ export const ApproveSatellites = () => {
         <Table size="small" aria-label="Schema table">
           <TableHead>
             <TableRow color="secondary">
-              <TableCell className={classes.header}>
+              <TableCell className={classes.noradId}>
                 <Typography variant="body2">NORAD ID</Typography>
               </TableCell>
-              <TableCell>
+              <TableCell className={classes.names}>
                 <Typography variant="body2">NAME(S)</Typography>
               </TableCell>
-              <TableCell>
+              <TableCell className={classes.adminReview} align="center">
                 <span className={classes.filterableHeader}>
                   <Typography variant="body2">ADMIN REVIEW</Typography>
                   <IconButton
@@ -179,10 +211,11 @@ export const ApproveSatellites = () => {
                   </IconButton>
                 </span>
               </TableCell>
-              <TableCell>
+              <TableCell className={classes.machineReview} align="center">
                 <span className={classes.filterableHeader}>
                   <Typography variant="body2">MACHINE REVIEW</Typography>
                   <IconButton
+                    className={classes.filterButton}
                     size="small"
                     onClick={() => setViewMachineCheck(!viewMachineCheck)}
                   >
@@ -194,10 +227,11 @@ export const ApproveSatellites = () => {
                   </IconButton>
                 </span>
               </TableCell>
-              <TableCell>
+              <TableCell className={classes.deletion} align="center">
                 <span className={classes.filterableHeader}>
                   <Typography variant="body2">DELETION</Typography>
                   <IconButton
+                    className={classes.filterButton}
                     size="small"
                     onClick={() => setViewDeleteCheck(!viewDeleteCheck)}
                   >
@@ -209,10 +243,10 @@ export const ApproveSatellites = () => {
                   </IconButton>
                 </span>
               </TableCell>
-              <TableCell>
+              <TableCell className={classes.modifiedOn}>
                 <Typography variant="body2">MODIFIED ON</Typography>
               </TableCell>
-              <TableCell>
+              <TableCell className={classes.modifiedBy}>
                 <Typography variant="body2">MODIFIED BY</Typography>
               </TableCell>
             </TableRow>
