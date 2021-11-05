@@ -181,7 +181,7 @@ export const partnerRoutes = (
     // GET
     app.get(baseURL, (req, res) => {
       const response = keyCheck(req.params.key)
-        ? `Welcome PROBE partner! There are (${getRequests.length}) GET endpoints on this route. For documentation, please visit the README at "https://github.com/afkrcher/probe#api-documentation".`
+        ? `Welcome PROBE partner! There are (${getRequests.length}) GET endpoints on this route.`
         : "Unauthorized [401]";
       const status = req.params.key === PROBE_API_KEY ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
@@ -192,7 +192,7 @@ export const partnerRoutes = (
     // POST
     app.post(baseURL, (req, res) => {
       const response = keyCheck(req.params.key)
-        ? `Welcome PROBE partner! There are (${postRequests.length}) POST endpoints on this route. For documentation, please visit the README at "https://github.com/afkrcher/probe#api-documentation".`
+        ? `Welcome PROBE partner! There are (${postRequests.length}) POST endpoints on this route.`
         : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
@@ -203,7 +203,7 @@ export const partnerRoutes = (
     // PATCH
     app.patch(baseURL, (req, res) => {
       const response = keyCheck(req.params.key)
-        ? `Welcome PROBE partner! There are (${patchRequests.length}) PATCH endpoints on this route. For documentation, please visit the README at "https://github.com/afkrcher/probe#api-documentation".`
+        ? `Welcome PROBE partner! There are (${patchRequests.length}) PATCH endpoints on this route.`
         : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
@@ -214,7 +214,7 @@ export const partnerRoutes = (
     // PUT
     app.put(baseURL, (req, res) => {
       const response = keyCheck(req.params.key)
-        ? `Welcome PROBE partner! There are (${putRequests.length}) PUT endpoints on this route. For documentation, please visit the README at "https://github.com/afkrcher/probe#api-documentation".`
+        ? `Welcome PROBE partner! There are (${putRequests.length}) PUT endpoints on this route.`
         : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
@@ -225,7 +225,7 @@ export const partnerRoutes = (
     // DELETE
     app.delete(baseURL, (req, res) => {
       const response = keyCheck(req.params.key)
-        ? `Welcome PROBE partner! There are (${deleteRequests.length}) DELETE endpoints on this route. For documentation, please visit the README at "https://github.com/afkrcher/probe#api-documentation".`
+        ? `Welcome PROBE partner! There are (${deleteRequests.length}) DELETE endpoints on this route.`
         : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
