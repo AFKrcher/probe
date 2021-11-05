@@ -22,8 +22,8 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none"
   },
   aboutParagraph: {
-    marginTop: 10,
-    marginBottom: 10
+    marginTop: 15,
+    marginBottom: 20
   },
   meetTheTeam: {
     marginTop: 30,
