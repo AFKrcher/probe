@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 // Imports
-import { Field, FastField } from "formik";
+import { Field } from "formik";
+import {
+  dataTypeOptions,
+  errorDetermination,
+  maxErrorMessage,
+} from "../utils/schemaDataFuncs";
 
 // Components
 import { MultiSelectTextInput } from "./MultiSelectTextInput";
@@ -11,7 +16,6 @@ import {
   FormControl,
   Grid,
   InputLabel,
-  MenuItem,
   Select,
   TextField,
   Checkbox,
@@ -53,197 +57,154 @@ export const SchemaFormField = ({
   const [currentStringMax, setCurrentStringMax] = useState(field.stringMax);
   const classes = useStyles();
 
-  const onChange = (event) => {
+  const handleChange = (event) => {
     setFieldValue(event.target.name, event.target.value);
   };
 
-  const onStringMaxChange = (event) => {
+  const handleStringMaxChange = (event) => {
     setFieldValue(event.target.name, event.target.value);
     setCurrentStringMax(event.target.value);
   };
 
-  const onCheck = (event) => {
+  const handleCheck = (event) => {
     setFieldValue(event.target.name, event.target.checked);
-  };
-
-  const maxErrorMessage = (index) => {
-    let contents = null;
-    if (editing && errors["fields"]) {
-      if (editing && errors.fields[index]) {
-        if (errors.fields[index].max) {
-          let err = errors.fields[index].max;
-          const toIndex = err.indexOf("to ");
-          const to = err.substr(toIndex);
-          const numberIndex = to.indexOf(" ");
-          const number = to.substr(numberIndex);
-          const message = `Maximum Value must be greater than the Minimum Value of ${number}`;
-          contents = (
-            <FormHelperText className={classes.helpersError}>
-              {message}
-            </FormHelperText>
-          );
-        }
-      } else {
-        contents = (
-          <FormHelperText className={classes.helpers}>
-            OPTIONAL: Provide a minimum and/or maximum value for the number
-          </FormHelperText>
-        );
-      }
-    } else {
-      contents = (
-        <FormHelperText className={classes.helpers}>
-          OPTIONAL: Provide a minimum and/or maximum value for the number
-        </FormHelperText>
-      );
-    }
-    return contents;
-  };
-
-  const errorDetermination = (index, field) => {
-    let determination = false;
-    if (errors.fields) {
-      if (errors.fields[index]) {
-        if (errors.fields[index][field]) {
-          determination = errors.fields[index][field];
-        }
-      }
-    }
-    return determination;
   };
 
   const handleBlur = () => {
     setTouched(true);
   };
 
-  const nameProps = (fast) => {
-    return {
+  const nameFields = () => {
+    const nameProps = {
       inputProps: {
         name: `fields.${index}.name`,
       },
       value: field.name,
-      onChange: onChange,
+      onChange: handleChange,
       label: "Field Name or Units",
       placeholder: "camelCase",
       margin: "dense",
       required: true,
       fullWidth: true,
       variant: "outlined",
-      disabled: !fast,
+      disabled: !editing,
       component: TextField,
       onBlur: handleBlur,
-      error: errorDetermination(index, "name") && touched ? true : false,
+      error:
+        errorDetermination(errors, index, "name") && touched ? true : false,
       maxLength: 255,
     };
+
+    return (
+      <React.Fragment>
+        <Field {...nameProps} />
+        {editing &&
+          (errorDetermination(errors, index, "name") && touched ? (
+            <Typography variant="caption" className={classes.helpersError}>
+              {errorDetermination(errors, index, "name")}
+            </Typography>
+          ) : (
+            <Typography variant="caption" className={classes.helpers}>
+              {`${field.name.length} / 50`}
+            </Typography>
+          ))}
+      </React.Fragment>
+    );
   };
 
-  const dataTypeProps = (fast) => {
-    return {
+  const dataTypeFields = () => {
+    const dataTypeProps = {
       label: "Data Type",
       inputProps: {
         id: `schema-field-${index}-data-type-label`,
         name: `fields.${index}.type`,
       },
       value: field.type,
-      onChange: onChange,
-      disabled: !fast,
+      onChange: handleChange,
+      disabled: !editing,
       component: Select,
       onBlur: handleBlur,
-      error: errorDetermination(index, "type") && touched ? true : false,
+      error:
+        errorDetermination(errors, index, "type") && touched ? true : false,
     };
+
+    return (
+      <React.Fragment>
+        <FormControl
+          disabled={!editing}
+          variant="outlined"
+          margin="dense"
+          required
+          fullWidth
+        >
+          <InputLabel
+            htmlFor={`schema-field-${index}-data-type-label`}
+            error={
+              errorDetermination(errors, index, "type") && touched
+                ? true
+                : false
+            }
+          >
+            Data type
+          </InputLabel>
+          <Field {...dataTypeProps}>{dataTypeOptions()}</Field>
+        </FormControl>
+        {editing && errorDetermination(errors, index, "type") && touched && (
+          <Typography variant="caption" className={classes.helpersError}>
+            {errorDetermination(errors, index, "type")}
+          </Typography>
+        )}
+      </React.Fragment>
+    );
   };
 
-  const dataTypeOptions = () => {
-    const options = [
-      "string",
-      "number",
-      "date",
-      "url",
-      "changelog",
-      "verified",
-      "validated",
-    ];
-    const hidden = ["changelog", "verified", "validated"]; // options that are not production-ready or are hidden metadata
-
-    return options.map((option, index) => {
-      if (hidden.includes(option)) {
-        return (
-          <MenuItem value={option} key={index} style={{ display: "none" }}>
-            {option}
-          </MenuItem>
-        );
-      } else {
-        return (
-          <MenuItem value={option} key={index}>
-            {option}
-          </MenuItem>
-        );
-      }
-    });
-  };
-
-  const decideFastNumberFields = () => {
-    const minProps = (fast) => {
-      return {
-        inputProps: {
-          name: `fields.${index}.min`,
-        },
-        onChange: onChange,
-        label: "Minimum Value",
-        margin: "dense",
-        defaultValue: field.min,
-        fullWidth: true,
-        type: "number",
-        step: "any",
-        variant: "outlined",
-        component: TextField,
-        disabled: !fast,
-      };
+  const numberFields = () => {
+    const minProps = {
+      inputProps: {
+        name: `fields.${index}.min`,
+      },
+      onChange: handleChange,
+      label: "Minimum Value",
+      margin: "dense",
+      defaultValue: field.min,
+      fullWidth: true,
+      type: "number",
+      step: "any",
+      variant: "outlined",
+      component: TextField,
+      disabled: !editing,
     };
-    const maxProps = (fast) => {
-      return {
-        inputProps: {
-          name: `fields.${index}.max`,
-        },
-        onChange: onChange,
-        defaultValue: field.max,
-        error: errorDetermination(index, "max"),
-        label: "Maximum Value",
-        margin: "dense",
-        fullWidth: true,
-        type: "number",
-        step: "any",
-        variant: "outlined",
-        component: TextField,
-        disabled: !fast,
-      };
+
+    const maxProps = {
+      inputProps: {
+        name: `fields.${index}.max`,
+      },
+      onChange: handleChange,
+      defaultValue: field.max,
+      error: errorDetermination(errors, index, "max"),
+      label: "Maximum Value",
+      margin: "dense",
+      fullWidth: true,
+      type: "number",
+      step: "any",
+      variant: "outlined",
+      component: TextField,
+      disabled: !editing,
     };
-    if (editing) {
-      return (
-        <Grid container item spacing={2}>
-          <Grid item xs>
-            <FastField {...minProps(true)} />
-          </Grid>
-          <Grid item xs>
-            <FastField {...maxProps(true)} />
-          </Grid>
+
+    return (
+      <Grid container item spacing={2}>
+        <Grid item xs>
+          <Field {...minProps} />
         </Grid>
-      );
-    } else {
-      return (
-        <Grid container item spacing={2}>
-          <Grid item xs>
-            <Field {...minProps(false)} />
-          </Grid>
-          <Grid item xs>
-            <Field {...maxProps(false)} />
-          </Grid>
+        <Grid item xs>
+          <Field {...maxProps} />
         </Grid>
-      );
-    }
+      </Grid>
+    );
   };
 
-  const decideFastStringFields = () => {
+  const stringFields = () => {
     const MultiSelect = (
       <MultiSelectTextInput
         index={index}
@@ -259,167 +220,104 @@ export const SchemaFormField = ({
         Unique Identifier (UUID)?
       </InputLabel>
     );
-    const stringMaxProps = (fast) => {
-      return {
-        inputProps: {
-          name: `fields.${index}.stringMax`,
-          min: "1",
-        },
-        onChange: onStringMaxChange,
-        defaultValue: field.stringMax,
-        label: "Maximum Length",
-        margin: "dense",
-        fullWidth: true,
-        type: "number",
-        step: "any",
-        variant: "outlined",
-        max: 20000,
-        disabled: !fast,
-        component: TextField,
-      };
+    const stringMaxProps = {
+      inputProps: {
+        name: `fields.${index}.stringMax`,
+        min: "1",
+      },
+      onChange: handleStringMaxChange,
+      defaultValue: field.stringMax,
+      label: "Maximum Length",
+      margin: "dense",
+      fullWidth: true,
+      type: "number",
+      step: "any",
+      variant: "outlined",
+      max: 20000,
+      disabled: !editing,
+      component: TextField,
     };
 
-    const uuidProps = (fast) => {
-      return {
-        inputProps: {
-          id: `schema-field-${index}-isUnique-label`,
-          name: `fields.${index}.isUnique`,
-        },
-        checked: field.isUnique || false,
-        onChange: onCheck,
-        margin: "dense",
-        disabled: !fast,
-        component: Checkbox,
-        type: "checkbox",
-      };
+    const uuidProps = {
+      inputProps: {
+        id: `schema-field-${index}-isUnique-label`,
+        name: `fields.${index}.isUnique`,
+      },
+      checked: field.isUnique || false,
+      onChange: handleCheck,
+      margin: "dense",
+      disabled: !editing,
+      component: Checkbox,
+      type: "checkbox",
     };
 
-    if (editing) {
-      return (
-        <React.Fragment>
-          <Grid container item spacing={2}>
-            <Grid item xs>
-              {MultiSelect}
-            </Grid>
-            <Grid item xs>
-              <FastField {...stringMaxProps(true)} />
+    return (
+      <React.Fragment>
+        <Grid container item spacing={2}>
+          <Grid item xs>
+            {MultiSelect}
+          </Grid>
+          <Grid item xs>
+            <Field {...stringMaxProps} />
+            {!editing && (
               <FormHelperText className={classes.helpers}>
                 OPTIONAL: Provide a maximum character count, cannot exceed
                 20,000
               </FormHelperText>
-            </Grid>
+            )}
           </Grid>
-          <div className={classes.field}>
-            <Field {...uuidProps(true)} />
-            {uuidLabel}
-          </div>
-        </React.Fragment>
-      );
-    } else {
-      return (
-        <React.Fragment>
-          <Grid container item spacing={2}>
-            <Grid item xs>
-              {MultiSelect}
-            </Grid>
-            <Grid item xs>
-              <Field {...stringMaxProps(false)} />
-            </Grid>
-          </Grid>
-          <div className={classes.field}>
-            <Field {...uuidProps(false)} />
-            {uuidLabel}
-          </div>
-        </React.Fragment>
-      );
-    }
+        </Grid>
+        <div className={classes.field}>
+          <Field {...uuidProps} />
+          {uuidLabel}
+        </div>
+      </React.Fragment>
+    );
   };
 
-  const requiredProps = (fast) => {
-    return {
+  const requiredFields = () => {
+    const requiredProps = {
       inputProps: {
         id: `schema-field-${index}-required-label`,
         name: `fields.${index}.required`,
       },
       checked: field.required || false,
-      onChange: onCheck,
+      onChange: handleCheck,
       margin: "dense",
-      disabled: !fast,
+      disabled: !editing,
       component: Checkbox,
       type: "checkbox",
     };
+
+    return (
+      <div className={classes.field}>
+        <Field {...requiredProps} />
+        <InputLabel htmlFor={`schema-field-${index}-required-label`}>
+          Required Input?
+        </InputLabel>
+      </div>
+    );
   };
 
   return (
     <Grid container item>
       <Grid container item spacing={2}>
         <Grid item xs className={classes.firstRow}>
-          {editing ? (
-            <FastField {...nameProps(true)} />
-          ) : (
-            <Field {...nameProps(false)} />
-          )}
-          {editing ? (
-            errorDetermination(index, "name") && touched ? (
-              <Typography variant="caption" className={classes.helpersError}>
-                {errorDetermination(index, "name")}
-              </Typography>
-            ) : (
-              <Typography variant="caption" className={classes.helpers}>
-                {`${field.name.length} / 50`}
-              </Typography>
-            )
-          ) : null}
+          {nameFields()}
         </Grid>
         <Grid item xs>
-          <FormControl
-            disabled={!editing}
-            variant="outlined"
-            margin="dense"
-            required
-            fullWidth
-          >
-            <InputLabel
-              htmlFor={`schema-field-${index}-data-type-label`}
-              error={
-                errorDetermination(index, "type") && touched ? true : false
-              }
-            >
-              Data type
-            </InputLabel>
-            {editing ? (
-              <FastField {...dataTypeProps(true)}>
-                {dataTypeOptions()}
-              </FastField>
-            ) : (
-              <Field {...dataTypeProps(false)}>{dataTypeOptions()}</Field>
-            )}
-          </FormControl>
-          {editing && errorDetermination(index, "type") && touched && (
-            <Typography variant="caption" className={classes.helpersError}>
-              {errorDetermination(index, "type")}
-            </Typography>
-          )}
+          {dataTypeFields()}
         </Grid>
       </Grid>
       <Grid item xs={12}>
         {field.type === "number" && (
           <React.Fragment>
-            {decideFastNumberFields()}
-            {maxErrorMessage(index)}
+            {numberFields()}
+            {maxErrorMessage(editing, errors, classes, index)}
           </React.Fragment>
         )}
-        {field.type === "string" && decideFastStringFields()}
-        <div className={classes.field}>
-          {editing ? (
-            <FastField {...requiredProps(true)} />
-          ) : (
-            <Field {...requiredProps(false)} />
-          )}
-          <InputLabel htmlFor={`schema-field-${index}-required-label`}>
-            Required Input?
-          </InputLabel>
-        </div>
+        {field.type === "string" && stringFields()}
+        {requiredFields()}
       </Grid>
     </Grid>
   );

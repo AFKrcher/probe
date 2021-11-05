@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 // Imports
 import { Field } from "formik";
-import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
 import { decideVerifiedValidatedAdornment } from "../utils/satelliteDataFuncs";
 import { _ } from "meteor/underscore";
 
@@ -93,42 +92,33 @@ export const SatelliteSchemaEntry = ({
 
   const [helpers, setHelpers] = useState(null);
 
-  const debounceOne = useDebouncedCallback((event) => {
-    // trim the value of whitespace if string
-    const value =
-      typeof event.target.value === "string"
-        ? event.target.value.trim()
-        : event.target.value;
-    setFieldValue(event.target.name, value);
-  }, 1000);
+  const handleChange = (event, validatedField, verifiedField) => {
+    setFieldValue(event.target.name, event.target.value);
+    setTimeout(() => setFieldValue(event.target.name, event.target.value));
 
-  const debounceTwo = useDebouncedCallback(
-    (event, validatedField, verifiedField) => {
-      // set object to touched explicitly
-      let obj = {};
-      obj[`${event.target.name}`] = true;
-      setTouched(obj);
+    // set verified/validated to false if a field is modified and subsequently saved
+    setFieldValue(validatedField, [
+      {
+        method: null,
+        name: null,
+        validated: false,
+        validatedOn: null,
+      },
+    ]);
+    setFieldValue(verifiedField, [
+      {
+        method: null,
+        name: null,
+        verified: false,
+        verifiedOn: null,
+      },
+    ]);
 
-      // set verified/validated to false if a field is modified and subsequently saved
-      setFieldValue(validatedField, [
-        {
-          method: null,
-          name: null,
-          validated: false,
-          validatedOn: null,
-        },
-      ]);
-      setFieldValue(verifiedField, [
-        {
-          method: null,
-          name: null,
-          verified: false,
-          verifiedOn: null,
-        },
-      ]);
-    },
-    1000
-  );
+    // set object to touched explicitly
+    let obj = {};
+    obj[`${event.target.name}`] = true;
+    setTouched(obj);
+  };
 
   const refreshHelpers = () => {
     if (!_.isEmpty(errors)) {
@@ -168,14 +158,12 @@ export const SatelliteSchemaEntry = ({
     return helper;
   };
 
-  const handleEntryDelete = async (event, schemaName, index) => {
+  const handleEntryDelete = async (event) => {
     let obj = {};
     obj[`${event.target.name}`] = true;
     setTouched(obj);
 
-    let newEntries = entries.map((entry) => entry);
-    newEntries.splice(index, 1);
-    await setFieldValue(schemaName, newEntries);
+    entries.splice(entryIndex, 1);
 
     setSatSchema(satelliteValidatorShaper(values, initValues)); // generate new validation schema based on added entry
   };
@@ -199,18 +187,9 @@ export const SatelliteSchemaEntry = ({
       InputLabelProps: {
         shrink: true,
       },
-      defaultValue: entry[`${field.name}`] || "",
+      value: entry[`${field.name}`] || "",
       onChange: (event) => {
-        debounceOne(event);
-        debounceTwo(
-          event,
-          `${schema.name}.${entryIndex}.validated`,
-          `${schema.name}.${entryIndex}.verified`
-        );
-      },
-      onInput: (event) => {
-        debounceOne(event);
-        debounceTwo(
+        handleChange(
           event,
           `${schema.name}.${entryIndex}.validated`,
           `${schema.name}.${entryIndex}.verified`
@@ -439,9 +418,7 @@ export const SatelliteSchemaEntry = ({
               <IconButton
                 aria-label="delete field"
                 color="default"
-                onClick={(event) =>
-                  handleEntryDelete(event, schema.name, entryIndex)
-                }
+                onClick={(event) => handleEntryDelete(event)}
               >
                 <DeleteIcon />
               </IconButton>

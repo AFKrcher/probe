@@ -26,7 +26,7 @@ import {
 const useStyles = makeStyles((theme) => ({
   formContainer: {
     marginTop: 40,
-    padding: 20,
+    padding: 30,
     display: "flex",
     flexFlow: "column wrap",
     justifyContent: "center",
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
   },
   header: {
-    marginBottom: 25,
+    marginBottom: 20,
   },
   textField: {
     marginBottom: 10,
@@ -49,12 +49,12 @@ const useStyles = makeStyles((theme) => ({
     flexFlow: "column wrap",
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: -10,
   },
   registerButton: {
     width: "60%",
   },
   forgotButton: {
-    marginTop: 10,
     width: "60%",
   },
   spinnerContainer: {
