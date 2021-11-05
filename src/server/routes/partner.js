@@ -4,23 +4,13 @@ import { ErrorsCollection } from "/imports/api/errors";
 
 const baseURL = "/api/partner/:key";
 
-export const partnerRoutes = (
-  app,
-  getSats,
-  getSchemas,
-  allowedRoles,
-  PROBE_API_KEY,
-  partnerAPIKeys = false
-) => {
+export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_KEY, partnerAPIKeys = false) => {
   // No Schema modification routes are provided - schemas must be generated or deleted via the client and approved by an Admin/Moderator before implementation
   const keyCheck = (key, ownersOnly = false) => {
     // In the future, there may be partner-specific API keys, where as PROBE_API_KEY is for owners only
     // Below is a check for standard PROBE partners
     // ownersOnly is mainly reserved for Account actions
-    return partnerAPIKeys && !ownersOnly
-      ? partnerAPIKeys.includes(key.toString()) ||
-          key.toString() === PROBE_API_KEY
-      : key.toString() === PROBE_API_KEY;
+    return partnerAPIKeys && !ownersOnly ? partnerAPIKeys.includes(key.toString()) || key.toString() === PROBE_API_KEY : key.toString() === PROBE_API_KEY;
   };
 
   const getRequests = [
@@ -73,7 +63,7 @@ export const partnerRoutes = (
         res.writeHead(status);
         res.end(JSON.stringify(response));
       }
-    }),
+    })
   ];
   const postRequests = [
     // No need to POST Errors, as Errors are meant only to be logged by the client
@@ -88,41 +78,31 @@ export const partnerRoutes = (
       if (keyCheck(req.params.key)) {
         if (sat?.noradID && sat?.names?.length > 0) {
           for (let key in sat) {
-            if (
-              sat[key].length &&
-              typeof sat[key] !== "string" &&
-              !parseInt(sat[key])
-            ) {
+            if (sat[key].length && typeof sat[key] !== "string" && !parseInt(sat[key])) {
               sat[key].forEach((obj) => {
                 obj["validated"] = [
                   {
                     method: null,
                     name: null,
                     verified: false,
-                    verifiedOn: null,
-                  },
+                    verifiedOn: null
+                  }
                 ];
                 obj["verified"] = [
                   {
                     method: null,
                     name: null,
                     validated: false,
-                    validatedOn: null,
-                  },
+                    validatedOn: null
+                  }
                 ];
               });
             }
           }
-          await Meteor.call(
-            "addNewSatellite",
-            { noradID: "" },
-            sat,
-            req.params.key
-          );
+          await Meteor.call("addNewSatellite", { noradID: "" }, sat, req.params.key);
         } else {
           status = 406;
-          response =
-            "You must provide a request body IAW the PROBE API documentation.";
+          response = "You must provide a request body IAW the PROBE API documentation.";
         }
       } else {
         response = "Unauthorized [401]";
@@ -131,7 +111,7 @@ export const partnerRoutes = (
       await res.setHeader("Content-Type", "application/json");
       await res.writeHead(status);
       await res.end(JSON.stringify(response));
-    }),
+    })
   ];
 
   const putRequests = [
@@ -147,17 +127,11 @@ export const partnerRoutes = (
       let response = `${user?._id} added to role: ${role}`;
       let status = 200;
       if (keyCheck(req.params.key, true)) {
-        if (
-          typeof user._id === "string" &&
-          typeof user.username === "string" &&
-          typeof role === "string" &&
-          allowedRoles.includes(role)
-        ) {
+        if (typeof user._id === "string" && typeof user.username === "string" && typeof role === "string" && allowedRoles.includes(role)) {
           Meteor.call("addUserToRole", user, role, req.params.key);
         } else {
           status = 406;
-          response =
-            "You must provide a request body IAW the PROBE API documentation.";
+          response = "You must provide a request body IAW the PROBE API documentation.";
         }
       } else {
         response = "Unauthorized [401]";
@@ -166,7 +140,7 @@ export const partnerRoutes = (
       res.setHeader("Content-Type", "application/json");
       res.writeHead(status);
       res.end(JSON.stringify(response));
-    }),
+    })
   ];
 
   const deleteRequests = [
@@ -180,9 +154,7 @@ export const partnerRoutes = (
   return [
     // GET
     app.get(baseURL, (req, res) => {
-      const response = keyCheck(req.params.key)
-        ? `Welcome PROBE partner! There are (${getRequests.length}) GET endpoints on this route. For documentation, please visit the README at "https://github.com/afkrcher/probe#api-documentation".`
-        : "Unauthorized [401]";
+      const response = keyCheck(req.params.key) ? `Welcome PROBE partner! There are (${getRequests.length}) GET endpoints on this route.` : "Unauthorized [401]";
       const status = req.params.key === PROBE_API_KEY ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
       res.writeHead(status);
@@ -191,9 +163,7 @@ export const partnerRoutes = (
     ...getRequests,
     // POST
     app.post(baseURL, (req, res) => {
-      const response = keyCheck(req.params.key)
-        ? `Welcome PROBE partner! There are (${postRequests.length}) POST endpoints on this route. For documentation, please visit the README at "https://github.com/afkrcher/probe#api-documentation".`
-        : "Unauthorized [401]";
+      const response = keyCheck(req.params.key) ? `Welcome PROBE partner! There are (${postRequests.length}) POST endpoints on this route.` : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
       res.writeHead(status);
@@ -202,9 +172,7 @@ export const partnerRoutes = (
     ...postRequests,
     // PATCH
     app.patch(baseURL, (req, res) => {
-      const response = keyCheck(req.params.key)
-        ? `Welcome PROBE partner! There are (${patchRequests.length}) PATCH endpoints on this route. For documentation, please visit the README at "https://github.com/afkrcher/probe#api-documentation".`
-        : "Unauthorized [401]";
+      const response = keyCheck(req.params.key) ? `Welcome PROBE partner! There are (${patchRequests.length}) PATCH endpoints on this route.` : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
       res.writeHead(status);
@@ -213,9 +181,7 @@ export const partnerRoutes = (
     ...patchRequests,
     // PUT
     app.put(baseURL, (req, res) => {
-      const response = keyCheck(req.params.key)
-        ? `Welcome PROBE partner! There are (${putRequests.length}) PUT endpoints on this route. For documentation, please visit the README at "https://github.com/afkrcher/probe#api-documentation".`
-        : "Unauthorized [401]";
+      const response = keyCheck(req.params.key) ? `Welcome PROBE partner! There are (${putRequests.length}) PUT endpoints on this route.` : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
       res.writeHead(status);
@@ -224,14 +190,12 @@ export const partnerRoutes = (
     ...putRequests,
     // DELETE
     app.delete(baseURL, (req, res) => {
-      const response = keyCheck(req.params.key)
-        ? `Welcome PROBE partner! There are (${deleteRequests.length}) DELETE endpoints on this route. For documentation, please visit the README at "https://github.com/afkrcher/probe#api-documentation".`
-        : "Unauthorized [401]";
+      const response = keyCheck(req.params.key) ? `Welcome PROBE partner! There are (${deleteRequests.length}) DELETE endpoints on this route.` : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
       res.writeHead(status);
       res.end(JSON.stringify(response));
     }),
-    ...deleteRequests,
+    ...deleteRequests
   ];
 };

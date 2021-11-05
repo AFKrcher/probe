@@ -5,69 +5,56 @@ import { useTracker } from "meteor/react-meteor-data";
 import { ErrorsCollection } from "../../api/errors";
 
 // @material-ui
-import {
-  makeStyles,
-  Typography,
-  Table,
-  TableContainer,
-  Paper,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  CircularProgress,
-  IconButton,
-  Button,
-} from "@material-ui/core";
+import { makeStyles, Typography, Table, TableContainer, Paper, TableHead, TableBody, TableRow, TableCell, CircularProgress, IconButton, Button } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
     paddingTop: 5,
-    paddingBottom: 5,
+    paddingBottom: 5
   },
   table: {
     margin: "10px 10px 10px 10px",
     width: "auto",
     height: "100%",
-    backgroundColor: theme.palette.grid.background,
+    backgroundColor: theme.palette.grid.background
   },
   message: {
     paddingTop: 12.5,
     paddingBottom: 12.5,
-    maxWidth: 200,
+    maxWidth: 200
   },
   timing: {
     paddingTop: 12.5,
     paddingBottom: 12.5,
-    maxWidth: 150,
+    maxWidth: 150
   },
   user: {
     paddingTop: 12.5,
     paddingBottom: 12.5,
-    maxWidth: 100,
+    maxWidth: 100
   },
   actions: {
     paddingTop: 12.5,
     paddingBottom: 12.5,
-    maxWidth: 60,
+    maxWidth: 60
   },
   tableRow: {
     "&:hover": {
-      backgroundColor: theme.palette.action.hover,
-    },
+      backgroundColor: theme.palette.action.hover
+    }
   },
   deleteButton: {
-    marginLeft: -8,
+    marginLeft: -8
   },
   spinner: {
-    color: theme.palette.text.primary,
+    color: theme.palette.text.primary
   },
   deleteAllButton: { margin: 20 },
   deleteAll: {
-    marginRight: 10,
-  },
+    marginRight: 10
+  }
 }));
 
 export const ErrorLog = () => {
@@ -93,18 +80,11 @@ export const ErrorLog = () => {
 
   return (
     <div className={classes.root}>
-      <Button
-        color="secondary"
-        variant="contained"
-        className={classes.deleteAllButton}
-        onClick={deleteAllErrors}
-      >
+      <Button color="secondary" variant="contained" className={classes.deleteAllButton} onClick={deleteAllErrors}>
         <DeleteIcon className={classes.deleteAll} />
         Delete All
       </Button>
-      <Typography variant="caption">
-        Error Log only shows the last 50 errors encountered by PROBE users
-      </Typography>
+      <Typography variant="caption">Error Log only shows the last 50 errors encountered by PROBE users</Typography>
       <TableContainer component={Paper} className={classes.table} elevation={5}>
         <Table size="small" aria-label="Schema table">
           <TableHead>
@@ -136,22 +116,11 @@ export const ErrorLog = () => {
               errors.map((error, i) => {
                 return (
                   <TableRow key={`error-row-${i}`} className={classes.tableRow}>
-                    <TableCell key={`error-message-${i}`}>
-                      {error.msg}
-                    </TableCell>
-                    <TableCell
-                      key={`error-time-${i}`}
-                    >{`${error.time}`}</TableCell>
+                    <TableCell key={`error-message-${i}`}>{error.msg}</TableCell>
+                    <TableCell key={`error-time-${i}`}>{`${error.time}`}</TableCell>
                     <TableCell key={`error-user-${i}`}>{error.user}</TableCell>
-                    <TableCell
-                      key={`error-actions-${i}`}
-                      style={{ textAlign: "center" }}
-                    >
-                      <IconButton
-                        color="secondary"
-                        className={classes.deleteButton}
-                        onClick={() => deleteError(error._id)}
-                      >
+                    <TableCell key={`error-actions-${i}`} style={{ textAlign: "center" }}>
+                      <IconButton color="secondary" className={classes.deleteButton} onClick={() => deleteError(error._id)}>
                         <DeleteIcon fontSize="medium" />
                       </IconButton>
                     </TableCell>

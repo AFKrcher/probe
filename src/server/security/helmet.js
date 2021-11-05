@@ -31,48 +31,37 @@ export const helmetOptions = (forExpress) => {
         manifestSrc: srcOpts,
         mediaSrc: srcOpts,
         objectSrc: srcOpts,
-        sandbox: [
-          "allow-forms",
-          "allow-modals",
-          "allow-same-origin",
-          "allow-scripts",
-          "allow-popups",
-          "allow-downloads",
-        ],
+        sandbox: ["allow-forms", "allow-modals", "allow-same-origin", "allow-scripts", "allow-popups", "allow-downloads"],
         styleSrc: [self, unsafeInline],
-        workerSrc: [self, "blob:"],
-      },
+        workerSrc: [self, "blob:"]
+      }
     },
     strictTransportSecurity: {
       maxAge: 15552000,
       includeSubDomains: true,
-      preload: false,
+      preload: false
     },
     referrerPolicy: {
-      policy: "no-referrer",
+      policy: "no-referrer"
     },
     expectCt: {
       enforce: true,
-      maxAge: 604800,
+      maxAge: 604800
     },
     frameguard: {
-      action: "sameorigin",
+      action: "sameorigin"
     },
     dnsPrefetchControl: {
-      allow: false,
+      allow: false
     },
     permittedCrossDomainPolicies: {
-      permittedPolicies: "none",
-    },
+      permittedPolicies: "none"
+    }
   };
 
   if (!usesHttps && Meteor.isDevelopment && !forExpress) {
     delete options.contentSecurityPolicy.directives.blockAllMixedContent;
-    options.contentSecurityPolicy.directives.scriptSrc = [
-      self,
-      unsafeEval,
-      unsafeInline,
-    ];
+    options.contentSecurityPolicy.directives.scriptSrc = [self, unsafeEval, unsafeInline];
   }
   return options;
 };

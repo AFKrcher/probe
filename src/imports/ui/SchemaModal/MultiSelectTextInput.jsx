@@ -13,24 +13,17 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 14,
     marginTop: 0,
     marginBottom: 4,
-    color: theme.palette.text.disabled,
+    color: theme.palette.text.disabled
   },
   helpersError: {
     marginLeft: 14,
     marginTop: 0,
     marginBottom: 4,
-    color: theme.palette.error.main,
-  },
+    color: theme.palette.error.main
+  }
 }));
 
-export const MultiSelectTextInput = ({
-  editing,
-  index,
-  allowedValues,
-  setFieldValue,
-  currentStringMax,
-  errors,
-}) => {
+export const MultiSelectTextInput = ({ editing, index, allowedValues, setFieldValue, currentStringMax, errors }) => {
   const classes = useStyles();
   const [inputText, setInputText] = useState("");
 
@@ -53,9 +46,7 @@ export const MultiSelectTextInput = ({
         return option;
       }
     });
-    const fieldValue = [...allowedValues, ...filteredOptions]
-      .map((x) => x.trim())
-      .filter((x) => x);
+    const fieldValue = [...allowedValues, ...filteredOptions].map((x) => x.trim()).filter((x) => x);
 
     if (options.length > 1) {
       handleChange(event, fieldValue);
@@ -83,44 +74,20 @@ export const MultiSelectTextInput = ({
         disableClearable
         options={[]}
         freeSolo
-        renderTags={(options, getTagProps) =>
-          options.map((option, index) => (
-            <Chip
-              key={index}
-              deleteIcon={<Close />}
-              size="small"
-              label={option}
-              {...getTagProps({ index })}
-            />
-          ))
-        }
+        renderTags={(options, getTagProps) => options.map((option, index) => <Chip key={index} deleteIcon={<Close />} size="small" label={option} {...getTagProps({ index })} />)}
         value={allowedValues}
         inputValue={inputText}
         onChange={handleChange}
         onInputChange={handleInputChange}
         disabled={!editing}
         renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Allowed Strings"
-            error={allowedValuesErrorDetermination(index) ? true : false}
-            variant="outlined"
-            fullWidth
-            margin="dense"
-          />
+          <TextField {...params} label="Allowed Strings" error={allowedValuesErrorDetermination(index) ? true : false} variant="outlined" fullWidth margin="dense" />
         )}
         component={Autocomplete}
       />
       {editing && (
-        <FormHelperText
-          className={
-            allowedValuesErrorDetermination(index)
-              ? classes.helpersError
-              : classes.helpers
-          }
-        >
-          {allowedValuesErrorDetermination(index) ||
-            "OPTIONAL: Provide a list of allowed values delineated by commas"}
+        <FormHelperText className={allowedValuesErrorDetermination(index) ? classes.helpersError : classes.helpers}>
+          {allowedValuesErrorDetermination(index) || "OPTIONAL: Provide a list of allowed values delineated by commas"}
         </FormHelperText>
       )}
     </React.Fragment>
@@ -134,5 +101,5 @@ MultiSelectTextInput.propTypes = {
   allowedValues: PropTypes.array,
   setFieldValue: PropTypes.func,
   currentStringMax: PropTypes.string,
-  errors: PropTypes.object,
+  errors: PropTypes.object
 };

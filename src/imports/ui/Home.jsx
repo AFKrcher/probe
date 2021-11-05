@@ -11,16 +11,7 @@ import { Key } from "./Helpers/Key.jsx";
 import { Mini } from "./DataDisplays/Mini.jsx";
 
 // @material-ui
-import {
-  Button,
-  IconButton,
-  Container,
-  Grid,
-  Typography,
-  makeStyles,
-  Tooltip,
-  Divider,
-} from "@material-ui/core";
+import { Button, IconButton, Container, Grid, Typography, makeStyles, Tooltip, Divider } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import InfiniteScrollIcon from "@material-ui/icons/BurstMode";
@@ -33,81 +24,81 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     width: "100%",
     marginLeft: -25,
-    marginRight: -25,
+    marginRight: -25
   },
   probe: {
     color: theme.palette.tertiary.main,
-    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`
   },
   description: {
     marginTop: 10,
-    marginBottom: 15,
+    marginBottom: 15
   },
   showcase: {
-    marginTop: 20,
+    marginTop: 20
   },
   showcaseHeader: {
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
-    marginBottom: 15,
+    marginBottom: 15
   },
   miniDescription: {
     marginTop: 10,
-    marginBottom: 5,
+    marginBottom: 5
   },
   miniButtonShowcaseHeaderContainer: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    width: "100%",
+    width: "100%"
   },
   descriptionDivider: {
     marginBottom: 25,
-    marginTop: 25,
+    marginTop: 25
   },
   showcaseDivider: {
     marginBottom: 30,
-    marginTop: 40,
+    marginTop: 40
   },
   secondaryShowcase: {
-    marginTop: 15,
+    marginTop: 15
   },
   card: {
-    marginTop: -10,
+    marginTop: -10
   },
   skeleton: {
     borderRadius: 5,
-    marginBottom: 15,
+    marginBottom: 15
   },
   spinner: {
-    color: theme.palette.text.primary,
+    color: theme.palette.text.primary
   },
   scrollUp: {
     color: theme.palette.tertiary.main,
     position: "fixed",
     bottom: 10,
     right: 10,
-    zIndex: 20,
+    zIndex: 20
   },
   toggleInfinite: {
     color: theme.palette.tertiary.main,
     position: "fixed",
     bottom: 60,
-    right: 10,
+    right: 10
   },
   loadMoreContainer: {
     marginTop: 40,
     marginBottom: -25,
-    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`
   },
   loadMore: {
     cursor: "pointer",
     color: theme.palette.text.disabled,
     "&:hover": {
-      color: theme.palette.info.light,
-    },
-  },
+      color: theme.palette.info.light
+    }
+  }
 }));
 
 // breakpoints based on device width / height
@@ -143,19 +134,8 @@ export const Home = () => {
         size="small"
         startIcon={miniButtonBreak ? mini ? <ZoomIn /> : <ZoomOut /> : null}
         onClick={minimize}
-        style={{ width: miniButtonBreak ? 206 : 0, height: 35 }}
-      >
-        {mini ? (
-          miniButtonBreak ? (
-            "Satellite Cards View"
-          ) : (
-            <ZoomOut />
-          )
-        ) : miniButtonBreak ? (
-          "Minimized Grid View"
-        ) : (
-          <ZoomIn />
-        )}
+        style={{ width: miniButtonBreak ? 206 : 0, height: 35 }}>
+        {mini ? miniButtonBreak ? "Satellite Cards View" : <ZoomOut /> : miniButtonBreak ? "Minimized Grid View" : <ZoomIn />}
       </Button>
     );
   };
@@ -175,7 +155,7 @@ export const Home = () => {
     const otherSats = SatelliteCollection.find(
       {},
       {
-        limit: limiter * page,
+        limit: limiter * page
       }
     )
       .fetch()
@@ -184,7 +164,7 @@ export const Home = () => {
       Meteor.userId() && favorites
         ? // If user is logged in and has favorites
           SatelliteCollection.find({
-            noradID: { $in: favorites },
+            noradID: { $in: favorites }
           })
             .fetch()
             .filter((sat) => !sat.isDeleted)
@@ -193,10 +173,7 @@ export const Home = () => {
   });
 
   window.onscroll = () => {
-    if (
-      window.innerHeight + window.scrollY >= document.body.offsetHeight &&
-      infiniteMode
-    ) {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight && infiniteMode) {
       handleInfiniteScroll();
       setScrolled(true);
     }
@@ -217,10 +194,7 @@ export const Home = () => {
   };
 
   const showLoadMore = () => {
-    if (
-      otherSats.length !==
-      SatelliteCollection.find({ isDeleted: false }).count()
-    ) {
+    if (otherSats.length !== SatelliteCollection.find({ isDeleted: false }).count()) {
       return true;
     } else {
       return false;
@@ -234,11 +208,7 @@ export const Home = () => {
 
   return (
     <Container className={classes.root} disableGutters>
-      <Container
-        className={
-          favorites?.length > 0 ? null : classes.keySpacingIfNoFavorites
-        }
-      >
+      <Container className={favorites?.length > 0 ? null : classes.keySpacingIfNoFavorites}>
         {scrolled && (
           <React.Fragment>
             <Tooltip title="Scroll back to top" placement="left" arrow>
@@ -247,24 +217,9 @@ export const Home = () => {
               </IconButton>
             </Tooltip>
             {!mini && (
-              <Tooltip
-                title={
-                  infiniteMode
-                    ? "Turn off infinite scroll"
-                    : "Turn on infinite scroll"
-                }
-                placement="left"
-                arrow
-              >
-                <IconButton
-                  className={classes.toggleInfinite}
-                  onClick={() => setInfiniteMode(!infiniteMode)}
-                >
-                  {infiniteMode ? (
-                    <InfiniteScrollIcon />
-                  ) : (
-                    <InfiniteScrollOutlinedIcon />
-                  )}
+              <Tooltip title={infiniteMode ? "Turn off infinite scroll" : "Turn on infinite scroll"} placement="left" arrow>
+                <IconButton className={classes.toggleInfinite} onClick={() => setInfiniteMode(!infiniteMode)}>
+                  {infiniteMode ? <InfiniteScrollIcon /> : <InfiniteScrollOutlinedIcon />}
                 </IconButton>
               </Tooltip>
             )}
@@ -274,10 +229,8 @@ export const Home = () => {
           Welcome to <strong className={classes.probe}>PROBE</strong>!
         </Typography>
         <Typography variant="body1" className={classes.description}>
-          <strong>P</strong>ublicly <strong>R</strong>esearched{" "}
-          <strong>O</strong>bservatory (PROBE) is seeking to become the world's
-          most complete and easy to use resource for satellite data and
-          information. 100% Open Source, 100% Machine Readable.
+          <strong>P</strong>ublicly <strong>R</strong>esearched <strong>O</strong>bservatory (PROBE) is seeking to become the world's most complete and easy to use resource for
+          satellite data and information. 100% Open Source, 100% Machine Readable.
         </Typography>
         <Key page="Home" mini={mini} />
       </Container>
@@ -315,33 +268,17 @@ export const Home = () => {
                     {miniButton()}
                   </div>
                 </span>
-                <Grid
-                  container
-                  justifyContent={
-                    width > cardFlexBreak ? "flex-start" : "center"
-                  }
-                  spacing={cardSpace()}
-                  className={classes.card}
-                >
+                <Grid container justifyContent={width > cardFlexBreak ? "flex-start" : "center"} spacing={cardSpace()} className={classes.card}>
                   {!isLoading
                     ? sats.map((sat, index) => (
                         <Grid item xs={cardSpace()} key={index}>
-                          <SatCard
-                            satellite={sat}
-                            width={width}
-                            height={height}
-                            id={`SatCard-${index}`}
-                          />
+                          <SatCard satellite={sat} width={width} height={height} id={`SatCard-${index}`} />
                         </Grid>
                       ))
                     : [...Array(limiter)].map((_, index) => (
                         <Grid item xs={cardSpace()} key={index}>
                           <Skeleton variant="rect" className={classes.skeleton}>
-                            <SatCard
-                              satellite={{}}
-                              width={width}
-                              height={height}
-                            />
+                            <SatCard satellite={{}} width={width} height={height} />
                           </Skeleton>
                         </Grid>
                       ))}
@@ -360,9 +297,7 @@ export const Home = () => {
               {isLoading ? (
                 <span className={classes.showcaseHeader}>
                   <Skeleton variant="rect" className={classes.skeleton}>
-                    <Typography variant="h4">
-                      User's Favorite Satellites
-                    </Typography>
+                    <Typography variant="h4">User's Favorite Satellites</Typography>
                   </Skeleton>
                 </span>
               ) : (
@@ -373,31 +308,17 @@ export const Home = () => {
                   </div>
                 </span>
               )}
-              <Grid
-                container
-                justifyContent={width > cardFlexBreak ? "flex-start" : "center"}
-                spacing={cardSpace()}
-                className={classes.card}
-              >
+              <Grid container justifyContent={width > cardFlexBreak ? "flex-start" : "center"} spacing={cardSpace()} className={classes.card}>
                 {!isLoading
                   ? otherSats.map((sat, index) => (
                       <Grid item xs={cardSpace()} key={index}>
-                        <SatCard
-                          satellite={sat}
-                          width={width}
-                          height={height}
-                          id={`SatCard-${index}`}
-                        />
+                        <SatCard satellite={sat} width={width} height={height} id={`SatCard-${index}`} />
                       </Grid>
                     ))
                   : [...Array(limiter)].map((_, index) => (
                       <Grid item xs={cardSpace()} key={index}>
                         <Skeleton variant="rect" className={classes.skeleton}>
-                          <SatCard
-                            satellite={{}}
-                            width={width}
-                            height={height}
-                          />
+                          <SatCard satellite={{}} width={width} height={height} />
                         </Skeleton>
                       </Grid>
                     ))}
@@ -405,30 +326,18 @@ export const Home = () => {
               </Grid>
 
               {/* Load More Button */}
-              <Grid
-                container
-                alignItems="center"
-                className={classes.loadMoreContainer}
-              >
+              <Grid container alignItems="center" className={classes.loadMoreContainer}>
                 <Grid item xs={width > dividerBreak ? 5 : 3}>
                   <Divider />
                 </Grid>
-                <Grid
-                  item
-                  xs={width > dividerBreak ? 2 : 6}
-                  container
-                  justifyContent="center"
-                >
+                <Grid item xs={width > dividerBreak ? 2 : 6} container justifyContent="center">
                   <Typography
                     variant={width > dividerTextBreak ? "body1" : "caption"}
                     className={classes.loadMore}
                     onClick={() => {
                       if (showLoadMore()) setPage(page + 1);
-                    }}
-                  >
-                    {width > 300
-                      ? `${showLoadMore() ? "Load" : "No"} More Satellites`
-                      : `${showLoadMore() ? "Load" : "No"} More`}
+                    }}>
+                    {width > 300 ? `${showLoadMore() ? "Load" : "No"} More Satellites` : `${showLoadMore() ? "Load" : "No"} More`}
                   </Typography>
                 </Grid>
                 <Grid item xs={width > dividerBreak ? 5 : 4}>

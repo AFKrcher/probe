@@ -15,11 +15,7 @@ export const isValidUsername = (oldUsername, newUsername) => {
 };
 
 export const isValidPassword = (oldPassword, newPassword) => {
-  const schema = Yup.string()
-    .min(8)
-    .max(128)
-    .notOneOf([oldPassword])
-    .required();
+  const schema = Yup.string().min(8).max(128).notOneOf([oldPassword]).required();
   return schema.isValidSync(newPassword);
 };
 

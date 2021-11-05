@@ -1,16 +1,6 @@
-import {
-  isValidEmail,
-  isValidUsername,
-} from "/imports/validation/accountYupShape";
+import { isValidEmail, isValidUsername } from "/imports/validation/accountYupShape";
 
-export const accountMethods = (
-  Meteor,
-  Accounts,
-  Roles,
-  allowedRoles,
-  UsersCollection,
-  PROBE_API_KEY
-) => {
+export const accountMethods = (Meteor, Accounts, Roles, allowedRoles, UsersCollection, PROBE_API_KEY) => {
   // Account creation and managment methods
   return Meteor.methods({
     userExists: (username) => {
@@ -28,21 +18,12 @@ export const accountMethods = (
     addUserToRole: (user, role, key = false) => {
       // key is only for PROBE owner API manipulation
       if (
-        ((Roles.userIsInRole(Meteor.userId(), "admin") &&
-          allowedRoles.includes(role)) ||
-          (key === PROBE_API_KEY && allowedRoles.includes(role))) &&
+        ((Roles.userIsInRole(Meteor.userId(), "admin") && allowedRoles.includes(role)) || (key === PROBE_API_KEY && allowedRoles.includes(role))) &&
         Meteor.user()?.emails[0]?.verified
       ) {
-        Roles.addUsersToRoles(
-          Accounts.findUserByUsername(user.username)._id,
-          role
-        );
+        Roles.addUsersToRoles(Accounts.findUserByUsername(user.username)._id, role);
         if (role === "dummies") {
-          Meteor.users.update(
-            user._id,
-            { $set: { "services.resume.loginTokens": [] } },
-            { multi: true }
-          );
+          Meteor.users.update(user._id, { $set: { "services.resume.loginTokens": [] } }, { multi: true });
         }
         return `User ${user._id} added to role: ${role}`;
       } else {
@@ -50,10 +31,7 @@ export const accountMethods = (
       }
     },
     deleteAccount: (id) => {
-      if (
-        Meteor.userId() === id ||
-        Roles.userIsInRole(Meteor.userId(), "admin")
-      ) {
+      if (Meteor.userId() === id || Roles.userIsInRole(Meteor.userId(), "admin")) {
         Meteor.users.remove({ _id: id });
         UsersCollection.remove(id);
         return `User ${id} has successfully been deleted`;
@@ -65,10 +43,7 @@ export const accountMethods = (
       if (Meteor.userId() === id) {
         if (isValidUsername(oldUsername, newUsername)) {
           Accounts.setUsername(id, newUsername);
-          UsersCollection.update(
-            { _id: id },
-            { $set: { username: Meteor.user().username } }
-          );
+          UsersCollection.update({ _id: id }, { $set: { username: Meteor.user().username } });
           return `Account changes successfully made`;
         } else {
           return `The provided username, ${newUsername}, is invalid`;
@@ -83,10 +58,7 @@ export const accountMethods = (
           Accounts.removeEmail(id, oldEmail);
           Accounts.addEmail(id, newEmail);
           Accounts.sendVerificationEmail(id, newEmail);
-          UsersCollection.update(
-            { _id: id },
-            { $set: { emails: Meteor.user().emails } }
-          );
+          UsersCollection.update({ _id: id }, { $set: { emails: Meteor.user().emails } });
           return `Account changes successfully made`;
         } else {
           return `The provided email, ${newEmail}, is invalid`;
@@ -118,10 +90,8 @@ export const accountMethods = (
             { _id: user._id },
             {
               $set: {
-                roles: Meteor.roleAssignment
-                  .find({ _id: Meteor.userId() })
-                  .fetch(),
-              },
+                roles: Meteor.roleAssignment.find({ _id: Meteor.userId() }).fetch()
+              }
             }
           );
           return `User ${user._id} removed from role: ${role}`;
@@ -133,8 +103,7 @@ export const accountMethods = (
       }
     },
     checkIfBanned: (user) => {
-      let userFinder =
-        Accounts.findUserByUsername(user) || Accounts.findUserByEmail(user);
+      let userFinder = Accounts.findUserByUsername(user) || Accounts.findUserByEmail(user);
       return Roles.userIsInRole(userFinder?._id, "dummies");
     },
     sendEmail: (id, email) => {
@@ -150,7 +119,7 @@ export const accountMethods = (
           Accounts.createUserVerifyingEmail({
             email: email,
             username: username,
-            password: password,
+            password: password
           });
           return `Welcome to PROBE, ${username}! A verification email has been sent to ${email}.`;
         } catch (err) {
@@ -159,6 +128,6 @@ export const accountMethods = (
       } else {
         return "An error occured while creating your account. Please try again later!";
       }
-    },
+    }
   });
 };

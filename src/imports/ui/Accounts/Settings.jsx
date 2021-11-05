@@ -4,28 +4,14 @@ import { Meteor } from "meteor/meteor";
 import { useTracker } from "meteor/react-meteor-data";
 import { Accounts } from "meteor/accounts-base";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
-import {
-  isValidEmail,
-  isValidUsername,
-  isValidPassword,
-  isConfirmedPassword,
-} from "/imports/validation/accountYupShape";
+import { isValidEmail, isValidUsername, isValidPassword, isConfirmedPassword } from "/imports/validation/accountYupShape";
 
 // Components
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
 import SnackBar from "../Dialogs/SnackBar.jsx";
 
 // @material-ui
-import {
-  Container,
-  Grid,
-  Button,
-  TextField,
-  CircularProgress,
-  Tooltip,
-  Typography,
-  Paper,
-} from "@material-ui/core";
+import { Container, Grid, Button, TextField, CircularProgress, Tooltip, Typography, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -39,43 +25,42 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     width: "400px",
-    borderRadius: 10,
+    borderRadius: 10
   },
   header: {
-    marginBottom: 20,
+    marginBottom: 20
   },
   textField: {
-    marginBottom: 10,
+    marginBottom: 10
   },
   button: {
-    marginTop: 20,
+    marginTop: 20
   },
   verifiedAdornment: {
     color: theme.palette.success.light,
     filter: `drop-shadow(1px 1px 1px ${theme.palette.tertiary.shadow})`,
     cursor: "default",
-    marginBottom: 5,
+    marginBottom: 5
   },
   unverifiedAdornment: {
     color: theme.palette.error.light,
     filter: `drop-shadow(1px 1px 1px ${theme.palette.tertiary.shadow})`,
     cursor: "default",
-    marginBottom: 5,
+    marginBottom: 5
   },
   spinnerContainer: {
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   spinner: {
     color: theme.palette.text.primary,
-    marginTop: "30vh",
-  },
+    marginTop: "30vh"
+  }
 }));
 
 export const Settings = () => {
   const classes = useStyles();
-  const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } =
-    useContext(HelpersContext);
+  const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } = useContext(HelpersContext);
 
   const [passErr, setPassErr] = useState();
   const [confirmErr, setConfirmErr] = useState();
@@ -90,25 +75,16 @@ export const Settings = () => {
     const id = Meteor.user({ fields: { _id: 1 } })?._id;
     const email = Meteor.user()?.emails[0]?.address;
     const user = Meteor.user({ fields: { username: 1 } })?.username;
-    const verified = Meteor.user()?.emails[0]
-      ? Meteor.user()?.emails[0]?.verified
-      : false;
+    const verified = Meteor.user()?.emails[0] ? Meteor.user()?.emails[0]?.verified : false;
     return [id, user, email, verified];
   });
 
   useEffect(() => {
     if (verified) {
-      setAdornment(
-        <VerifiedUserIcon
-          fontSize="small"
-          className={classes.verifiedAdornment}
-        />
-      );
+      setAdornment(<VerifiedUserIcon fontSize="small" className={classes.verifiedAdornment} />);
       setAdornmentTip("Email Verified");
     } else {
-      setAdornment(
-        <CancelIcon fontSize="small" className={classes.unverifiedAdornment} />
-      );
+      setAdornment(<CancelIcon fontSize="small" className={classes.unverifiedAdornment} />);
       setAdornmentTip("Email Not Verified");
     }
   }, [verified]);
@@ -118,17 +94,11 @@ export const Settings = () => {
       title: "Delete Your Account",
       text: "Are you sure you want to delete your PROBE account and all of its associated data?",
       actions: (
-        <Button
-          variant="contained"
-          size="small"
-          color="secondary"
-          disableElevation
-          onClick={deleteAccount}
-        >
+        <Button variant="contained" size="small" color="secondary" disableElevation onClick={deleteAccount}>
           Delete My Account
         </Button>
       ),
-      closeAction: "Cancel",
+      closeAction: "Cancel"
     });
     setOpenAlert(true);
   };
@@ -142,7 +112,7 @@ export const Settings = () => {
           title: "Error Encountered",
           text: err.reason,
           actions: null,
-          closeAction: "Close",
+          closeAction: "Close"
         });
         setOpenAlert(true);
       } else {
@@ -160,13 +130,11 @@ export const Settings = () => {
           title: "Error Encountered",
           text: err.reason,
           actions: null,
-          closeAction: "Close",
+          closeAction: "Close"
         });
         setOpenAlert(true);
       } else {
-        setSnack(
-          `Verification email sent to ${email}. Please check your inbox for further instructions.`
-        );
+        setSnack(`Verification email sent to ${email}. Please check your inbox for further instructions.`);
         setOpenSnack(true);
       }
     });
@@ -185,25 +153,17 @@ export const Settings = () => {
   };
 
   const isValidPasswordCheck = (oldPassword, newPassword, confirm) => {
-    return (
-      isValidPassword(oldPassword, newPassword) &&
-      isConfirmedPassword(newPassword, confirm)
-    );
+    return isValidPassword(oldPassword, newPassword) && isConfirmedPassword(newPassword, confirm);
   };
 
   const validateNameOnly = () => {
     !isValidUsernameCheck() && !isValidPasswordCheck()
-      ? setDisabled(true) +
-        setUserErr(
-          "Must be between 4 and 32 characters long and cannot contain special characters"
-        )
+      ? setDisabled(true) + setUserErr("Must be between 4 and 32 characters long and cannot contain special characters")
       : setDisabled(false) + setUserErr();
   };
 
   const validateEmailOnly = () => {
-    !isValidEmailCheck() && !isValidPasswordCheck()
-      ? setDisabled(true) + setEmailErr("Invalid email address")
-      : setDisabled(false) + setEmailErr();
+    !isValidEmailCheck() && !isValidPasswordCheck() ? setDisabled(true) + setEmailErr("Invalid email address") : setDisabled(false) + setEmailErr();
   };
 
   const validatePasswordOnly = () => {
@@ -217,11 +177,7 @@ export const Settings = () => {
       } else if (newPassword !== confirm) {
         setPassErr();
       } else {
-        setPassErr(
-          newPassword.length > 128
-            ? "Cannot be longer than 128 characters"
-            : "Must be at least 8 characters long"
-        );
+        setPassErr(newPassword.length > 128 ? "Cannot be longer than 128 characters" : "Must be at least 8 characters long");
         setDisabled(true);
       }
     } else if (!isConfirmedPassword(newPassword, confirm)) {
@@ -243,11 +199,7 @@ export const Settings = () => {
     const confirm = e.target.confirm?.value;
 
     const emailCheck = isValidEmailCheck();
-    const passwordCheck = isValidPasswordCheck(
-      oldPassword,
-      newPassword,
-      confirm
-    );
+    const passwordCheck = isValidPasswordCheck(oldPassword, newPassword, confirm);
     const nameCheck = isValidUsernameCheck();
 
     if (emailCheck) {
@@ -257,7 +209,7 @@ export const Settings = () => {
             title: "Error Encountered",
             text: err?.reason,
             actions: null,
-            closeAction: "Close",
+            closeAction: "Close"
           });
           setOpenAlert(true);
         } else {
@@ -274,7 +226,7 @@ export const Settings = () => {
             title: "Error Encountered",
             text: err?.reason,
             actions: null,
-            closeAction: "Close",
+            closeAction: "Close"
           });
           setOpenAlert(true);
         } else {
@@ -291,7 +243,7 @@ export const Settings = () => {
             title: "Error Encountered",
             text: err?.reason,
             actions: null,
-            closeAction: "Close",
+            closeAction: "Close"
           });
           setOpenAlert(true);
         } else {
@@ -302,27 +254,19 @@ export const Settings = () => {
     }
 
     if (emailCheck && passwordCheck && nameCheck) {
-      setSnack(
-        "Successfully changed email, username, and password! A verification email was sent to your new email."
-      );
+      setSnack("Successfully changed email, username, and password! A verification email was sent to your new email.");
     } else if (passwordCheck && nameCheck) {
       setSnack("Successfully changed username and password");
     } else if (emailCheck && passwordCheck) {
-      setSnack(
-        "Successfully changed email and password! A verification email was sent to your new email."
-      );
+      setSnack("Successfully changed email and password! A verification email was sent to your new email.");
     } else if (emailCheck && nameCheck) {
-      setSnack(
-        "Successfully changed email and username! A verification email was sent to your new email."
-      );
+      setSnack("Successfully changed email and username! A verification email was sent to your new email.");
     } else if (passwordCheck) {
       setSnack("Successfully changed password");
     } else if (nameCheck) {
       setSnack(`Successfully changed username from ${user} to ${newUsername}`);
     } else if (emailCheck) {
-      setSnack(
-        `Successfully changed email from ${email} to ${newEmail}! A verification email was sent to your new email.`
-      );
+      setSnack(`Successfully changed email from ${email} to ${newEmail}! A verification email was sent to your new email.`);
     }
   };
 
@@ -332,28 +276,15 @@ export const Settings = () => {
       <SnackBar bodySnackBar={snack} />
       {loading ? (
         <Container className={classes.spinnerContainer}>
-          <CircularProgress
-            className={classes.spinner}
-            size={100}
-            thickness={3}
-          />
+          <CircularProgress className={classes.spinner} size={100} thickness={3} />
         </Container>
       ) : (
-        <Grid
-          container
-          justifyContent="center"
-          alignItems="center"
-          className={classes.root}
-        >
+        <Grid container justifyContent="center" alignItems="center" className={classes.root}>
           <Paper className={classes.formContainer} elevation={3}>
             <Typography variant="h4" className={classes.header}>
               <strong>Profile Settings</strong>
             </Typography>
-            <form
-              id="settings"
-              onSubmit={updateAccount}
-              className={classes.flexContainer}
-            >
+            <form id="settings" onSubmit={updateAccount} className={classes.flexContainer}>
               <TextField
                 id="newEmail"
                 label="Email"
@@ -366,7 +297,7 @@ export const Settings = () => {
                     <Tooltip title={adornmentTip} placement="right" arrow>
                       {adornment}
                     </Tooltip>
-                  ),
+                  )
                 }}
                 onChange={(e) => {
                   if (e.target.value !== email) validateEmailOnly();
@@ -432,33 +363,15 @@ export const Settings = () => {
                 type="submit"
                 fullWidth
                 className={classes.button}
-                disabled={
-                  userErr || passErr || confirmErr || emailErr || disabled
-                    ? true
-                    : false
-                }
-              >
+                disabled={userErr || passErr || confirmErr || emailErr || disabled ? true : false}>
                 Update your account
               </Button>
               {!verified ? (
-                <Button
-                  id="verifyButton"
-                  variant="contained"
-                  onClick={sendEmail}
-                  fullWidth
-                  className={classes.button}
-                >
+                <Button id="verifyButton" variant="contained" onClick={sendEmail} fullWidth className={classes.button}>
                   Send verification email
                 </Button>
               ) : null}
-              <Button
-                id="deleteButton"
-                variant="contained"
-                color="secondary"
-                onClick={handleDeleteDialog}
-                fullWidth
-                className={classes.button}
-              >
+              <Button id="deleteButton" variant="contained" color="secondary" onClick={handleDeleteDialog} fullWidth className={classes.button}>
                 Delete your account
               </Button>
             </form>

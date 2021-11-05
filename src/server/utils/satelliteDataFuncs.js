@@ -14,7 +14,7 @@ export async function getSats(req, res) {
         {},
         {
           limit: limiter,
-          skip: skipper,
+          skip: skipper
         }
       ).fetch();
       if (result.length > 0) {
@@ -22,7 +22,7 @@ export async function getSats(req, res) {
         res.end(JSON.stringify(result));
       } else {
         error = {
-          error: "Could not fetch sat based on noradID - non-existent noradID",
+          error: "Could not fetch sat based on noradID - non-existent noradID"
         };
         res.writeHead(500);
         res.end(JSON.stringify(error));
@@ -36,14 +36,14 @@ export async function getSats(req, res) {
     try {
       const noradID = req.query.noradID || req.query.id || req.query.noradid;
       const result = await SatelliteCollection.find({
-        noradID: { $regex: noradID },
+        noradID: { $regex: noradID }
       }).fetch();
       if (result.length > 0) {
         res.writeHead(200);
         res.end(JSON.stringify(result));
       } else {
         error = {
-          error: "Could not fetch sat based on noradID - non-existent noradID.",
+          error: "Could not fetch sat based on noradID - non-existent noradID."
         };
         res.writeHead(500);
         res.end(JSON.stringify(error));
@@ -57,15 +57,14 @@ export async function getSats(req, res) {
     try {
       const target = req.query.name;
       const result = SatelliteCollection.find({
-        "names.name": { $regex: `${target}`, $options: "i" },
+        "names.name": { $regex: `${target}`, $options: "i" }
       }).fetch();
       if (result.length > 0 && result[0] !== undefined) {
         res.writeHead(200);
         res.end(JSON.stringify(result));
       } else {
         error = {
-          error:
-            "Could not fetch sat based on name - non-existent name. And I should know. I invented satellites.",
+          error: "Could not fetch sat based on name - non-existent name. And I should know. I invented satellites."
         };
         res.writeHead(500);
         res.end(JSON.stringify(error));
@@ -92,7 +91,7 @@ export async function getSats(req, res) {
         res.end(JSON.stringify(result));
       } else {
         error = {
-          error: "Could not fetch sat based on type - non-existent type",
+          error: "Could not fetch sat based on type - non-existent type"
         };
         res.writeHead(500);
         res.end(JSON.stringify(error));
@@ -119,7 +118,7 @@ export async function getSats(req, res) {
         res.end(JSON.stringify(result));
       } else {
         error = {
-          error: "Could not fetch sat based on orbit - non-existent orbit",
+          error: "Could not fetch sat based on orbit - non-existent orbit"
         };
         res.writeHead(500);
         res.end(JSON.stringify(error));

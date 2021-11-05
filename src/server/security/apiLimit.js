@@ -7,5 +7,5 @@ const maxLimit = 500; // limit each IP to 100 requests per windowMs
 export const publicAPILimiter = rateLimit({
   windowMs: timeLimit * 60 * 60 * 1000,
   max: maxLimit,
-  message: `You have reached the maximum PROBE public API request limit of ${maxLimit} per ${timeLimit} hour(s). Please try again later`,
+  message: `You have reached the maximum PROBE public API request limit of ${maxLimit} per ${timeLimit} hour(s). Please try again later`
 });

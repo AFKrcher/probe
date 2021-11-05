@@ -1,7 +1,6 @@
-import testUser from "../fixtures/testUser.json"
+import testUser from "../fixtures/testUser.json";
 
 context("user-management", () => {
-
   it("visits site", () => {
     cy.visit("http://localhost:3000");
   });

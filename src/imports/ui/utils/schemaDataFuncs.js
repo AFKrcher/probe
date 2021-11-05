@@ -3,15 +3,7 @@ import React from "react";
 import { MenuItem, FormHelperText } from "@material-ui/core";
 
 export const dataTypeOptions = () => {
-  const options = [
-    "string",
-    "number",
-    "date",
-    "url",
-    "changelog",
-    "verified",
-    "validated",
-  ];
+  const options = ["string", "number", "date", "url", "changelog", "verified", "validated"];
   const hidden = ["changelog", "verified", "validated"]; // options that are not production-ready or are hidden metadata
 
   return options.map((option, index) => {
@@ -42,25 +34,13 @@ export const maxErrorMessage = (editing, errors, classes, index) => {
         const numberIndex = to.indexOf(" ");
         const number = to.substr(numberIndex);
         const message = `Maximum Value must be greater than the Minimum Value of ${number}`;
-        contents = (
-          <FormHelperText className={classes.helpersError}>
-            {message}
-          </FormHelperText>
-        );
+        contents = <FormHelperText className={classes.helpersError}>{message}</FormHelperText>;
       }
     } else {
-      contents = (
-        <FormHelperText className={classes.helpers}>
-          OPTIONAL: Provide a minimum and/or maximum value for the number
-        </FormHelperText>
-      );
+      contents = <FormHelperText className={classes.helpers}>OPTIONAL: Provide a minimum and/or maximum value for the number</FormHelperText>;
     }
   } else {
-    contents = (
-      <FormHelperText className={classes.helpers}>
-        OPTIONAL: Provide a minimum and/or maximum value for the number
-      </FormHelperText>
-    );
+    contents = <FormHelperText className={classes.helpers}>OPTIONAL: Provide a minimum and/or maximum value for the number</FormHelperText>;
   }
   return contents;
 };

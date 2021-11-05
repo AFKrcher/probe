@@ -8,75 +8,64 @@ import { SchemaCollection } from "../../api/schemas";
 import { SchemaModal } from "../SchemaModal/SchemaModal.jsx";
 
 // @material-ui
-import {
-  makeStyles,
-  Typography,
-  Table,
-  TableContainer,
-  Paper,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  CircularProgress,
-} from "@material-ui/core";
+import { makeStyles, Typography, Table, TableContainer, Paper, TableHead, TableBody, TableRow, TableCell, CircularProgress } from "@material-ui/core";
 import ErrorOutlinedIcon from "@material-ui/icons/ErrorOutlined";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
     paddingTop: 5,
-    paddingBottom: 5,
+    paddingBottom: 5
   },
   table: {
     margin: "10px 10px 10px 10px",
     width: "auto",
     overflow: "auto",
     height: "100%",
-    backgroundColor: theme.palette.grid.background,
+    backgroundColor: theme.palette.grid.background
   },
   name: {
     paddingTop: 12.5,
     paddingBottom: 12.5,
-    width: 100,
+    width: 100
   },
   adminReview: {
     paddingTop: 12.5,
     paddingBottom: 12.5,
-    width: 150,
+    width: 150
   },
   deletion: {
     paddingTop: 12.5,
     paddingBottom: 12.5,
-    width: 100,
+    width: 100
   },
   modifiedOn: {
     paddingTop: 12.5,
     paddingBottom: 12.5,
-    width: 280,
+    width: 280
   },
   modifiedBy: {
     paddingTop: 12.5,
     paddingBottom: 12.5,
-    width: 100,
+    width: 100
   },
   tableRow: {
     "&:hover": {
       backgroundColor: theme.palette.action.hover,
-      cursor: "pointer",
-    },
+      cursor: "pointer"
+    }
   },
   warningIcon: {
     fill: theme.palette.warning.light,
-    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`
   },
   errorIcon: {
     fill: theme.palette.error.light,
-    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`
   },
   spinner: {
-    color: theme.palette.text.primary,
-  },
+    color: theme.palette.text.primary
+  }
 }));
 
 const newSchemaValues = {
@@ -91,24 +80,23 @@ const newSchemaValues = {
       min: null,
       max: null,
       required: true,
-      stringMax: null,
-    },
-  ],
+      stringMax: null
+    }
+  ]
 };
 
 export const ApproveSchemas = () => {
   const classes = useStyles();
 
   const [showModal, setShowModal] = useState(false);
-  const [initialSchemaValues, setInitialSchemaValues] =
-    useState(newSchemaValues);
+  const [initialSchemaValues, setInitialSchemaValues] = useState(newSchemaValues);
 
   const [schemasDeleted, schemasModified, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("schemas");
     const schemasDeleted = SchemaCollection.find({ isDeleted: true }).fetch();
     const schemasModified = SchemaCollection.find({
       adminCheck: false,
-      isDeleted: false,
+      isDeleted: false
     }).fetch();
     return [schemasDeleted, schemasModified, !sub.ready()];
   });
@@ -120,30 +108,18 @@ export const ApproveSchemas = () => {
 
   const cells = (schema, i) => {
     return (
-      <TableRow
-        key={`schema-row-${i}`}
-        className={classes.tableRow}
-        onClick={() => handleRowClick(schema)}
-      >
+      <TableRow key={`schema-row-${i}`} className={classes.tableRow} onClick={() => handleRowClick(schema)}>
         <TableCell key={`schema-name-${i}`} className={classes.tableNameCol}>
           {schema.name}
         </TableCell>
         <TableCell key={`schema-approve-${i}`} align="center">
-          {!schema.adminCheck ? (
-            <ErrorOutlinedIcon className={classes.warningIcon} />
-          ) : null}
+          {!schema.adminCheck ? <ErrorOutlinedIcon className={classes.warningIcon} /> : null}
         </TableCell>
         <TableCell key={`schema-delete-${i}`} align="center">
-          {schema.isDeleted ? (
-            <ErrorOutlinedIcon className={classes.errorIcon} />
-          ) : null}
+          {schema.isDeleted ? <ErrorOutlinedIcon className={classes.errorIcon} /> : null}
         </TableCell>
-        <TableCell key={`schema-modOn-${i}`}>
-          {`${schema.modifiedOn || schema.createdOn}`}
-        </TableCell>
-        <TableCell key={`schema-modBy-${i}`}>
-          {`${schema.modifiedBy || schema.createdBy}`}
-        </TableCell>
+        <TableCell key={`schema-modOn-${i}`}>{`${schema.modifiedOn || schema.createdOn}`}</TableCell>
+        <TableCell key={`schema-modBy-${i}`}>{`${schema.modifiedBy || schema.createdBy}`}</TableCell>
       </TableRow>
     );
   };
@@ -190,12 +166,7 @@ export const ApproveSchemas = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <SchemaModal
-        show={showModal}
-        initValues={initialSchemaValues}
-        handleClose={() => setShowModal(false)}
-        admin={true}
-      />
+      <SchemaModal show={showModal} initValues={initialSchemaValues} handleClose={() => setShowModal(false)} admin={true} />
     </div>
   );
 };

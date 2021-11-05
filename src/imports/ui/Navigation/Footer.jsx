@@ -17,15 +17,15 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignContent: "center",
-    borderRadius: 0,
+    borderRadius: 0
   },
   link: {
     color: theme.palette.text.primary,
     filter: `drop-shadow(2px 2px 2px ${theme.palette.tertiary.shadow})`,
     textDecoration: "none",
     "&:hover": {
-      color: theme.palette.info.light,
-    },
+      color: theme.palette.info.light
+    }
   },
   gitHub: {
     marginTop: 10,
@@ -34,12 +34,12 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: theme.palette.info.light,
       filter: "none",
-      cursor: "pointer",
-    },
+      cursor: "pointer"
+    }
   },
   divider: {
-    margin: 10,
-  },
+    margin: 10
+  }
 }));
 
 export const Footer = () => {
@@ -50,49 +50,20 @@ export const Footer = () => {
       <Link to="/" className={classes.link}>
         PROBE
       </Link>
-      <Divider
-        orientation="vertical"
-        variant="middle"
-        className={classes.divider}
-        flexItem
-      />
+      <Divider orientation="vertical" variant="middle" className={classes.divider} flexItem />
       <Link to="/terms" className={classes.link}>
         Terms
       </Link>
-      <Divider
-        orientation="vertical"
-        variant="middle"
-        className={classes.divider}
-        flexItem
-      />
+      <Divider orientation="vertical" variant="middle" className={classes.divider} flexItem />
       <Link to="/privacypolicy" className={classes.link}>
         Privacy Policy
       </Link>
-      <Divider
-        orientation="vertical"
-        variant="middle"
-        className={classes.divider}
-        flexItem
-      />
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="mailto:justin.law@saberastro.com"
-        className={classes.link}
-      >
+      <Divider orientation="vertical" variant="middle" className={classes.divider} flexItem />
+      <a target="_blank" rel="noopener noreferrer" href="mailto:justin.law@saberastro.com" className={classes.link}>
         Contact Us
       </a>
-      <Divider
-        orientation="vertical"
-        variant="middle"
-        className={classes.divider}
-        flexItem
-      />
-      <a
-        target="_blank"
-        rel="noreferrer"
-        href="https://github.com/justinthelaw/probe"
-      >
+      <Divider orientation="vertical" variant="middle" className={classes.divider} flexItem />
+      <a target="_blank" rel="noreferrer" href="https://github.com/justinthelaw/probe">
         <GitHubIcon fontSize="small" className={classes.gitHub} />
       </a>
     </Paper>

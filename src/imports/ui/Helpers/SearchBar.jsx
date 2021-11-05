@@ -8,15 +8,11 @@ import SearchIcon from "@material-ui/icons/Search";
 const useStyles = makeStyles((theme) => ({
   textField: {
     backgroundColor: theme.palette.grid.background,
-    width: "100%",
-  },
+    width: "100%"
+  }
 }));
 
-export const SearchBar = ({
-  setSelector,
-  multiple = true,
-  placeholder = "Press ENTER to add another search term",
-}) => {
+export const SearchBar = ({ setSelector, multiple = true, placeholder = "Press ENTER to add another search term" }) => {
   const classes = useStyles();
 
   useEffect(() => {
@@ -41,24 +37,24 @@ export const SearchBar = ({
             $or: [
               {
                 noradID: {
-                  $in: val,
-                },
+                  $in: val
+                }
               },
               {
                 "orbits.orbit": {
-                  $in: val,
-                },
-              },
+                  $in: val
+                }
+              }
             ],
-            isDeleted: false,
+            isDeleted: false
           };
           val.map((v) => {
             if (v.replace(/\s/g, "") !== "") {
               obj.$or.push({
                 "descriptionShort.descriptionShort": {
                   $regex: v,
-                  $options: "i",
-                },
+                  $options: "i"
+                }
               });
             }
           });
@@ -67,8 +63,8 @@ export const SearchBar = ({
               obj.$or.push({
                 "names.name": {
                   $regex: v,
-                  $options: "i",
-                },
+                  $options: "i"
+                }
               });
             }
           });
@@ -77,8 +73,8 @@ export const SearchBar = ({
               obj.$or.push({
                 "types.type": {
                   $regex: v,
-                  $options: "i",
-                },
+                  $options: "i"
+                }
               });
             }
           });
@@ -86,20 +82,9 @@ export const SearchBar = ({
         }}
         renderInput={(params) => {
           params.InputProps.startAdornment
-            ? params.InputProps.startAdornment.unshift(
-                <SearchIcon fontSize="small" style={{ marginRight: 5 }} />
-              )
-            : (params.InputProps.startAdornment = (
-                <SearchIcon fontSize="small" style={{ marginRight: 5 }} />
-              ));
-          return (
-            <TextField
-              {...params}
-              placeholder={placeholder}
-              className={classes.textField}
-              variant="outlined"
-            />
-          );
+            ? params.InputProps.startAdornment.unshift(<SearchIcon fontSize="small" style={{ marginRight: 5 }} />)
+            : (params.InputProps.startAdornment = <SearchIcon fontSize="small" style={{ marginRight: 5 }} />);
+          return <TextField {...params} placeholder={placeholder} className={classes.textField} variant="outlined" />;
         }}
       />
     </div>
@@ -110,5 +95,5 @@ export const SearchBar = ({
 SearchBar.propTypes = {
   setSelector: PropTypes.func,
   multiple: PropTypes.bool,
-  placeholder: PropTypes.string,
+  placeholder: PropTypes.string
 };
