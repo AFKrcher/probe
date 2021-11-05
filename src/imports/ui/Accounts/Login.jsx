@@ -14,8 +14,8 @@ import { Grid, Button, makeStyles, TextField, CircularProgress, Paper, Typograph
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
-    marginTop: 40,
-    padding: 30,
+    marginTop: 30,
+    padding: 45,
     display: "flex",
     flexFlow: "column wrap",
     justifyContent: "center",
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 20
   },
   textField: {
-    marginBottom: 10
+    marginBottom: 20
   },
   loginButton: {
     marginTop: 20,
@@ -38,10 +38,10 @@ const useStyles = makeStyles((theme) => ({
     flexFlow: "column wrap",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: -10
+    marginBottom: -15
   },
   registerButton: {
-    width: "60%"
+    width: "70%"
   },
   forgotButton: {
     width: "60%"
@@ -184,7 +184,6 @@ export const Login = () => {
               helperText={error ? error : null}
               label="Username or Email"
               onChange={handleDisable}
-              ref={(input) => (username = input)}
               className={classes.textField}
               fullWidth
               autoComplete="off"
@@ -196,7 +195,6 @@ export const Login = () => {
               error={error ? !error.includes(forgotPasswordError) : false}
               helperText={error ? (error.includes(forgotPasswordError) ? null : error) : null}
               onChange={handleDisable}
-              ref={(input) => (password = input)}
               className={classes.textField}
               fullWidth
               autoComplete="off"

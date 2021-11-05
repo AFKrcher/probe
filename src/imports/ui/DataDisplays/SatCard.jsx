@@ -97,7 +97,7 @@ export const SatCard = ({ width, height, satellite }) => {
     setOpenVisualize(false);
     setVisualize({
       url: `https://spacecockpit.saberastro.com/?SID=${satellite.noradID}&FS=${satellite.noradID}`,
-      satellite: satellite.names[0]?.name
+      satellite: satellite.names ? satellite.names[0].name : "New Satellite"
     });
     setOpenVisualize(true);
   };

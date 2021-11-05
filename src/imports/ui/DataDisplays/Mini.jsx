@@ -102,7 +102,7 @@ export const Mini = () => {
           title={
             <span className={classes.description}>
               <Typography variant="h6" className={classes.satName}>
-                {sat.names ? sat.names[0]?.name : "N/A"}
+                {sat.names ? sat.names[0]?.name : "New Satellite"}
               </Typography>
               <Typography variant="caption">NORAD ID: {sat.noradID ? sat.noradID : "N/A"}</Typography>
               <Typography variant="caption">COSPAR ID: {sat.cosparID ? sat.cosparID[0]?.cosparID : "N/A"}</Typography>

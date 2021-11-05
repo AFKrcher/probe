@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Meteor } from "meteor/meteor";
-
 // Imports
 import { Link, useHistory } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
@@ -34,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
     width: "100%"
   },
   description: {
-    marginBottom: 15,
-    marginTop: 10
+    marginTop: 15,
+    marginBottom: 20
   },
   gridContainer: {
     display: "flex",
@@ -153,11 +152,11 @@ export const SatellitesTable = () => {
   const [newSat, setNewSat] = useState(true);
   const [initialSatValues, setInitialSatValues] = useState(newSatValues);
   const [page, setPage] = useState(0);
-  const [limiter, setLimiter] = useState(15);
   const [sortNorad, setSortNorad] = useState(0);
   const [sortName, setSortName] = useState(0);
   const [sortType, setSortType] = useState(0);
   const [sortOrbit, setSortOrbit] = useState(0);
+  const [limiter, setLimiter] = useState(20);
   const [selector, setSelector] = useState({ isDeleted: false });
   const [columns, setColumns] = useState([]);
   const [prompt, setPrompt] = useState();
@@ -291,6 +290,21 @@ export const SatellitesTable = () => {
     }
   };
 
+  const handleVisualize = (satellite, url) => {
+    setPrompt({
+      url: url,
+      satellite: satellite
+    });
+    debounced(false);
+    setOpenVisualize(true);
+  };
+
+  function handleDashboard(e, id) {
+    e.preventDefault();
+    history.push(`/dashboard/${id}`);
+    debounced(false);
+  }
+
   const handleFavorite = (e, values, name, notFavorite) => {
     e.preventDefault();
     Meteor.call("addToFavorites", Meteor.userId(), values);
@@ -302,77 +316,6 @@ export const SatellitesTable = () => {
       </span>
     );
     setTimeout(() => setOpenSnack(true), 500);
-  };
-
-  const jsonDownload = () => {
-    let str = JSON.stringify(sats);
-    let uri = "data:application/json;charset=utf-8," + encodeURIComponent(str);
-
-    downloadFile(uri, "json");
-  };
-
-  const exportTableToCSV = () => {
-    const tempArr = schemas.map((schema) => schema.name).sort((a, b) => a.localeCompare(b));
-
-    const cols = [...tempArr];
-    const rows = sats.map((sat) => {
-      let satRow = [];
-      for (let i = 0; i < cols.length; i++) {
-        satRow.push(sat[cols[i]] ? JSON.stringify(sat[cols[i]]) : "N/A");
-      }
-      return satRow;
-    });
-
-    let content = [cols, ...rows];
-    let csvData = "";
-
-    for (let i = 0; i < content.length; i++) {
-      let value = content[i];
-      for (let j = 0; j < value.length; j++) {
-        let innerValue = value[j] === null ? "" : value[j].toString();
-        let result = innerValue.replace(/"/g, '""');
-        if (result.search(/("|,|\n)/g) >= 0) result = '"' + result + '"';
-        if (j > 0) csvData += ",";
-        csvData += result;
-      }
-      csvData += "\n";
-    }
-    downloadFile(csvData, "csv");
-  };
-
-  const downloadFile = (data, fileType) => {
-    let downloadLink = document.createElement("a");
-    downloadLink.setAttribute("download", `${new Date().toISOString()}_PROBE_SatTable.${fileType}`); // File name
-
-    if (fileType === "json") {
-      downloadLink.setAttribute("href", data);
-    } else {
-      let csvFile = new Blob([data], { type: "text/csv" });
-      downloadLink.href = window.URL.createObjectURL(csvFile);
-    }
-    downloadLink.style.display = "none";
-    downloadLink.click();
-    downloadLink.remove();
-  };
-
-  const CustomToolbar = () => {
-    return (
-      <div className={classes.toolbarSpacer}>
-        <GridToolbarContainer className={classes.toolbarContainer}>
-          <GridToolbarColumnsButton className={classes.toolbar} />
-          <GridToolbarFilterButton className={classes.toolbar} />
-          <GridToolbarDensitySelector className={classes.toolbar} />
-          <Button size="small" onClick={jsonDownload} className={classes.downloadBar} color="primary">
-            <Download fontSize="small" className={classes.downloadIcon} />
-            {width > addButtonBreak ? "Export JSON" : "JSON"}
-          </Button>
-          <Button color="primary" className={classes.downloadBar} size="small" onClick={() => exportTableToCSV(sats)}>
-            <Download fontSize="small" className={classes.downloadIcon} />
-            {width > addButtonBreak ? "Export CSV" : "CSV"}
-          </Button>
-        </GridToolbarContainer>
-      </div>
-    );
   };
 
   const renderFavoriteButton = (params) => {
@@ -524,20 +467,76 @@ export const SatellitesTable = () => {
     setColumns(columns);
   }, [Meteor.userId(), selector]);
 
-  const handleVisualize = (satellite, url) => {
-    setPrompt({
-      url: url,
-      satellite: satellite
-    });
-    debounced(false);
-    setOpenVisualize(true);
+  const jsonDownload = () => {
+    let str = JSON.stringify(sats);
+    let uri = "data:application/json;charset=utf-8," + encodeURIComponent(str);
+
+    downloadFile(uri, "json");
   };
 
-  function handleDashboard(e, id) {
-    e.preventDefault();
-    history.push(`/dashboard/${id}`);
-    debounced(false);
-  }
+  const exportTableToCSV = () => {
+    const tempArr = schemas.map((schema) => schema.name).sort((a, b) => a.localeCompare(b));
+
+    const cols = [...tempArr];
+    const rows = sats.map((sat) => {
+      let satRow = [];
+      for (let i = 0; i < cols.length; i++) {
+        satRow.push(sat[cols[i]] ? JSON.stringify(sat[cols[i]]) : "N/A");
+      }
+      return satRow;
+    });
+
+    let content = [cols, ...rows];
+    let csvData = "";
+
+    for (let i = 0; i < content.length; i++) {
+      let value = content[i];
+      for (let j = 0; j < value.length; j++) {
+        let innerValue = value[j] === null ? "" : value[j].toString();
+        let result = innerValue.replace(/"/g, '""');
+        if (result.search(/("|,|\n)/g) >= 0) result = '"' + result + '"';
+        if (j > 0) csvData += ",";
+        csvData += result;
+      }
+      csvData += "\n";
+    }
+    downloadFile(csvData, "csv");
+  };
+
+  const downloadFile = (data, fileType) => {
+    let downloadLink = document.createElement("a");
+    downloadLink.setAttribute("download", `${new Date().toISOString()}_PROBE_SatTable.${fileType}`); // File name
+
+    if (fileType === "json") {
+      downloadLink.setAttribute("href", data);
+    } else {
+      let csvFile = new Blob([data], { type: "text/csv" });
+      downloadLink.href = window.URL.createObjectURL(csvFile);
+    }
+    downloadLink.style.display = "none";
+    downloadLink.click();
+    downloadLink.remove();
+  };
+
+  const CustomToolbar = () => {
+    return (
+      <div className={classes.toolbarSpacer}>
+        <GridToolbarContainer className={classes.toolbarContainer}>
+          <GridToolbarColumnsButton className={classes.toolbar} />
+          <GridToolbarFilterButton className={classes.toolbar} />
+          <GridToolbarDensitySelector className={classes.toolbar} />
+          <Button size="small" onClick={jsonDownload} className={classes.downloadBar} color="primary">
+            <Download fontSize="small" className={classes.downloadIcon} />
+            {width > addButtonBreak ? "Export JSON" : "JSON"}
+          </Button>
+          <Button color="primary" className={classes.downloadBar} size="small" onClick={() => exportTableToCSV(sats)}>
+            <Download fontSize="small" className={classes.downloadIcon} />
+            {width > addButtonBreak ? "Export CSV" : "CSV"}
+          </Button>
+        </GridToolbarContainer>
+      </div>
+    );
+  };
 
   const AddSatelliteButton = () => {
     return (
@@ -569,7 +568,7 @@ export const SatellitesTable = () => {
           Each <strong>satellite</strong> in the catalogue contains a number of fields based on schemas defined on the{" "}
           <Tooltip title="Bring me to the satellites page">
             <Link to="/schemas" className={classes.link}>
-              next page
+              SCHEMAS page
             </Link>
           </Tooltip>
           . Filtering on satellites using tags in the search bar will allow you to view the results in the table and export the results to a CSV or JSON format.
@@ -584,7 +583,7 @@ export const SatellitesTable = () => {
             components={{
               Toolbar: CustomToolbar
             }}
-            rowsPerPageOptions={[5, 15, 30, 60, 120]}
+            rowsPerPageOptions={[20, 40, 60, 120]}
             columns={columns}
             rows={rows}
             rowCount={count}

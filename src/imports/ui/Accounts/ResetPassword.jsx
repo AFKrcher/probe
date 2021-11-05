@@ -12,8 +12,8 @@ import SnackBar from "../Dialogs/SnackBar.jsx";
 
 const useStyles = makeStyles(() => ({
   formContainer: {
-    marginTop: 40,
-    padding: 30,
+    marginTop: 30,
+    padding: 45,
     display: "flex",
     flexFlow: "column wrap",
     justifyContent: "center",
@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
     marginBottom: 20
   },
   textField: {
-    marginBottom: 10
+    marginBottom: 20
   },
   loginButton: {
     marginTop: 20
@@ -118,7 +118,6 @@ export const ResetPassword = () => {
             error={passErr ? true : false}
             helperText={passErr}
             onChange={validatePassword}
-            ref={(input) => (password = input)}
             fullWidth
             className={classes.textField}
           />

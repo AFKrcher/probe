@@ -507,9 +507,9 @@ RESPONSE:
 
 The list below is meant to be a guide and not a rule-book. Please try your best to use this guide to build code that is readable and easy-to-understand for all contributors:
 
-- Use Prettier (preferred) or any other code formatting/linting extension to format the code properly
+- Use Prettier (preferred) or any other code formatting/linting extension to format your code properly
   - The `package.json` in this repo is where all formatting/linting extension options should be configured
-- Use comments to explain functions that may result in a "why" or "how" from first-time viewers of the code
+- Use comments to explain code that may result in a "why" or "how" from first-time viewers
 - Remove all excess imports, declarations, styles, etc. that are not being used prior to pushing your code
 - Comment out non-functional or non-tested code prior to pushing your code
 - Run pre-existing Unit and Cypress tests prior to pushing your code (see [Testing](#Testing) for more details)
@@ -559,6 +559,7 @@ For _PRODUCTION_ testing:
 | MONGO_INITDB_ROOT_PASSWORD\*\* | MongoDB initial user password             | password                             |
 
 \*Only required for a build that reaches out to a hosted MongoDB instance
+
 \*\*Only required for build that has a local, connected instance of MongoDB running
 
 ### Access MongoDB
