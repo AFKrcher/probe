@@ -133,6 +133,6 @@ MultiSelectTextInput.propTypes = {
   index: PropTypes.number,
   allowedValues: PropTypes.array,
   setFieldValue: PropTypes.func,
-  currentStringMax: PropTypes.number,
+  currentStringMax: PropTypes.string,
   errors: PropTypes.object,
 };

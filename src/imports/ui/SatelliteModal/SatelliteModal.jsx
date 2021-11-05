@@ -237,12 +237,7 @@ export const SatelliteModal = ({
     await emptyDataRemover(values);
     if (editing && newSat) handleClose();
     if (editing && !newSat) await setValues(initValues);
-    if (editing) {
-      handleClose();
-      setEditing(false);
-    } else {
-      setEditing(true);
-    }
+    setEditing(!editing);
     if (setErrors) setErrors({});
   };
 

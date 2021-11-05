@@ -222,7 +222,7 @@ export const SchemaModal = ({
 
   const handleEdit = (dirty, setValues, setErrors, values) => {
     if (editing && dirty) {
-      console.log({
+      setAlert({
         title: (
           <span>
             Delete changes on <strong>{values.name || "new schema"}</strong>?
@@ -242,6 +242,7 @@ export const SchemaModal = ({
             disableElevation
             onClick={() => {
               handleToggleEdit(setValues, setErrors);
+              setOpenAlert(false);
             }}
           >
             Confirm
@@ -249,7 +250,7 @@ export const SchemaModal = ({
         ),
         closeAction: "Cancel",
       });
-      console.log(true);
+      setOpenAlert(true);
     } else {
       handleToggleEdit(setValues);
     }
@@ -261,7 +262,6 @@ export const SchemaModal = ({
         if (res || err) {
           console.log(res?.toString() || err?.reason);
         } else {
-          console.log(false);
           setOpenSnack(false);
           setSnack(
             <span>
@@ -281,7 +281,6 @@ export const SchemaModal = ({
       if (res || err) {
         console.log(res?.toString() || err?.reason);
       } else {
-        console.log(false);
         setOpenSnack(false);
         setSnack(
           <span>
