@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     margin: 15,
   },
+  addFieldContainer: { marginLeft: 10 },
   addItem: {
     alignItems: "center",
     marginTop: 10,
@@ -46,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 5,
     marginTop: -10,
   },
+  deleteIcon: { alignSelf: "flex-start" },
 }));
 
 export const SatelliteForm = ({
@@ -73,47 +75,6 @@ export const SatelliteForm = ({
   const [accordionBeingEdited, setAccordionBeingEdited] = useState(-1);
   const [flag, setFlag] = useState(true);
   const classes = useStyles();
-
-  const renderAccordion = (schema, schemaIndex) => {
-    return (
-      <span key={schemaIndex} className={classes.accordion}>
-        <SatelliteSchemaAccordion
-          accordionBeingEdited={accordionBeingEdited}
-          setAccordionBeingEdited={setAccordionBeingEdited}
-          schemaIndex={schemaIndex}
-          editingOne={editingOne}
-          setEditingOne={setEditingOne}
-          errors={errors}
-          setErrors={setErrors}
-          schema={schema}
-          entries={values[`${schema.name}`]}
-          setFieldValue={setFieldValue}
-          editing={editing}
-          setValues={setValues}
-          setSatSchema={setSatSchema}
-          values={values}
-          satelliteValidatorShaper={satelliteValidatorShaper}
-          setTouched={setTouched}
-          initValues={initValues}
-          setOpenSnack={setOpenSnack}
-          setSnack={setSnack}
-          dirty={dirty}
-          touched={touched}
-        />
-        {editing && (
-          <Tooltip title={`Delete ${schema.name}`}>
-            <IconButton
-              color="default"
-              style={{ alignSelf: "flex-start" }}
-              onClick={() => handleDeleteDialog(schema.name)}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        )}
-      </span>
-    );
-  };
 
   const handleNewSchema = async () => {
     initValues[`${addSchema}`] = [];
@@ -174,53 +135,83 @@ export const SatelliteForm = ({
     setSchemaAddition(!schemaAddition);
   };
 
-  const noradIDProps = () => {
-    return {
-      value: values.noradID || "",
-      name: "noradID",
-      label: "NORAD ID",
-      margin: "dense",
-      required: true,
-      fullWidth: true,
-      variant: "outlined",
-      component: TextField,
-      disabled: !editing,
-      autoComplete: "off",
-      error: errors["noradID"] && !_.isEmpty(touched) ? true : false,
-      helperText:
-        errors["noradID"] && !_.isEmpty(touched) ? errors["noradID"] : "",
-    };
-  };
-
   return (
     <Grid container spacing={1}>
       <AlertDialog bodyAlert={alert} />
       <Grid container item>
         <Grid item xs={12}>
           <Paper className={classes.noradID}>
-            <Field {...noradIDProps(false)} />
+            <Field
+              value={values.noradID || ""}
+              name="noradID"
+              label="NORAD ID"
+              margin="dense"
+              required
+              fullWidth
+              variant="outlined"
+              component={TextField}
+              disabled={!editing}
+              autoComplete="off"
+              error={errors["noradID"] && !_.isEmpty(touched) ? true : false}
+              helperText={
+                errors["noradID"] && !_.isEmpty(touched)
+                  ? errors["noradID"]
+                  : ""
+              }
+            />
           </Paper>
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        {schemas.map((schema, schemaIndex) => {
-          // this first map forces "names" schema to always be on top
-          // the second map below this one renders the rest of the schemas in a created-by order
-          return schema.name === "names"
-            ? renderAccordion(schema, schemaIndex)
-            : [];
-        })}
-        {schemas.map((schema, schemaIndex) => {
-          return initValues[schema.name] && schema.name !== "names"
-            ? renderAccordion(schema, schemaIndex)
-            : [];
-        })}
+        {schemas.map(
+          (schema, schemaIndex) =>
+            initValues[schema.name] && (
+              <span key={schemaIndex} className={classes.accordion}>
+                <SatelliteSchemaAccordion
+                  accordionBeingEdited={accordionBeingEdited}
+                  setAccordionBeingEdited={setAccordionBeingEdited}
+                  schemaIndex={schemaIndex}
+                  editingOne={editingOne}
+                  setEditingOne={setEditingOne}
+                  errors={errors}
+                  setErrors={setErrors}
+                  schema={schema}
+                  entries={values[`${schema.name}`]}
+                  setFieldValue={setFieldValue}
+                  editing={editing}
+                  setValues={setValues}
+                  setSatSchema={setSatSchema}
+                  values={values}
+                  satelliteValidatorShaper={satelliteValidatorShaper}
+                  setTouched={setTouched}
+                  initValues={initValues}
+                  setOpenSnack={setOpenSnack}
+                  setSnack={setSnack}
+                  dirty={dirty}
+                  touched={touched}
+                />
+                {editing && (
+                  <Tooltip title={`Delete ${schema.name}`}>
+                    <IconButton
+                      color="default"
+                      className={classes.deleteIcon}
+                      onClick={() => handleDeleteDialog(schema.name)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              </span>
+            )
+        )}
       </Grid>
       {editing && schemaAddition && (
         <Grid item container xs={12} className={classes.addItem}>
           <Grid item xs={10}>
             <Autocomplete
-              options={schemas.filter((schema) => !initValues[schema.name])}
+              options={schemas.filter(
+                (schema) => !initValues[schema.name] && schema.name !== "names"
+              )}
               onChange={(e, option) => onSchemaChange(option.name)}
               getOptionLabel={(option) => option.name}
               renderOption={(option) => (
@@ -248,7 +239,7 @@ export const SatelliteForm = ({
               )}
             />
           </Grid>
-          <Grid item xs style={{ marginLeft: 10 }}>
+          <Grid item xs className={classes.addFieldContainer}>
             <Button
               id="add-schema"
               variant="contained"
