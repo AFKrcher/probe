@@ -57,7 +57,7 @@ GET: `/api/`
 
 RESPONSE:
 
-`"Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/afkrcher/probe#api-documentation."`
+`"Welcome to the PROBE public API. For documentation, please visit this GitHub page: https://github.com/afkrcher/probe#api-documentation."`
 
 ---
 
