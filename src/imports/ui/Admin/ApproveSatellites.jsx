@@ -130,7 +130,7 @@ export const ApproveSatellites = () => {
     return (
       <TableRow key={`sat-row-${i}`} className={classes.tableRow} onClick={() => handleRowClick(sat)}>
         <TableCell key={`sat-id-${i}`}>{sat.noradID}</TableCell>
-        <TableCell key={`sat-name-${i}`}>{sat.names[0].name}</TableCell>
+        <TableCell key={`sat-name-${i}`}>{sat.names ? sat.names[0].name : "New Satellite"}</TableCell>
         <TableCell key={`sat-adminCheck-${i}`} align="center">
           {!sat.adminCheck ? <ErrorOutlinedIcon className={classes.warningIcon} /> : null}
         </TableCell>

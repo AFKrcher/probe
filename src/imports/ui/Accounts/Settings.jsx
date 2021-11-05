@@ -18,8 +18,8 @@ import CancelIcon from "@material-ui/icons/Cancel";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
-    marginTop: 35,
-    padding: 30,
+    marginTop: 10,
+    padding: 45,
     display: "flex",
     flexFlow: "column wrap",
     justifyContent: "center",
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 20
   },
   textField: {
-    marginBottom: 10
+    marginBottom: 20
   },
   button: {
     marginTop: 20
@@ -205,6 +205,7 @@ export const Settings = () => {
     if (emailCheck) {
       await Meteor.call("updateEmail", id, email, newEmail, (err) => {
         if (err) {
+          setOpenSnack(false);
           setAlert({
             title: "Error Encountered",
             text: err?.reason,
@@ -222,6 +223,7 @@ export const Settings = () => {
     if (nameCheck) {
       await Meteor.call("updateUsername", id, user, newUsername, (err) => {
         if (err) {
+          setOpenSnack(false);
           setAlert({
             title: "Error Encountered",
             text: err?.reason,
@@ -239,6 +241,7 @@ export const Settings = () => {
     if (passwordCheck) {
       await Accounts.changePassword(oldPassword, newPassword, (err) => {
         if (err) {
+          setOpenSnack(false);
           setAlert({
             title: "Error Encountered",
             text: err?.reason,
@@ -289,7 +292,6 @@ export const Settings = () => {
                 id="newEmail"
                 label="Email"
                 type="email"
-                ref={(input) => (newEmail = input)}
                 fullWidth
                 className={classes.textField}
                 InputProps={{
@@ -310,7 +312,6 @@ export const Settings = () => {
                 id="newUsername"
                 label="Username"
                 type="username"
-                ref={(input) => (newUsername = input)}
                 fullWidth
                 className={classes.textField}
                 onChange={(e) => {
@@ -324,7 +325,6 @@ export const Settings = () => {
                 id="oldPassword"
                 label="Current Password"
                 type="password"
-                ref={(input) => (oldPassword = input)}
                 fullWidth
                 className={classes.textField}
                 onChange={(e) => {
@@ -335,7 +335,6 @@ export const Settings = () => {
                 id="newPassword"
                 label="New Password"
                 type="password"
-                ref={(input) => (newPassword = input)}
                 fullWidth
                 className={classes.textField}
                 onChange={(e) => {

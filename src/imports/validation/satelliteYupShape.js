@@ -84,7 +84,7 @@ export const satelliteValidatorShaper = (values, initValues) => {
               baseFieldSchema = Yup.string().trim();
               break;
             case "url":
-              baseFieldSchema = Yup.string().url(`${path}-${entryCount}-${fieldCount}_Must be a valid URL (e.g. https://en.wikipedia.org/wiki/Main_Page).`);
+              baseFieldSchema = Yup.string().url(`${path}-${entryCount}-${fieldCount}_Must be a valid URL (e.g. https://en.wikipedia.org/wiki/Main_Page)`);
               break;
             case "validated":
               baseFieldSchema = Yup.array()
@@ -147,6 +147,14 @@ export const satelliteValidatorShaper = (values, initValues) => {
           const baseFieldType = baseFieldSchema; // initialize vairable to store sub-schema type
           const fieldSchemaMatrix = {
             // stores the yup fragments needed for each constraint
+            min: field.type === "number" && field.min ? baseFieldType.min(field.min, `${path}-${entryCount}-${fieldCount}_Must be no less than ${field.min}`) : false,
+            max: field.type === "number" && field.max ? baseFieldType.max(field.max, `${path}-${entryCount}-${fieldCount}_Must be no greater than ${field.max}`) : false,
+            allowedValues:
+              field.allowedValues?.length > 0 ? baseFieldType.oneOf([...field.allowedValues], `${path}-${entryCount}-${fieldCount}_Please select an option from the list`) : false,
+            stringMax:
+              field.type === "string" && field.stringMax
+                ? baseFieldType.max(field.stringMax, `${path}-${entryCount}-${fieldCount}_Must not exceed ${field.stringMax} characters`)
+                : false,
             required: field.required
               ? baseFieldType.required(
                   `${path}-${entryCount}-${fieldCount}_${field.type === "url" ? "URL" : field.type[0].toUpperCase() + field.type.substr(1) + " Input"} Required`
@@ -156,7 +164,9 @@ export const satelliteValidatorShaper = (values, initValues) => {
               field.type === "string" && field.isUnique
                 ? baseFieldType.test(
                     "isUnique",
-                    `${path}-${entryCount}-${fieldCount}_A satellite with ${schemaField} of ${value[entryCount][schemaField]} already exists.`,
+                    value[entryCount][schemaField]
+                      ? `${path}-${entryCount}-${fieldCount}_A satellite with ${schemaField} of ${value[entryCount][schemaField]} already exists`
+                      : `${path}-${entryCount}-${fieldCount}_Required`,
                     (value) => {
                       let or = [];
                       if (initValues[path]) {
@@ -175,14 +185,6 @@ export const satelliteValidatorShaper = (values, initValues) => {
                       }
                     }
                   )
-                : false,
-            min: field.type === "number" && field.min ? baseFieldType.min(field.min, `${path}-${entryCount}-${fieldCount}_Must be no less than ${field.min}`) : false,
-            max: field.type === "number" && field.max ? baseFieldType.max(field.max, `${path}-${entryCount}-${fieldCount}_Must be no greater than ${field.max}`) : false,
-            allowedValues:
-              field.allowedValues?.length > 0 ? baseFieldType.oneOf([...field.allowedValues], `${path}-${entryCount}-${fieldCount}_Please select an option from the list.`) : false,
-            stringMax:
-              field.type === "string" && field.stringMax
-                ? baseFieldType.max(field.stringMax, `${path}-${entryCount}-${fieldCount}_Must not exceed ${field.stringMax} characters.`)
                 : false
           };
           // loop over the schema and concatenate all valid constraints to field's yup object
@@ -231,12 +233,9 @@ export const satelliteValidatorShaper = (values, initValues) => {
                 .toString() +
               "-";
             let key = Object.keys(errObj)[0];
-            if (!errObj[key]) {
-              // if the errObj does not contain the key, empty the object of all stale errors
-              errObj = {};
-            } else if (errObj[key].includes(resolved)) {
+            if (errObj[key].includes(resolved)) {
               // if the errObj contains the key and has the resolved error, clear the stale error
-              errObj = {};
+              delete errObj[key];
             }
           })
           .catch((err) => {

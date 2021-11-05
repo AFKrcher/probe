@@ -109,7 +109,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
           setOpenSnack(false);
           setSnack(
             <span>
-              <strong>{values.names[0].name}</strong> saved!
+              <strong>{values.names ? values.names[0].name : "New Satellite"}</strong> saved!
             </span>
           );
           setOpenSnack(true);
@@ -126,7 +126,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
           setOpenSnack(false);
           setSnack(
             <span>
-              Changes on <strong>{values.names && values.names[0] ? values.names[0].name : "N/A"}</strong> saved!
+              Changes on <strong>{values.names ? values.names[0].name : "New Satellite"}</strong> saved!
             </span>
           );
           setOpenSnack(true);
@@ -165,7 +165,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
           setOpenSnack(false);
           setSnack(
             <span>
-              Deleted <strong>{values.names ? values.names[0].name : "N/A"}</strong> forever!
+              Deleted <strong>{values.names ? values.names[0].name : "New Satellite"}</strong> forever!
             </span>
           );
           handleClose();
@@ -180,12 +180,12 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
     setAlert({
       title: (
         <span>
-          Delete <strong>{values.names ? values.names[0].name : "N/A"}</strong>?
+          Delete <strong>{values.names ? values.names[0].name : "New Satellite"}</strong>?
         </span>
       ),
       text: (
         <span>
-          Are you sure you want to delete <strong>{values.names ? values.names[0].name : "N/A"}</strong> and all of its data?
+          Are you sure you want to delete <strong>{values.names ? values.names[0].name : "New Satellite"}</strong> and all of its data?
         </span>
       ),
       actions: (
@@ -209,19 +209,15 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
   const handleEdit = (setValues, dirty, touched, values, setErrors) => {
     if ((editing || editingOne) && dirty && !_.isEmpty(touched)) {
       setAlert({
-        title: initValues.names ? (
+        title: (
           <span>
-            Delete changes on <strong>{initValues.names ? initValues.names[0].name : "N/A"}</strong>?
+            Delete Changes Made To <strong>{values.names ? values.names[0].name : "New Satellite"}</strong>?
           </span>
-        ) : (
-          <span>Delete changes on new satellite?</span>
         ),
-        text: initValues.names ? (
+        text: (
           <span>
-            Are you sure you want to cancel all changes made to <strong>{initValues.names ? initValues.names[0].name : "N/A"}</strong> and its data?
+            Are you sure you want to delete the changes you have made to <strong>{values.names ? values.names[0].name : "New Satellite"}</strong>?
           </span>
-        ) : (
-          <span>Are you sure you want to cancel all the changes made to this new satellite?</span>
         ),
         actions: (
           <Button
@@ -239,7 +235,6 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
         closeAction: "Cancel"
       });
       setOpenAlert(true);
-      setTimeout(() => setOpenSnack(false), 2000);
     } else {
       handleToggleEdit(setValues, values, setErrors);
     }
@@ -345,6 +340,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
           <Formik initialValues={initValues} onSubmit={handleSubmit} validationSchema={satSchema}>
             {({ errors, setErrors, isSubmitting, isValid, isValidating, values, setValues, setFieldValue, dirty, touched, setTouched }) => (
               <Form>
+                {console.log(errors)}
                 {isLoadingSch || isLoadingSat ? (
                   <DialogContent className={classes.loadingDialog}>
                     <CircularProgress size={75} />
@@ -467,7 +463,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
                       variant="contained"
                       color="primary"
                       startIcon={width && width < actionsBreak ? null : <SaveIcon />}
-                      disabled={isValidating || isSubmitting || !isValid || !dirty || _.isEmpty(touched) ? true : false}>
+                      disabled={isValidating || isSubmitting || !isValid || _.isEmpty(touched) ? true : false}>
                       {isSubmitting || isValidating ? <CircularProgress size={25} className={classes.loadingSave} /> : newSat ? "Save" : "Save Changes"}
                     </Button>
                   )}

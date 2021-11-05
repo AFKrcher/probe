@@ -69,6 +69,15 @@ export const SatelliteForm = ({
   const [flag, setFlag] = useState(true);
   const classes = useStyles();
 
+  const handleChange = (event) => {
+    // set object to touched explicitly
+    let obj = {};
+    obj[`${event.target.name}`] = true;
+    setTouched(obj);
+
+    setFieldValue(event.target.name, event.target.value);
+  };
+
   const handleNewSchema = async () => {
     initValues[`${addSchema}`] = [];
     setAddSchema("");
@@ -138,6 +147,7 @@ export const SatelliteForm = ({
               component={TextField}
               disabled={!editing}
               autoComplete="off"
+              onChange={handleChange}
               error={errors["noradID"] && !_.isEmpty(touched) ? true : false}
               helperText={errors["noradID"] && !_.isEmpty(touched) ? errors["noradID"] : ""}
             />
@@ -187,7 +197,7 @@ export const SatelliteForm = ({
         <Grid item container xs={12} className={classes.addItem}>
           <Grid item xs={10}>
             <Autocomplete
-              options={schemas.filter((schema) => !initValues[schema.name] && schema.name !== "names")}
+              options={schemas.filter((schema) => !initValues[schema.name])}
               onChange={(e, option) => onSchemaChange(option.name)}
               getOptionLabel={(option) => option.name}
               renderOption={(option) => (

@@ -31,8 +31,8 @@ const useStyles = makeStyles((theme) => ({
     filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`
   },
   description: {
-    marginTop: 10,
-    marginBottom: 15
+    marginTop: 15,
+    marginBottom: 20
   },
   showcase: {
     marginTop: 20

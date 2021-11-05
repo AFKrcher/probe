@@ -5,10 +5,11 @@ import IndeterminateIcon from "@material-ui/icons/IndeterminateCheckBox";
 import IndeterminateOutlinedIcon from "@material-ui/icons/IndeterminateCheckBoxOutlined";
 import NotReviewedIcon from "@material-ui/icons/Cancel";
 import NotReviewedOutlinedIcon from "@material-ui/icons/CancelOutlined";
+import { _ } from "meteor/underscore";
 
 // Data display functions
 export const getSatName = (satellite) => {
-  return satellite && satellite.names && satellite.names.length > 0 ? satellite.names[0].name : "Name not found...";
+  return satellite && satellite.names && satellite.names.length > 0 ? satellite.names[0].name : "New Satellite";
 };
 
 export const getSatImage = (satellite) => {
@@ -82,41 +83,10 @@ export const decideVerifiedValidatedAdornment = (
 // Data entry functions
 export const emptyDataRemover = (values) => {
   // removes schemas that are added to a satellite but contain no information
-  let tempObj = {};
-  let deleteEmptyArr = [];
-  Object.entries(values).forEach((entryArr) => {
-    return (tempObj[entryArr[0]] = JSON.stringify(entryArr[1]));
-  });
-  for (let key in tempObj) {
-    if (tempObj[key] === "[]" || tempObj[key] === "{}" || tempObj[key] === "") {
-      deleteEmptyArr.push(key);
+  for (let key in values) {
+    if (_.isEmpty(values[key])) {
+      delete values[key];
     }
   }
-
-  deleteEmptyArr.forEach((emptyEntry) => delete values[emptyEntry]);
-  if (!values.names?.length > 0)
-    // ensure that the names schema field is never empty
-    values.names = [
-      {
-        reference: "https://www.placeholder.org/",
-        name: "N/A",
-        verified: [
-          {
-            method: "",
-            name: "",
-            verified: false,
-            verifiedOn: ""
-          }
-        ],
-        validated: [
-          {
-            method: "",
-            name: "",
-            validated: false,
-            validatedOn: ""
-          }
-        ]
-      }
-    ];
   return values;
 };

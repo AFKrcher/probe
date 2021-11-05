@@ -165,8 +165,8 @@ export const SatelliteSchemaAccordion = ({
             {!editing && width > accordionActionsBreak && (accordionBeingEdited === schemaIndex || accordionBeingEdited === -1) ? (
               <Grid item className={classes.iconButtons} xs="auto">
                 {!editingSchema ? (
-                  Meteor.userId() &&
-                  Meteor.user({ fields: { "emails.verified": 1 } })?.emails[0].verified && ( // not using ProtectedFunctionality due to rendering lag during .map() of accordions
+                  // not using ProtectedFunctionality due to rendering lag during .map() of accordions
+                  Meteor.user({ fields: { "emails.verified": 1 } })?.emails[0].verified && (
                     <IconButton className={classes.editIcon} onClick={handleEditSchema}>
                       <EditIcon fontSize="small" />
                     </IconButton>
@@ -178,7 +178,7 @@ export const SatelliteSchemaAccordion = ({
                     </IconButton>
                     <IconButton
                       className={classes.saveIcon}
-                      disabled={!_.isEmpty(errors) || !dirty || _.isEmpty(touched) ? true : false}
+                      disabled={!_.isEmpty(errors) || _.isEmpty(touched) ? true : false}
                       onClick={() => {
                         handleSubmit(values);
                       }}
@@ -193,7 +193,6 @@ export const SatelliteSchemaAccordion = ({
         </AccordionSummary>
         <AccordionDetails className={classes.accordianDetails}>
           <Grid container spacing={1}>
-            <Typography className={classes.description}>{schema.description || "N/A"}</Typography>
             {entries?.map((entry, entryIndex) => (
               <SatelliteSchemaEntry
                 errors={errors}

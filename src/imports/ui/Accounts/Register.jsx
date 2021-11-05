@@ -13,8 +13,8 @@ import SnackBar from "../Dialogs/SnackBar.jsx";
 import { Grid, Button, Typography, Paper, TextField, makeStyles } from "@material-ui/core";
 const useStyles = makeStyles(() => ({
   formContainer: {
-    marginTop: 40,
-    padding: 30,
+    marginTop: 30,
+    padding: 45,
     display: "flex",
     flexFlow: "column wrap",
     justifyContent: "center",
@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
     marginBottom: 20
   },
   textField: {
-    marginBottom: 10
+    marginBottom: 20
   },
   registerButton: {
     marginTop: 20
@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     alignItems: "center",
     width: "auto",
-    marginBottom: -10
+    marginBottom: -15
   },
   loginButton: {
     marginTop: 20,
@@ -188,7 +188,6 @@ export const Register = () => {
             label="Email"
             type="email"
             onChange={validateEmail}
-            ref={(input) => (email = input)}
             fullWidth
             className={classes.textField}
           />
@@ -200,7 +199,6 @@ export const Register = () => {
             label="Username"
             onChange={validateUsername}
             onBlur={checkForm}
-            ref={(input) => (username = input)}
             fullWidth
             className={classes.textField}
           />
@@ -213,7 +211,6 @@ export const Register = () => {
             helperText={passErr}
             onChange={validatePassword}
             onBlur={checkForm}
-            ref={(input) => (password = input)}
             fullWidth
             className={classes.textField}
           />
