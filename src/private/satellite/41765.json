@@ -22,7 +22,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -36,7 +36,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "name": "Tiangong-2"
@@ -54,7 +54,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -68,7 +68,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "name": "Celestial Palace 2"
@@ -88,7 +88,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -102,7 +102,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "type": "space station"
@@ -120,7 +120,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -134,7 +134,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "type": "research"
@@ -154,7 +154,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -168,7 +168,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "description": "Tiangong-2 Space Lab",
@@ -190,7 +190,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -204,7 +204,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "cosparID": "2016-057A"
@@ -224,7 +224,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -238,7 +238,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "descriptionShort": "Chinese space lab intended as a testbed for key technologies used in the Tiangong station (Chinese large modular space station) of which the first module launched on the 29th April 2021 and the remaining modules of which are planned for launch in 2022."

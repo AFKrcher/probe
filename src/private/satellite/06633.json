@@ -22,7 +22,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -36,7 +36,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "name": "Skylab"
@@ -56,7 +56,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -70,7 +70,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "cosparID": "1973-090A"
@@ -90,7 +90,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -104,7 +104,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "descriptionShort": "The third crewed Skylab mission - placed the third and final crew aboard the first American space station."
@@ -124,7 +124,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -138,7 +138,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "type": "space station"
@@ -156,7 +156,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -170,7 +170,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "type": "research"
@@ -190,7 +190,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -204,7 +204,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "description": "was the third crewed Skylab mission and placed the third and final crew aboard the first American space station.",

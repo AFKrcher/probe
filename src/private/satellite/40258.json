@@ -22,7 +22,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -36,7 +36,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "name": "Luch"
@@ -54,7 +54,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -68,7 +68,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "name": "Olymp-K"
@@ -88,7 +88,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -102,7 +102,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "orbit": "GEO",
@@ -123,7 +123,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -137,7 +137,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "name": "Express-2000",
@@ -158,7 +158,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -172,7 +172,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "cosparID": "2014-058A"
@@ -192,7 +192,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -206,7 +206,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "name": "JSC Information Satellite Systems",
@@ -227,7 +227,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -241,7 +241,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "description": "Ekspress-2000 Satellite",
@@ -263,7 +263,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -277,7 +277,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "descriptionShort": "A Russian geostationary satellite built for the Russian Ministry of Defence and Federal Security Service (FSB). The satellite is also referred to as \"Luch\". It is believed to be a signals intelligence satellite."
@@ -297,7 +297,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -311,7 +311,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "descriptionLong": "Olymp-K is a Russian geostationary satellite built for the Russian Ministry of Defence and Federal Security Service (FSB). The satellite is also referred to as \"Luch\". It is believed to be a signals intelligence satellite. Olymp-K was launched on 28 September 2014. \nThe Proton-M rocket with a Briz-M upper stage launched from Baikonur Cosmodrome launchpad 81/24 in Kazakhstan at 20:23 UTC. After four burns of the Briz-M upper stage it was placed into geosynchronous transfer orbit.[4][1] In a press release on 28 September 2014, Roscosmos referred to the satellite as \"Luch\"."
@@ -331,7 +331,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -345,7 +345,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "type": "military"
@@ -363,7 +363,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -377,7 +377,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "type": "recon"
@@ -397,7 +397,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -411,7 +411,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "type": "country",

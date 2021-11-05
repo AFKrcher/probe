@@ -5,7 +5,7 @@ export const schemaMethods = (Meteor, Roles, SchemaCollection) => {
     provideSchemaValidator: () => {
       return schemaValidatorShaper;
     },
-    addNewSchema: (initValues, values) => {
+    addNewSchema: async (initValues, values) => {
       if (Meteor.userId() && Meteor.user()?.emails[0]?.verified) {
         let error;
         values["isDeleted"] = false;
@@ -14,21 +14,17 @@ export const schemaMethods = (Meteor, Roles, SchemaCollection) => {
         values["modifiedOn"] = new Date();
         values["modifiedBy"] = Meteor.user().username;
         values["adminCheck"] = false;
-        schemaValidatorShaper(initValues.name)
-          .validate(values)
-          .then(() => {
-            SchemaCollection.insert(values);
-          })
+        await schemaValidatorShaper(initValues.name)
+          .isValid(values)
           .catch((err) => {
-            console.log(err);
             error = err;
           });
-        return error;
+        if (!error) SchemaCollection.insert(values);
       } else {
         return "Unauthorized [401]";
       }
     },
-    updateSchema: (initValues, values) => {
+    updateSchema: async (initValues, values) => {
       if (Meteor.userId() && Meteor.user()?.emails[0]?.verified) {
         let error;
         if (!values["createdOn"] || !values["createdBy"]) {
@@ -39,28 +35,24 @@ export const schemaMethods = (Meteor, Roles, SchemaCollection) => {
         values["modifiedOn"] = new Date();
         values["modifiedBy"] = Meteor.user().username;
         values["adminCheck"] = false;
-        schemaValidatorShaper(initValues.name)
-          .validate(values)
-          .then(() => {
-            SchemaCollection.update({ _id: values._id }, values);
-          })
+        await schemaValidatorShaper(initValues.name)
+          .isValid(values)
           .catch((err) => {
-            console.log(err);
             error = err;
           });
-        return error;
+        if (!error) SchemaCollection.update({ _id: values._id }, values);
       } else {
         return "Unauthorized [401]";
       }
     },
-    deleteSchema: (values) => {
+    deleteSchema: async (values) => {
       if (Meteor.userId() && Meteor.user()?.emails[0]?.verified) {
         let error;
         values["isDeleted"] = true;
         values["modifiedOn"] = new Date();
         values["modifiedBy"] = Meteor.user().username;
-        schemaValidatorShaper(values.name)
-          .validate(values)
+        await schemaValidatorShaper(values.name)
+          .isValid(values)
           .then(() => {
             SchemaCollection.update({ _id: values._id }, values);
           })
@@ -82,38 +74,18 @@ export const schemaMethods = (Meteor, Roles, SchemaCollection) => {
     },
     restoreSchema: (values) => {
       if ((Roles.userIsInRole(Meteor.userId(), "admin") || Roles.userIsInRole(Meteor.userId(), "moderator")) && Meteor.user()?.emails[0]?.verified) {
-        let error;
         values["isDeleted"] = false;
         values["modifiedOn"] = new Date();
         values["modifiedBy"] = Meteor.user().username;
-        schemaValidatorShaper(values.name)
-          .validate(values)
-          .then(() => {
-            SchemaCollection.insert(values);
-          })
-          .catch((err) => {
-            console.log(err);
-            error = err;
-          });
-        return error;
+        SchemaCollection.update({ _id: values._id }, values);
       } else {
         return "Unauthorized [401]";
       }
     },
     adminCheckSchema: (values) => {
       if ((Roles.userIsInRole(Meteor.userId(), "admin") || Roles.userIsInRole(Meteor.userId(), "moderator")) && Meteor.user()?.emails[0]?.verified) {
-        let error;
         values["adminCheck"] = true;
-        schemaValidatorShaper(values.name)
-          .validate(values)
-          .then(() => {
-            SchemaCollection.insert(values);
-          })
-          .catch((err) => {
-            console.log(err);
-            error = err;
-          });
-        return error;
+        SchemaCollection.update({ _id: values._id }, values);
       } else {
         return "Unauthorized [401]";
       }

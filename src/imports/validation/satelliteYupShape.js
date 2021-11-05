@@ -204,42 +204,46 @@ export const satelliteValidatorShaper = (values, initValues) => {
           .validate(entry, { abortEarly: true })
           .then((result) => {
             // Yup's returned result object
-            let resolved = // provides an identifier to delete the correct error upon successful validation
-              "-" +
-              value
-                .map((object) => {
-                  for (let key in object) {
-                    // transforms to ensure  "result" object will be matched with the original tested "value", to avoid stale errors
-                    if ((Yup.date().isValidSync(result[key]) && typeof result[key] !== "number" && result[key]) || key === "verified" || key === "validated") {
-                      // Yup transforms date strings (also inside validated & verified) into date objects in the returned result objects
-                      // solution is to transform result values back to original values
-                      result[key] = object[key];
-                    } else if (parseInt(object[key]) && object[key]) {
-                      // The original values that are integers are sent as strings
-                      // solution is to transform the values back to numbers
-                      object[key] = parseInt(object[key]);
-                    } else if (object[key] === undefined || result[key] === undefined) {
-                      // the original value may contain undefined values
-                      // Yup removes these undefined values and their associated keys from the returned result object
-                      // the original object and result object need to be in-sync prior to the deep equality check
-                      // solution is to delete any undefined values and their associated keys from the original value object
-                      delete object[key];
-                      delete result[key];
-                    }
-                  }
-                  return _.isEqual(object, result);
-                })
-                .indexOf(true)
-                .toString() +
-              "-";
+            let resolved = "-"; // provides an identifier to delete the correct error upon successful validation
+            let tempArr = [];
+
+            for (let i = 0; i < value.length; i++) {
+              let object = value[i];
+              for (let key in object) {
+                // transforms to ensure  "result" object will be matched with the original tested "value", to avoid stale errors
+                if ((Yup.date().isValidSync(result[key]) && typeof result[key] !== "number" && result[key]) || key === "verified" || key === "validated") {
+                  // Yup transforms date strings (also inside validated & verified) into date objects in the returned result objects
+                  // solution is to transform result values back to original values
+                  result[key] = object[key];
+                } else if (parseInt(object[key]) && object[key]) {
+                  // The original values that are integers are sent as strings
+                  // solution is to transform the values back to numbers
+                  object[key] = parseInt(object[key]);
+                } else if (object[key] === undefined || result[key] === undefined) {
+                  // the original value may contain undefined values
+                  // Yup removes these undefined values and their associated keys from the returned result object
+                  // the original object and result object need to be in-sync prior to the deep equality check
+                  // solution is to delete any undefined values and their associated keys from the original value object
+                  delete object[key];
+                  delete result[key];
+                }
+              }
+              tempArr.push(_.isEqual(object, result));
+            }
+            resolved = resolved + tempArr.indexOf(true).toString() + "-";
             let key = Object.keys(errObj)[0];
-            if (errObj[key].includes(resolved)) {
+            if (errObj[key]?.includes(resolved)) {
               // if the errObj contains the key and has the resolved error, clear the stale error
               delete errObj[key];
             }
           })
           .catch((err) => {
-            errObj = {}; // if the errObj is emptied by a resolved error, empty the errObj of stale errors
+            for (let error in errObj) {
+              if (err.path !== error) {
+                // delete stale errors
+                delete errObj[error];
+              }
+            } // if the errObj is emptied by a resolved error, empty the errObj of stale errors
             if (err.path === undefined) err.message = "err is not defined"; // catch-all for errors that the 2 types of errors are not relevent to form validation
             if (err.message !== "err is not defined") errObj[err["path"]] = err.message; // insert error into the errObj that is send back to the form for rendering
           });

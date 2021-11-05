@@ -22,7 +22,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -36,7 +36,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "name": "GALAXY 17"
@@ -56,7 +56,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -70,7 +70,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "type": "communications"
@@ -90,7 +90,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -104,7 +104,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "descriptionShort": "Galaxy 17 is a communications satellite owned by Intelsat to be located at 91° West longitude, serving the North American market."
@@ -124,7 +124,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -138,7 +138,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "description": "Galaxy 17 is \"topped off\" in the Spaceport's S5 payload preparation building",
@@ -160,7 +160,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -174,7 +174,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "description": "24 C-Band transponders",
@@ -196,7 +196,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -210,7 +210,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "description": "24 Ku-Band transponders",
@@ -234,7 +234,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -248,7 +248,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "orbit": "GEO",
