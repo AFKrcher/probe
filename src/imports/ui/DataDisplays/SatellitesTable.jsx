@@ -20,22 +20,8 @@ import { Popper } from "../Dialogs/Popper.jsx";
 import { Key } from "../Helpers/Key.jsx";
 
 // @material-ui
-import {
-  Button,
-  Grid,
-  makeStyles,
-  Typography,
-  Tooltip,
-  IconButton,
-} from "@material-ui/core";
-import {
-  DataGrid,
-  GridToolbarContainer,
-  GridToolbarColumnsButton,
-  GridToolbarFilterButton,
-  getGridStringOperators,
-  GridToolbarDensitySelector,
-} from "@material-ui/data-grid";
+import { Button, Grid, makeStyles, Typography, Tooltip, IconButton } from "@material-ui/core";
+import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, getGridStringOperators, GridToolbarDensitySelector } from "@material-ui/data-grid";
 import StarIcon from "@material-ui/icons/Star";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import VisibilityIcon from "@material-ui/icons/Visibility";
@@ -45,97 +31,97 @@ import Download from "@material-ui/icons/GetApp";
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
-    width: "100%",
+    width: "100%"
   },
   description: {
     marginBottom: 15,
-    marginTop: 10,
+    marginTop: 10
   },
   gridContainer: {
     display: "flex",
     height: "100%",
     width: "100%",
     marginTop: 5,
-    resize: "horizontal",
+    resize: "horizontal"
   },
   dataGrid: {
     padding: "5px 5px 0px 5px",
     backgroundColor: theme.palette.grid.background,
     "& .MuiDataGrid-cell": {
-      textOverflow: "ellipse",
+      textOverflow: "ellipse"
     },
     "& .MuiCircularProgress-colorPrimary": {
-      color: theme.palette.text.primary,
-    },
+      color: theme.palette.text.primary
+    }
   },
   spinner: {
-    color: theme.palette.text.primary,
+    color: theme.palette.text.primary
   },
   link: {
     color: theme.palette.text.primary,
     "&:hover": {
-      color: theme.palette.info.light,
-    },
+      color: theme.palette.info.light
+    }
   },
   toolbarSpacer: {
-    marginBottom: 75,
+    marginBottom: 75
   },
   toolbarContainer: {
-    margin: 5,
+    margin: 5
   },
   toolbar: {
     color: theme.palette.text.primary,
     fontWeight: 500,
-    fontSize: "14px",
+    fontSize: "14px"
   },
   downloadBar: {
     color: theme.palette.text.primary,
     fontWeight: 500,
-    fontSize: "14px",
+    fontSize: "14px"
   },
   downloadIcon: {
     marginRight: 3,
-    marginLeft: -5,
+    marginLeft: -5
   },
   searchBarContainer: {
     position: "relative",
     marginTop: -70,
     bottom: -135,
     zIndex: 1,
-    margin: 20,
+    margin: 20
   },
   actions: {
     display: "flex",
-    marginLeft: 0,
+    marginLeft: 0
   },
   actionIconButton: {
     padding: 7,
-    marginLeft: 15,
+    marginLeft: 15
   },
   starIconButton: {
-    marginLeft: 15,
+    marginLeft: 15
   },
   starButtonFilled: {
     cursor: "pointer",
     fill: "gold",
     "&:hover": {
-      color: theme.palette.info.light,
-    },
+      color: theme.palette.info.light
+    }
   },
   starButtonHeader: {
     cursor: "pointer",
     fill: "gold",
-    marginBottom: -5,
+    marginBottom: -5
   },
   modalButton: {
-    marginTop: -2.5,
+    marginTop: -2.5
   },
   modalHeader: {
     display: "flex",
     justifyContent: "space-between",
     alignContent: "center",
-    margin: "0px 5px -15px 5px",
-  },
+    margin: "0px 5px -15px 5px"
+  }
 }));
 
 const newSatValues = {
@@ -146,7 +132,7 @@ const newSatValues = {
   modifiedOn: null,
   modifiedBy: null,
   adminCheck: null,
-  machineCheck: null,
+  machineCheck: null
 };
 
 // breakpoints based on device width / height
@@ -156,8 +142,7 @@ export const SatellitesTable = () => {
   const classes = useStyles();
 
   const history = useHistory();
-  const { setOpenSnack, snack, setSnack, setOpenVisualize } =
-    useContext(HelpersContext);
+  const { setOpenSnack, snack, setSnack, setOpenVisualize } = useContext(HelpersContext);
 
   const [width, height] = useWindowSize();
 
@@ -193,26 +178,16 @@ export const SatellitesTable = () => {
     if (sortOrbit) return { orbits: sortOrbit };
   };
 
-  const [
-    sats,
-    schemas,
-    rows,
-    count,
-    verified,
-    isLoadingSchemas,
-    isLoadingSats,
-  ] = useTracker(() => {
+  const [sats, schemas, rows, count, verified, isLoadingSchemas, isLoadingSats] = useTracker(() => {
     const subSchemas = Meteor.subscribe("schemas");
     const subSats = Meteor.subscribe("satellites");
-    const verified = Meteor.user()?.emails[0]
-      ? Meteor.user()?.emails[0]?.verified
-      : false;
+    const verified = Meteor.user()?.emails[0] ? Meteor.user()?.emails[0]?.verified : false;
     const schemas = SchemaCollection.find({}, { fields: { name: 1 } }).fetch();
     const count = SatelliteCollection.find(selector).count();
     const sats = SatelliteCollection.find(selector, {
       limit: limiter,
       skip: page * limiter,
-      sort: decideSort(),
+      sort: decideSort()
     }).fetch();
     const rows = sats.map((sat) => {
       return {
@@ -224,24 +199,12 @@ export const SatellitesTable = () => {
               .sort((a, b) => a.localeCompare(b))
               .join(", ")
           : "",
-        orbits: sat.orbits
-          ? sat.orbits.map((entry) => entry.orbit).join(", ")
-          : "",
-        description: sat.descriptionShort
-          ? sat.descriptionShort[0]?.descriptionShort
-          : null,
+        orbits: sat.orbits ? sat.orbits.map((entry) => entry.orbit).join(", ") : "",
+        description: sat.descriptionShort ? sat.descriptionShort[0]?.descriptionShort : null
       };
     });
     rows.getRows = count;
-    return [
-      sats,
-      schemas,
-      rows,
-      count,
-      verified,
-      !subSchemas.ready(),
-      !subSats.ready(),
-    ];
+    return [sats, schemas, rows, count, verified, !subSchemas.ready(), !subSats.ready()];
   });
 
   const handleAddNewSatellite = () => {
@@ -265,32 +228,32 @@ export const SatellitesTable = () => {
         case "id":
           setSelector({
             noradID: { $regex: `${filterBy.value}` },
-            isDeleted: false,
+            isDeleted: false
           });
           break;
         case "names":
           setSelector({
             "names.name": { $regex: `${filterBy.value}`, $options: "i" },
-            isDeleted: false,
+            isDeleted: false
           });
           break;
         case "[object Object]":
           setSelector({
             noradID: {
-              $in: Meteor.user({ fields: { favorites: 1 } })?.favorites,
+              $in: Meteor.user({ fields: { favorites: 1 } })?.favorites
             },
-            isDeleted: false,
+            isDeleted: false
           });
           break;
         case "types":
           setSelector({
             "types.type": { $regex: `${filterBy.value}`, $options: "i" },
-            isDeleted: false,
+            isDeleted: false
           });
           break;
         case "orbits":
           setSelector({
-            "orbits.orbit": { $regex: `${filterBy.value}`, $options: "i" },
+            "orbits.orbit": { $regex: `${filterBy.value}`, $options: "i" }
           });
           break;
         default:
@@ -335,8 +298,7 @@ export const SatellitesTable = () => {
     setOpenSnack(false);
     setSnack(
       <span>
-        <strong>{name}</strong>{" "}
-        {!notFavorite ? "added to favorites" : "removed from favorites"}
+        <strong>{name}</strong> {!notFavorite ? "added to favorites" : "removed from favorites"}
       </span>
     );
     setTimeout(() => setOpenSnack(true), 500);
@@ -350,9 +312,7 @@ export const SatellitesTable = () => {
   };
 
   const exportTableToCSV = () => {
-    const tempArr = schemas
-      .map((schema) => schema.name)
-      .sort((a, b) => a.localeCompare(b));
+    const tempArr = schemas.map((schema) => schema.name).sort((a, b) => a.localeCompare(b));
 
     const cols = [...tempArr];
     const rows = sats.map((sat) => {
@@ -382,10 +342,7 @@ export const SatellitesTable = () => {
 
   const downloadFile = (data, fileType) => {
     let downloadLink = document.createElement("a");
-    downloadLink.setAttribute(
-      "download",
-      `${new Date().toISOString()}_PROBE_SatTable.${fileType}`
-    ); // File name
+    downloadLink.setAttribute("download", `${new Date().toISOString()}_PROBE_SatTable.${fileType}`); // File name
 
     if (fileType === "json") {
       downloadLink.setAttribute("href", data);
@@ -405,21 +362,11 @@ export const SatellitesTable = () => {
           <GridToolbarColumnsButton className={classes.toolbar} />
           <GridToolbarFilterButton className={classes.toolbar} />
           <GridToolbarDensitySelector className={classes.toolbar} />
-          <Button
-            size="small"
-            onClick={jsonDownload}
-            className={classes.downloadBar}
-            color="primary"
-          >
+          <Button size="small" onClick={jsonDownload} className={classes.downloadBar} color="primary">
             <Download fontSize="small" className={classes.downloadIcon} />
             {width > addButtonBreak ? "Export JSON" : "JSON"}
           </Button>
-          <Button
-            color="primary"
-            className={classes.downloadBar}
-            size="small"
-            onClick={() => exportTableToCSV(sats)}
-          >
+          <Button color="primary" className={classes.downloadBar} size="small" onClick={() => exportTableToCSV(sats)}>
             <Download fontSize="small" className={classes.downloadIcon} />
             {width > addButtonBreak ? "Export CSV" : "CSV"}
           </Button>
@@ -440,42 +387,20 @@ export const SatellitesTable = () => {
     };
 
     const checkIfFavorite = () => {
-      return (
-        Meteor.user({ fields: { favorites: 1 } })?.favorites?.indexOf(
-          params.id
-        ) > -1
-      );
+      return Meteor.user({ fields: { favorites: 1 } })?.favorites?.indexOf(params.id) > -1;
     };
 
     return (
       <Tooltip
         title={`${
-          Meteor.user({ fields: { favorites: 1 } })?.favorites?.indexOf(
-            params.id
-          ) > -1
+          Meteor.user({ fields: { favorites: 1 } })?.favorites?.indexOf(params.id) > -1
             ? `Remove ${favoritesNameShortener()} from favorites`
             : `Add ${favoritesNameShortener()} to favorites`
         }`}
         arrow
-        placement="top"
-      >
-        <IconButton
-          size="small"
-          className={classes.starIconButton}
-          onClick={(e) =>
-            handleFavorite(
-              e,
-              params.id,
-              favoritesNameShortener(),
-              checkIfFavorite()
-            )
-          }
-        >
-          {checkIfFavorite() ? (
-            <StarIcon className={classes.starButtonFilled} />
-          ) : (
-            <StarBorderIcon className={classes.starButtonEmpty} />
-          )}
+        placement="top">
+        <IconButton size="small" className={classes.starIconButton} onClick={(e) => handleFavorite(e, params.id, favoritesNameShortener(), checkIfFavorite())}>
+          {checkIfFavorite() ? <StarIcon className={classes.starButtonFilled} /> : <StarBorderIcon className={classes.starButtonEmpty} />}
         </IconButton>
       </Tooltip>
     );
@@ -487,7 +412,7 @@ export const SatellitesTable = () => {
     } else {
       return setSelector({
         noradID: { $in: Meteor.user({ fields: { favorites: 1 } })?.favorites },
-        isDeleted: false,
+        isDeleted: false
       });
     }
   };
@@ -513,11 +438,10 @@ export const SatellitesTable = () => {
                   onClick={() =>
                     handleRowDoubleClick(
                       SatelliteCollection.find({
-                        noradID: satellite.id,
+                        noradID: satellite.id
                       }).fetch()[0]
                     )
-                  }
-                >
+                  }>
                   <VisibilityIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
@@ -526,44 +450,29 @@ export const SatellitesTable = () => {
                   className={classes.actionIconButton}
                   onClick={(e) => {
                     handleDashboard(e, satellite.id);
-                  }}
-                >
+                  }}>
                   <DashboardIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
-              <Tooltip
-                title="Visualize satellite in Space Cockpit"
-                arrow
-                placement="top"
-              >
+              <Tooltip title="Visualize satellite in Space Cockpit" arrow placement="top">
                 <IconButton
                   className={classes.actionIconButton}
                   onClick={() => {
-                    handleVisualize(
-                      satellite.row.names,
-                      `https://spacecockpit.saberastro.com/?SID=${satellite.id}&FS=${satellite.id}`
-                    );
-                  }}
-                >
-                  <img
-                    src="/assets/saberastro.png"
-                    width="22px"
-                    height="22px"
-                  />
+                    handleVisualize(satellite.row.names, `https://spacecockpit.saberastro.com/?SID=${satellite.id}&FS=${satellite.id}`);
+                  }}>
+                  <img src="/assets/saberastro.png" width="22px" height="22px" />
                 </IconButton>
               </Tooltip>
             </span>
           );
-        },
+        }
       },
       {
         headerAlign: "left",
         field: "id",
         headerName: "NORAD ID",
         minWidth: 150,
-        filterOperators: getGridStringOperators().filter(
-          (operator) => operator.value === "contains"
-        ),
+        filterOperators: getGridStringOperators().filter((operator) => operator.value === "contains")
       },
       {
         headerAlign: "left",
@@ -571,7 +480,7 @@ export const SatellitesTable = () => {
         headerName: "ORBIT(S)",
         minWidth: 140,
         editable: false,
-        filterable: false,
+        filterable: false
       },
       {
         headerAlign: "left",
@@ -580,7 +489,7 @@ export const SatellitesTable = () => {
         minWidth: 200,
         editable: false,
         filterable: false,
-        hide: true,
+        hide: true
       },
       {
         headerAlign: "left",
@@ -589,10 +498,8 @@ export const SatellitesTable = () => {
         minWidth: 250,
         flex: 1,
         editable: false,
-        filterOperators: getGridStringOperators().filter(
-          (operator) => operator.value === "contains"
-        ),
-      },
+        filterOperators: getGridStringOperators().filter((operator) => operator.value === "contains")
+      }
     ];
 
     if (Meteor.userId() && verified) {
@@ -610,7 +517,7 @@ export const SatellitesTable = () => {
         headerAlign: "center",
         renderCell: function favoritesRow(params) {
           return renderFavoriteButton(params);
-        },
+        }
       });
     }
 
@@ -620,7 +527,7 @@ export const SatellitesTable = () => {
   const handleVisualize = (satellite, url) => {
     setPrompt({
       url: url,
-      satellite: satellite,
+      satellite: satellite
     });
     debounced(false);
     setOpenVisualize(true);
@@ -634,17 +541,8 @@ export const SatellitesTable = () => {
 
   const AddSatelliteButton = () => {
     return (
-      <Grid
-        container
-        item
-        xs
-        justifyContent={width > addButtonBreak ? "flex-end" : "flex-start"}
-      >
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleAddNewSatellite}
-        >
+      <Grid container item xs justifyContent={width > addButtonBreak ? "flex-end" : "flex-start"}>
+        <Button variant="contained" color="primary" onClick={handleAddNewSatellite}>
           + Add Satellite
         </Button>
       </Grid>
@@ -660,51 +558,31 @@ export const SatellitesTable = () => {
           <Grid item xs>
             <Typography variant="h3">Satellites</Typography>
           </Grid>
-          {width > addButtonBreak && (
-            <ProtectedFunctionality
-              component={AddSatelliteButton}
-              loginRequired={true}
-            />
-          )}
+          {width > addButtonBreak && <ProtectedFunctionality component={AddSatelliteButton} loginRequired={true} />}
         </Grid>
         {width < addButtonBreak ? (
           <div style={{ margin: "10px 0px 20px 0px" }}>
-            <ProtectedFunctionality
-              component={AddSatelliteButton}
-              loginRequired={true}
-            />
+            <ProtectedFunctionality component={AddSatelliteButton} loginRequired={true} />
           </div>
         ) : null}
-        <Typography
-          gutterBottom
-          variant="body1"
-          className={classes.description}
-        >
-          Each <strong>satellite</strong> in the catalogue contains a number of
-          fields based on schemas defined on the{" "}
+        <Typography gutterBottom variant="body1" className={classes.description}>
+          Each <strong>satellite</strong> in the catalogue contains a number of fields based on schemas defined on the{" "}
           <Tooltip title="Bring me to the satellites page">
             <Link to="/schemas" className={classes.link}>
               next page
             </Link>
           </Tooltip>
-          . Filtering on satellites using tags in the search bar will allow you
-          to view the results in the table and export the results to a CSV or
-          JSON format.
+          . Filtering on satellites using tags in the search bar will allow you to view the results in the table and export the results to a CSV or JSON format.
         </Typography>
         <Key page="SatellitesTable" />
         <div className={classes.searchBarContainer}>
-          <SearchBar
-            filter={filter}
-            setFilter={setFilter}
-            selector={selector}
-            setSelector={setSelector}
-          />
+          <SearchBar filter={filter} setFilter={setFilter} selector={selector} setSelector={setSelector} />
         </div>
         <div className={classes.gridContainer}>
           <DataGrid
             className={classes.dataGrid}
             components={{
-              Toolbar: CustomToolbar,
+              Toolbar: CustomToolbar
             }}
             rowsPerPageOptions={[5, 15, 30, 60, 120]}
             columns={columns}
@@ -723,9 +601,7 @@ export const SatellitesTable = () => {
             onPageChange={(newPage) => setPage(newPage)}
             disableSelectionOnClick
             onRowDoubleClick={(satellite) => {
-              handleRowDoubleClick(
-                SatelliteCollection.find({ noradID: satellite.id }).fetch()[0]
-              );
+              handleRowDoubleClick(SatelliteCollection.find({ noradID: satellite.id }).fetch()[0]);
             }}
             onSortModelChange={handleSort}
             onRowOver={debounced}

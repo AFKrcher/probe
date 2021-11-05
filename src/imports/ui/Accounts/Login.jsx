@@ -4,24 +4,13 @@ import { useHistory } from "react-router";
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
-import {
-  isValidEmail,
-  isValidUsername,
-} from "/imports/validation/accountYupShape";
+import { isValidEmail, isValidUsername } from "/imports/validation/accountYupShape";
 
 // Components
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
 
 // @material-ui
-import {
-  Grid,
-  Button,
-  makeStyles,
-  TextField,
-  CircularProgress,
-  Paper,
-  Typography,
-} from "@material-ui/core";
+import { Grid, Button, makeStyles, TextField, CircularProgress, Paper, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -32,39 +21,39 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     width: "400px",
-    borderRadius: 10,
+    borderRadius: 10
   },
   header: {
-    marginBottom: 20,
+    marginBottom: 20
   },
   textField: {
-    marginBottom: 10,
+    marginBottom: 10
   },
   loginButton: {
     marginTop: 20,
-    marginBottom: 20,
+    marginBottom: 20
   },
   registerForgotButtonContainer: {
     display: "flex",
     flexFlow: "column wrap",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: -10,
+    marginBottom: -10
   },
   registerButton: {
-    width: "60%",
+    width: "60%"
   },
   forgotButton: {
-    width: "60%",
+    width: "60%"
   },
   spinnerContainer: {
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   spinner: {
     color: theme.palette.text.primary,
-    marginTop: "30vh",
-  },
+    marginTop: "30vh"
+  }
 }));
 
 export const Login = () => {
@@ -91,15 +80,10 @@ export const Login = () => {
 
   const handleError = (err) => {
     if (err) {
-      if (
-        err.message === "User not found [403]" ||
-        err.message === "Incorrect password [403]"
-      ) {
+      if (err.message === "User not found [403]" || err.message === "Incorrect password [403]") {
         setError("Incorrect username or password");
       } else {
-        setError(
-          "We are having difficulties logging you in. Please wait and try again."
-        );
+        setError("We are having difficulties logging you in. Please wait and try again.");
       }
     }
   };
@@ -121,7 +105,7 @@ export const Login = () => {
         if (isValidEmail(null, username)) {
           Meteor.loginWithPassword(
             {
-              email: username,
+              email: username
             },
             password,
             (error) => {
@@ -132,7 +116,7 @@ export const Login = () => {
         } else if (isValidUsername(null, username)) {
           Meteor.loginWithPassword(
             {
-              username: username,
+              username: username
             },
             password,
             (error) => {
@@ -162,7 +146,7 @@ export const Login = () => {
             title: "Error Encountered",
             text: err.reason,
             actions: null,
-            closeAction: "Close",
+            closeAction: "Close"
           });
           setOpenAlert(true);
         } else {
@@ -170,7 +154,7 @@ export const Login = () => {
             title: "Password Reset Email Sent",
             text: "An email has been sent with instructions for resetting your password.",
             actions: null,
-            closeAction: "Okay",
+            closeAction: "Okay"
           });
           setOpenAlert(true);
         }
@@ -185,11 +169,7 @@ export const Login = () => {
       <AlertDialog bodyAlert={alert} />
       {loading ? (
         <div className={classes.spinnerContainer}>
-          <CircularProgress
-            className={classes.spinner}
-            size={100}
-            thickness={3}
-          />
+          <CircularProgress className={classes.spinner} size={100} thickness={3} />
         </div>
       ) : (
         <Paper className={classes.formContainer} elevation={3}>
@@ -214,45 +194,21 @@ export const Login = () => {
               label="Password"
               type="password"
               error={error ? !error.includes(forgotPasswordError) : false}
-              helperText={
-                error
-                  ? error.includes(forgotPasswordError)
-                    ? null
-                    : error
-                  : null
-              }
+              helperText={error ? (error.includes(forgotPasswordError) ? null : error) : null}
               onChange={handleDisable}
               ref={(input) => (password = input)}
               className={classes.textField}
               fullWidth
               autoComplete="off"
             />
-            <Button
-              id="login-button"
-              variant="outlined"
-              className={classes.loginButton}
-              color="primary"
-              type="submit"
-              disabled={disabled}
-              fullWidth
-            >
+            <Button id="login-button" variant="outlined" className={classes.loginButton} color="primary" type="submit" disabled={disabled} fullWidth>
               Login
             </Button>
             <div className={classes.registerForgotButtonContainer}>
-              <Button
-                className={classes.registerButton}
-                id="register-instead"
-                onClick={registerUser}
-                size="small"
-              >
+              <Button className={classes.registerButton} id="register-instead" onClick={registerUser} size="small">
                 Register New Account
               </Button>
-              <Button
-                className={classes.forgotButton}
-                id="forgot-password"
-                onClick={forgotPassword}
-                size="small"
-              >
+              <Button className={classes.forgotButton} id="forgot-password" onClick={forgotPassword} size="small">
                 Forgot Password?
               </Button>
             </div>

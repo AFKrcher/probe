@@ -37,31 +37,22 @@ const initialYupShapeGenerator = (initValues) => {
     _id: Yup.string().test(
       "uniqueID",
       (obj) => `The _id, "${obj?.value}", already exists in our database`,
-      (value) =>
-        SatelliteCollection.findOne({ _id: value })?._id !== initValues._id &&
-        value
-          ? SatelliteCollection.find({ _id: value }).count() === 0
-          : true
+      (value) => (SatelliteCollection.findOne({ _id: value })?._id !== initValues._id && value ? SatelliteCollection.find({ _id: value }).count() === 0 : true)
     ),
     noradID: Yup.string()
       .required(`Required`)
       .matches(/^[0-9]+$/g, "Must be a positive number")
       .test(
         "uniqueNORADID",
-        (obj) =>
-          `The NORAD ID, "${obj?.value}", already exists in our database`,
-        (value) =>
-          SatelliteCollection.findOne({ noradID: value })?.noradID !==
-            initValues.noradID && value
-            ? SatelliteCollection.find({ noradID: value }).count() === 0
-            : true
+        (obj) => `The NORAD ID, "${obj?.value}", already exists in our database`,
+        (value) => (SatelliteCollection.findOne({ noradID: value })?.noradID !== initValues.noradID && value ? SatelliteCollection.find({ noradID: value }).count() === 0 : true)
       ),
     adminCheck: Yup.boolean().nullable(),
     machineCheck: Yup.boolean().nullable(),
     modifiedOn: Yup.date().nullable(),
     modifiedBy: Yup.string().nullable(),
     createdOn: Yup.date().nullable(),
-    createdBy: Yup.string().nullable(),
+    createdBy: Yup.string().nullable()
   };
 };
 
@@ -93,9 +84,7 @@ export const satelliteValidatorShaper = (values, initValues) => {
               baseFieldSchema = Yup.string().trim();
               break;
             case "url":
-              baseFieldSchema = Yup.string().url(
-                `${path}-${entryCount}-${fieldCount}_Must be a valid URL (e.g. https://en.wikipedia.org/wiki/Main_Page).`
-              );
+              baseFieldSchema = Yup.string().url(`${path}-${entryCount}-${fieldCount}_Must be a valid URL (e.g. https://en.wikipedia.org/wiki/Main_Page).`);
               break;
             case "validated":
               baseFieldSchema = Yup.array()
@@ -106,18 +95,18 @@ export const satelliteValidatorShaper = (values, initValues) => {
                     method: Yup.string().when("validated", {
                       is: true,
                       then: Yup.string().oneOf(["user", "machine"]).required(),
-                      otherwise: Yup.string().nullable(),
+                      otherwise: Yup.string().nullable()
                     }),
                     name: Yup.string().when("validated", {
                       is: true,
                       then: Yup.string().required(),
-                      otherwise: Yup.string().nullable(),
+                      otherwise: Yup.string().nullable()
                     }),
                     validatedOn: Yup.date().when("validated", {
                       is: true,
                       then: Yup.date().required(),
-                      otherwise: Yup.date().nullable(),
-                    }),
+                      otherwise: Yup.date().nullable()
+                    })
                   })
                 );
               break;
@@ -130,18 +119,18 @@ export const satelliteValidatorShaper = (values, initValues) => {
                     method: Yup.string().when("verified", {
                       is: true,
                       then: Yup.string().oneOf(["user", "machine"]).required(),
-                      otherwise: Yup.string().nullable(),
+                      otherwise: Yup.string().nullable()
                     }),
                     name: Yup.string().when("verified", {
                       is: true,
                       then: Yup.string().required(),
-                      otherwise: Yup.string().nullable(),
+                      otherwise: Yup.string().nullable()
                     }),
                     verifiedOn: Yup.date().when("verified", {
                       is: true,
                       then: Yup.date().required(),
-                      otherwise: Yup.date().nullable(),
-                    }),
+                      otherwise: Yup.date().nullable()
+                    })
                   })
                 );
               break;
@@ -160,13 +149,7 @@ export const satelliteValidatorShaper = (values, initValues) => {
             // stores the yup fragments needed for each constraint
             required: field.required
               ? baseFieldType.required(
-                  `${path}-${entryCount}-${fieldCount}_${
-                    field.type === "url"
-                      ? "URL"
-                      : field.type[0].toUpperCase() +
-                        field.type.substr(1) +
-                        " Input"
-                  } Required`
+                  `${path}-${entryCount}-${fieldCount}_${field.type === "url" ? "URL" : field.type[0].toUpperCase() + field.type.substr(1) + " Input"} Required`
                 )
               : false,
             isUnique:
@@ -179,8 +162,7 @@ export const satelliteValidatorShaper = (values, initValues) => {
                       if (initValues[path]) {
                         initValues[path].forEach((entry, index) => {
                           let tempObj = {};
-                          tempObj[`${path}.${schemaField}`] =
-                            initValues[path][index][schemaField];
+                          tempObj[`${path}.${schemaField}`] = initValues[path][index][schemaField];
                           or.push(tempObj);
                         });
                       }
@@ -189,51 +171,25 @@ export const satelliteValidatorShaper = (values, initValues) => {
                       if (sat) {
                         selector = {};
                         selector[`${path}.${schemaField}`] = value;
-                        return sat[path].find(
-                          (entry) => entry[schemaField] === value
-                        )
-                          ? true
-                          : SatelliteCollection.find(selector).count() === 0;
+                        return sat[path].find((entry) => entry[schemaField] === value) ? true : SatelliteCollection.find(selector).count() === 0;
                       }
                     }
                   )
                 : false,
-            min:
-              field.type === "number" && field.min
-                ? baseFieldType.min(
-                    field.min,
-                    `${path}-${entryCount}-${fieldCount}_Must be no less than ${field.min}`
-                  )
-                : false,
-            max:
-              field.type === "number" && field.max
-                ? baseFieldType.max(
-                    field.max,
-                    `${path}-${entryCount}-${fieldCount}_Must be no greater than ${field.max}`
-                  )
-                : false,
+            min: field.type === "number" && field.min ? baseFieldType.min(field.min, `${path}-${entryCount}-${fieldCount}_Must be no less than ${field.min}`) : false,
+            max: field.type === "number" && field.max ? baseFieldType.max(field.max, `${path}-${entryCount}-${fieldCount}_Must be no greater than ${field.max}`) : false,
             allowedValues:
-              field.allowedValues?.length > 0
-                ? baseFieldType.oneOf(
-                    [...field.allowedValues],
-                    `${path}-${entryCount}-${fieldCount}_Please select an option from the list.`
-                  )
-                : false,
+              field.allowedValues?.length > 0 ? baseFieldType.oneOf([...field.allowedValues], `${path}-${entryCount}-${fieldCount}_Please select an option from the list.`) : false,
             stringMax:
               field.type === "string" && field.stringMax
-                ? baseFieldType.max(
-                    field.stringMax,
-                    `${path}-${entryCount}-${fieldCount}_Must not exceed ${field.stringMax} characters.`
-                  )
-                : false,
+                ? baseFieldType.max(field.stringMax, `${path}-${entryCount}-${fieldCount}_Must not exceed ${field.stringMax} characters.`)
+                : false
           };
           // loop over the schema and concatenate all valid constraints to field's yup object
           for (let check in fieldSchemaMatrix) {
             if (fieldSchemaMatrix[check]) {
               // concatenate constraints based on the sub-schema
-              baseFieldSchema = baseFieldSchema.concat(
-                fieldSchemaMatrix[check]
-              );
+              baseFieldSchema = baseFieldSchema.concat(fieldSchemaMatrix[check]);
             }
           }
           fieldObj[schemaField] = baseFieldSchema; // add sub-schema constraints to the overall schema
@@ -252,13 +208,7 @@ export const satelliteValidatorShaper = (values, initValues) => {
                 .map((object) => {
                   for (let key in object) {
                     // transforms to ensure  "result" object will be matched with the original tested "value", to avoid stale errors
-                    if (
-                      (Yup.date().isValidSync(result[key]) &&
-                        typeof result[key] !== "number" &&
-                        result[key]) ||
-                      key === "verified" ||
-                      key === "validated"
-                    ) {
+                    if ((Yup.date().isValidSync(result[key]) && typeof result[key] !== "number" && result[key]) || key === "verified" || key === "validated") {
                       // Yup transforms date strings (also inside validated & verified) into date objects in the returned result objects
                       // solution is to transform result values back to original values
                       result[key] = object[key];
@@ -266,10 +216,7 @@ export const satelliteValidatorShaper = (values, initValues) => {
                       // The original values that are integers are sent as strings
                       // solution is to transform the values back to numbers
                       object[key] = parseInt(object[key]);
-                    } else if (
-                      object[key] === undefined ||
-                      result[key] === undefined
-                    ) {
+                    } else if (object[key] === undefined || result[key] === undefined) {
                       // the original value may contain undefined values
                       // Yup removes these undefined values and their associated keys from the returned result object
                       // the original object and result object need to be in-sync prior to the deep equality check
@@ -295,8 +242,7 @@ export const satelliteValidatorShaper = (values, initValues) => {
           .catch((err) => {
             errObj = {}; // if the errObj is emptied by a resolved error, empty the errObj of stale errors
             if (err.path === undefined) err.message = "err is not defined"; // catch-all for errors that the 2 types of errors are not relevent to form validation
-            if (err.message !== "err is not defined")
-              errObj[err["path"]] = err.message; // insert error into the errObj that is send back to the form for rendering
+            if (err.message !== "err is not defined") errObj[err["path"]] = err.message; // insert error into the errObj that is send back to the form for rendering
           });
         entryCount++; // increment index for error tracking
       });
@@ -311,7 +257,7 @@ export const satelliteValidatorShaper = (values, initValues) => {
           let cleanPath = errMessage.substr(0, errMessage.indexOf("_"));
           return createError({
             path: `${cleanPath}`,
-            message: `${cleanMessage}`,
+            message: `${cleanMessage}`
           });
         }
       }

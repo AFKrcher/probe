@@ -13,7 +13,7 @@ const assignLimits = ({ methods, limit, timeRange }) => {
       type: "method",
       name(name) {
         return _.contains(methods, name);
-      },
+      }
     },
     limit,
     timeRange

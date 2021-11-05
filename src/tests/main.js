@@ -14,15 +14,15 @@ describe("Home", function () {
   });
 });
 
-// describe('App', () =>{
-//   it('does something', () =>{
-//     console.log('hi')
-//     React.render(<Home />, document.getElementById('app'));
-//     // const app = render(<Home/>);
-//     // const childElement = app.getByText("Probe")
-//     // expect(childElement).toBeInTheDocument();
-//   })
-// })
+describe("App", () => {
+  it("does something", () => {
+    console.log("hi");
+    React.render(<Home />, document.getElementById("app"));
+    const app = render(<Home />);
+    const childElement = app.getByText("Probe");
+    expect(childElement).toBeInTheDocument();
+  });
+});
 
 describe("probe", function () {
   it("package.json has correct name", async function () {

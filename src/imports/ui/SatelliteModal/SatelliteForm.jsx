@@ -11,14 +11,7 @@ import { SatelliteSchemaAccordion } from "./SatelliteSchemaAccordion";
 
 // @material-ui
 import { TextField } from "formik-material-ui";
-import {
-  Grid,
-  Button,
-  makeStyles,
-  IconButton,
-  Tooltip,
-  Paper,
-} from "@material-ui/core";
+import { Grid, Button, makeStyles, IconButton, Tooltip, Paper } from "@material-ui/core";
 import MuiTextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -26,28 +19,28 @@ import HelpIcon from "@material-ui/icons/Help";
 
 const useStyles = makeStyles((theme) => ({
   accordion: {
-    display: "flex",
+    display: "flex"
   },
   addSchemaContainer: {
     textAlign: "center",
-    margin: 15,
+    margin: 15
   },
   addFieldContainer: { marginLeft: 10 },
   addItem: {
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 10
   },
   noradID: {
     padding: theme.spacing(1),
-    backgroundColor: theme.palette.action.hover,
+    backgroundColor: theme.palette.action.hover
   },
   helpIcon: {
     color: theme.palette.text.disabled,
     fontSize: "small",
     marginLeft: 5,
-    marginTop: -10,
+    marginTop: -10
   },
-  deleteIcon: { alignSelf: "flex-start" },
+  deleteIcon: { alignSelf: "flex-start" }
 }));
 
 export const SatelliteForm = ({
@@ -67,7 +60,7 @@ export const SatelliteForm = ({
   editingOne,
   setEditingOne,
   setOpenSnack,
-  setSnack,
+  setSnack
 }) => {
   const { setOpenAlert, alert, setAlert } = useContext(HelpersContext);
   const [schemaAddition, setSchemaAddition] = useState(false);
@@ -107,22 +100,15 @@ export const SatelliteForm = ({
       ),
       text: (
         <span>
-          Are you sure you want to delete <strong>{name}</strong> and all of its
-          data?
+          Are you sure you want to delete <strong>{name}</strong> and all of its data?
         </span>
       ),
       actions: (
-        <Button
-          variant="contained"
-          size="small"
-          color="secondary"
-          disableElevation
-          onClick={() => handleDelete(name)}
-        >
+        <Button variant="contained" size="small" color="secondary" disableElevation onClick={() => handleDelete(name)}>
           <DeleteIcon /> Delete
         </Button>
       ),
-      closeAction: "Cancel",
+      closeAction: "Cancel"
     });
     setOpenAlert(true);
   };
@@ -153,11 +139,7 @@ export const SatelliteForm = ({
               disabled={!editing}
               autoComplete="off"
               error={errors["noradID"] && !_.isEmpty(touched) ? true : false}
-              helperText={
-                errors["noradID"] && !_.isEmpty(touched)
-                  ? errors["noradID"]
-                  : ""
-              }
+              helperText={errors["noradID"] && !_.isEmpty(touched) ? errors["noradID"] : ""}
             />
           </Paper>
         </Grid>
@@ -192,11 +174,7 @@ export const SatelliteForm = ({
                 />
                 {editing && (
                   <Tooltip title={`Delete ${schema.name}`}>
-                    <IconButton
-                      color="default"
-                      className={classes.deleteIcon}
-                      onClick={() => handleDeleteDialog(schema.name)}
-                    >
+                    <IconButton color="default" className={classes.deleteIcon} onClick={() => handleDeleteDialog(schema.name)}>
                       <DeleteIcon />
                     </IconButton>
                   </Tooltip>
@@ -209,19 +187,13 @@ export const SatelliteForm = ({
         <Grid item container xs={12} className={classes.addItem}>
           <Grid item xs={10}>
             <Autocomplete
-              options={schemas.filter(
-                (schema) => !initValues[schema.name] && schema.name !== "names"
-              )}
+              options={schemas.filter((schema) => !initValues[schema.name] && schema.name !== "names")}
               onChange={(e, option) => onSchemaChange(option.name)}
               getOptionLabel={(option) => option.name}
               renderOption={(option) => (
                 <span>
                   {option.name}
-                  <Tooltip
-                    title={`${option.description}`}
-                    arrow
-                    placement="right"
-                  >
+                  <Tooltip title={`${option.description}`} arrow placement="right">
                     <HelpIcon className={classes.helpIcon} />
                   </Tooltip>
                 </span>
@@ -229,26 +201,11 @@ export const SatelliteForm = ({
               autoComplete
               autoHighlight
               autoSelect
-              renderInput={(params) => (
-                <MuiTextField
-                  {...params}
-                  label="Available Schemas"
-                  variant="outlined"
-                  size="small"
-                />
-              )}
+              renderInput={(params) => <MuiTextField {...params} label="Available Schemas" variant="outlined" size="small" />}
             />
           </Grid>
           <Grid item xs className={classes.addFieldContainer}>
-            <Button
-              id="add-schema"
-              variant="contained"
-              color="primary"
-              onClick={handleNewSchema}
-              className={classes.addField}
-              fullWidth
-              disabled={!addSchema}
-            >
+            <Button id="add-schema" variant="contained" color="primary" onClick={handleNewSchema} className={classes.addField} fullWidth disabled={!addSchema}>
               + Add
             </Button>
           </Grid>
@@ -256,22 +213,12 @@ export const SatelliteForm = ({
       )}
       <Grid item xs={12} className={classes.addSchemaContainer}>
         {editing && !schemaAddition && (
-          <Button
-            variant="contained"
-            color="default"
-            onClick={toggleAddSchema}
-            className={classes.addField}
-          >
+          <Button variant="contained" color="default" onClick={toggleAddSchema} className={classes.addField}>
             + Add Schema
           </Button>
         )}
         {editing && schemaAddition && (
-          <Button
-            variant="contained"
-            color="default"
-            onClick={toggleAddSchema}
-            className={classes.addField}
-          >
+          <Button variant="contained" color="default" onClick={toggleAddSchema} className={classes.addField}>
             Close Add Schema
           </Button>
         )}
@@ -298,5 +245,5 @@ SatelliteForm.propTypes = {
   editingOne: PropTypes.bool,
   setEditingOne: PropTypes.func,
   setOpenSnack: PropTypes.func,
-  setSnack: PropTypes.func,
+  setSnack: PropTypes.func
 };

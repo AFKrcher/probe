@@ -16,15 +16,7 @@ import AlertDialog from "../Dialogs/AlertDialog.jsx";
 import SnackBar from "../Dialogs/SnackBar.jsx";
 
 // @material-ui
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  CircularProgress,
-  Typography,
-} from "@material-ui/core";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, CircularProgress, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -36,51 +28,44 @@ import RestorePageIcon from "@material-ui/icons/RestorePage";
 const useStyles = makeStyles(() => ({
   title: {
     marginBottom: 10,
-    marginTop: 0,
+    marginTop: 0
   },
   titleText: {
-    fontSize: "25px",
+    fontSize: "25px"
   },
   content: {
     marginTop: -15,
-    overflowY: "auto",
+    overflowY: "auto"
   },
   description: {
     marginTop: -20,
     marginBottom: 15,
-    margin: 5,
+    margin: 5
   },
   loadingDialog: {
     textAlign: "center",
     margin: 50,
-    overflow: "hidden",
+    overflow: "hidden"
   },
   actions: {
     display: "flex",
     justifyContent: "space-between",
-    margin: "5px 10px 5px 10px",
+    margin: "5px 10px 5px 10px"
   },
   loadingSave: {
     textAlign: "center",
-    overflow: "hidden",
-  },
+    overflow: "hidden"
+  }
 }));
 
 // breakpoints based on device width / height
 const actionsBreak = 600;
 const deleteButtonTextBreak = 825;
 
-export const SchemaModal = ({
-  show,
-  newSchema,
-  initValues,
-  handleClose,
-  admin,
-}) => {
+export const SchemaModal = ({ show, newSchema, initValues, handleClose, admin }) => {
   const classes = useStyles();
 
-  const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } =
-    useContext(HelpersContext);
+  const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } = useContext(HelpersContext);
 
   const [width, height] = useWindowSize();
 
@@ -188,27 +173,19 @@ export const SchemaModal = ({
       ),
       text: admin ? (
         <span>
-          Are you sure you want to delete the <strong>{initValues.name}</strong>{" "}
-          schema forever?
+          Are you sure you want to delete the <strong>{initValues.name}</strong> schema forever?
         </span>
       ) : (
         <span>
-          Are you sure you want to delete the <strong>{initValues.name}</strong>{" "}
-          schema and all of its fields?
+          Are you sure you want to delete the <strong>{initValues.name}</strong> schema and all of its fields?
         </span>
       ),
       actions: (
-        <Button
-          variant="contained"
-          size="small"
-          color="secondary"
-          disableElevation
-          onClick={handleDelete}
-        >
+        <Button variant="contained" size="small" color="secondary" disableElevation onClick={handleDelete}>
           Confirm
         </Button>
       ),
-      closeAction: "Cancel",
+      closeAction: "Cancel"
     });
     setOpenAlert(true);
   };
@@ -230,8 +207,7 @@ export const SchemaModal = ({
         ),
         text: (
           <span>
-            Are you sure you want to cancel all changes made to{" "}
-            <strong>{values.name}</strong> schema and its fields?
+            Are you sure you want to cancel all changes made to <strong>{values.name}</strong> schema and its fields?
           </span>
         ),
         actions: (
@@ -243,12 +219,11 @@ export const SchemaModal = ({
             onClick={() => {
               handleToggleEdit(setValues, setErrors);
               setOpenAlert(false);
-            }}
-          >
+            }}>
             Confirm
           </Button>
         ),
-        closeAction: "Cancel",
+        closeAction: "Cancel"
       });
       setOpenAlert(true);
     } else {
@@ -316,54 +291,20 @@ export const SchemaModal = ({
             )}
           </Typography>
         </DialogTitle>
-        <Formik
-          initialValues={initValues}
-          validationSchema={schemaValidatorShaper(initValues.name)}
-          onSubmit={handleSubmit}
-        >
-          {({
-            errors,
-            setErrors,
-            isSubmitting,
-            isValidating,
-            values,
-            touched,
-            setValues,
-            setFieldValue,
-            initValues,
-            dirty,
-          }) => (
+        <Formik initialValues={initValues} validationSchema={schemaValidatorShaper(initValues.name)} onSubmit={handleSubmit}>
+          {({ errors, setErrors, isSubmitting, isValidating, values, touched, setValues, setFieldValue, initValues, dirty }) => (
             <Form>
               {isLoading ? (
                 <DialogContent className={classes.loadingDialog}>
                   <CircularProgress size={75} />
                 </DialogContent>
               ) : (
-                <DialogContent
-                  className={classes.content}
-                  style={decideHeight()}
-                >
+                <DialogContent className={classes.content} style={decideHeight()}>
                   <Typography className={classes.description}>
-                    Last change made by{" "}
-                    <strong>{`${
-                      values.modifiedBy || username || "N/A"
-                    }`}</strong>{" "}
-                    on{" "}
-                    <strong>
-                      {values.modifiedOn
-                        ? `${values.modifiedOn}`
-                        : `${new Date()}`}
-                    </strong>
+                    Last change made by <strong>{`${values.modifiedBy || username || "N/A"}`}</strong> on{" "}
+                    <strong>{values.modifiedOn ? `${values.modifiedOn}` : `${new Date()}`}</strong>
                   </Typography>
-                  <SchemaForm
-                    touched={touched}
-                    errors={errors}
-                    formValues={values}
-                    setValues={setValues}
-                    setFieldValue={setFieldValue}
-                    editing={editing}
-                    initValues={initValues}
-                  />
+                  <SchemaForm touched={touched} errors={errors} formValues={values} setValues={setValues} setFieldValue={setFieldValue} editing={editing} initValues={initValues} />
                 </DialogContent>
               )}
               <DialogActions className={classes.actions}>
@@ -378,29 +319,17 @@ export const SchemaModal = ({
                                 size={width < actionsBreak ? "small" : "medium"}
                                 variant="contained"
                                 color="secondary"
-                                startIcon={
-                                  width < actionsBreak ? null : <DeleteIcon />
-                                }
-                                onClick={handleDeleteDialog}
-                              >
-                                {admin && width > deleteButtonTextBreak
-                                  ? "Delete Forever"
-                                  : "Delete"}
+                                startIcon={width < actionsBreak ? null : <DeleteIcon />}
+                                onClick={handleDeleteDialog}>
+                                {admin && width > deleteButtonTextBreak ? "Delete Forever" : "Delete"}
                               </Button>
                               {admin && values.isDeleted ? (
                                 <Button
-                                  size={
-                                    width < actionsBreak ? "small" : "medium"
-                                  }
+                                  size={width < actionsBreak ? "small" : "medium"}
                                   variant="contained"
                                   color="primary"
                                   onClick={handleRestore}
-                                  startIcon={
-                                    width < actionsBreak ? null : (
-                                      <RestorePageIcon />
-                                    )
-                                  }
-                                >
+                                  startIcon={width < actionsBreak ? null : <RestorePageIcon />}>
                                   Restore
                                 </Button>
                               ) : null}
@@ -419,19 +348,8 @@ export const SchemaModal = ({
                         size={width < actionsBreak ? "small" : "medium"}
                         variant="contained"
                         color={editing && dirty ? "secondary" : "default"}
-                        startIcon={
-                          width < actionsBreak ? null : editing ? (
-                            dirty ? (
-                              <DeleteIcon />
-                            ) : null
-                          ) : (
-                            <EditIcon />
-                          )
-                        }
-                        onClick={() =>
-                          handleEdit(dirty, setValues, setErrors, values)
-                        }
-                      >
+                        startIcon={width < actionsBreak ? null : editing ? dirty ? <DeleteIcon /> : null : <EditIcon />}
+                        onClick={() => handleEdit(dirty, setValues, setErrors, values)}>
                         {editing ? "Cancel" : "Edit"}
                       </Button>
                     );
@@ -445,18 +363,12 @@ export const SchemaModal = ({
                     variant="contained"
                     color="primary"
                     onClick={handleApprove}
-                    startIcon={width < actionsBreak ? null : <CheckIcon />}
-                  >
+                    startIcon={width < actionsBreak ? null : <CheckIcon />}>
                     Approve
                   </Button>
                 )}
                 {!editing && (
-                  <Button
-                    size={width < actionsBreak ? "small" : "medium"}
-                    variant="contained"
-                    onClick={handleClose}
-                    startIcon={width < actionsBreak ? null : <CloseIcon />}
-                  >
+                  <Button size={width < actionsBreak ? "small" : "medium"} variant="contained" onClick={handleClose} startIcon={width < actionsBreak ? null : <CloseIcon />}>
                     Close
                   </Button>
                 )}
@@ -467,22 +379,8 @@ export const SchemaModal = ({
                     variant="contained"
                     color="primary"
                     startIcon={width < actionsBreak ? null : <SaveIcon />}
-                    disabled={
-                      !_.isEmpty(errors) || !dirty || isValidating
-                        ? true
-                        : false
-                    }
-                  >
-                    {isSubmitting || isValidating ? (
-                      <CircularProgress
-                        size={24}
-                        className={classes.loadingSave}
-                      />
-                    ) : newSchema ? (
-                      "Save"
-                    ) : (
-                      "Save Changes"
-                    )}
+                    disabled={!_.isEmpty(errors) || !dirty || isValidating ? true : false}>
+                    {isSubmitting || isValidating ? <CircularProgress size={24} className={classes.loadingSave} /> : newSchema ? "Save" : "Save Changes"}
                   </Button>
                 )}
               </DialogActions>
@@ -500,5 +398,5 @@ SchemaModal.propTypes = {
   newSchema: PropTypes.bool,
   initValues: PropTypes.object,
   handleClose: PropTypes.func,
-  admin: PropTypes.bool,
+  admin: PropTypes.bool
 };

@@ -14,6 +14,6 @@ export const errorMethods = (Meteor, ErrorsCollection) => {
     },
     deleteAllErrors: () => {
       ErrorsCollection.remove({});
-    },
+    }
   });
 };

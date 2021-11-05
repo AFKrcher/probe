@@ -19,14 +19,14 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     overflow: "hidden",
     filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
-    marginBottom: -10,
+    marginBottom: -10
   },
   imageContainer: {
     height: "40ch",
     width: "100%",
     display: "block",
     objectFit: "cover",
-    backgroundColor: "lightGray",
+    backgroundColor: "lightGray"
   },
   rootModal: {
     marginTop: -5,
@@ -34,44 +34,36 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     overflow: "hidden",
     filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
-    marginBottom: -10,
+    marginBottom: -10
   },
   imageContainerModal: {
     height: "50ch",
     width: "100%",
     display: "block",
     objectFit: "cover",
-    backgroundColor: "lightGray",
+    backgroundColor: "lightGray"
   },
   rootDashboard: {
     flexGrow: 1,
     overflow: "hidden",
-    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`
   },
   imageContainerDashboard: {
     height: "50vh",
     width: "100%",
     display: "block",
     objectFit: "cover",
-    backgroundColor: "lightGray",
+    backgroundColor: "lightGray"
   },
   mobileStepper: {
-    backgroundColor: "transparent",
-  },
+    backgroundColor: "transparent"
+  }
 }));
 
 // breakpoints based on device width / height
 const actionsBreak = 600;
 
-export const Gallery = ({
-  initValues,
-  autoplay = true,
-  width,
-  description = false,
-  clickable = false,
-  modal = false,
-  dashboard = false,
-}) => {
+export const Gallery = ({ initValues, autoplay = true, width, description = false, clickable = false, modal = false, dashboard = false }) => {
   const images = getSatImages(initValues);
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
@@ -93,14 +85,11 @@ export const Gallery = ({
 
   const decideStyle = (baseClass) => {
     if (modal && baseClass === "root") return classes.rootModal;
-    if (modal && baseClass === "imageContainer")
-      return classes.imageContainerModal;
+    if (modal && baseClass === "imageContainer") return classes.imageContainerModal;
     if (dashboard && baseClass === "root") return classes.rootDashboard;
-    if (dashboard && baseClass === "imageContainer")
-      return classes.imageContainerDashboard;
+    if (dashboard && baseClass === "imageContainer") return classes.imageContainerDashboard;
     if (!modal && !dashboard && baseClass === "root") return classes.root;
-    if (!modal && !dashboard && baseClass === "imageContainer")
-      return classes.imageContainer;
+    if (!modal && !dashboard && baseClass === "imageContainer") return classes.imageContainer;
   };
 
   return (
@@ -114,14 +103,8 @@ export const Gallery = ({
           onChangeIndex={handleStepChange}
           enableMouseEvents
           style={{
-            cursor:
-              !clickable && images?.length > 1
-                ? "grab"
-                : clickable
-                ? "pointer"
-                : "default",
-          }}
-        >
+            cursor: !clickable && images?.length > 1 ? "grab" : clickable ? "pointer" : "default"
+          }}>
           {typeof images !== "string" ? (
             images.map((step, index) => (
               <div key={index}>
@@ -132,21 +115,14 @@ export const Gallery = ({
                     src={step.url}
                     alt={step.description}
                     onClick={() => {
-                      clickable
-                        ? window.open(step.url, "_blank").focus()
-                        : null;
+                      clickable ? window.open(step.url, "_blank").focus() : null;
                     }}
                   />
                 ) : null}
               </div>
             ))
           ) : (
-            <Box
-              component="img"
-              className={decideStyle("imageContainer")}
-              src={images}
-              alt="Satellite Placeholder"
-            />
+            <Box component="img" className={decideStyle("imageContainer")} src={images} alt="Satellite Placeholder" />
           )}
         </AutoPlaySwipeableViews>
         {images.length > 1 ? (
@@ -159,11 +135,7 @@ export const Gallery = ({
               width < actionsBreak ? (
                 <div />
               ) : (
-                <Button
-                  size="small"
-                  onClick={handleNext}
-                  disabled={activeStep === maxSteps - 1}
-                >
+                <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
                   <KeyboardArrowRight />
                 </Button>
               )
@@ -172,11 +144,7 @@ export const Gallery = ({
               width < actionsBreak ? (
                 <div />
               ) : (
-                <Button
-                  size="small"
-                  onClick={handleBack}
-                  disabled={activeStep === 0}
-                >
+                <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
                   <KeyboardArrowLeft />
                 </Button>
               )
@@ -184,9 +152,7 @@ export const Gallery = ({
           />
         ) : null}
       </Box>
-      {description ? (
-        <div style={{ marginTop: "1em" }}>{images[activeStep].description}</div>
-      ) : null}
+      {description ? <div style={{ marginTop: "1em" }}>{images[activeStep].description}</div> : null}
     </span>
   );
 };
@@ -199,5 +165,5 @@ Gallery.propTypes = {
   description: PropTypes.bool,
   clickable: PropTypes.bool,
   modal: PropTypes.bool,
-  dashboard: PropTypes.bool,
+  dashboard: PropTypes.bool
 };
