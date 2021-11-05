@@ -5,8 +5,8 @@ import { makeStyles, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
   root: {
-    height: "100%",
-  },
+    height: "100%"
+  }
 }));
 
 export const PrivacyPolicy = () => {
@@ -14,12 +14,8 @@ export const PrivacyPolicy = () => {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h3">
-        Privacy Policy
-      </Typography>
-      <p>
-
-      </p>
+      <Typography variant="h3">Privacy Policy</Typography>
+      <p></p>
     </div>
   );
 };

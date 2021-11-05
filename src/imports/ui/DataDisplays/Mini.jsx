@@ -10,51 +10,44 @@ import { SchemaCollection } from "../../api/schemas";
 import useWindowSize from "../Hooks/useWindowSize.jsx";
 
 //@material-ui
-import {
-  Dialog,
-  Grid,
-  makeStyles,
-  Tooltip,
-  Typography,
-  Paper,
-} from "@material-ui/core";
+import { Dialog, Grid, makeStyles, Tooltip, Typography, Paper } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   container: {
     width: "100%",
-    marginBottom: 30,
+    marginBottom: 30
   },
   paper: {
     backgroundColor: theme.palette.grid.background,
     marginTop: 10,
-    borderRadius: 5,
+    borderRadius: 5
   },
   orbit: {
     padding: 10,
-    fontWeight: 600,
+    fontWeight: 600
   },
   card: {
     margin: "0px 15px 10px 15px",
     color: ({ color }) => color,
     "&:hover": {
       color: theme.palette.info.light,
-      cursor: "pointer",
-    },
+      cursor: "pointer"
+    }
   },
   tooltip: {
-    width: "auto",
+    width: "auto"
   },
   description: {
     display: "flex",
     flexDirection: "column",
-    padding: 5,
+    padding: 5
   },
   satName: {
-    fontWeight: 600,
+    fontWeight: 600
   },
   satDesc: {
-    marginTop: 5,
-  },
+    marginTop: 5
+  }
 }));
 
 export const Mini = () => {
@@ -73,8 +66,8 @@ export const Mini = () => {
           "names.name": 1,
           "orbits.orbit": 1,
           "descriptionShort.descriptionShort": 1,
-          "cosparID.cosparID": 1,
-        },
+          "cosparID.cosparID": 1
+        }
       }
     )
       .fetch()
@@ -111,20 +104,13 @@ export const Mini = () => {
               <Typography variant="h6" className={classes.satName}>
                 {sat.names ? sat.names[0]?.name : "N/A"}
               </Typography>
-              <Typography variant="caption">
-                NORAD ID: {sat.noradID ? sat.noradID : "N/A"}
-              </Typography>
-              <Typography variant="caption">
-                COSPAR ID: {sat.cosparID ? sat.cosparID[0]?.cosparID : "N/A"}
-              </Typography>
+              <Typography variant="caption">NORAD ID: {sat.noradID ? sat.noradID : "N/A"}</Typography>
+              <Typography variant="caption">COSPAR ID: {sat.cosparID ? sat.cosparID[0]?.cosparID : "N/A"}</Typography>
               <Typography variant="body2" className={classes.satDesc}>
-                {sat.descriptionShort
-                  ? sat.descriptionShort[0]?.descriptionShort
-                  : "No description available"}
+                {sat.descriptionShort ? sat.descriptionShort[0]?.descriptionShort : "No description available"}
               </Typography>
             </span>
-          }
-        >
+          }>
           <Typography variant="body2" onClick={() => openCard(sat)}>
             {sat.noradID}
           </Typography>
@@ -136,13 +122,7 @@ export const Mini = () => {
   return (
     <Grid container spacing={1}>
       <span className={classes.container}>
-        <Dialog
-          open={open}
-          onClose={closeCard}
-          maxWidth="xs"
-          fullWidth
-          scroll="body"
-        >
+        <Dialog open={open} onClose={closeCard} maxWidth="xs" fullWidth scroll="body">
           <SatCard satellite={sat} width={width} height={height} />
         </Dialog>
         {isLoadingSats || isLoadingSchemas ? null : (
@@ -156,8 +136,7 @@ export const Mini = () => {
                   <Grid container>
                     {sats.map((sat, index) => {
                       if (sat.orbits) {
-                        if (sat.orbits[0].orbit === regime)
-                          return gridItem(sat, index);
+                        if (sat.orbits[0].orbit === regime) return gridItem(sat, index);
                       } else if (regime === "Undetermined" && !sat.orbit) {
                         return gridItem(sat, index);
                       }

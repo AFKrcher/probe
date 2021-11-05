@@ -29,13 +29,10 @@ import { errorMethods } from "./methods/error";
 import { startup } from "./methods/startup";
 
 dotenv.config({
-  path: Assets.absoluteFilePath(
-    process.env.NODE_ENV === "development" ? ".env.dev" : ".env.prod"
-  ), // .env.* files in the ~/src/private folder
+  path: Assets.absoluteFilePath(process.env.NODE_ENV === "development" ? ".env.dev" : ".env.prod") // .env.* files in the ~/src/private folder
 });
 
-const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT, NODE_ENV, PM2 } =
-  process.env;
+const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT, NODE_ENV, PM2 } = process.env;
 
 Meteor.startup(() => {
   console.log("=> PROBE server is starting-up...");
@@ -54,17 +51,9 @@ Meteor.startup(() => {
   Meteor.publish("roles", () => {
     if (Meteor.user()) {
       if (Roles.userIsInRole(Meteor.userId(), "admin")) {
-        return [
-          Meteor.users.find(),
-          Meteor.roles.find(),
-          Meteor.roleAssignment.find(),
-        ];
+        return [Meteor.users.find(), Meteor.roles.find(), Meteor.roleAssignment.find()];
       } else {
-        return [
-          Meteor.users.find({ _id: Meteor.user()._id }),
-          Meteor.roles.find(),
-          Meteor.roleAssignment.find(),
-        ];
+        return [Meteor.users.find({ _id: Meteor.user()._id }), Meteor.roles.find(), Meteor.roleAssignment.find()];
       }
     } else {
       return [];
@@ -88,14 +77,7 @@ Meteor.startup(() => {
   });
 
   // Account Methods
-  accountMethods(
-    Meteor,
-    Accounts,
-    Roles,
-    allowedRoles,
-    UsersCollection,
-    PROBE_API_KEY
-  );
+  accountMethods(Meteor, Accounts, Roles, allowedRoles, UsersCollection, PROBE_API_KEY);
   // Satellite Methods
   satelliteMethods(Meteor, Roles, SatelliteCollection, PROBE_API_KEY);
   // Schema methods
@@ -130,22 +112,22 @@ Meteor.startup(() => {
       "restoreSchema",
       "adminCheckSchema",
       "resetPassword",
-      "loginWithPassword",
+      "loginWithPassword"
     ],
     limit: 10, // limits method calls to 10 requests per 10 seconds
-    timeRange: 10000,
+    timeRange: 10000
   });
 
   methodRateLimit({
     methods: ["sendEmail", "registerUser", "forgotPassword"],
     limit: 1, // limits method calls to 1 request per 60 seconds
-    timeRange: 60000,
+    timeRange: 60000
   });
 
   methodRateLimit({
     methods: ["forgotPassword"],
     limit: 5, // limits method calls to 5 requests per 60 seconds
-    timeRange: 60000,
+    timeRange: 60000
   });
 
   // Reseeding functions
@@ -165,11 +147,5 @@ Meteor.startup(() => {
     false // set this to true if you want to force a db re-seed on server restart
   );
 
-  console.log(
-    `=> PROBE server is running! Listening at ${ROOT_URL}${
-      NODE_ENV === "production" && (PM2 || ROOT_URL.includes("localhost"))
-        ? ":" + PORT
-        : ""
-    }`
-  );
+  console.log(`=> PROBE server is running! Listening at ${ROOT_URL}${NODE_ENV === "production" && (PM2 || ROOT_URL.includes("localhost")) ? ":" + PORT : ""}`);
 });

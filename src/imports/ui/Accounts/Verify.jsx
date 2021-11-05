@@ -14,8 +14,7 @@ export const Verify = () => {
   const location = useLocation();
   const history = useHistory();
 
-  const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } =
-    useContext(HelpersContext);
+  const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } = useContext(HelpersContext);
 
   const token = location.search.slice(7, location.search.length);
 
@@ -24,7 +23,7 @@ export const Verify = () => {
       setAlert({
         title: "Error Encountered",
         text: "Your email has already been verified!",
-        closeAction: buttonClick,
+        closeAction: buttonClick
       });
       setOpenAlert(true);
     } else {
@@ -38,7 +37,7 @@ export const Verify = () => {
             title: "Error Encountered",
             text: err?.reason || res?.toString(),
             actions: null,
-            closeAction: buttonClick,
+            closeAction: buttonClick
           });
           setOpenAlert(true);
         }
@@ -50,8 +49,7 @@ export const Verify = () => {
     <span
       onClick={() => {
         history.push("/");
-      }}
-    >
+      }}>
       CLOSE
     </span>
   );

@@ -8,35 +8,23 @@ import NotReviewedOutlinedIcon from "@material-ui/icons/CancelOutlined";
 
 // Data display functions
 export const getSatName = (satellite) => {
-  return satellite && satellite.names && satellite.names.length > 0
-    ? satellite.names[0].name
-    : "Name not found...";
+  return satellite && satellite.names && satellite.names.length > 0 ? satellite.names[0].name : "Name not found...";
 };
 
 export const getSatImage = (satellite) => {
-  return satellite && satellite.images && satellite.images.length > 0
-    ? satellite.images[0].link || satellite.images[0].url
-    : "/assets/sat-placeholder.jpg";
+  return satellite && satellite.images && satellite.images.length > 0 ? satellite.images[0].link || satellite.images[0].url : "/assets/sat-placeholder.jpg";
 };
 
 export const getSatImages = (satellite) => {
-  return satellite && satellite.images && satellite.images.length > 0
-    ? satellite.images
-    : "/assets/sat-placeholder.jpg";
+  return satellite && satellite.images && satellite.images.length > 0 ? satellite.images : "/assets/sat-placeholder.jpg";
 };
 
 export const getSatID = (satellite) => {
-  return satellite && satellite.noradID
-    ? satellite.noradID
-    : "NORAD ID not found...";
+  return satellite && satellite.noradID ? satellite.noradID : "NORAD ID not found...";
 };
 
 export const getSatDesc = (satellite) => {
-  return satellite &&
-    satellite.descriptionShort &&
-    satellite.descriptionShort.length > 0
-    ? satellite.descriptionShort[0].descriptionShort
-    : "";
+  return satellite && satellite.descriptionShort && satellite.descriptionShort.length > 0 ? satellite.descriptionShort[0].descriptionShort : "";
 };
 
 export const decideVerifiedValidatedAdornment = (
@@ -49,77 +37,44 @@ export const decideVerifiedValidatedAdornment = (
 ) => {
   if (array) {
     let userChecking = array
-      .filter(
-        (checker) =>
-          checker.method === "user" && (checker.verified || checker.validated)
-      )
+      .filter((checker) => checker.method === "user" && (checker.verified || checker.validated))
       .map((checker) => {
         return {
           name: checker.name,
-          date: checker.verifiedOn || checker.validatedOn,
+          date: checker.verifiedOn || checker.validatedOn
         };
       });
     let machineChecking = array
-      .filter(
-        (checker) =>
-          checker.method === "machine" &&
-          (checker.verified || checker.validated)
-      )
+      .filter((checker) => checker.method === "machine" && (checker.verified || checker.validated))
       .map((checker) => {
         return {
           name: checker.name,
-          date: checker.verifiedOn || checker.validatedOn,
+          date: checker.verifiedOn || checker.validatedOn
         };
       });
 
-    let mostRecentUser = `${
-      userChecking[userChecking.length - 1]?.name
-    } on ${userChecking[userChecking.length - 1]?.date
-      .toString()
-      .substr(0, 10)}`;
-    let mostRecentMachine = `${
-      machineChecking[machineChecking.length - 1]?.name
-    } on ${machineChecking[machineChecking.length - 1]?.date
-      .toString()
-      .substr(0, 10)}`;
+    let mostRecentUser = `${userChecking[userChecking.length - 1]?.name} on ${userChecking[userChecking.length - 1]?.date.toString().substr(0, 10)}`;
+    let mostRecentMachine = `${machineChecking[machineChecking.length - 1]?.name} on ${machineChecking[machineChecking.length - 1]?.date.toString().substr(0, 10)}`;
 
     if (!style && !tip) {
-      if (userChecking.length > 0 && machineChecking.length > 0)
-        return verified ? <VerifiedIcon /> : <ValidatedIcon />;
-      if (
-        (userChecking.length > 0 && machineChecking.length === 0) ||
-        (userChecking.length === 0 && machineChecking.length > 0)
-      )
+      if (userChecking.length > 0 && machineChecking.length > 0) return verified ? <VerifiedIcon /> : <ValidatedIcon />;
+      if ((userChecking.length > 0 && machineChecking.length === 0) || (userChecking.length === 0 && machineChecking.length > 0))
         return verified ? <IndeterminateOutlinedIcon /> : <IndeterminateIcon />;
-      if (userChecking.length === 0 && machineChecking.length === 0)
-        return verified ? <NotReviewedOutlinedIcon /> : <NotReviewedIcon />;
+      if (userChecking.length === 0 && machineChecking.length === 0) return verified ? <NotReviewedOutlinedIcon /> : <NotReviewedIcon />;
     } else if (!tip) {
-      if (userChecking.length > 0 && machineChecking.length > 0)
-        return classes.validatedAdornment;
-      if (
-        (userChecking.length > 0 && machineChecking.length === 0) ||
-        (userChecking.length === 0 && machineChecking.length > 0)
-      )
-        return classes.partiallyValidatedAdornment;
-      if (userChecking.length === 0 && machineChecking.length === 0)
-        return classes.notValidatedAdornment;
+      if (userChecking.length > 0 && machineChecking.length > 0) return classes.validatedAdornment;
+      if ((userChecking.length > 0 && machineChecking.length === 0) || (userChecking.length === 0 && machineChecking.length > 0)) return classes.partiallyValidatedAdornment;
+      if (userChecking.length === 0 && machineChecking.length === 0) return classes.notValidatedAdornment;
     } else {
       if (userChecking.length > 0 && machineChecking.length > 0)
         return verified
           ? `Verified by user: ${mostRecentUser} and machine: ${mostRecentMachine}`
           : `Validated across multiple sources by user: ${mostRecentUser} and machine: ${mostRecentMachine}`;
       if (userChecking.length > 0 && machineChecking.length === 0)
-        return verified
-          ? `Verified by user: ${mostRecentUser}`
-          : `Validated across multiple sources by user: ${mostRecentUser}`;
+        return verified ? `Verified by user: ${mostRecentUser}` : `Validated across multiple sources by user: ${mostRecentUser}`;
       if (userChecking.length === 0 && machineChecking.length > 0)
-        return verified
-          ? `Verified by machine: ${mostRecentMachine}`
-          : `Validated across multiple sources by machine: ${mostRecentMachine}`;
-      if (userChecking.length === 0 && machineChecking.length === 0)
-        return verified
-          ? "Not verified by user nor machine"
-          : "Not validated by user nor machine";
+        return verified ? `Verified by machine: ${mostRecentMachine}` : `Validated across multiple sources by machine: ${mostRecentMachine}`;
+      if (userChecking.length === 0 && machineChecking.length === 0) return verified ? "Not verified by user nor machine" : "Not validated by user nor machine";
     }
   }
 };
@@ -150,18 +105,18 @@ export const emptyDataRemover = (values) => {
             method: "",
             name: "",
             verified: false,
-            verifiedOn: "",
-          },
+            verifiedOn: ""
+          }
         ],
         validated: [
           {
             method: "",
             name: "",
             validated: false,
-            validatedOn: "",
-          },
-        ],
-      },
+            validatedOn: ""
+          }
+        ]
+      }
     ];
   return values;
 };

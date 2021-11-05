@@ -7,14 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 import ProtectedFunctionality from "../Helpers/ProtectedFunctionality.jsx";
 
 // @material-ui
-import {
-  withStyles,
-  Menu,
-  MenuItem,
-  Button,
-  Divider,
-  makeStyles,
-} from "@material-ui/core";
+import { withStyles, Menu, MenuItem, Button, Divider, makeStyles } from "@material-ui/core";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -36,25 +29,25 @@ import { themes } from "../css/Themes.jsx";
 const useStyles = makeStyles((theme) => ({
   menuIcon: {
     color: theme.palette.tertiary.main,
-    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`,
-  },
+    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`
+  }
 }));
 
 const StyledMenu = withStyles({
   paper: {
-    border: "1px solid #d3d4d5",
-  },
+    border: "1px solid #d3d4d5"
+  }
 })((props) => (
   <Menu
     elevation={0}
     getContentAnchorEl={null}
     anchorOrigin={{
       vertical: "bottom",
-      horizontal: "center",
+      horizontal: "center"
     }}
     transformOrigin={{
       vertical: "top",
-      horizontal: "center",
+      horizontal: "center"
     }}
     {...props}
   />
@@ -65,10 +58,10 @@ const StyledMenuItem = withStyles((theme) => ({
     "&:focus": {
       backgroundColor: theme.palette.primary.main,
       "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
-        color: theme.palette.common.white,
-      },
-    },
-  },
+        color: theme.palette.common.white
+      }
+    }
+  }
 }))(MenuItem);
 
 export const SmallNav = ({ theme, toggleTheme }) => {
@@ -102,21 +95,10 @@ export const SmallNav = ({ theme, toggleTheme }) => {
 
   return (
     <React.Fragment>
-      <Button
-        onClick={handleClick}
-        id="drop-down"
-        disableElevation
-        className={classes.menuIcon}
-      >
+      <Button onClick={handleClick} id="drop-down" disableElevation className={classes.menuIcon}>
         <MenuIcon fontSize="medium" />
       </Button>
-      <StyledMenu
-        id="customized-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
+      <StyledMenu id="customized-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         <StyledMenuItem id="home" component={Link} to="/">
           <ListItemIcon>
             <HomeIcon fontSize="small" />
@@ -147,8 +129,7 @@ export const SmallNav = ({ theme, toggleTheme }) => {
           to="/"
           onClick={() => {
             window.open(`${Meteor.absoluteUrl("/api")}`, "_blank").focus();
-          }}
-        >
+          }}>
           <ListItemIcon>
             <Code fontSize="small" />
           </ListItemIcon>
@@ -156,13 +137,7 @@ export const SmallNav = ({ theme, toggleTheme }) => {
         </StyledMenuItem>
         <Divider component="li" />
         <StyledMenuItem onClick={toggleTheme}>
-          <ListItemIcon>
-            {theme === themes.dark ? (
-              <Brightness2 aria-label="dark theme" fontSize="small" />
-            ) : (
-              <BrightnessHigh aria-label="light theme" />
-            )}
-          </ListItemIcon>
+          <ListItemIcon>{theme === themes.dark ? <Brightness2 aria-label="dark theme" fontSize="small" /> : <BrightnessHigh aria-label="light theme" />}</ListItemIcon>
           <ListItemText primary="Toggle Theme" fontSize="small" />
         </StyledMenuItem>
         {user ? (
@@ -183,11 +158,7 @@ export const SmallNav = ({ theme, toggleTheme }) => {
               <ListItemIcon>
                 <ExitToAppIcon fontSize="small" />
               </ListItemIcon>
-              <ListItemText
-                id="logout"
-                primary="Logout"
-                onClick={handleLogout}
-              />
+              <ListItemText id="logout" primary="Logout" onClick={handleLogout} />
             </StyledMenuItem>
             <ProtectedFunctionality
               component={() => {
@@ -229,5 +200,5 @@ export const SmallNav = ({ theme, toggleTheme }) => {
 // Prop checking
 SmallNav.propTypes = {
   theme: PropTypes.object,
-  toggleTheme: PropTypes.func,
+  toggleTheme: PropTypes.func
 };

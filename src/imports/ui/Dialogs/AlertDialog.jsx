@@ -23,19 +23,14 @@ export default function AlertDialog({ bodyAlert }) {
       <Dialog open={openAlert} onClose={handleCancelAlert}>
         <DialogTitle>{bodyAlert ? bodyAlert.title : "empty title"}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            {bodyAlert ? bodyAlert.text : "empty text"}
-          </DialogContentText>
+          <DialogContentText>{bodyAlert ? bodyAlert.text : "empty text"}</DialogContentText>
         </DialogContent>
         <DialogActions
           style={{
             display: "flex",
-            justifyContent: bodyAlert?.actions
-              ? "space-between"
-              : "space-around",
-            margin: "5px 15px 10px 15px",
-          }}
-        >
+            justifyContent: bodyAlert?.actions ? "space-between" : "space-around",
+            margin: "5px 15px 10px 15px"
+          }}>
           {bodyAlert ? bodyAlert.actions : "empty actions"}
           <Button size="small" variant="contained" onClick={handleCancelAlert}>
             {bodyAlert?.closeAction || "Close"}
@@ -48,5 +43,5 @@ export default function AlertDialog({ bodyAlert }) {
 
 // Prop checking
 AlertDialog.propTypes = {
-  bodyAlert: PropTypes.object,
+  bodyAlert: PropTypes.object
 };

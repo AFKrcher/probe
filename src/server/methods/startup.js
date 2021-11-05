@@ -28,25 +28,19 @@ export const startup = (
   }
 
   // Role creation
-  allowedRoles.forEach((role) =>
-    Roles.createRole(role, { unlessExists: true })
-  );
+  allowedRoles.forEach((role) => Roles.createRole(role, { unlessExists: true }));
 
   // Accounts config
   Accounts.config({
-    sendVerificationEmail: true,
+    sendVerificationEmail: true
   });
 
   // Email verification and password reset emails
   Accounts.urls.resetPassword = (token) => {
-    return ROOT_URL.includes("localhost") && PM2
-      ? `${ROOT_URL}:${PORT}/reset?token=${token}`
-      : Meteor.absoluteUrl(`/reset?token=${token}`);
+    return ROOT_URL.includes("localhost") && PM2 ? `${ROOT_URL}:${PORT}/reset?token=${token}` : Meteor.absoluteUrl(`/reset?token=${token}`);
   };
   Accounts.urls.verifyEmail = (token) => {
-    return ROOT_URL.includes("localhost") && PM2
-      ? `${ROOT_URL}:${PORT}/verify?token=${token}`
-      : Meteor.absoluteUrl(`/verify?token=${token}`);
+    return ROOT_URL.includes("localhost") && PM2 ? `${ROOT_URL}:${PORT}/verify?token=${token}` : Meteor.absoluteUrl(`/verify?token=${token}`);
   };
 
   // Email template settings
@@ -60,7 +54,7 @@ export const startup = (
         \nPlease visit this page to reset your password: ${url}
         \nIf you did not request this, someone may be attempting to gain unauthorized access your account. Please click the "Contact Us" button on PROBE to notify us if this email was sent to you without your permission.
         \nThank you,\nThe PROBE Team`;
-    },
+    }
   };
   Accounts.emailTemplates.verifyEmail = {
     subject() {
@@ -72,7 +66,7 @@ export const startup = (
         \nUpon successful email verification, you will be able to access all of PROBE's features!
         \nIf you did not request this, someone may be attempting to gain unauthorized access to your account. Please click the "Contact Us" button on PROBE to notify us if this email was sent to you without your permission.
         \nThank you,\nThe PROBE Team`;
-    },
+    }
   };
 
   // User creation after-actions
@@ -83,7 +77,7 @@ export const startup = (
       createdAt: user.createdAt,
       username: user.username,
       emails: user.emails,
-      favorites: user.favorites,
+      favorites: user.favorites
     });
     return user;
   });
@@ -125,23 +119,18 @@ export const startup = (
     const email = "no-reply@saberastro.com";
     Meteor.call("userExists", name, (err, res) => {
       if (err || res) {
-        if (err && err.message !== "Username already exists.")
-          console.log(`> ${err.message}`);
+        if (err && err.message !== "Username already exists.") console.log(`> ${err.message}`);
         return;
       } else if (UsersCollection.find().count() < 1) {
         Accounts.createUser({
           email: email,
           username: name,
-          password: ADMIN_PASSWORD, // only for dev testing - password changed on deployment
+          password: ADMIN_PASSWORD // only for dev testing - password changed on deployment
         });
         console.log("=> Development Account Seeded");
         Roles.addUsersToRoles(Accounts.findUserByUsername(name), "admin");
         const id = Accounts.findUserByUsername(name)._id;
-        Meteor.users.update(
-          id,
-          { $set: { emails: [{ address: email, verified: true }] } },
-          { multi: true }
-        );
+        Meteor.users.update(id, { $set: { emails: [{ address: email, verified: true }] } }, { multi: true });
         console.log("=> Development Account Verified");
       }
     });
@@ -159,8 +148,8 @@ export const startup = (
             username: 1,
             emails: 1,
             favorites: 1,
-            createdAt: 1,
-          },
+            createdAt: 1
+          }
         }
       )
       .fetch();
@@ -176,7 +165,7 @@ export const startup = (
       time: new Date().toISOString(),
       msg: "Database Reset",
       source: "Test Error",
-      error: {},
+      error: {}
     };
     ErrorsCollection.insert(errors);
     console.log("=> ErrorsCollection Seeded");

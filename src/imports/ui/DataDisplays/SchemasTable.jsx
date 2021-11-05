@@ -15,80 +15,67 @@ import { Popper } from "../Dialogs/Popper.jsx";
 import { Key } from "../Helpers/Key.jsx";
 
 // @material-ui
-import {
-  Button,
-  Grid,
-  makeStyles,
-  Typography,
-  Tooltip,
-  IconButton,
-} from "@material-ui/core";
-import {
-  DataGrid,
-  GridToolbarContainer,
-  GridToolbarColumnsButton,
-  GridToolbarFilterButton,
-  GridToolbarDensitySelector,
-} from "@material-ui/data-grid";
+import { Button, Grid, makeStyles, Typography, Tooltip, IconButton } from "@material-ui/core";
+import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector } from "@material-ui/data-grid";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100%",
+    height: "100%"
   },
   description: {
     marginBottom: 15,
-    marginTop: 10,
+    marginTop: 10
   },
   dataGrid: {
     padding: "5px 5px 0px 5px",
     backgroundColor: theme.palette.grid.background,
     marginTop: 5,
     "& .MuiDataGrid-cell": {
-      textOverflow: "ellipse",
+      textOverflow: "ellipse"
     },
     "& .MuiCircularProgress-colorPrimary": {
-      color: theme.palette.text.primary,
-    },
+      color: theme.palette.text.primary
+    }
   },
   toolbarSpacer: {
-    marginBottom: 75,
+    marginBottom: 75
   },
   toolbarContainer: {
-    margin: 5,
+    margin: 5
   },
   toolbar: {
     color: theme.palette.text.primary,
     fontWeight: 500,
-    fontSize: "14px",
+    fontSize: "14px"
   },
   searchBarContainer: {
     position: "relative",
     marginTop: -70,
     bottom: -135,
     zIndex: 1,
-    margin: 20,
+    margin: 20
   },
   actions: {
-    display: "flex",
+    display: "flex"
   },
   actionIconButton: {
     padding: 7,
-    marginLeft: 37.5,
+    marginLeft: 37.5
   },
   spinner: {
-    color: theme.palette.text.primary,
+    color: theme.palette.text.primary
   },
   link: {
     color: theme.palette.text.primary,
     "&:hover": {
-      color: theme.palette.info.light,
-    },
+      color: theme.palette.info.light
+    }
   },
   textField: {
     marginBottom: 20,
-    backgroundColor: theme.palette.grid.background,
-  },
+    backgroundColor: theme.palette.grid.background
+  }
 }));
 
 const newSchemaValues = {
@@ -100,21 +87,21 @@ const newSchemaValues = {
       hidden: true,
       type: "url",
       allowedValues: [],
-      required: true,
+      required: true
     },
     {
       name: "verified",
       hidden: true,
       description: "",
-      type: "verified",
+      type: "verified"
     },
     {
       name: "validated",
       hidden: true,
       type: "validated",
-      required: true,
-    },
-  ],
+      required: true
+    }
+  ]
 };
 
 // breakpoints based on device width / height
@@ -130,14 +117,10 @@ export const SchemasTable = () => {
   const [showModal, setShowModal] = useState(false);
   const [newSchema, setNewSchema] = useState(true);
   const [selector, setSelector] = useState("");
-  const [initialSchemaValues, setInitialSchemaValues] =
-    useState(newSchemaValues);
+  const [initialSchemaValues, setInitialSchemaValues] = useState(newSchemaValues);
 
   const debounced = useDebouncedCallback((cell) => {
-    if (
-      cell.field === "description" &&
-      cell.colDef.computedWidth / cell.value.length < 6.3
-    ) {
+    if (cell.field === "description" && cell.colDef.computedWidth / cell.value.length < 6.3) {
       setShowPopper(true);
       setPopperBody(cell.value);
     } else {
@@ -152,7 +135,7 @@ export const SchemasTable = () => {
   const [rows, schemas, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("schemas");
     const schemas = SchemaCollection.find({
-      isDeleted: false,
+      isDeleted: false
     }).fetch();
     const searchRegex = new RegExp(escapeRegExp(selector), "i");
     const rows = schemas
@@ -167,7 +150,7 @@ export const SchemasTable = () => {
         return {
           id: schema._id,
           name: schema.name,
-          description: schema.description,
+          description: schema.description
         };
       });
     return [rows, schemas, !sub.ready()];
@@ -200,17 +183,8 @@ export const SchemasTable = () => {
 
   const AddSchemaButton = () => {
     return (
-      <Grid
-        container
-        item
-        xs
-        justifyContent={width > addButtonBreak ? "flex-end" : "flex-start"}
-      >
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleAddNewSchema}
-        >
+      <Grid container item xs justifyContent={width > addButtonBreak ? "flex-end" : "flex-start"}>
+        <Button variant="contained" color="primary" onClick={handleAddNewSchema}>
           + Add Schema
         </Button>
       </Grid>
@@ -235,24 +209,23 @@ export const SchemasTable = () => {
                 onClick={() =>
                   handleRowDoubleClick(
                     SchemaCollection.find({
-                      _id: schema.id,
+                      _id: schema.id
                     }).fetch()[0]
                   )
-                }
-              >
+                }>
                 <VisibilityIcon fontSize="small" />
               </IconButton>
             </Tooltip>
           </span>
         );
-      },
+      }
     },
     {
       headerAlign: "left",
       field: "name",
       headerName: "SCHEMA NAME",
       width: 200,
-      editable: false,
+      editable: false
     },
     {
       headerAlign: "left",
@@ -260,8 +233,8 @@ export const SchemasTable = () => {
       headerName: "SCHEMA DESCRIPTION",
       flex: 1,
       minWidth: 200,
-      editable: false,
-    },
+      editable: false
+    }
   ];
 
   return (
@@ -271,43 +244,23 @@ export const SchemasTable = () => {
           <Typography variant="h3">Schemas</Typography>
         </Grid>
         <Grid container item xs justifyContent="flex-end">
-          {width > addButtonBreak ? (
-            <ProtectedFunctionality
-              component={AddSchemaButton}
-              loginRequired={true}
-            />
-          ) : null}
+          {width > addButtonBreak ? <ProtectedFunctionality component={AddSchemaButton} loginRequired={true} /> : null}
         </Grid>
-        {width < addButtonBreak ? (
-          <div style={{ margin: "10px 0px 10px 0px" }}>
-            {
-              <ProtectedFunctionality
-                component={AddSchemaButton}
-                loginRequired={true}
-              />
-            }
-          </div>
-        ) : null}
+        {width < addButtonBreak ? <div style={{ margin: "10px 0px 10px 0px" }}>{<ProtectedFunctionality component={AddSchemaButton} loginRequired={true} />}</div> : null}
       </Grid>
       <Typography gutterBottom variant="body1" className={classes.description}>
-        Each <strong>schema</strong> is built to store sets of data that
-        characterize a satellite. Please see the satellites on the{" "}
+        Each <strong>schema</strong> is built to store sets of data that characterize a satellite. Please see the satellites on the{" "}
         <Tooltip title="Bring me to the schemas page">
           <Link to="/satellites" className={classes.link}>
             previous page
           </Link>
         </Tooltip>{" "}
-        for usage examples. Each <strong>schema</strong> has a reference for
-        where the data was found, a description describing what the data is, and
-        a number of data fields that contain the information.
+        for usage examples. Each <strong>schema</strong> has a reference for where the data was found, a description describing what the data is, and a number of data fields that
+        contain the information.
       </Typography>
       <Key page="SchemasTable" />
       <div className={classes.searchBarContainer}>
-        <SearchBar
-          setSelector={setSelector}
-          multiple={false}
-          placeholder="Search by name or description"
-        />
+        <SearchBar setSelector={setSelector} multiple={false} placeholder="Search by name or description" />
       </div>
       <DataGrid
         className={classes.dataGrid}
@@ -318,7 +271,7 @@ export const SchemasTable = () => {
         autoHeight={true}
         disableSelectionOnClick
         components={{
-          Toolbar: CustomToolbar,
+          Toolbar: CustomToolbar
         }}
         onRowDoubleClick={(row) => {
           handleRowDoubleClick(schemas.find((item) => item._id === row.row.id));
@@ -327,12 +280,7 @@ export const SchemasTable = () => {
         onRowOut={() => debounced(false)}
       />
       <Popper open={showPopper} value={popperBody} />
-      <SchemaModal
-        show={showModal}
-        newSchema={newSchema}
-        initValues={initialSchemaValues}
-        handleClose={() => setShowModal(false)}
-      />
+      <SchemaModal show={showModal} newSchema={newSchema} initValues={initialSchemaValues} handleClose={() => setShowModal(false)} />
     </div>
   );
 };

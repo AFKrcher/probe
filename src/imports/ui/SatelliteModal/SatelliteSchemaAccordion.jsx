@@ -7,18 +7,7 @@ import useWindowSize from "../Hooks/useWindowSize.jsx";
 import { _ } from "meteor/underscore";
 
 // @material-ui
-import {
-  Typography,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Chip,
-  Grid,
-  Button,
-  makeStyles,
-  Tooltip,
-  IconButton,
-} from "@material-ui/core";
+import { Typography, Accordion, AccordionSummary, AccordionDetails, Chip, Grid, Button, makeStyles, Tooltip, IconButton } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import HelpIcon from "@material-ui/icons/Help";
 import EditIcon from "@material-ui/icons/Edit";
@@ -29,49 +18,49 @@ const useStyles = makeStyles((theme) => ({
   accordionBody: {
     backgroundColor: theme.palette.action.hover,
     width: "100%",
-    overflow: "hidden",
+    overflow: "hidden"
   },
   accordionHeader: {
-    display: "flex",
+    display: "flex"
   },
   accordionTitle: {
     marginRight: "5px",
-    marginLeft: "10px",
+    marginLeft: "10px"
   },
   helpIcon: {
     color: theme.palette.text.disabled,
-    fontSize: "medium",
+    fontSize: "medium"
   },
   iconButtons: {
     display: "flex",
-    pointerEvents: "auto",
+    pointerEvents: "auto"
   },
   editIcon: {
     padding: 6,
-    margin: "-6px 0em -6px 0px",
+    margin: "-6px 0em -6px 0px"
   },
   closeIcon: {
     padding: 6,
-    margin: "-6px 10px -6px -20px",
+    margin: "-6px 10px -6px -20px"
   },
   saveIcon: {
     padding: 6,
-    margin: "-6px 0px -6px 0px",
+    margin: "-6px 0px -6px 0px"
   },
   accordianDetails: {
-    marginTop: -15,
+    marginTop: -15
   },
   description: {
-    margin: "5px 10px 10px 10px",
+    margin: "5px 10px 10px 10px"
   },
   buttonContainer: {
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   button: {
     marginTop: 5,
-    marginLeft: 2.5,
-  },
+    marginLeft: 2.5
+  }
 }));
 
 // breakpoints based on device width / height
@@ -99,7 +88,7 @@ export const SatelliteSchemaAccordion = ({
   entries,
   schemaIndex,
   accordionBeingEdited,
-  setAccordionBeingEdited,
+  setAccordionBeingEdited
 }) => {
   const classes = useStyles();
 
@@ -114,10 +103,7 @@ export const SatelliteSchemaAccordion = ({
 
   const onAddField = async () => {
     setTouched({});
-    const schemaFields = schema.fields.reduce(
-      (acc, cur) => ({ ...acc, [cur.name]: "" }),
-      {}
-    );
+    const schemaFields = schema.fields.reduce((acc, cur) => ({ ...acc, [cur.name]: "" }), {});
     const newEntries = [...entries, schemaFields];
     await setFieldValue(schema.name, newEntries);
     await setSatSchema(satelliteValidatorShaper(values, initValues));
@@ -150,9 +136,7 @@ export const SatelliteSchemaAccordion = ({
           <span>
             Changes on <strong>{schema.name}</strong>
             {" in "}
-            <strong>
-              {values.names && values.names[0] ? values.names[0].name : "N/A"}
-            </strong>
+            <strong>{values.names && values.names[0] ? values.names[0].name : "N/A"}</strong>
             {" saved!"}
           </span>
         );
@@ -167,21 +151,10 @@ export const SatelliteSchemaAccordion = ({
   return (
     <React.Fragment>
       <Accordion className={classes.accordionBody} expanded={expanded}>
-        <AccordionSummary
-          onClick={handleExpand}
-          expandIcon={<ExpandMoreIcon />}
-          id={`${schema.name}-accord-header`}
-        >
+        <AccordionSummary onClick={handleExpand} expandIcon={<ExpandMoreIcon />} id={`${schema.name}-accord-header`}>
           <Grid container spacing={editingSchema ? 1 : 4}>
-            <Grid
-              item
-              className={classes.accordionHeader}
-              xs={width > gridSpaceTitleChipBreak ? 11 : 10}
-            >
-              <Chip
-                size="small"
-                label={entries?.length ? entries.length : "0"}
-              />
+            <Grid item className={classes.accordionHeader} xs={width > gridSpaceTitleChipBreak ? 11 : 10}>
+              <Chip size="small" label={entries?.length ? entries.length : "0"} />
               <Typography variant="body1" className={classes.accordionTitle}>
                 {schema.name}
               </Typography>
@@ -189,42 +162,27 @@ export const SatelliteSchemaAccordion = ({
                 <HelpIcon fontSize="small" className={classes.helpIcon} />
               </Tooltip>
             </Grid>
-            {!editing &&
-            width > accordionActionsBreak &&
-            (accordionBeingEdited === schemaIndex ||
-              accordionBeingEdited === -1) ? (
+            {!editing && width > accordionActionsBreak && (accordionBeingEdited === schemaIndex || accordionBeingEdited === -1) ? (
               <Grid item className={classes.iconButtons} xs="auto">
                 {!editingSchema ? (
                   Meteor.userId() &&
-                  Meteor.user({ fields: { "emails.verified": 1 } })?.emails[0]
-                    .verified && ( // not using ProtectedFunctionality due to rendering lag during .map() of accordions
-                    <IconButton
-                      className={classes.editIcon}
-                      onClick={handleEditSchema}
-                    >
+                  Meteor.user({ fields: { "emails.verified": 1 } })?.emails[0].verified && ( // not using ProtectedFunctionality due to rendering lag during .map() of accordions
+                    <IconButton className={classes.editIcon} onClick={handleEditSchema}>
                       <EditIcon fontSize="small" />
                     </IconButton>
                   )
                 ) : (
                   <React.Fragment>
-                    <IconButton
-                      className={classes.closeIcon}
-                      onClick={handleEditSchema}
-                    >
+                    <IconButton className={classes.closeIcon} onClick={handleEditSchema}>
                       <CloseIcon fontSize="small" />
                     </IconButton>
                     <IconButton
                       className={classes.saveIcon}
-                      disabled={
-                        !_.isEmpty(errors) || !dirty || _.isEmpty(touched)
-                          ? true
-                          : false
-                      }
+                      disabled={!_.isEmpty(errors) || !dirty || _.isEmpty(touched) ? true : false}
                       onClick={() => {
                         handleSubmit(values);
                       }}
-                      color="primary"
-                    >
+                      color="primary">
                       <SaveIcon fontSize="small" />
                     </IconButton>
                   </React.Fragment>
@@ -235,9 +193,7 @@ export const SatelliteSchemaAccordion = ({
         </AccordionSummary>
         <AccordionDetails className={classes.accordianDetails}>
           <Grid container spacing={1}>
-            <Typography className={classes.description}>
-              {schema.description || "N/A"}
-            </Typography>
+            <Typography className={classes.description}>{schema.description || "N/A"}</Typography>
             {entries?.map((entry, entryIndex) => (
               <SatelliteSchemaEntry
                 errors={errors}
@@ -260,13 +216,7 @@ export const SatelliteSchemaAccordion = ({
             ))}
             <Grid item xs={12} className={classes.buttonContainer}>
               {editing || editingSchema ? (
-                <Button
-                  variant="contained"
-                  size="medium"
-                  color="default"
-                  onClick={onAddField}
-                  className={classes.button}
-                >
+                <Button variant="contained" size="medium" color="default" onClick={onAddField} className={classes.button}>
                   + Add Entry
                 </Button>
               ) : null}
@@ -302,5 +252,5 @@ SatelliteSchemaAccordion.propTypes = {
   entries: PropTypes.array,
   schemaIndex: PropTypes.number,
   accordionBeingEdited: PropTypes.number,
-  setAccordionBeingEdited: PropTypes.func,
+  setAccordionBeingEdited: PropTypes.func
 };

@@ -24,7 +24,7 @@ export default function SimpleSnackbar({ bodySnackBar }) {
       <Snackbar
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "left",
+          horizontal: "left"
         }}
         open={openSnack}
         autoHideDuration={5000}
@@ -32,12 +32,7 @@ export default function SimpleSnackbar({ bodySnackBar }) {
         message={bodySnackBar}
         action={
           <React.Fragment>
-            <IconButton
-              size="small"
-              aria-label="close"
-              color="inherit"
-              onClick={handleClose}
-            >
+            <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
               <CloseIcon fontSize="small" />
             </IconButton>
           </React.Fragment>
@@ -49,5 +44,5 @@ export default function SimpleSnackbar({ bodySnackBar }) {
 
 // Prop checking
 SimpleSnackbar.propTypes = {
-  bodySnackBar: PropTypes.node,
+  bodySnackBar: PropTypes.node
 };

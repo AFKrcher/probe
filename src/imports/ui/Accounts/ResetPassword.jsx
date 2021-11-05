@@ -3,20 +3,10 @@ import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import { Accounts } from "meteor/accounts-base";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
-import {
-  isValidPassword,
-  isConfirmedPassword,
-} from "/imports/validation/accountYupShape";
+import { isValidPassword, isConfirmedPassword } from "/imports/validation/accountYupShape";
 
 // @material-ui
-import {
-  Grid,
-  Button,
-  makeStyles,
-  TextField,
-  Typography,
-  Paper,
-} from "@material-ui/core";
+import { Grid, Button, makeStyles, TextField, Typography, Paper } from "@material-ui/core";
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
 import SnackBar from "../Dialogs/SnackBar.jsx";
 
@@ -29,27 +19,26 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     alignItems: "center",
     width: "400px",
-    borderRadius: 10,
+    borderRadius: 10
   },
   header: {
-    marginBottom: 20,
+    marginBottom: 20
   },
   textField: {
-    marginBottom: 10,
+    marginBottom: 10
   },
   loginButton: {
-    marginTop: 20,
+    marginTop: 20
   },
   registerButton: {
-    marginTop: 20,
-  },
+    marginTop: 20
+  }
 }));
 
 export const ResetPassword = () => {
   const classes = useStyles();
 
-  const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } =
-    useContext(HelpersContext);
+  const { setOpenAlert, alert, setAlert, setOpenSnack, snack, setSnack } = useContext(HelpersContext);
 
   const [passErr, setPassErr] = useState();
   const [confirmErr, setConfirmErr] = useState();
@@ -72,7 +61,7 @@ export const ResetPassword = () => {
         setAlert({
           title: "Error Encountered",
           text: err.reason,
-          closeAction: "Okay",
+          closeAction: "Okay"
         });
         setOpenAlert(true);
       }
@@ -89,11 +78,7 @@ export const ResetPassword = () => {
 
     if (!isValidPassword(null, newPassword)) {
       if (newPassword.length < 8) {
-        setPassErr(
-          newPassword.length > 128
-            ? "Cannot be longer than 128 characters"
-            : "Must be at least 8 characters long"
-        );
+        setPassErr(newPassword.length > 128 ? "Cannot be longer than 128 characters" : "Must be at least 8 characters long");
       }
     } else {
       setPassErr();
@@ -147,14 +132,7 @@ export const ResetPassword = () => {
             fullWidth
             className={classes.textField}
           />
-          <Button
-            disabled={disabled}
-            variant="outlined"
-            className={classes.loginButton}
-            color="primary"
-            type="submit"
-            fullWidth
-          >
+          <Button disabled={disabled} variant="outlined" className={classes.loginButton} color="primary" type="submit" fullWidth>
             Reset Password
           </Button>
         </form>

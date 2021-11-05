@@ -9,41 +9,34 @@ import { DropDown } from "../Navigation/DropDown";
 import { SmallNav } from "../Navigation/SmallNav";
 
 // @material-ui
-import {
-  AppBar,
-  Toolbar,
-  Button,
-  Typography,
-  makeStyles,
-  Tooltip,
-} from "@material-ui/core";
+import { AppBar, Toolbar, Button, Typography, makeStyles, Tooltip } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     zIndex: 10,
     width: "100%",
     position: "fixed",
-    top: 0,
+    top: 0
   },
   navbar: {
-    backgroundColor: theme.palette.navigation.main,
+    backgroundColor: theme.palette.navigation.main
   },
   toolbar: {
     display: "flex",
     flexWrap: "wrap",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   logo: {
     color: theme.palette.tertiary.main,
     textDecoration: "none",
     marginRight: 0,
     fontSize: "30px",
-    filter: `drop-shadow(3px 2px 2px ${theme.palette.tertiary.shadow})`,
+    filter: `drop-shadow(3px 2px 2px ${theme.palette.tertiary.shadow})`
   },
   links: {
     display: "flex",
     flexWrap: "wrap",
-    alignItems: "center",
+    alignItems: "center"
   },
   navButton: {
     backgroundColor: theme.palette.navigation.main,
@@ -51,8 +44,8 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "20px",
     "&:hover": {
       backgroundColor: theme.palette.navigation.hover,
-      color: theme.palette.text.primary,
-    },
+      color: theme.palette.text.primary
+    }
   },
   navButtonAPI: {
     backgroundColor: theme.palette.navigation.main,
@@ -60,11 +53,11 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "10px",
     "&:hover": {
       backgroundColor: theme.palette.navigation.hover,
-      color: theme.palette.text.primary,
-    },
+      color: theme.palette.text.primary
+    }
   },
   navButtonText: {
-    filter: `drop-shadow(2px 2px 2px ${theme.palette.tertiary.shadow})`,
+    filter: `drop-shadow(2px 2px 2px ${theme.palette.tertiary.shadow})`
   },
   dropDown: {
     backgroundColor: theme.palette.navigation.main,
@@ -72,9 +65,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 5,
     "&:hover": {
       backgroundColor: theme.palette.navigation.hover,
-      color: theme.palette.text.primary,
-    },
-  },
+      color: theme.palette.text.primary
+    }
+  }
 }));
 
 const actionsBreak = 725;
@@ -98,8 +91,7 @@ export const NavBar = ({ theme, toggleTheme }) => {
                 </Typography>
               }
               arrow
-              placement="bottom-start"
-            >
+              placement="bottom-start">
               <Typography
                 variant="h5"
                 className={classes.logo}
@@ -108,8 +100,7 @@ export const NavBar = ({ theme, toggleTheme }) => {
                   setOpenAlert(false);
                   setOpenSnack(false);
                 }}
-                to="/"
-              >
+                to="/">
                 <strong>PROBE</strong>
               </Typography>
             </Tooltip>
@@ -124,8 +115,7 @@ export const NavBar = ({ theme, toggleTheme }) => {
                     setOpenAlert(false);
                     setOpenSnack(false);
                   }}
-                  to="/"
-                >
+                  to="/">
                   <span className={classes.navButtonText}>Home</span>
                 </Button>
                 <Button
@@ -137,8 +127,7 @@ export const NavBar = ({ theme, toggleTheme }) => {
                     setOpenAlert(false);
                     setOpenSnack(false);
                   }}
-                  to="/satellites"
-                >
+                  to="/satellites">
                   <span className={classes.navButtonText}>Satellites</span>
                 </Button>
                 <Button
@@ -150,8 +139,7 @@ export const NavBar = ({ theme, toggleTheme }) => {
                     setOpenAlert(false);
                     setOpenSnack(false);
                   }}
-                  to="/schemas"
-                >
+                  to="/schemas">
                   <span className={classes.navButtonText}>Schemas</span>
                 </Button>
                 <Button
@@ -163,8 +151,7 @@ export const NavBar = ({ theme, toggleTheme }) => {
                     setOpenAlert(false);
                     setOpenSnack(false);
                   }}
-                  to="/about"
-                >
+                  to="/about">
                   <span className={classes.navButtonText}>About</span>
                 </Button>
                 <Button
@@ -172,11 +159,8 @@ export const NavBar = ({ theme, toggleTheme }) => {
                   size="medium"
                   className={classes.navButtonAPI}
                   onClick={() => {
-                    window
-                      .open(`${Meteor.absoluteUrl("/api")}`, "_blank")
-                      .focus();
-                  }}
-                >
+                    window.open(`${Meteor.absoluteUrl("/api")}`, "_blank").focus();
+                  }}>
                   <span className={classes.navButtonText}>API</span>
                 </Button>
               </React.Fragment>
@@ -198,5 +182,5 @@ export const NavBar = ({ theme, toggleTheme }) => {
 // Prop checking
 NavBar.propTypes = {
   theme: PropTypes.object,
-  toggleTheme: PropTypes.func,
+  toggleTheme: PropTypes.func
 };
