@@ -340,7 +340,6 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
           <Formik initialValues={initValues} onSubmit={handleSubmit} validationSchema={satSchema}>
             {({ errors, setErrors, isSubmitting, isValid, isValidating, values, setValues, setFieldValue, dirty, touched, setTouched }) => (
               <Form>
-                {console.log(errors)}
                 {isLoadingSch || isLoadingSat ? (
                   <DialogContent className={classes.loadingDialog}>
                     <CircularProgress size={75} />
@@ -370,7 +369,6 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
                       satelliteValidatorShaper={satelliteValidatorShaper}
                       setTouched={setTouched}
                       touched={touched}
-                      dirty={dirty}
                     />
                   </DialogContent>
                 )}

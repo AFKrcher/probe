@@ -465,7 +465,7 @@ export const SatellitesTable = () => {
     }
 
     setColumns(columns);
-  }, [Meteor.userId(), selector]);
+  }, [Meteor.userId(), verified, selector]);
 
   const jsonDownload = () => {
     let str = JSON.stringify(sats);
