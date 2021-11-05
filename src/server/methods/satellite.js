@@ -1,36 +1,17 @@
-import {
-  userHasVerifiedData,
-  machineHasVerifiedData,
-} from "../utils/verificationFuncs";
-import {
-  userHasValidatedData,
-  machineHasValidatedData,
-} from "../utils/validationFuncs";
+import { userHasVerifiedData, machineHasVerifiedData } from "../utils/verificationFuncs";
+import { userHasValidatedData, machineHasValidatedData } from "../utils/validationFuncs";
 import { satelliteValidatorShaper } from "/imports/validation/satelliteYupShape";
 
-export const satelliteMethods = (
-  Meteor,
-  Roles,
-  SatelliteCollection,
-  PROBE_API_KEY
-) => {
+export const satelliteMethods = (Meteor, Roles, SatelliteCollection, PROBE_API_KEY) => {
   return Meteor.methods({
     addNewSatellite: (initValues, values, key = false) => {
-      if (
-        key
-          ? key === PROBE_API_KEY
-          : Meteor.userId() && Meteor.user()?.emails[0]?.verified
-      ) {
+      if (key ? key === PROBE_API_KEY : Meteor.userId() && Meteor.user()?.emails[0]?.verified) {
         let error;
         values["isDeleted"] = false;
         values["createdOn"] = new Date();
-        values["createdBy"] = key
-          ? "PROBE Partner API"
-          : Meteor.user().username;
+        values["createdBy"] = key ? "PROBE Partner API" : Meteor.user().username;
         values["modifiedOn"] = new Date();
-        values["modifiedBy"] = key
-          ? "PROBE Partner API"
-          : Meteor.user().username;
+        values["modifiedBy"] = key ? "PROBE Partner API" : Meteor.user().username;
         values["adminCheck"] = false;
         values["machineCheck"] = false;
         satelliteValidatorShaper(values, initValues)
@@ -97,22 +78,14 @@ export const satelliteMethods = (
       }
     },
     actuallyDeleteSatellite: (values) => {
-      if (
-        (Roles.userIsInRole(Meteor.userId(), "admin") ||
-          Roles.userIsInRole(Meteor.userId(), "moderator")) &&
-        Meteor.user()?.emails[0]?.verified
-      ) {
+      if ((Roles.userIsInRole(Meteor.userId(), "admin") || Roles.userIsInRole(Meteor.userId(), "moderator")) && Meteor.user()?.emails[0]?.verified) {
         SatelliteCollection.remove(values._id);
       } else {
         return "Unauthorized [401]";
       }
     },
     restoreSatellite: (values) => {
-      if (
-        (Roles.userIsInRole(Meteor.userId(), "admin") ||
-          Roles.userIsInRole(Meteor.userId(), "moderator")) &&
-        Meteor.user()?.emails[0]?.verified
-      ) {
+      if ((Roles.userIsInRole(Meteor.userId(), "admin") || Roles.userIsInRole(Meteor.userId(), "moderator")) && Meteor.user()?.emails[0]?.verified) {
         let error;
         values["isDeleted"] = false;
         values["modifiedOn"] = new Date();
@@ -133,25 +106,16 @@ export const satelliteMethods = (
     },
     checkSatelliteData: (values, task, method) => {
       if (
-        (Roles.userIsInRole(Meteor.userId(), "admin") ||
-          Roles.userIsInRole(Meteor.userId(), "moderator") ||
-          Roles.userIsInRole(Meteor.userId(), "machine")) &&
+        (Roles.userIsInRole(Meteor.userId(), "admin") || Roles.userIsInRole(Meteor.userId(), "moderator") || Roles.userIsInRole(Meteor.userId(), "machine")) &&
         Meteor.user()?.emails[0]?.verified
       ) {
         let tempValues = values;
         if (method === "user") {
-          if (task === "verify")
-            tempValues = userHasVerifiedData(values, Meteor.user().username);
-          if (task === "validate")
-            tempValues = userHasValidatedData(values, Meteor.user().username);
+          if (task === "verify") tempValues = userHasVerifiedData(values, Meteor.user().username);
+          if (task === "validate") tempValues = userHasValidatedData(values, Meteor.user().username);
         } else if (method === "machine") {
-          if (task === "verify")
-            tempValues = machineHasVerifiedData(values, Meteor.user().username);
-          if (task === "validate")
-            tempValues = machineHasValidatedData(
-              values,
-              Meteor.user().username
-            );
+          if (task === "verify") tempValues = machineHasVerifiedData(values, Meteor.user().username);
+          if (task === "validate") tempValues = machineHasValidatedData(values, Meteor.user().username);
         }
         satelliteValidatorShaper(tempValues, tempValues)
           .validate(values)
@@ -167,6 +131,6 @@ export const satelliteMethods = (
       } else {
         return "Unauthorized [401]";
       }
-    },
+    }
   });
 };

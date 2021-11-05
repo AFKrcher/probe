@@ -1,4 +1,4 @@
-import testSat from "../fixtures/testSat.json"
+import testSat from "../fixtures/testSat.json";
 
 context("satellite", () => {
   it("visits satellites page", () => {
@@ -75,16 +75,15 @@ context("satellite", () => {
     // add an entry
     // cy.get("li").contains("type").click();
     // cy.get("#add-schema").click();
-    cy.get('.schemaIndex').each((value, index, collection) =>{
-      if(!cy.get(value).contains('.Mui-disabled')){
-        cy.wrap(value).click()
+    cy.get(".schemaIndex").each((value, index, collection) => {
+      if (!cy.get(value).contains(".Mui-disabled")) {
+        cy.wrap(value).click();
         cy.get("#add-schema").click();
         cy.get(".MuiButton-label").contains("Add Schema").click();
         cy.get("#mui-component-select-satellite-field").click();
         cy.get(".Mui-disabled").contains("+ Add");
       }
-    })
-
+    });
 
     // cy.get(".MuiAccordionSummary-content")
     // .contains("type").click();

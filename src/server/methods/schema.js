@@ -74,22 +74,14 @@ export const schemaMethods = (Meteor, Roles, SchemaCollection) => {
       }
     },
     actuallyDeleteSchema: (values) => {
-      if (
-        (Roles.userIsInRole(Meteor.userId(), "admin") ||
-          Roles.userIsInRole(Meteor.userId(), "moderator")) &&
-        Meteor.user()?.emails[0]?.verified
-      ) {
+      if ((Roles.userIsInRole(Meteor.userId(), "admin") || Roles.userIsInRole(Meteor.userId(), "moderator")) && Meteor.user()?.emails[0]?.verified) {
         SchemaCollection.remove(values._id);
       } else {
         return "Unauthorized [401]";
       }
     },
     restoreSchema: (values) => {
-      if (
-        (Roles.userIsInRole(Meteor.userId(), "admin") ||
-          Roles.userIsInRole(Meteor.userId(), "moderator")) &&
-        Meteor.user()?.emails[0]?.verified
-      ) {
+      if ((Roles.userIsInRole(Meteor.userId(), "admin") || Roles.userIsInRole(Meteor.userId(), "moderator")) && Meteor.user()?.emails[0]?.verified) {
         let error;
         values["isDeleted"] = false;
         values["modifiedOn"] = new Date();
@@ -109,11 +101,7 @@ export const schemaMethods = (Meteor, Roles, SchemaCollection) => {
       }
     },
     adminCheckSchema: (values) => {
-      if (
-        (Roles.userIsInRole(Meteor.userId(), "admin") ||
-          Roles.userIsInRole(Meteor.userId(), "moderator")) &&
-        Meteor.user()?.emails[0]?.verified
-      ) {
+      if ((Roles.userIsInRole(Meteor.userId(), "admin") || Roles.userIsInRole(Meteor.userId(), "moderator")) && Meteor.user()?.emails[0]?.verified) {
         let error;
         values["adminCheck"] = true;
         schemaValidatorShaper(values.name)
@@ -129,6 +117,6 @@ export const schemaMethods = (Meteor, Roles, SchemaCollection) => {
       } else {
         return "Unauthorized [401]";
       }
-    },
+    }
   });
 };

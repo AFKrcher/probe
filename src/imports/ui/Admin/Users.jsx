@@ -8,28 +8,8 @@ import { UsersCollection } from "../../api/users";
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
 
 // @material-ui
-import {
-  Button,
-  Grid,
-  makeStyles,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  IconButton,
-  Typography,
-  Divider,
-  Paper,
-} from "@material-ui/core";
-import {
-  DataGrid,
-  GridToolbarContainer,
-  GridToolbarColumnsButton,
-  GridToolbarFilterButton,
-  GridToolbarDensitySelector,
-  GridToolbarExport,
-} from "@material-ui/data-grid";
+import { Button, Grid, makeStyles, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Typography, Divider, Paper } from "@material-ui/core";
+import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridToolbarExport } from "@material-ui/data-grid";
 import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
@@ -37,57 +17,57 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     height: "100%",
     width: "100%",
-    padding: "15px 10px 15px 10px",
+    padding: "15px 10px 15px 10px"
   },
   dataGrid: {
     backgroundColor: theme.palette.grid.background,
     "& .MuiDataGrid-row": {
-      cursor: "pointer",
+      cursor: "pointer"
     },
     "& .MuiDataGrid-cell": {
-      textOverflow: "clip",
+      textOverflow: "clip"
     },
     "& .MuiCircularProgress-colorPrimary": {
-      color: theme.palette.text.primary,
-    },
+      color: theme.palette.text.primary
+    }
   },
   toolbar: {
     color: theme.palette.text.primary,
     fontWeight: 500,
-    fontSize: "14px",
+    fontSize: "14px"
   },
   modalHeader: {
     display: "flex",
     justifyContent: "space-between",
     alignContent: "center",
-    margin: "-15px -25px 10px -25px",
+    margin: "-15px -25px 10px -25px"
   },
   rolesTitle: {
-    marginBottom: 10,
+    marginBottom: 10
   },
   rolesContainer: {
-    margin: 5,
+    margin: 5
   },
   rolesRow: {
     marginLeft: 10,
     marginBottom: 10,
-    marginTop: 10,
+    marginTop: 10
   },
   divider: {
     marginTop: 10,
     marginBottom: 10,
-    marginLeft: -10,
+    marginLeft: -10
   },
   actions: {
     display: "flex",
     justifyContent: "space-between",
     marginTop: 10,
-    marginBottom: 10,
+    marginBottom: 10
   },
   actionButton: {
     marginRight: 10,
-    marginLeft: 10,
-  },
+    marginLeft: 10
+  }
 }));
 
 export const Users = () => {
@@ -105,7 +85,7 @@ export const Users = () => {
         <GridToolbarExport
           className={classes.toolbar}
           csvOptions={{
-            fileName: `${new Date().toISOString()}_PROBE_UsersTable.json`,
+            fileName: `${new Date().toISOString()}_PROBE_UsersTable.json`
           }}
         />
       </GridToolbarContainer>
@@ -122,7 +102,7 @@ export const Users = () => {
         emails: user.emails?.map((email) => email.address).join(", "),
         roles: Roles.getRolesForUser(user._id)
           .map((role) => role)
-          .join(", "),
+          .join(", ")
       };
     });
     return [rows, users, !sub.ready()];
@@ -133,29 +113,29 @@ export const Users = () => {
       headerAlign: "center",
       field: "id",
       headerName: "USER ID",
-      minWidth: 250,
+      minWidth: 250
     },
     {
       headerAlign: "center",
       field: "username",
       headerName: "USERNAME",
       minWidth: 250,
-      editable: false,
+      editable: false
     },
     {
       headerAlign: "center",
       field: "emails",
       headerName: "EMAIL",
       minWidth: 250,
-      editable: false,
+      editable: false
     },
     {
       headerAlign: "center",
       field: "roles",
       headerName: "ROLE(S)",
       editable: false,
-      flex: 1,
-    },
+      flex: 1
+    }
   ];
 
   const handleOpen = () => {
@@ -195,13 +175,7 @@ export const Users = () => {
     setAlert({
       title: <span>{role === "dummies" ? "Ban user" : "Delete user"}</span>,
       text: (
-        <span>
-          {role === "dummies"
-            ? `Are you sure you want to ban ${user?.username || "N/A"}?`
-            : `Are you sure you want to permanently delete ${
-                user?.username || "N/A"
-              }?`}
-        </span>
+        <span>{role === "dummies" ? `Are you sure you want to ban ${user?.username || "N/A"}?` : `Are you sure you want to permanently delete ${user?.username || "N/A"}?`}</span>
       ),
       actions: (
         <Button
@@ -210,15 +184,12 @@ export const Users = () => {
           color="secondary"
           disableElevation
           onClick={() => {
-            role === "dummies"
-              ? (addUserToRole(user, role), setOpenAlert(false))
-              : (deleteAccount(user?._id), setOpenAlert(false));
-          }}
-        >
+            role === "dummies" ? (addUserToRole(user, role), setOpenAlert(false)) : (deleteAccount(user?._id), setOpenAlert(false));
+          }}>
           Confirm
         </Button>
       ),
-      closeAction: " Cancel",
+      closeAction: " Cancel"
     });
     setOpenAlert(true);
   };
@@ -232,7 +203,7 @@ export const Users = () => {
             <DataGrid
               className={classes.dataGrid}
               components={{
-                Toolbar: CustomToolbar,
+                Toolbar: CustomToolbar
               }}
               rowsPerPageOptions={[10, 15, 20, 50, 100]}
               columns={columns}
@@ -264,23 +235,14 @@ export const Users = () => {
             </div>
           </DialogTitle>
           <DialogContentText className={classes.rolesContainer}>
-            <Grid
-              container
-              display="flex"
-              justifyContent="flex-end"
-              alignItems="center"
-            >
+            <Grid container display="flex" justifyContent="flex-end" alignItems="center">
               <Grid item xs={12} className={classes.rolesTitle}>
                 <Typography variant="h6">
                   <strong>Roles:</strong>
                 </Typography>
               </Grid>
               <Grid item xs={12}>
-                <Divider
-                  className={classes.divider}
-                  variant="inset"
-                  orientation="horizontal"
-                />
+                <Divider className={classes.divider} variant="inset" orientation="horizontal" />
               </Grid>
               {Roles.getRolesForUser(editUser?._id).map((role, index) => {
                 return (
@@ -289,21 +251,12 @@ export const Users = () => {
                       {role}
                     </Grid>
                     <Grid item xs={4} className={classes.rolesRow}>
-                      <Button
-                        variant="contained"
-                        onClick={() => removeRole(editUser, role)}
-                        color="secondary"
-                        size="small"
-                      >
+                      <Button variant="contained" onClick={() => removeRole(editUser, role)} color="secondary" size="small">
                         Remove
                       </Button>
                     </Grid>
                     <Grid item xs={12}>
-                      <Divider
-                        className={classes.divider}
-                        variant="inset"
-                        orientation="horizontal"
-                      />
+                      <Divider className={classes.divider} variant="inset" orientation="horizontal" />
                     </Grid>
                   </React.Fragment>
                 );
@@ -317,8 +270,7 @@ export const Users = () => {
             variant="contained"
             onClick={() => verifyChange(editUser, "dummies")}
             color="secondary"
-            disabled={Roles.getRolesForUser(editUser?._id).includes("admin")}
-          >
+            disabled={Roles.getRolesForUser(editUser?._id).includes("admin")}>
             Ban
           </Button>
           <Button
@@ -326,8 +278,7 @@ export const Users = () => {
             variant="contained"
             onClick={() => verifyChange(editUser, "delete")}
             color="secondary"
-            disabled={Roles.getRolesForUser(editUser?._id).includes("admin")}
-          >
+            disabled={Roles.getRolesForUser(editUser?._id).includes("admin")}>
             Delete
           </Button>
           <Button
@@ -336,10 +287,7 @@ export const Users = () => {
             onClick={() => addUserToRole(editUser, "moderator")}
             color="primary"
             autoFocus
-            disabled={Roles.getRolesForUser(editUser?._id).includes(
-              "moderator"
-            )}
-          >
+            disabled={Roles.getRolesForUser(editUser?._id).includes("moderator")}>
             Make Moderator
           </Button>
           <Button
@@ -348,8 +296,7 @@ export const Users = () => {
             onClick={() => addUserToRole(editUser, "admin")}
             color="primary"
             autoFocus
-            disabled={Roles.getRolesForUser(editUser?._id).includes("admin")}
-          >
+            disabled={Roles.getRolesForUser(editUser?._id).includes("admin")}>
             Make Admin
           </Button>
         </DialogActions>

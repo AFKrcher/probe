@@ -32,22 +32,22 @@ import { themes } from "./css/Themes.jsx";
 
 const useStyles = makeStyles(() => ({
   body: {
-    minHeight: "calc(100vh - 151px)",
+    minHeight: "calc(100vh - 151px)"
   },
   main: {
     marginTop: 100,
-    marginBottom: 60,
+    marginBottom: 60
   },
   bottom: {
     display: "flex",
     justifyContent: "center",
-    width: "100%",
+    width: "100%"
   },
   footer: {
     position: "relative",
     bottom: 0,
-    width: "100%",
-  },
+    width: "100%"
+  }
 }));
 
 export const App = () => {
@@ -60,11 +60,11 @@ export const App = () => {
     title: "", //dialog title
     text: "", //dialog body text
     actions: "", //components for user input
-    closeAction: "", //name of closing action button, e.g. "Cancel"
+    closeAction: "" //name of closing action button, e.g. "Cancel"
   });
   const [visualize, setVisualize] = useState({
     url: "https://spacecockpit.saberastro.com/",
-    satellite: "",
+    satellite: ""
   });
   const [snack, setSnack] = useState(""); //snackbar body text
 
@@ -79,7 +79,7 @@ export const App = () => {
     const obj = {
       user: user,
       time: new Date().toISOString(),
-      msg: msg,
+      msg: msg
     };
     Meteor.call("addError", obj);
     return true;
@@ -99,9 +99,8 @@ export const App = () => {
         openVisualize,
         setOpenVisualize,
         visualize,
-        setVisualize,
-      }}
-    >
+        setVisualize
+      }}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Router>
@@ -116,10 +115,7 @@ export const App = () => {
                   <ProtectedRoute component={Register} loginRequired={false} />
                 </Route>
                 <Route path="/reset">
-                  <ProtectedRoute
-                    component={ResetPassword}
-                    loginRequired={false}
-                  />
+                  <ProtectedRoute component={ResetPassword} loginRequired={false} />
                 </Route>
                 <Route exact={true} path="/verify">
                   <ProtectedRoute component={Verify} loginRequired={true} />
@@ -132,11 +128,7 @@ export const App = () => {
                   <DropDown />
                 </Route>
                 <Route exact={true} path="/admin">
-                  <ProtectedRoute
-                    component={Admin}
-                    loginRequired={true}
-                    requiredRoles={["admin", "moderator"]}
-                  />
+                  <ProtectedRoute component={Admin} loginRequired={true} requiredRoles={["admin", "moderator"]} />
                 </Route>
                 <Route exact={true} path="/satellites">
                   <SatellitesTable />

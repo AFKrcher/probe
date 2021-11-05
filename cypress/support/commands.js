@@ -24,36 +24,36 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('login', (username, password) =>{
-    cy.get('#drop-down').click()
-    cy.get('#login').click()
-    cy.get('body').trigger('keydown', {keyCode: 27})
-    cy.get("#username").type(username)
-    cy.get('#password').type(password)
-    cy.get("#login-button").click()
-  })
+Cypress.Commands.add("login", (username, password) => {
+  cy.get("#drop-down").click();
+  cy.get("#login").click();
+  cy.get("body").trigger("keydown", { keyCode: 27 });
+  cy.get("#username").type(username);
+  cy.get("#password").type(password);
+  cy.get("#login-button").click();
+});
 
-  Cypress.Commands.add('register', (email, username, password)=>{
-    cy.get('#drop-down').click()
-    cy.get('#register').click().trigger('keydown', { keyCode: 27});
-    cy.get('#email').click().type(email)
-    cy.get('#username').type(username)
-    cy.get('#password').type(password)
-    cy.get('#confirm').type(password)
-    cy.get('#register-button').click()
-  })
+Cypress.Commands.add("register", (email, username, password) => {
+  cy.get("#drop-down").click();
+  cy.get("#register").click().trigger("keydown", { keyCode: 27 });
+  cy.get("#email").click().type(email);
+  cy.get("#username").type(username);
+  cy.get("#password").type(password);
+  cy.get("#confirm").type(password);
+  cy.get("#register-button").click();
+});
 
-  Cypress.Commands.add('logout', () =>{
-    cy.get('#drop-down').click()
-    cy.get('#logout').click()
-    cy.reload()
-  })
-  Cypress.Commands.add('settings', () =>{
-    cy.get('#drop-down').click()
-    cy.get('#settings').click().trigger('keydown', {keyCode: 27})
-  })
+Cypress.Commands.add("logout", () => {
+  cy.get("#drop-down").click();
+  cy.get("#logout").click();
+  cy.reload();
+});
+Cypress.Commands.add("settings", () => {
+  cy.get("#drop-down").click();
+  cy.get("#settings").click().trigger("keydown", { keyCode: 27 });
+});
 
-  Cypress.Commands.add('deleteUser', () =>{
-    cy.settings()
-    cy.get('#deleteButton').click()
-  })
+Cypress.Commands.add("deleteUser", () => {
+  cy.settings();
+  cy.get("#deleteButton").click();
+});

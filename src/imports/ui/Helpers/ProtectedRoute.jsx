@@ -12,36 +12,28 @@ import { CircularProgress, makeStyles } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   spinnerContainer: {
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   spinner: {
     color: theme.palette.text.primary,
-    marginTop: "30vh",
-  },
+    marginTop: "30vh"
+  }
 }));
 
-export default function ProtectedRoute({
-  component: Component,
-  loginRequired,
-  requiredRoles,
-}) {
+export default function ProtectedRoute({ component: Component, loginRequired, requiredRoles }) {
   const classes = useStyles();
 
   const [user, roles, verified, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("roles");
     const roles = Roles.getRolesForUser(Meteor.userId());
     const user = Meteor.user({ fields: { username: 1 } })?.username;
-    const verified = Meteor.user({ fields: { "emails.verified": 1 } })
-      ?.emails[0].verified;
+    const verified = Meteor.user({ fields: { "emails.verified": 1 } })?.emails[0].verified;
     return [user, roles, verified, !sub.ready()];
   });
 
   const roleCheck = () => {
     // ensure that every role that is required to access the component is present in the user's roles
-    return requiredRoles
-      ? requiredRoles.map((role) => roles.includes(role)).includes(true) &&
-          verified
-      : true;
+    return requiredRoles ? requiredRoles.map((role) => roles.includes(role)).includes(true) && verified : true;
   };
 
   const loginCheck = () => {
@@ -60,8 +52,8 @@ export default function ProtectedRoute({
               to={{
                 pathname: "/",
                 state: {
-                  from: props.location,
-                },
+                  from: props.location
+                }
               }}
             />
           );
@@ -79,5 +71,5 @@ export default function ProtectedRoute({
 ProtectedRoute.propTypes = {
   component: PropTypes.elementType,
   loginRequired: PropTypes.bool,
-  requiredRoles: PropTypes.arrayOf(PropTypes.string),
+  requiredRoles: PropTypes.arrayOf(PropTypes.string)
 };

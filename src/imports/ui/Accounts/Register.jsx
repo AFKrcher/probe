@@ -3,26 +3,14 @@ import { Meteor } from "meteor/meteor";
 // Imports
 import { useHistory } from "react-router";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
-import {
-  isValidEmail,
-  isValidUsername,
-  isValidPassword,
-  isConfirmedPassword,
-} from "/imports/validation/accountYupShape";
+import { isValidEmail, isValidUsername, isValidPassword, isConfirmedPassword } from "/imports/validation/accountYupShape";
 
 // Components
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
 import SnackBar from "../Dialogs/SnackBar.jsx";
 
 // @material-ui
-import {
-  Grid,
-  Button,
-  Typography,
-  Paper,
-  TextField,
-  makeStyles,
-} from "@material-ui/core";
+import { Grid, Button, Typography, Paper, TextField, makeStyles } from "@material-ui/core";
 const useStyles = makeStyles(() => ({
   formContainer: {
     marginTop: 40,
@@ -32,16 +20,16 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     alignItems: "center",
     width: "400px",
-    borderRadius: 10,
+    borderRadius: 10
   },
   header: {
-    marginBottom: 20,
+    marginBottom: 20
   },
   textField: {
-    marginBottom: 10,
+    marginBottom: 10
   },
   registerButton: {
-    marginTop: 20,
+    marginTop: 20
   },
   loginButtonContainer: {
     display: "flex",
@@ -49,20 +37,19 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     alignItems: "center",
     width: "auto",
-    marginBottom: -10,
+    marginBottom: -10
   },
   loginButton: {
     marginTop: 20,
-    width: "60%",
-  },
+    width: "60%"
+  }
 }));
 
 export const Register = () => {
   const classes = useStyles();
   const history = useHistory();
 
-  const { setOpenAlert, alert, setAlert, setSnack, snack, setOpenSnack } =
-    useContext(HelpersContext);
+  const { setOpenAlert, alert, setAlert, setSnack, snack, setOpenSnack } = useContext(HelpersContext);
 
   const [passErr, setPassErr] = useState();
   const [confirmErr, setConfirmErr] = useState();
@@ -116,9 +103,7 @@ export const Register = () => {
           }
         });
       } else {
-        setUserErr(
-          "Must be between 4 and 32 characters long and cannot contain special characters"
-        );
+        setUserErr("Must be between 4 and 32 characters long and cannot contain special characters");
         setDisabled(true);
       }
     }
@@ -131,11 +116,7 @@ export const Register = () => {
       if (password !== confirm) {
         setPassErr();
       } else {
-        setPassErr(
-          password.length > 128
-            ? "Cannot be longer than 128 characters"
-            : "Must be at least 8 characters long"
-        );
+        setPassErr(password.length > 128 ? "Cannot be longer than 128 characters" : "Must be at least 8 characters long");
         setDisabled(true);
       }
     } else if (!isConfirmedPassword(password, confirm)) {
@@ -158,7 +139,7 @@ export const Register = () => {
       if (res) {
         await Meteor.loginWithPassword(
           {
-            username: username,
+            username: username
           },
           password,
           (error) => {
@@ -167,7 +148,7 @@ export const Register = () => {
                 title: "Error Encountered",
                 text: err?.reason,
                 actions: null,
-                closeAction: "Close",
+                closeAction: "Close"
               });
               setOpenAlert(true);
             }
@@ -179,7 +160,7 @@ export const Register = () => {
           title: "Error Encountered",
           text: err?.reason,
           actions: null,
-          closeAction: "Close",
+          closeAction: "Close"
         });
         setOpenAlert(true);
       } else if (!res?.includes("error")) {
@@ -248,24 +229,11 @@ export const Register = () => {
             fullWidth
             className={classes.textField}
           />
-          <Button
-            id="register-button"
-            variant="outlined"
-            color="primary"
-            type="submit"
-            fullWidth
-            disabled={disabled}
-            className={classes.registerButton}
-          >
+          <Button id="register-button" variant="outlined" color="primary" type="submit" fullWidth disabled={disabled} className={classes.registerButton}>
             Register User
           </Button>
           <div className={classes.loginButtonContainer}>
-            <Button
-              id="login-button"
-              size="small"
-              className={classes.loginButton}
-              onClick={loginRedirect}
-            >
+            <Button id="login-button" size="small" className={classes.loginButton} onClick={loginRedirect}>
               Login Instead
             </Button>
           </div>

@@ -5,15 +5,15 @@ import { makeStyles, Typography, Snackbar, Paper } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100%",
+    height: "100%"
   },
   popper: {
     width: "80vw",
     backgroundColor: theme.palette.popper.background,
     color: theme.palette.popper.text,
     border: `1px solid ${theme.palette.text.disabled}`,
-    padding: 10,
-  },
+    padding: 10
+  }
 }));
 
 export const Popper = ({ open, value }) => {
@@ -45,5 +45,5 @@ export const Popper = ({ open, value }) => {
 // Prop checking
 Popper.propTypes = {
   open: PropTypes.bool,
-  value: PropTypes.string,
+  value: PropTypes.string
 };

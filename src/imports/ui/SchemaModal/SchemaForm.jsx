@@ -7,48 +7,33 @@ import { Field, FieldArray } from "formik";
 import { SchemaFormField } from "./SchemaFormField";
 
 // @material-ui
-import {
-  Divider,
-  Grid,
-  Button,
-  IconButton,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
+import { Divider, Grid, Button, IconButton, makeStyles, Typography } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
   alert: {
-    width: "100%",
+    width: "100%"
   },
   divider: {
     marginTop: 5,
-    marginBottom: 5,
+    marginBottom: 5
   },
   addField: {
-    marginTop: 10,
+    marginTop: 10
   },
   addFieldContainer: {
-    textAlign: "center",
+    textAlign: "center"
   },
   helpers: {
     marginLeft: 14,
     marginTop: 0,
     marginBottom: 8,
-    color: theme.palette.text.disabled,
-  },
+    color: theme.palette.text.disabled
+  }
 }));
 
-export const SchemaForm = ({
-  touched,
-  errors,
-  formValues,
-  setValues,
-  setFieldValue,
-  editing,
-  initValues,
-}) => {
+export const SchemaForm = ({ touched, errors, formValues, setValues, setFieldValue, editing, initValues }) => {
   const classes = useStyles();
 
   const onAddField = () => {
@@ -61,8 +46,8 @@ export const SchemaForm = ({
         required: false,
         min: null,
         max: null,
-        stringMax: null,
-      },
+        stringMax: null
+      }
     ];
     setValues({ ...formValues, fields });
   };
@@ -124,12 +109,7 @@ export const SchemaForm = ({
           formValues.fields?.map((field, i) => {
             return !field.hidden ? (
               <React.Fragment key={`fragment-${i}`}>
-                <Grid
-                  key={`divider-${i}`}
-                  item
-                  xs={12}
-                  className={classes.divider}
-                >
+                <Grid key={`divider-${i}`} item xs={12} className={classes.divider}>
                   <Divider />
                 </Grid>
                 <Grid key={`grid-${i}`} item container xs alignItems="center">
@@ -146,10 +126,7 @@ export const SchemaForm = ({
                 </Grid>
                 {editing && (
                   <Grid container item xs={1} alignContent="center">
-                    <IconButton
-                      aria-label="delete field"
-                      onClick={() => handleFieldDelete(i)}
-                    >
+                    <IconButton aria-label="delete field" onClick={() => handleFieldDelete(i)}>
                       <DeleteIcon fontSize="medium" />
                     </IconButton>
                   </Grid>
@@ -161,11 +138,7 @@ export const SchemaForm = ({
       />
       <Grid item xs={12} className={classes.addFieldContainer}>
         {editing && (
-          <Button
-            variant="contained"
-            onClick={onAddField}
-            className={classes.addField}
-          >
+          <Button variant="contained" onClick={onAddField} className={classes.addField}>
             + Add Field
           </Button>
         )}
@@ -182,5 +155,5 @@ SchemaForm.propTypes = {
   setValues: PropTypes.func,
   setFieldValue: PropTypes.func,
   editing: PropTypes.bool,
-  initValues: PropTypes.object,
+  initValues: PropTypes.object
 };

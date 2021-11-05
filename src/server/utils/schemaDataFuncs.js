@@ -7,11 +7,7 @@ export function getSchemas(req, res) {
     let schemaName = req.query.name;
     if (schemaName && schemaName !== "") {
       res.writeHead(200);
-      res.end(
-        JSON.stringify(
-          SchemaCollection.find({ name: `${req.query.name}` }).fetch()
-        )
-      );
+      res.end(JSON.stringify(SchemaCollection.find({ name: `${req.query.name}` }).fetch()));
     } else {
       res.writeHead(200);
       res.end(JSON.stringify(SchemaCollection.find().fetch()));

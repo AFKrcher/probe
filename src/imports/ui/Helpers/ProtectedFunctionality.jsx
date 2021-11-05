@@ -8,27 +8,18 @@ import { useTracker } from "meteor/react-meteor-data";
 // @material-ui
 import { Skeleton } from "@material-ui/lab";
 
-export default function ProtectedFunctionality({
-  component: Component,
-  loginRequired,
-  requiredRoles,
-  iconButton,
-  skeleton,
-}) {
+export default function ProtectedFunctionality({ component: Component, loginRequired, requiredRoles, iconButton, skeleton }) {
   const [user, roles, verified, isLoading] = useTracker(() => {
     const sub = Meteor.subscribe("roles");
     const roles = Roles.getRolesForUser(Meteor.userId());
     const user = Meteor.user({ fields: { username: 1 } })?.username;
-    const verified = Meteor.user({ fields: { "emails.verified": 1 } })
-      ?.emails[0].verified;
+    const verified = Meteor.user({ fields: { "emails.verified": 1 } })?.emails[0].verified;
     return [user, roles, verified, !sub.ready()];
   });
 
   const roleCheck = () => {
     // ensure that every role that is required to access the component is present in the user's roles
-    return requiredRoles
-      ? requiredRoles.map((role) => roles.includes(role)).includes(true)
-      : true;
+    return requiredRoles ? requiredRoles.map((role) => roles.includes(role)).includes(true) : true;
   };
 
   const loginCheck = () => {
@@ -41,10 +32,7 @@ export default function ProtectedFunctionality({
       <Component />
     ) : null
   ) : skeleton || skeleton === undefined ? (
-    <Skeleton
-      variant={iconButton ? "circle" : "rect"}
-      style={iconButton ? {} : { borderRadius: 5 }}
-    >
+    <Skeleton variant={iconButton ? "circle" : "rect"} style={iconButton ? {} : { borderRadius: 5 }}>
       <Component />
     </Skeleton>
   ) : null;
@@ -56,5 +44,5 @@ ProtectedFunctionality.propTypes = {
   loginRequired: PropTypes.bool,
   requiredRoles: PropTypes.arrayOf(PropTypes.string),
   iconButton: PropTypes.bool,
-  skeleton: PropTypes.bool,
+  skeleton: PropTypes.bool
 };

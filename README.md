@@ -57,7 +57,7 @@ GET: `/api/`
 
 RESPONSE:
 
-`"Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/afkrcher/probe#api-documentation."`
+`"Welcome to the PROBE public API. For documentation, please visit this GitHub page: https://github.com/afkrcher/probe#api-documentation."`
 
 ---
 
@@ -508,6 +508,7 @@ RESPONSE:
 The list below is meant to be a guide and not a rule-book. Please try your best to use this guide to build code that is readable and easy-to-understand for all contributors:
 
 - Use Prettier (preferred) or any other code formatting/linting extension to format the code properly
+  - The `package.json` in this repo is where all formatting/linting extension options should be configured
 - Use comments to explain functions that may result in a "why" or "how" from first-time viewers of the code
 - Remove all excess imports, declarations, styles, etc. that are not being used prior to pushing your code
 - Comment out non-functional or non-tested code prior to pushing your code

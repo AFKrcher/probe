@@ -16,41 +16,41 @@ import NotReviewedOutlinedIcon from "@material-ui/icons/CancelOutlined";
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
-    width: "100%",
+    width: "100%"
   },
   key: {
     marginLeft: 10,
     marginBottom: 20,
-    display: "flex",
+    display: "flex"
   },
   keyItems: {
-    marginRight: "0.5ch",
+    marginRight: "0.5ch"
   },
   keyItemsStar: {
     marginRight: "0.5ch",
-    fill: "gold",
+    fill: "gold"
   },
   keyItemsValid: {
     marginRight: "0.5ch",
-    fill: theme.palette.success.light,
+    fill: theme.palette.success.light
   },
   keyItemsPartial: {
     marginRight: "0.5ch",
-    fill: theme.palette.warning.light,
+    fill: theme.palette.warning.light
   },
   keyItemsInvalid: {
     marginRight: "0.5ch",
-    fill: theme.palette.error.light,
+    fill: theme.palette.error.light
   },
   showKey: {
     marginBottom: 20,
     color: theme.palette.text.disabled,
     cursor: "pointer",
     "&:hover": {
-      color: theme.palette.info.light,
+      color: theme.palette.info.light
     },
-    width: "10ch",
-  },
+    width: "10ch"
+  }
 }));
 
 export const Key = ({ page, mini }) => {
@@ -61,11 +61,7 @@ export const Key = ({ page, mini }) => {
 
   return (
     <span className={classes.root}>
-      <Typography
-        variant="body2"
-        className={classes.showKey}
-        onClick={() => setShowKey(!showKey)}
-      >
+      <Typography variant="body2" className={classes.showKey} onClick={() => setShowKey(!showKey)}>
         {showKey ? "Hide Key..." : "Show Key..."}
       </Typography>
 
@@ -82,13 +78,11 @@ export const Key = ({ page, mini }) => {
             <VisibilityIcon fontSize="small" className={classes.keyItems} />
             {page !== "SchemasTable" ? (
               <React.Fragment>
-                <span className={classes.keyItems}>–</span> Open a satellite to
-                view and/or modify its schemas or entries
+                <span className={classes.keyItems}>–</span> Open a satellite to view and/or modify its schemas or entries
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <span className={classes.keyItems}>–</span> Open a schema to
-                view and/or modify its fields
+                <span className={classes.keyItems}>–</span> Open a schema to view and/or modify its fields
               </React.Fragment>
             )}
           </Typography>
@@ -100,14 +94,8 @@ export const Key = ({ page, mini }) => {
                 Open the satellite dashboard with a shareable URL
               </Typography>
               <Typography gutterBottom variant="body2" className={classes.key}>
-                <img
-                  src="/assets/saberastro.png"
-                  width="21px"
-                  height="21px"
-                  className={classes.keyItems}
-                />
-                <span className={classes.keyItems}>–</span> Open a satellite in
-                Space Cockpit for visualization and analysis
+                <img src="/assets/saberastro.png" width="21px" height="21px" className={classes.keyItems} />
+                <span className={classes.keyItems}>–</span> Open a satellite in Space Cockpit for visualization and analysis
               </Typography>
             </React.Fragment>
           )}
@@ -116,23 +104,18 @@ export const Key = ({ page, mini }) => {
               <MouseIcon fontSize="small" className={classes.keyItems} />
               {page === "SatellitesTable" && (
                 <React.Fragment>
-                  <span className={classes.keyItems}>–</span> Hover over or
-                  click to view satellite description, Double-click to view
-                  and/or modify a satellite's schemas or entries
+                  <span className={classes.keyItems}>–</span> Hover over or click to view satellite description, Double-click to view and/or modify a satellite's schemas or entries
                 </React.Fragment>
               )}
               {page === "SchemasTable" && (
                 <React.Fragment>
-                  <span className={classes.keyItems}>–</span> Hover over or
-                  click a schema description to view, Double-click to view
-                  and/or modify a schema's fields
+                  <span className={classes.keyItems}>–</span> Hover over or click a schema description to view, Double-click to view and/or modify a schema's fields
                 </React.Fragment>
               )}
               {mini && (
                 <React.Fragment>
-                  <span className={classes.keyItems}>–</span> Hover over a NORAD
-                  ID to view the satellite name, COSPAR ID, and short
-                  description, click to view the satellite data card
+                  <span className={classes.keyItems}>–</span> Hover over a NORAD ID to view the satellite name, COSPAR ID, and short description, click to view the satellite data
+                  card
                 </React.Fragment>
               )}
             </Typography>
@@ -140,79 +123,34 @@ export const Key = ({ page, mini }) => {
           {page === "SatellitesTable" && (
             <React.Fragment>
               <Typography gutterBottom variant="body2" className={classes.key}>
-                <Tooltip
-                  title="Verified by <method>: <name> on <date>, and <method>: <method>: <name> on <date>"
-                  placement="top"
-                  arrow
-                >
-                  <VerifiedIcon
-                    fontSize="small"
-                    className={classes.keyItemsValid}
-                  />
+                <Tooltip title="Verified by <method>: <name> on <date>, and <method>: <method>: <name> on <date>" placement="top" arrow>
+                  <VerifiedIcon fontSize="small" className={classes.keyItemsValid} />
                 </Tooltip>
-                <Tooltip
-                  title="Validated across multiple sources by <method>: <name> on <date>, and <method>: <method>: <name> on <date>"
-                  placement="top"
-                  arrow
-                >
-                  <ValidatedIcon
-                    fontSize="small"
-                    className={classes.keyItemsValid}
-                  />
+                <Tooltip title="Validated across multiple sources by <method>: <name> on <date>, and <method>: <method>: <name> on <date>" placement="top" arrow>
+                  <ValidatedIcon fontSize="small" className={classes.keyItemsValid} />
                 </Tooltip>
-                <span className={classes.keyItems}>–</span> Information has been
-                FULLY verified to be in the reference or validated across
-                multiple sources by user(s) and web-crawling algorithm(s)
+                <span className={classes.keyItems}>–</span> Information has been FULLY verified to be in the reference or validated across multiple sources by user(s) and
+                web-crawling algorithm(s)
               </Typography>
               <Typography gutterBottom variant="body2" className={classes.key}>
-                <Tooltip
-                  title="Verified by <method>: <name> on <date>"
-                  placement="top"
-                  arrow
-                >
-                  <IndeterminateOutlinedIcon
-                    fontSize="small"
-                    className={classes.keyItemsPartial}
-                  />
+                <Tooltip title="Verified by <method>: <name> on <date>" placement="top" arrow>
+                  <IndeterminateOutlinedIcon fontSize="small" className={classes.keyItemsPartial} />
                 </Tooltip>
-                <Tooltip
-                  title="Validated across multiple sources by <method>: <name> on <date>"
-                  placement="top"
-                  arrow
-                >
-                  <IndeterminateIcon
-                    fontSize="small"
-                    className={classes.keyItemsPartial}
-                  />
+                <Tooltip title="Validated across multiple sources by <method>: <name> on <date>" placement="top" arrow>
+                  <IndeterminateIcon fontSize="small" className={classes.keyItemsPartial} />
                 </Tooltip>
-                <span className={classes.keyItems}>–</span> Information has
-                PARTIALLY been verified to be in the reference or validated
-                across multiple sources by user(s) or web-crawling algorithm(s)
+                <span className={classes.keyItems}>–</span> Information has PARTIALLY been verified to be in the reference or validated across multiple sources by user(s) or
+                web-crawling algorithm(s)
               </Typography>
               <Typography gutterBottom variant="body2" className={classes.key}>
-                <Tooltip
-                  title="Not verified by user nor machine"
-                  placement="top"
-                  arrow
-                >
-                  <NotReviewedOutlinedIcon
-                    fontSize="small"
-                    className={classes.keyItemsInvalid}
-                  />
+                <Tooltip title="Not verified by user nor machine" placement="top" arrow>
+                  <NotReviewedOutlinedIcon fontSize="small" className={classes.keyItemsInvalid} />
                 </Tooltip>
-                <Tooltip
-                  title="Not validated by user nor machine"
-                  placement="top"
-                  arrow
-                >
-                  <NotReviewedIcon
-                    fontSize="small"
-                    className={classes.keyItemsInvalid}
-                  />
+                <Tooltip title="Not validated by user nor machine" placement="top" arrow>
+                  <NotReviewedIcon fontSize="small" className={classes.keyItemsInvalid} />
                 </Tooltip>
-                <span className={classes.keyItems}>–</span> Information has NOT
-                been verified to be in the reference or validated across
-                multiple sources by user(s) or web-crawling algorithm(s)
+                <span className={classes.keyItems}>–</span> Information has NOT been verified to be in the reference or validated across multiple sources by user(s) or web-crawling
+                algorithm(s)
               </Typography>
             </React.Fragment>
           )}
@@ -225,5 +163,5 @@ export const Key = ({ page, mini }) => {
 // Prop checking
 Key.propTypes = {
   page: PropTypes.string,
-  mini: PropTypes.bool,
+  mini: PropTypes.bool
 };

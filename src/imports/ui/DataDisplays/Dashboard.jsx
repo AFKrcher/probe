@@ -9,35 +9,29 @@ import { SatelliteCollection } from "../../api/satellites";
 import { Gallery } from "./Gallery.jsx";
 
 // @material-ui
-import {
-  Container,
-  CircularProgress,
-  Grid,
-  makeStyles,
-  Paper,
-} from "@material-ui/core";
+import { Container, CircularProgress, Grid, makeStyles, Paper } from "@material-ui/core";
 import { styled } from "@material-ui/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
-    width: "100%",
+    width: "100%"
   },
   spinnerContainer: {
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   spinner: {
     color: theme.palette.text.primary,
-    marginTop: "30vh",
-  },
+    marginTop: "30vh"
+  }
 }));
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: "center",
-  color: theme.palette.text.secondary,
+  color: theme.palette.text.secondary
 }));
 
 export const Dashboard = () => {
@@ -57,7 +51,7 @@ export const Dashboard = () => {
     if (path) {
       sat = SatelliteCollection.find(
         {
-          noradID: path,
+          noradID: path
         },
         {}
       ).fetch()[0];
@@ -97,13 +91,9 @@ export const Dashboard = () => {
                   {sat.cosparID ? sat.cosparID.cosparID : null}
                 </p>
                 <p>
-                  {sat.descriptionShort
-                    ? sat.descriptionShort[0].descriptionShort
-                    : null}
+                  {sat.descriptionShort ? sat.descriptionShort[0].descriptionShort : null}
                   <br />
-                  {sat.descriptionLong
-                    ? sat.descriptionLong[0].descriptionLong
-                    : null}
+                  {sat.descriptionLong ? sat.descriptionLong[0].descriptionLong : null}
                 </p>
                 {Object.keys(sat).map((key, index) => {
                   if (sat[key].length > 1 && typeof sat[key] === "object") {
@@ -114,13 +104,7 @@ export const Dashboard = () => {
             </Grid>
             <Grid item xs={6}>
               <Item>
-                <Gallery
-                  initValues={sat}
-                  clickable={true}
-                  description={true}
-                  autoplay={false}
-                  dashboard={true}
-                />
+                <Gallery initValues={sat} clickable={true} description={true} autoplay={false} dashboard={true} />
                 {sat.organization ? mapper("organization") : null}
                 <br />
                 {sat.payload ? mapper("payload", "name") : null}
@@ -130,11 +114,7 @@ export const Dashboard = () => {
         </React.Fragment>
       ) : (
         <div className={classes.spinnerContainer}>
-          <CircularProgress
-            className={classes.spinner}
-            size={100}
-            thickness={3}
-          />
+          <CircularProgress className={classes.spinner} size={100} thickness={3} />
         </div>
       )}
     </Container>

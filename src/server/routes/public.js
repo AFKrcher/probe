@@ -10,14 +10,10 @@ export const publicRoutes = (app, getSats, getSchemas, publicAPILimiter) => {
     }),
 
     // Public welcome route
-    app.get("/api", publicAPILimiter, (req, res) => {
-      res.setHeader("Content-Type", "application/json");
-      res.writeHead(200);
-      res.end(
-        JSON.stringify(
-          "Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/afkrcher/probe#api-documentation."
-        )
+    app.get("/api", publicAPILimiter, (_, res) => {
+      res.send(
+        '<html><body style="margin: 20;"><h1>Welcome to the PROBE API</h1> <p>For documentation, please visit this GitHub page: <a href="https://github.com/AFKrcher/probe#api-documentation" target="_blank" rel="noreferrer" >https://github.com/AFKrcher/probe#api-documentation</a></p><br /> </body></html>'
       );
-    }),
+    })
   ];
 };
