@@ -27,7 +27,7 @@ export default function ProtectedRoute({ component: Component, loginRequired, re
     const sub = Meteor.subscribe("roles");
     const roles = Roles.getRolesForUser(Meteor.userId());
     const user = Meteor.user({ fields: { username: 1 } })?.username;
-    const verified = Meteor.user({ fields: { "emails.verified": 1 } })?.emails[0].verified;
+    const verified = Meteor.user({ fields: { "emails.verified": 1 } })?.emails[0]?.verified;
     return [user, roles, verified, !sub.ready()];
   });
 

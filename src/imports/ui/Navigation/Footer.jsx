@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     filter: `drop-shadow(2px 2px 2px ${theme.palette.tertiary.shadow})`,
     textDecoration: "none",
     "&:hover": {
-      color: theme.palette.info.light
+      color: theme.palette.info.main
     }
   },
   gitHub: {
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
     filter: `drop-shadow(2px 2px 2px ${theme.palette.tertiary.shadow})`,
     "&:hover": {
-      color: theme.palette.info.light,
+      color: theme.palette.info.main,
       filter: "none",
       cursor: "pointer"
     }
@@ -59,11 +59,11 @@ export const Footer = () => {
         Privacy Policy
       </Link>
       <Divider orientation="vertical" variant="middle" className={classes.divider} flexItem />
-      <a target="_blank" rel="noopener noreferrer" href="mailto:justin.law@saberastro.com" className={classes.link}>
+      <a target="_blank" rel="noopener noreferrer" href="mailto:justinthelaw@gmail.com" className={classes.link}>
         Contact Us
       </a>
       <Divider orientation="vertical" variant="middle" className={classes.divider} flexItem />
-      <a target="_blank" rel="noreferrer" href="https://github.com/justinthelaw/probe">
+      <a target="_blank" rel="noreferrer" href="https://github.com/afkrcher/probe">
         <GitHubIcon fontSize="small" className={classes.gitHub} />
       </a>
     </Paper>

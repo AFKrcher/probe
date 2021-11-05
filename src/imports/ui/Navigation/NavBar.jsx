@@ -41,20 +41,12 @@ const useStyles = makeStyles((theme) => ({
   navButton: {
     backgroundColor: theme.palette.navigation.main,
     color: theme.palette.text.primary,
-    marginLeft: "20px",
-    "&:hover": {
-      backgroundColor: theme.palette.navigation.hover,
-      color: theme.palette.text.primary
-    }
+    marginLeft: "20px"
   },
   navButtonAPI: {
     backgroundColor: theme.palette.navigation.main,
     color: theme.palette.text.primary,
-    marginLeft: "10px",
-    "&:hover": {
-      backgroundColor: theme.palette.navigation.hover,
-      color: theme.palette.text.primary
-    }
+    marginLeft: "10px"
   },
   navButtonText: {
     filter: `drop-shadow(2px 2px 2px ${theme.palette.tertiary.shadow})`
@@ -64,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
     borderRadius: 5,
     "&:hover": {
-      backgroundColor: theme.palette.navigation.hover,
+      backgroundColor: theme.palette.navigation.main,
       color: theme.palette.text.primary
     }
   }
@@ -84,30 +76,21 @@ export const NavBar = ({ theme, toggleTheme }) => {
       <AppBar className={classes.navbar} position="sticky">
         <Toolbar className={classes.toolbar}>
           <div className={classes.links}>
-            <Tooltip
-              title={
-                <Typography color="inherit" variant="body2">
-                  To Home Page
-                </Typography>
-              }
-              arrow
-              placement="bottom-start">
-              <Typography
-                variant="h5"
-                className={classes.logo}
-                component={Link}
-                onClick={() => {
-                  setOpenAlert(false);
-                  setOpenSnack(false);
-                }}
-                to="/">
-                <strong>PROBE</strong>
-              </Typography>
-            </Tooltip>
+            <Typography
+              variant="h5"
+              className={classes.logo}
+              component={Link}
+              onClick={() => {
+                setOpenAlert(false);
+                setOpenSnack(false);
+              }}
+              to="/">
+              <strong>PROBE</strong>
+            </Typography>
             {width > actionsBreak ? (
               <React.Fragment>
                 <Button
-                  disableElevation
+                  id="home-button"
                   size="medium"
                   className={classes.navButton}
                   component={Link}
@@ -119,7 +102,6 @@ export const NavBar = ({ theme, toggleTheme }) => {
                   <span className={classes.navButtonText}>Home</span>
                 </Button>
                 <Button
-                  disableElevation
                   size="medium"
                   className={classes.navButton}
                   component={Link}
@@ -127,11 +109,12 @@ export const NavBar = ({ theme, toggleTheme }) => {
                     setOpenAlert(false);
                     setOpenSnack(false);
                   }}
+                  id="sat-table-button"
                   to="/satellites">
                   <span className={classes.navButtonText}>Satellites</span>
                 </Button>
                 <Button
-                  disableElevation
+                  id="schema-table-button"
                   size="medium"
                   className={classes.navButton}
                   component={Link}
@@ -143,7 +126,7 @@ export const NavBar = ({ theme, toggleTheme }) => {
                   <span className={classes.navButtonText}>Schemas</span>
                 </Button>
                 <Button
-                  disableElevation
+                  id="about-button"
                   size="medium"
                   className={classes.navButton}
                   component={Link}
@@ -155,7 +138,7 @@ export const NavBar = ({ theme, toggleTheme }) => {
                   <span className={classes.navButtonText}>About</span>
                 </Button>
                 <Button
-                  disableElevation
+                  id="api-button"
                   size="medium"
                   className={classes.navButtonAPI}
                   onClick={() => {

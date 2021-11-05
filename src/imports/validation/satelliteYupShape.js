@@ -203,23 +203,24 @@ export const satelliteValidatorShaper = (values, initValues) => {
         fieldValidator
           .validate(entry, { abortEarly: true })
           .then((result) => {
+            // result values spit out by Yup after successful validation
             // Yup's returned result object
-            let resolved = "-"; // provides an identifier to delete the correct error upon successful validation
+            let resolved = `${path}-`; // provides an identifier to delete the correct error upon successful validation
             let tempArr = [];
 
-            for (let i = 0; i < value.length; i++) {
+            for (let i = value.length; i > 0; i--) {
               let object = value[i];
               for (let key in object) {
                 // transforms to ensure  "result" object will be matched with the original tested "value", to avoid stale errors
-                if ((Yup.date().isValidSync(result[key]) && typeof result[key] !== "number" && result[key]) || key === "verified" || key === "validated") {
+                if ((result[key] && Yup.date().isValidSync(result[key]) && typeof result[key] !== "number") || key === "verified" || key === "validated") {
                   // Yup transforms date strings (also inside validated & verified) into date objects in the returned result objects
-                  // solution is to transform result values back to original values
+                  // solution is to transform result values back to originally submitted values
                   result[key] = object[key];
                 } else if (parseInt(object[key]) && object[key]) {
                   // The original values that are integers are sent as strings
                   // solution is to transform the values back to numbers
                   object[key] = parseInt(object[key]);
-                } else if (object[key] === undefined || result[key] === undefined) {
+                } else if (result[key] === undefined) {
                   // the original value may contain undefined values
                   // Yup removes these undefined values and their associated keys from the returned result object
                   // the original object and result object need to be in-sync prior to the deep equality check
@@ -228,12 +229,15 @@ export const satelliteValidatorShaper = (values, initValues) => {
                   delete result[key];
                 }
               }
-              tempArr.push(_.isEqual(object, result));
+              tempArr.shift(_.isEqual(object, result));
             }
-            resolved = resolved + tempArr.indexOf(true).toString() + "-";
+            resolved = `${resolved}${tempArr.indexOf(true).toString()}-`;
+            console.log(errObj, resolved)
             let key = Object.keys(errObj)[0];
-            if (errObj[key]?.includes(resolved)) {
+            if (!errObj[key]) {
               // if the errObj contains the key and has the resolved error, clear the stale error
+              errObj = {};
+            } else if (errObj[key].includes("resolved")) {
               delete errObj[key];
             }
           })

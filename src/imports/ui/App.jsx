@@ -50,8 +50,17 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+const getCachedTheme = () => {
+  const probeTheme = window.localStorage.getItem("probeTheme");
+  if (probeTheme) {
+    return probeTheme === "dark" ? themes.dark : themes.light;
+  } else {
+    return themes.dark;
+  }
+};
+
 export const App = () => {
-  const [theme, setTheme] = useState(themes.dark);
+  const [theme, setTheme] = useState(getCachedTheme);
 
   const [openAlert, setOpenAlert] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
@@ -71,7 +80,9 @@ export const App = () => {
   const classes = useStyles();
 
   const toggleTheme = () => {
-    setTheme((theme) => (theme === themes.dark ? themes.light : themes.dark));
+    window.localStorage.removeItem("probeTheme");
+    window.localStorage.setItem("probeTheme", theme === themes.dark ? "light" : "dark");
+    window.location.reload();
   };
 
   window.onerror = function (msg) {

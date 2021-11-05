@@ -58,8 +58,9 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     color: theme.palette.text.primary,
+    textDecoration: "none",
     "&:hover": {
-      color: theme.palette.info.light
+      color: theme.palette.info.main
     }
   },
   toolbarSpacer: {
@@ -98,18 +99,15 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 15
   },
   starIconButton: {
-    marginLeft: 15
+    marginLeft: 15,
   },
   starButtonFilled: {
     cursor: "pointer",
-    fill: "gold",
-    "&:hover": {
-      color: theme.palette.info.light
-    }
+    fill: "#ffc708",
   },
   starButtonHeader: {
     cursor: "pointer",
-    fill: "gold",
+    fill: "#ffc708",
     marginBottom: -5
   },
   modalButton: {
@@ -448,7 +446,7 @@ export const SatellitesTable = () => {
     if (Meteor.userId() && verified) {
       columns.unshift({
         field: (
-          <Tooltip title="Toggle favorites filter" arrow placement="top-start">
+          <Tooltip title="Toggle favorites filter" arrow placement="top">
             <span onClick={() => filterFavorites()}>
               <StarIcon className={classes.starButtonHeader} />
             </span>
@@ -566,9 +564,9 @@ export const SatellitesTable = () => {
         ) : null}
         <Typography gutterBottom variant="body1" className={classes.description}>
           Each <strong>satellite</strong> in the catalogue contains a number of fields based on schemas defined on the{" "}
-          <Tooltip title="Bring me to the satellites page">
+          <Tooltip placement="top" arrow title="Bring me to the satellites page">
             <Link to="/schemas" className={classes.link}>
-              SCHEMAS page
+              schemas page
             </Link>
           </Tooltip>
           . Filtering on satellites using tags in the search bar will allow you to view the results in the table and export the results to a CSV or JSON format.
