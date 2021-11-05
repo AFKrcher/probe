@@ -4,7 +4,7 @@ import { satelliteValidatorShaper } from "/imports/validation/satelliteYupShape"
 
 export const satelliteMethods = (Meteor, Roles, SatelliteCollection, PROBE_API_KEY) => {
   return Meteor.methods({
-    addNewSatellite: (initValues, values, key = false) => {
+    addNewSatellite: async (initValues, values, key = false) => {
       if (key ? key === PROBE_API_KEY : Meteor.userId() && Meteor.user()?.emails[0]?.verified) {
         let error;
         values["isDeleted"] = false;
@@ -14,15 +14,12 @@ export const satelliteMethods = (Meteor, Roles, SatelliteCollection, PROBE_API_K
         values["modifiedBy"] = key ? "PROBE Partner API" : Meteor.user().username;
         values["adminCheck"] = false;
         values["machineCheck"] = false;
-        satelliteValidatorShaper(values, initValues)
-          .validate(values)
-          .then(() => {
-            SatelliteCollection.insert(values);
-          })
+        await satelliteValidatorShaper(values, initValues)
+          .isValid(values)
           .catch((err) => {
-            console.log(err);
             error = err;
           });
+        if (!error) SatelliteCollection.insert(values);
         return error;
       } else {
         return "Unauthorized [401]";
@@ -43,35 +40,29 @@ export const satelliteMethods = (Meteor, Roles, SatelliteCollection, PROBE_API_K
         values["modifiedBy"] = Meteor.user().username;
         values["adminCheck"] = false;
         values["machineCheck"] = false;
-        satelliteValidatorShaper(values, initValues)
-          .validate(values)
-          .then(() => {
-            SatelliteCollection.update({ _id: values._id }, values);
-          })
+        await satelliteValidatorShaper(values, initValues)
+          .isValid(values)
           .catch((err) => {
-            console.log(err);
             error = err;
           });
+        if (!error) SatelliteCollection.update({ _id: values._id }, values);
         return error;
       } else {
         return "Unauthorized [401]";
       }
     },
-    deleteSatellite: (values) => {
+    deleteSatellite: async (values) => {
       if (Meteor.userId() && Meteor.user()?.emails[0]?.verified) {
         let error;
         values["isDeleted"] = true;
         values["modifiedOn"] = new Date();
         values["modifiedBy"] = Meteor.user().username;
-        satelliteValidatorShaper(values, values)
-          .validate(values)
-          .then(() => {
-            SatelliteCollection.update({ _id: values._id }, values);
-          })
+        await satelliteValidatorShaper(values, values)
+          .isValid(values)
           .catch((err) => {
-            console.log(err);
             error = err;
           });
+        if (!error) SatelliteCollection.insert(values);
         return error;
       } else {
         return "Unauthorized [401]";
@@ -90,15 +81,7 @@ export const satelliteMethods = (Meteor, Roles, SatelliteCollection, PROBE_API_K
         values["isDeleted"] = false;
         values["modifiedOn"] = new Date();
         values["modifiedBy"] = Meteor.user().username;
-        satelliteValidatorShaper(values, values)
-          .validate(values)
-          .then(() => {
-            SatelliteCollection.update({ _id: values._id }, values);
-          })
-          .catch((err) => {
-            console.log(err);
-            error = err;
-          });
+        SatelliteCollection.update({ _id: values._id }, values);
         return error;
       } else {
         return "Unauthorized [401]";
@@ -117,15 +100,6 @@ export const satelliteMethods = (Meteor, Roles, SatelliteCollection, PROBE_API_K
           if (task === "verify") tempValues = machineHasVerifiedData(values, Meteor.user().username);
           if (task === "validate") tempValues = machineHasValidatedData(values, Meteor.user().username);
         }
-        satelliteValidatorShaper(tempValues, tempValues)
-          .validate(values)
-          .then(() => {
-            SatelliteCollection.update({ _id: values._id }, tempValues);
-          })
-          .catch((err) => {
-            console.log(err);
-            tempValues = err;
-          });
         SatelliteCollection.update({ _id: values._id }, tempValues);
         return tempValues;
       } else {

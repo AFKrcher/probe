@@ -68,7 +68,6 @@ const gridSpaceTitleChipBreak = 1000;
 const accordionActionsBreak = 800;
 
 export const SatelliteSchemaAccordion = ({
-  dirty,
   errors,
   setErrors,
   setFieldValue,
@@ -231,7 +230,6 @@ export const SatelliteSchemaAccordion = ({
 SatelliteSchemaAccordion.propTypes = {
   errors: PropTypes.object,
   setErrors: PropTypes.func,
-  dirty: PropTypes.bool,
   values: PropTypes.object,
   schemas: PropTypes.array,
   setValues: PropTypes.func,
