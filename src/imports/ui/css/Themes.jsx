@@ -17,6 +17,9 @@ const darkTheme = createTheme({
   },
   palette: {
     type: "dark",
+    logo: {
+      main: "ffc708"
+    },
     primary: {
       main: blue[400]
     },
@@ -24,7 +27,7 @@ const darkTheme = createTheme({
       main: red[600]
     },
     tertiary: {
-      main: blue[200],
+      main: "#ffc708",
       shadow: grey[900]
     },
     grid: {
@@ -35,8 +38,7 @@ const darkTheme = createTheme({
       shadow: grey[900]
     },
     navigation: {
-      main: grey[800],
-      hover: grey[700]
+      main: grey[800]
     },
     popper: {
       background: grey[900],
@@ -62,11 +64,11 @@ const lightTheme = createTheme({
   palette: {
     type: "light",
     primary: {
-      main: indigo[400]
+      main: indigo[500]
     },
     tertiary: {
       main: indigo[500],
-      shadow: grey[300]
+      shadow: grey[400]
     },
     grid: {
       text: "black",
@@ -76,8 +78,7 @@ const lightTheme = createTheme({
       shadow: grey[300]
     },
     navigation: {
-      main: grey[300],
-      hover: grey[300]
+      main: grey[300]
     },
     popper: {
       background: grey[600],

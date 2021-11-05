@@ -11,7 +11,7 @@ import SnackBar from "../Dialogs/SnackBar.jsx";
 
 // @material-ui
 import { Grid, Button, Typography, Paper, TextField, makeStyles } from "@material-ui/core";
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   formContainer: {
     marginTop: 30,
     padding: 45,
@@ -20,7 +20,8 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     alignItems: "center",
     width: "400px",
-    borderRadius: 10
+    borderRadius: 10,
+    backgroundColor: theme.palette.grid.background
   },
   header: {
     marginBottom: 20

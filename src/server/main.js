@@ -144,7 +144,7 @@ Meteor.startup(() => {
     ROOT_URL,
     PORT,
     PM2, // checks to see if this is a Docker development test-build
-    true // set this to true if you want to force a db re-seed on server restart
+    false // set this to true if you want to force a db re-seed on server restart
   );
 
   console.log(`=> PROBE server is running! Listening at ${ROOT_URL}${NODE_ENV === "production" && (PM2 || ROOT_URL.includes("localhost")) ? ":" + PORT : ""}`);

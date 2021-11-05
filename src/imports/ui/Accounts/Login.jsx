@@ -21,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     width: "400px",
-    borderRadius: 10
+    borderRadius: 10,
+    backgroundColor: theme.palette.grid.background
   },
   header: {
     marginBottom: 20

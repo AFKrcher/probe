@@ -68,8 +68,9 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     color: theme.palette.text.primary,
+    textDecoration: "none",
     "&:hover": {
-      color: theme.palette.info.light
+      color: theme.palette.info.main
     }
   },
   textField: {
@@ -251,9 +252,9 @@ export const SchemasTable = () => {
       </Grid>
       <Typography gutterBottom variant="body1" className={classes.description}>
         Each <strong>schema</strong> is built to store sets of data that characterize a satellite. Please see the satellites on the{" "}
-        <Tooltip title="Bring me to the schemas page">
+        <Tooltip placement="top" arrow title="Bring me to the schemas page">
           <Link to="/satellites" className={classes.link}>
-            SATELLITES page
+            satellites page
           </Link>
         </Tooltip>{" "}
         for usage examples. Each <strong>schema</strong> has a reference for where the data was found, a description describing what the data is, and a number of data fields that

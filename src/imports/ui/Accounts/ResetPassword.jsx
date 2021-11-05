@@ -10,7 +10,7 @@ import { Grid, Button, makeStyles, TextField, Typography, Paper } from "@materia
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
 import SnackBar from "../Dialogs/SnackBar.jsx";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   formContainer: {
     marginTop: 30,
     padding: 45,
@@ -19,7 +19,8 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     alignItems: "center",
     width: "400px",
-    borderRadius: 10
+    borderRadius: 10,
+    backgroundColor: theme.palette.grid.background
   },
   header: {
     marginBottom: 20
