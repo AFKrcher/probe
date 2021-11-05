@@ -15,7 +15,9 @@ import { styled } from "@material-ui/styles";
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
-    width: "100%"
+    width: "100%",
+    padding: 0,
+    paddingTop: 15
   },
   spinnerContainer: {
     display: "flex",

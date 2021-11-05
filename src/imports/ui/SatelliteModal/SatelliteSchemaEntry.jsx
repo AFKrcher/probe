@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Field } from "formik";
 import { decideVerifiedValidatedAdornment } from "../utils/satelliteDataFuncs";
 import { _ } from "meteor/underscore";
+import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
 
 // @material-ui
 import { Grid, makeStyles, Paper, IconButton, TextField, FormControl, MenuItem, InputAdornment, Tooltip, Typography } from "@material-ui/core";
@@ -81,8 +82,8 @@ export const SatelliteSchemaEntry = ({
 
   const [helpers, setHelpers] = useState(null);
 
-  const handleChange = (event, validatedField, verifiedField) => {
-    // initial field value set for validation
+  const debouncedForm = useDebouncedCallback((event, validatedField, verifiedField) => {
+    // initial field value set for form
     setFieldValue(event.target.name, event.target.value);
 
     // set verified/validated to false if a field is modified and subsequently saved
@@ -103,14 +104,16 @@ export const SatelliteSchemaEntry = ({
       }
     ]);
 
-    // final field value set
-    setTimeout(() => setFieldValue(event.target.name, event.target.value));
-
     // set object to touched explicitly
     let obj = {};
     obj[`${event.target.name}`] = true;
     setTouched(obj);
-  };
+  }, 1000);
+
+  const debouncedValidate = useDebouncedCallback((event) => {
+    // second field value set for validation
+    setFieldValue(event.target.name, event.target.value);
+  }, 1001);
 
   const refreshHelpers = () => {
     if (!_.isEmpty(errors)) {
@@ -174,9 +177,14 @@ export const SatelliteSchemaEntry = ({
       InputLabelProps: {
         shrink: true
       },
-      value: entry[`${field.name}`] || "",
+      defaultValue: entry[`${field.name}`] || "",
       onChange: (event) => {
-        handleChange(event, `${schema.name}.${entryIndex}.validated`, `${schema.name}.${entryIndex}.verified`);
+        debouncedForm(event, `${schema.name}.${entryIndex}.validated`, `${schema.name}.${entryIndex}.verified`);
+        debouncedValidate(event);
+      },
+      onInput: (event) => {
+        debouncedForm(event, `${schema.name}.${entryIndex}.validated`, `${schema.name}.${entryIndex}.verified`);
+        debouncedValidate(event);
       },
       error: filteredHelper(schema.name, entryIndex, fieldIndex) ? true : false,
       label: field.name,

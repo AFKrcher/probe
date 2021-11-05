@@ -24,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
     height: "100%"
   },
   description: {
-    marginBottom: 15,
-    marginTop: 10
+    marginTop: 15,
+    marginBottom: 20
   },
   dataGrid: {
     padding: "5px 5px 0px 5px",
@@ -117,6 +117,7 @@ export const SchemasTable = () => {
   const [showModal, setShowModal] = useState(false);
   const [newSchema, setNewSchema] = useState(true);
   const [selector, setSelector] = useState("");
+  const [limiter, setLimiter] = useState(20);
   const [initialSchemaValues, setInitialSchemaValues] = useState(newSchemaValues);
 
   const debounced = useDebouncedCallback((cell) => {
@@ -252,7 +253,7 @@ export const SchemasTable = () => {
         Each <strong>schema</strong> is built to store sets of data that characterize a satellite. Please see the satellites on the{" "}
         <Tooltip title="Bring me to the schemas page">
           <Link to="/satellites" className={classes.link}>
-            previous page
+            SATELLITES page
           </Link>
         </Tooltip>{" "}
         for usage examples. Each <strong>schema</strong> has a reference for where the data was found, a description describing what the data is, and a number of data fields that
@@ -266,7 +267,9 @@ export const SchemasTable = () => {
         className={classes.dataGrid}
         columns={columns}
         rows={rows}
-        pageSize={25}
+        pageSize={limiter}
+        rowsPerPageOptions={[20, 40, 60, 120]}
+        onPageSizeChange={(newLimit) => setLimiter(newLimit)}
         loading={isLoading}
         autoHeight={true}
         disableSelectionOnClick
