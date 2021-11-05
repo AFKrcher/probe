@@ -22,7 +22,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -36,7 +36,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "name": "Deep Space Climate Observatory"
@@ -56,7 +56,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -70,7 +70,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "cosparID": "2015-007A"
@@ -90,7 +90,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -104,7 +104,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "descriptionShort": "A National Oceanic and Atmospheric Administration (NOAA) space weather, space climate, and Earth observation satellite. It was launched by SpaceX on Febuary 11, 2015."
@@ -124,7 +124,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -138,7 +138,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "type": "weather"
@@ -158,7 +158,7 @@
           "method": "machine",
           "name": "Layer8",
           "verified": false,
-          "verifiedOn": ""
+          "verifiedOn": null
         }
       ],
       "validated": [
@@ -172,7 +172,7 @@
           "method": "machine",
           "name": "Layer8",
           "validated": false,
-          "validatedOn": ""
+          "validatedOn": null
         }
       ],
       "description": "An artist's rendering of DSCOVR satellite",

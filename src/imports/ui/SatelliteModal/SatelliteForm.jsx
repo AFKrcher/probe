@@ -46,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
 export const SatelliteForm = ({
   errors,
   setErrors,
-  dirty,
   values,
   schemas,
   setValues,
@@ -179,7 +178,6 @@ export const SatelliteForm = ({
                   initValues={initValues}
                   setOpenSnack={setOpenSnack}
                   setSnack={setSnack}
-                  dirty={dirty}
                   touched={touched}
                 />
                 {editing && (
@@ -241,7 +239,6 @@ export const SatelliteForm = ({
 SatelliteForm.propTypes = {
   errors: PropTypes.object,
   setErrors: PropTypes.func,
-  dirty: PropTypes.bool,
   values: PropTypes.object,
   schemas: PropTypes.array,
   setValues: PropTypes.func,
