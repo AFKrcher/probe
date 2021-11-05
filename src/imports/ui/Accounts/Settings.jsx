@@ -32,8 +32,8 @@ import CancelIcon from "@material-ui/icons/Cancel";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
-    marginTop: 40,
-    padding: 20,
+    marginTop: 35,
+    padding: 30,
     display: "flex",
     flexFlow: "column wrap",
     justifyContent: "center",
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
   },
   header: {
-    marginBottom: 25,
+    marginBottom: 20,
   },
   textField: {
     marginBottom: 10,

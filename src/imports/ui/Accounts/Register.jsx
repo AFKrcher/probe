@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 import { Meteor } from "meteor/meteor";
 // Imports
 import { useHistory } from "react-router";
-import * as Yup from "yup";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import {
   isValidEmail,
@@ -24,10 +23,10 @@ import {
   TextField,
   makeStyles,
 } from "@material-ui/core";
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   formContainer: {
     marginTop: 40,
-    padding: 20,
+    padding: 30,
     display: "flex",
     flexFlow: "column wrap",
     justifyContent: "center",
@@ -36,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
   },
   header: {
-    marginBottom: 25,
+    marginBottom: 20,
   },
   textField: {
     marginBottom: 10,
@@ -50,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     width: "auto",
+    marginBottom: -10,
   },
   loginButton: {
     marginTop: 20,

@@ -32,7 +32,7 @@ import { themes } from "./css/Themes.jsx";
 
 const useStyles = makeStyles(() => ({
   body: {
-    minHeight: "calc(100vh - 120px)",
+    minHeight: "calc(100vh - 151px)",
   },
   main: {
     marginTop: 100,
@@ -127,6 +127,7 @@ export const App = () => {
                 <Route exact={true} path="/settings">
                   <ProtectedRoute component={Settings} loginRequired={true} />
                 </Route>
+
                 <Route exact={true} path="/menu">
                   <DropDown />
                 </Route>

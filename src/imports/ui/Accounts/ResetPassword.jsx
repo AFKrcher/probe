@@ -20,10 +20,10 @@ import {
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
 import SnackBar from "../Dialogs/SnackBar.jsx";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   formContainer: {
     marginTop: 40,
-    padding: 20,
+    padding: 30,
     display: "flex",
     flexFlow: "column wrap",
     justifyContent: "center",
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
   },
   header: {
-    marginBottom: 25,
+    marginBottom: 20,
   },
   textField: {
     marginBottom: 10,
