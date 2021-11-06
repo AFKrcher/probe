@@ -1,5 +1,5 @@
 import { createTheme } from "@material-ui/core/styles";
-import { grey, blue, red, indigo } from "@material-ui/core/colors";
+import { grey, blue, red } from "@material-ui/core/colors";
 
 const darkTheme = createTheme({
   overrides: {
@@ -35,13 +35,13 @@ const darkTheme = createTheme({
       background: "#424242"
     },
     button: {
-      shadow: grey[900]
+      shadow: "rgb(37, 37, 37)"
     },
     navigation: {
       main: grey[800]
     },
     popper: {
-      background: grey[900],
+      background: "rgb(37, 37, 37)",
       text: "white"
     }
   }
@@ -64,10 +64,10 @@ const lightTheme = createTheme({
   palette: {
     type: "light",
     primary: {
-      main: indigo[500]
+      main: blue[400]
     },
     tertiary: {
-      main: indigo[500],
+      main: "rgb(39, 51, 115)",
       shadow: grey[400]
     },
     grid: {
@@ -81,8 +81,8 @@ const lightTheme = createTheme({
       main: grey[300]
     },
     popper: {
-      background: grey[600],
-      text: "white"
+      background: grey[300],
+      text: "black"
     }
   }
 });

@@ -187,15 +187,13 @@ export const satelliteValidatorShaper = (values, initValues) => {
                   )
                 : false
           };
-          // loop over the schema and concatenate all valid constraints to field's yup object
           for (let check in fieldSchemaMatrix) {
             if (fieldSchemaMatrix[check]) {
-              // concatenate constraints based on the sub-schema
               baseFieldSchema = baseFieldSchema.concat(fieldSchemaMatrix[check]);
             }
           }
           fieldObj[schemaField] = baseFieldSchema; // add sub-schema constraints to the overall schema
-          fieldCount++; // increment index for error tracking
+          fieldCount++;
         }
         let fieldValidator = Yup.object().shape(fieldObj);
 
@@ -204,40 +202,34 @@ export const satelliteValidatorShaper = (values, initValues) => {
           .validate(entry, { abortEarly: true })
           .then((result) => {
             // result values spit out by Yup after successful validation
-            // Yup's returned result object
             let resolved = `${path}-`; // provides an identifier to delete the correct error upon successful validation
             let tempArr = [];
 
-            for (let i = value.length; i > 0; i--) {
+            for (let i = 0; i < value.length; i++) {
               let object = value[i];
               for (let key in object) {
                 // transforms to ensure  "result" object will be matched with the original tested "value", to avoid stale errors
                 if ((result[key] && Yup.date().isValidSync(result[key]) && typeof result[key] !== "number") || key === "verified" || key === "validated") {
-                  // Yup transforms date strings (also inside validated & verified) into date objects in the returned result objects
-                  // solution is to transform result values back to originally submitted values
+                  // Yup transforms date strings into date objects; solution is to transform result values back to original values
                   result[key] = object[key];
                 } else if (parseInt(object[key]) && object[key]) {
-                  // The original values that are integers are sent as strings
-                  // solution is to transform the values back to numbers
+                  // The original values that are integers are sent as strings; solution is to transform the values back to numbers
                   object[key] = parseInt(object[key]);
                 } else if (result[key] === undefined) {
-                  // the original value may contain undefined values
-                  // Yup removes these undefined values and their associated keys from the returned result object
-                  // the original object and result object need to be in-sync prior to the deep equality check
-                  // solution is to delete any undefined values and their associated keys from the original value object
+                  // the original value may contain undefined values; solution is to delete any undefined values and their associated keys from the original value object
                   delete object[key];
                   delete result[key];
                 }
               }
-              tempArr.shift(_.isEqual(object, result));
+              tempArr.push(_.isEqual(object, result));
             }
             resolved = `${resolved}${tempArr.indexOf(true).toString()}-`;
-            console.log(errObj, resolved)
             let key = Object.keys(errObj)[0];
             if (!errObj[key]) {
               // if the errObj contains the key and has the resolved error, clear the stale error
               errObj = {};
-            } else if (errObj[key].includes("resolved")) {
+            }
+            if (errObj[key].includes(resolved)) {
               delete errObj[key];
             }
           })
@@ -247,15 +239,13 @@ export const satelliteValidatorShaper = (values, initValues) => {
                 // delete stale errors
                 delete errObj[error];
               }
-            } // if the errObj is emptied by a resolved error, empty the errObj of stale errors
-            if (err.path === undefined) err.message = "err is not defined"; // catch-all for errors that the 2 types of errors are not relevent to form validation
-            if (err.message !== "err is not defined") errObj[err["path"]] = err.message; // insert error into the errObj that is send back to the form for rendering
+            }
+            if (err.message !== "err is not defined" && err.path !== undefined) errObj[err["path"]] = err.message;
           });
-        entryCount++; // increment index for error tracking
+        entryCount++;
       });
 
-      // check error object to determine the success of the validation and the amount of errors that need to be generated for Formik to handle
-      if (JSON.stringify(errObj) === "{}") {
+      if (_.isEmpty(errObj)) {
         return true;
       } else {
         for (let errPath in errObj) {
@@ -270,7 +260,7 @@ export const satelliteValidatorShaper = (values, initValues) => {
       }
     });
   });
-  // building the final yup schema object, calling checkEachEntry for each entry in the satellite
+
   if (JSON.stringify(cleanSchema) !== "{}") {
     for (let schema in cleanSchema) {
       yupShape[schema] = Yup.array().checkEachEntry();
