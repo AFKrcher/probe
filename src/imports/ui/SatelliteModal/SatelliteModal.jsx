@@ -350,7 +350,8 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
                       <Gallery initValues={initValues} width={width} modal={true} />
                     </div>
                     <Typography className={classes.description}>
-                      Last change made by <strong>{`${values.modifiedBy || username}`}</strong> on <strong>{values.modifiedOn ? `${values.modifiedOn}` : `${new Date()}`}</strong>
+                      Last change made by <strong>{`${values.modifiedBy || username}`}</strong> on{" "}
+                      <strong>{values.modifiedOn ? `${values.modifiedOn}` : `${new Date()}`}</strong>
                     </Typography>
                     <SatelliteForm
                       setOpenSnack={setOpenSnack}
@@ -413,7 +414,9 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
                             onClick={() => {
                               handleEdit(setValues, dirty, touched, values, setErrors);
                             }}
-                            startIcon={width && width < actionsBreak ? null : editing ? dirty && !_.isEmpty(touched) ? <DeleteIcon /> : null : <EditIcon />}>
+                            startIcon={
+                              width && width < actionsBreak ? null : editing ? dirty && !_.isEmpty(touched) ? <DeleteIcon /> : null : <EditIcon />
+                            }>
                             {editing ? "Cancel" : "Edit"}
                           </Button>
                         );
@@ -462,7 +465,13 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
                       color="primary"
                       startIcon={width && width < actionsBreak ? null : <SaveIcon />}
                       disabled={isValidating || isSubmitting || !isValid || _.isEmpty(touched) ? true : false}>
-                      {isSubmitting || isValidating ? <CircularProgress size={25} className={classes.loadingSave} /> : newSat ? "Save" : "Save Changes"}
+                      {isSubmitting || isValidating ? (
+                        <CircularProgress size={25} className={classes.loadingSave} />
+                      ) : newSat ? (
+                        "Save"
+                      ) : (
+                        "Save Changes"
+                      )}
                     </Button>
                   )}
                 </DialogActions>
