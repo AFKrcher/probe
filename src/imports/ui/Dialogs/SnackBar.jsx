@@ -4,10 +4,8 @@ import PropTypes from "prop-types";
 import HelpersContext from "./HelpersContext.jsx";
 
 // @material-ui
-import Snackbar from "@material-ui/core/Snackbar";
-import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
-
+import { IconButton, Snackbar } from "@material-ui/core";
 export default function SimpleSnackbar({ bodySnackBar }) {
   const { openSnack, setOpenSnack } = useContext(HelpersContext);
 
@@ -27,7 +25,7 @@ export default function SimpleSnackbar({ bodySnackBar }) {
           horizontal: "left"
         }}
         open={openSnack}
-        autoHideDuration={5000}
+        autoHideDuration={4000}
         onClose={handleClose}
         message={bodySnackBar}
         action={

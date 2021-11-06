@@ -93,6 +93,7 @@ export const SatelliteSchemaAccordion = ({
 
   const [editingSchema, setEditingSchema] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   const [width] = useWindowSize();
 
@@ -119,6 +120,17 @@ export const SatelliteSchemaAccordion = ({
       setAccordionBeingEdited(schemaIndex);
     }
     setTimeout(() => setExpanded(true)); // keep accordion expanded
+  };
+
+  const handleDeleteEntry = (schema, entryIndex) => {
+    let obj = {};
+    obj[`${schema.name}.${entryIndex}`] = true;
+    setTouched(obj);
+
+    entries.splice(entryIndex, 1);
+    setFieldValue(schema.name, entries);
+
+    setSatSchema(satelliteValidatorShaper(values, initValues));
   };
 
   const handleExpand = () => {
@@ -194,8 +206,8 @@ export const SatelliteSchemaAccordion = ({
           <Grid container spacing={1}>
             {entries?.map((entry, entryIndex) => (
               <SatelliteSchemaEntry
-                errors={errors}
                 key={entryIndex}
+                errors={errors}
                 entryIndex={entryIndex}
                 schema={schema}
                 entry={entry}
@@ -203,13 +215,11 @@ export const SatelliteSchemaAccordion = ({
                 editing={editing}
                 editingSchema={editing ? editing : editingSchema}
                 entries={entries}
-                setSatSchema={setSatSchema}
-                initValues={initValues}
-                satelliteValidatorShaper={satelliteValidatorShaper}
                 setTouched={setTouched}
-                values={values}
-                setExpanded={setExpanded}
+                disabled={disabled}
+                setDisabled={setDisabled}
                 width={width}
+                handleDeleteEntry={handleDeleteEntry}
               />
             ))}
             <Grid item xs={12} className={classes.buttonContainer}>
