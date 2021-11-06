@@ -41,7 +41,7 @@
     "testModule": "tests/main.js"
   },
   "prettier": {
-    "printWidth": 180,
+    "printWidth": 150,
     "trailingComma": "none",
     "semi": true,
     "singleQuote": false,
