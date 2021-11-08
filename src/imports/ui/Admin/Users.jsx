@@ -8,8 +8,28 @@ import { UsersCollection } from "../../api/users";
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
 
 // @material-ui
-import { Button, Grid, makeStyles, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Typography, Divider, Paper } from "@material-ui/core";
-import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridToolbarExport } from "@material-ui/data-grid";
+import {
+  Button,
+  Grid,
+  makeStyles,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  Typography,
+  Divider,
+  Paper
+} from "@material-ui/core";
+import {
+  DataGrid,
+  GridToolbarContainer,
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+  GridToolbarDensitySelector,
+  GridToolbarExport
+} from "@material-ui/data-grid";
 import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
@@ -175,7 +195,11 @@ export const Users = () => {
     setAlert({
       title: <span>{role === "dummies" ? "Ban user" : "Delete user"}</span>,
       text: (
-        <span>{role === "dummies" ? `Are you sure you want to ban ${user?.username || "N/A"}?` : `Are you sure you want to permanently delete ${user?.username || "N/A"}?`}</span>
+        <span>
+          {role === "dummies"
+            ? `Are you sure you want to ban ${user?.username || "N/A"}?`
+            : `Are you sure you want to permanently delete ${user?.username || "N/A"}?`}
+        </span>
       ),
       actions: (
         <Button
@@ -227,7 +251,7 @@ export const Users = () => {
           <DialogTitle>
             <div className={classes.modalHeader}>
               <Typography variant="h5">
-                Managing <strong>{editUser?.username || "N/A"}</strong>
+                Managing <b>{editUser?.username || "N/A"}</b>
               </Typography>
               <IconButton size="small" onClick={handleClose}>
                 <CloseIcon />
@@ -238,7 +262,7 @@ export const Users = () => {
             <Grid container display="flex" justifyContent="flex-end" alignItems="center">
               <Grid item xs={12} className={classes.rolesTitle}>
                 <Typography variant="h6">
-                  <strong>Roles:</strong>
+                  <b>Roles:</b>
                 </Typography>
               </Grid>
               <Grid item xs={12}>

@@ -17,9 +17,6 @@ const darkTheme = createTheme({
   },
   palette: {
     type: "dark",
-    logo: {
-      main: "ffc708"
-    },
     primary: {
       main: blue[400]
     },
@@ -64,11 +61,11 @@ const lightTheme = createTheme({
   palette: {
     type: "light",
     primary: {
-      main: blue[400]
+      main: blue[700]
     },
     tertiary: {
       main: "rgb(39, 51, 115)",
-      shadow: grey[400]
+      shadow: grey[500]
     },
     grid: {
       text: "black",

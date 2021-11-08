@@ -34,7 +34,8 @@ export default function PromptDialog({ body }) {
         <div className={classes.modalHeader}>
           <Tooltip title="Click to open Space Cockpit in a new tab" placement="right" arrow>
             <Typography onClick={() => window.open(body?.url, "_blank").focus()} style={{ cursor: "pointer" }}>
-              Visualizing <strong>{typeof body?.satellite === "string" ? body?.satellite : body?.satellite.names[0].name}</strong> in Space Cockpit by Saber Astronautics
+              Visualizing <b>{typeof body?.satellite === "string" ? body?.satellite : body?.satellite.names[0].name}</b> in Space Cockpit by Saber
+              Astronautics
             </Typography>
           </Tooltip>
           <IconButton size="small" className={classes.modalButton} id="exitVisualize" onClick={handleCancelVisualize}>
