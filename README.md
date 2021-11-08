@@ -12,7 +12,7 @@ This open source project seeks to design a system that allows a community to mai
     - [Application](#Application)
     - [API Documentation](#API-Documentation)
 3.  [How To Contribute](#How-To-Contribute)
-    - [MMB](<#Mission-Management-Board-(MMB)>)
+    - [MMB](#Mission-Management-Board)
     - [Git](#Git)
     - [Coding Standards](#Coding-Standards)
     - [Installation](#Installation)
@@ -491,9 +491,9 @@ RESPONSE:
 
 ## How To Contribute
 
-### Mission Management Board (MMB)
+### Mission Management Board
 
-If you want to contribute, consider signing-up for an account on Saber Astronautics' [MMB web application](https://mmb.saberastro.com). Once you havesigned-up, open an issue on Github asking for access to the PROBE board. There, you can view the running backlog of user stories as well as documentation on completed efforts.
+If you want to contribute, consider signing-up for an account on Saber Astronautics' [Mission Management Board (MMB) web application](https://mmb.saberastro.com). Once you havesigned-up, open an issue on Github asking for access to the PROBE board. There, you can view the running backlog of user stories as well as documentation on completed efforts.
 
 ### Git Processes
 
