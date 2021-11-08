@@ -177,7 +177,7 @@ export const Register = () => {
       <SnackBar bodySnackBar={snack} />
       <Paper className={classes.formContainer} elevation={3}>
         <Typography variant="h4" className={classes.header}>
-          <strong>Register</strong>
+          <b>Register</b>
         </Typography>
         <form onSubmit={registerUser} onChange={checkForm}>
           <TextField
@@ -227,7 +227,14 @@ export const Register = () => {
             fullWidth
             className={classes.textField}
           />
-          <Button id="register-button" variant="outlined" color="primary" type="submit" fullWidth disabled={disabled} className={classes.registerButton}>
+          <Button
+            id="register-button"
+            variant="outlined"
+            color="primary"
+            type="submit"
+            fullWidth
+            disabled={disabled}
+            className={classes.registerButton}>
             Register User
           </Button>
           <div className={classes.loginButtonContainer}>

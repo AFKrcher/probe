@@ -22,7 +22,7 @@ import { themes } from "../css/Themes.jsx";
 
 const useStyles = makeStyles((theme) => ({
   menuIcon: {
-    color: theme.palette.tertiary.main,
+    color: theme.palette.primary.main,
     filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`
   }
 }));
@@ -96,7 +96,9 @@ export const DropDown = ({ theme, toggleTheme }) => {
       </Button>
       <StyledMenu id="customized-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         <StyledMenuItem onClick={toggleTheme}>
-          <ListItemIcon>{theme === themes.dark ? <Brightness2 aria-label="dark theme" fontSize="small" /> : <BrightnessHigh aria-label="light theme" />}</ListItemIcon>
+          <ListItemIcon>
+            {theme === themes.dark ? <Brightness2 aria-label="dark theme" fontSize="small" /> : <BrightnessHigh aria-label="light theme" />}
+          </ListItemIcon>
           <ListItemText primary="Toggle Theme" fontSize="small" />
         </StyledMenuItem>
         {user ? (

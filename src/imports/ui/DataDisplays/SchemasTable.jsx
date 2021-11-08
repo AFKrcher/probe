@@ -16,7 +16,13 @@ import { Key } from "../Helpers/Key.jsx";
 
 // @material-ui
 import { Button, Grid, makeStyles, Typography, Tooltip, IconButton } from "@material-ui/core";
-import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector } from "@material-ui/data-grid";
+import {
+  DataGrid,
+  GridToolbarContainer,
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+  GridToolbarDensitySelector
+} from "@material-ui/data-grid";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 
 const useStyles = makeStyles((theme) => ({
@@ -61,7 +67,8 @@ const useStyles = makeStyles((theme) => ({
   },
   actionIconButton: {
     padding: 7,
-    marginLeft: 37.5
+    marginLeft: 37,
+    filter: `drop-shadow(1px 2px 1px ${theme.palette.tertiary.shadow})`
   },
   spinner: {
     color: theme.palette.text.primary
@@ -248,17 +255,19 @@ export const SchemasTable = () => {
         <Grid container item xs justifyContent="flex-end">
           {width > addButtonBreak ? <ProtectedFunctionality component={AddSchemaButton} loginRequired={true} /> : null}
         </Grid>
-        {width < addButtonBreak ? <div style={{ margin: "10px 0px 10px 0px" }}>{<ProtectedFunctionality component={AddSchemaButton} loginRequired={true} />}</div> : null}
+        {width < addButtonBreak ? (
+          <div style={{ margin: "10px 0px 10px 0px" }}>{<ProtectedFunctionality component={AddSchemaButton} loginRequired={true} />}</div>
+        ) : null}
       </Grid>
       <Typography gutterBottom variant="body1" className={classes.description}>
-        Each <strong>schema</strong> is built to store sets of data that characterize a satellite. Please see the satellites on the{" "}
+        Each <b>schema</b> is built to store sets of data that characterize a satellite. Please see the satellites on the{" "}
         <Tooltip placement="top" arrow title="Bring me to the schemas page">
           <Link to="/satellites" className={classes.link}>
             satellites page
           </Link>
         </Tooltip>{" "}
-        for usage examples. Each <strong>schema</strong> has a reference for where the data was found, a description describing what the data is, and a number of data fields that
-        contain the information.
+        for usage examples. Each <b>schema</b> has a reference for where the data was found, a description describing what the data is, and a number
+        of data fields that contain the information.
       </Typography>
       <Key page="SchemasTable" />
       <div className={classes.searchBarContainer}>

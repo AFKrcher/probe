@@ -28,7 +28,7 @@ import { themes } from "../css/Themes.jsx";
 
 const useStyles = makeStyles((theme) => ({
   menuIcon: {
-    color: theme.palette.tertiary.main,
+    color: theme.palette.primary.main,
     filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`
   }
 }));
@@ -137,7 +137,9 @@ export const SmallNav = ({ theme, toggleTheme }) => {
         </StyledMenuItem>
         <Divider component="li" />
         <StyledMenuItem onClick={toggleTheme}>
-          <ListItemIcon>{theme === themes.dark ? <Brightness2 aria-label="dark theme" fontSize="small" /> : <BrightnessHigh aria-label="light theme" />}</ListItemIcon>
+          <ListItemIcon>
+            {theme === themes.dark ? <Brightness2 aria-label="dark theme" fontSize="small" /> : <BrightnessHigh aria-label="light theme" />}
+          </ListItemIcon>
           <ListItemText primary="Toggle Theme" fontSize="small" />
         </StyledMenuItem>
         {user ? (

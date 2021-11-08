@@ -85,7 +85,7 @@ export const NavBar = ({ theme, toggleTheme }) => {
                 setOpenSnack(false);
               }}
               to="/">
-              <strong>PROBE</strong>
+              <b>PROBE</b>
             </Typography>
             {width > actionsBreak ? (
               <React.Fragment>

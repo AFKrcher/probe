@@ -109,7 +109,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
           setOpenSnack(false);
           setSnack(
             <span>
-              <strong>{values.names ? values.names[0].name : "New Satellite"}</strong> saved!
+              <b>{values.names ? values.names[0].name : "New Satellite"}</b> saved!
             </span>
           );
           setOpenSnack(true);
@@ -126,7 +126,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
           setOpenSnack(false);
           setSnack(
             <span>
-              Changes on <strong>{values.names ? values.names[0].name : "New Satellite"}</strong> saved!
+              Changes on <b>{values.names ? values.names[0].name : "New Satellite"}</b> saved!
             </span>
           );
           setOpenSnack(true);
@@ -149,7 +149,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
           setOpenSnack(false);
           setSnack(
             <span>
-              Deleted <strong>{values.names ? values.names[0].name : "N/A"}</strong>!
+              Deleted <b>{values.names ? values.names[0].name : "N/A"}</b>!
             </span>
           );
           setOpenSnack(true);
@@ -165,7 +165,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
           setOpenSnack(false);
           setSnack(
             <span>
-              Deleted <strong>{values.names ? values.names[0].name : "New Satellite"}</strong> forever!
+              Deleted <b>{values.names ? values.names[0].name : "New Satellite"}</b> forever!
             </span>
           );
           handleClose();
@@ -180,12 +180,12 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
     setAlert({
       title: (
         <span>
-          Delete <strong>{values.names ? values.names[0].name : "New Satellite"}</strong>?
+          Delete <b>{values.names ? values.names[0].name : "New Satellite"}</b>?
         </span>
       ),
       text: (
         <span>
-          Are you sure you want to delete <strong>{values.names ? values.names[0].name : "New Satellite"}</strong> and all of its data?
+          Are you sure you want to delete <b>{values.names ? values.names[0].name : "New Satellite"}</b> and all of its data?
         </span>
       ),
       actions: (
@@ -211,12 +211,12 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
       setAlert({
         title: (
           <span>
-            Delete Changes Made To <strong>{values.names ? values.names[0].name : "New Satellite"}</strong>?
+            Delete Changes Made To <b>{values.names ? values.names[0].name : "New Satellite"}</b>?
           </span>
         ),
         text: (
           <span>
-            Are you sure you want to delete the changes you have made to <strong>{values.names ? values.names[0].name : "New Satellite"}</strong>?
+            Are you sure you want to delete the changes you have made to <b>{values.names ? values.names[0].name : "New Satellite"}</b>?
           </span>
         ),
         actions: (
@@ -250,7 +250,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
           setOpenSnack(false);
           setSnack(
             <span>
-              Verified data for <strong>{values.names ? values.names[0].name : "N/A"}</strong>!
+              Verified data for <b>{values.names ? values.names[0].name : "N/A"}</b>!
             </span>
           );
           setOpenSnack(true);
@@ -271,7 +271,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
           setOpenSnack(false);
           setSnack(
             <span>
-              Validated data for <strong>{values.names ? values.names[0].name : "N/A"}</strong>!
+              Validated data for <b>{values.names ? values.names[0].name : "N/A"}</b>!
             </span>
           );
           setOpenSnack(true);
@@ -291,7 +291,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
         setOpenSnack(false);
         setSnack(
           <span>
-            Restored <strong>{values?.names[0]?.name}</strong>!
+            Restored <b>{values?.names[0]?.name}</b>!
           </span>
         );
         handleClose();
@@ -318,11 +318,11 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
               <span>
                 {newSat ? (
                   <React.Fragment>
-                    Creating <strong>New Satellite</strong>
+                    Creating <b>New Satellite</b>
                   </React.Fragment>
                 ) : (
                   <React.Fragment>
-                    Editing <strong>{initValues.names && initValues.names[0] ? initValues.names[0].name : "New Satellite"}</strong>
+                    Editing <b>{initValues.names && initValues.names[0] ? initValues.names[0].name : "New Satellite"}</b>
                   </React.Fragment>
                 )}
               </span>
@@ -350,8 +350,8 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
                       <Gallery initValues={initValues} width={width} modal={true} />
                     </div>
                     <Typography className={classes.description}>
-                      Last change made by <strong>{`${values.modifiedBy || username}`}</strong> on{" "}
-                      <strong>{values.modifiedOn ? `${values.modifiedOn}` : `${new Date()}`}</strong>
+                      Last change made by <b>{`${values.modifiedBy || username}`}</b> on{" "}
+                      <b>{values.modifiedOn ? `${values.modifiedOn}` : `${new Date()}`}</b>
                     </Typography>
                     <SatelliteForm
                       setOpenSnack={setOpenSnack}

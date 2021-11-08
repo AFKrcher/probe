@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 15,
     marginBottom: 20
   },
+  saberAstroColor: { color: theme.palette.tertiary.main },
   meetTheTeam: {
     marginTop: 30,
     marginBottom: 40
@@ -133,25 +134,23 @@ export const About = () => {
   return (
     <div className={classes.root}>
       <Typography variant="h3">
-        About <strong className={classes.title}>PROBE</strong>
+        About <b className={classes.title}>PROBE</b>
       </Typography>
       <Typography variant="body1" className={classes.aboutParagraph}>
-        <strong>P</strong>ublicly <strong>R</strong>esearched <strong>O</strong>
-        bservatory (PROBE) is a web application created by an incredible team of space enthusiasts who got together and gave up their weekend to complete this work during a
-        Hackathon which took place over the 8th - 9th May 2021.
-      </Typography>
-      <Typography variant="body1" className={classes.aboutParagraph}>
-        Fueled by Pizza and Lofi, we had a lot of fun and hope you find this website helpful and useful! Now it is up to all of us to maintain and populate it!
+        <b className={classes.saberAstroColor}>P</b>ublicly <b className={classes.saberAstroColor}>R</b>esearched{" "}
+        <b className={classes.saberAstroColor}>O</b>
+        bservatory (<b className={classes.saberAstroColor}>PROBE</b>) is a web application created by an incredible team of space enthusiasts who got
+        together and gave up their weekend to complete this work during a Hackathon which took place 8th - 9th May 2021.
       </Typography>
       <Typography variant="body1">
-        After the Hackathon, a pair of developers, Justin and Archer, continued the development of the application starting in August 2021. Features were added to provide better
-        data entry UX/UI and administrative capabilities, enhance application security, and enable integration with Saber Astronautics' Space Cockpit for data visualization and
-        analysis.
+        After the Hackathon, a pair of developers, Justin and Archer, continued the development of the application starting in August 2021. Features
+        were added to provide better data entry UX/UI and administrative capabilities, enhance application security, and enable integration with Saber
+        Astronautics' Space Cockpit for data visualization and analysis.
       </Typography>
       <div className={classes.meetTheTeam}>
         <Typography variant="h4">Meet the Team</Typography>
         <Typography variant="body1" className={classes.meetTheTeamParagraph}>
-          Click on our profile pictures to connect with us! If you have questions or issues, please click the see the footer at the bottom of this page.
+          Click on our profile pictures to connect with us! If you have questions or issues, please see the footer at the bottom of this page.
         </Typography>
       </div>
       <Container>
