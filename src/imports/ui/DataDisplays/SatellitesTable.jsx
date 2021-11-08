@@ -7,6 +7,8 @@ import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import useWindowSize from "../Hooks/useWindowSize.jsx";
 import ProtectedFunctionality from "../Helpers/ProtectedFunctionality.jsx";
 import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
+import { downloadFile, jsonDownload } from "../utils/commonDataFuncs";
+import { exportTableToCSV } from "../utils/satelliteDataFuncs";
 
 // Components
 import { SearchBar } from "../Helpers/SearchBar.jsx";
@@ -479,57 +481,6 @@ export const SatellitesTable = () => {
     setColumns(columns);
   }, [Meteor.userId(), verified, selector]);
 
-  const jsonDownload = () => {
-    let str = JSON.stringify(sats);
-    let uri = "data:application/json;charset=utf-8," + encodeURIComponent(str);
-
-    downloadFile(uri, "json");
-  };
-
-  const exportTableToCSV = () => {
-    const tempArr = schemas.map((schema) => schema.name).sort((a, b) => a.localeCompare(b));
-
-    const cols = [...tempArr];
-    const rows = sats.map((sat) => {
-      let satRow = [];
-      for (let i = 0; i < cols.length; i++) {
-        satRow.push(sat[cols[i]] ? JSON.stringify(sat[cols[i]]) : "N/A");
-      }
-      return satRow;
-    });
-
-    let content = [cols, ...rows];
-    let csvData = "";
-
-    for (let i = 0; i < content.length; i++) {
-      let value = content[i];
-      for (let j = 0; j < value.length; j++) {
-        let innerValue = value[j] === null ? "" : value[j].toString();
-        let result = innerValue.replace(/"/g, '""');
-        if (result.search(/("|,|\n)/g) >= 0) result = '"' + result + '"';
-        if (j > 0) csvData += ",";
-        csvData += result;
-      }
-      csvData += "\n";
-    }
-    downloadFile(csvData, "csv");
-  };
-
-  const downloadFile = (data, fileType) => {
-    let downloadLink = document.createElement("a");
-    downloadLink.setAttribute("download", `${new Date().toISOString()}_PROBE_SatTable.${fileType}`); // File name
-
-    if (fileType === "json") {
-      downloadLink.setAttribute("href", data);
-    } else {
-      let csvFile = new Blob([data], { type: "text/csv" });
-      downloadLink.href = window.URL.createObjectURL(csvFile);
-    }
-    downloadLink.style.display = "none";
-    downloadLink.click();
-    downloadLink.remove();
-  };
-
   const CustomToolbar = () => {
     return (
       <div className={classes.toolbarSpacer}>
@@ -537,11 +488,17 @@ export const SatellitesTable = () => {
           <GridToolbarColumnsButton className={classes.toolbar} />
           <GridToolbarFilterButton className={classes.toolbar} />
           <GridToolbarDensitySelector className={classes.toolbar} />
-          <Button size="small" onClick={jsonDownload} className={classes.downloadBar} color="primary">
+          <Button size="small" onClick={() => jsonDownload(sats)} className={classes.downloadBar} color="primary">
             <Download fontSize="small" className={classes.downloadIcon} />
             {width > addButtonBreak ? "Export JSON" : "JSON"}
           </Button>
-          <Button color="primary" className={classes.downloadBar} size="small" onClick={() => exportTableToCSV(sats)}>
+          <Button
+            color="primary"
+            className={classes.downloadBar}
+            size="small"
+            onClick={() => exportTableToCSV(schemas, sats, downloadFile)}
+            // temporarily disabling CSV output until customer need and utility are re-evaluated
+            style={{ display: "none" }}>
             <Download fontSize="small" className={classes.downloadIcon} />
             {width > addButtonBreak ? "Export CSV" : "CSV"}
           </Button>

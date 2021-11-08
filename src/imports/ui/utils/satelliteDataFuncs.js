@@ -32,6 +32,35 @@ export const getSatDesc = (satellite) => {
   return satellite && satellite.descriptionShort && satellite.descriptionShort.length > 0 ? satellite.descriptionShort[0].descriptionShort : "";
 };
 
+export const exportTableToCSV = (schemas, sats, downloadFile) => {
+  const tempArr = schemas.map((schema) => schema.name).sort((a, b) => a.localeCompare(b));
+
+  const cols = [...tempArr];
+  const rows = sats.map((sat) => {
+    let satRow = [];
+    for (let i = 0; i < cols.length; i++) {
+      satRow.push(sat[cols[i]] ? JSON.stringify(sat[cols[i]]) : "");
+    }
+    return satRow;
+  });
+
+  let content = [cols, ...rows];
+  let csvData = "";
+
+  for (let i = 0; i < content.length; i++) {
+    let value = content[i];
+    for (let j = 0; j < value.length; j++) {
+      let innerValue = value[j] === null ? "" : value[j].toString();
+      let result = innerValue.replace(/"/g, '""');
+      if (result.search(/("|,|\n)/g) >= 0) result = '"' + result + '"';
+      if (j > 0) csvData += ",";
+      csvData += result;
+    }
+    csvData += "\n";
+  }
+  downloadFile(csvData, "csv");
+};
+
 const decideVerifiedValidatedAdornment = (
   // decides the rendering of the validated / verified items for each of the satellite's fields
   array,
