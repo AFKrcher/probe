@@ -6,6 +6,7 @@ import { SchemaCollection } from "../../api/schemas";
 import ProtectedFunctionality from "../Helpers/ProtectedFunctionality.jsx";
 import useWindowSize from "../Hooks/useWindowSize.jsx";
 import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
+import { jsonDownload } from "../utils/commonDataFuncs";
 
 // Components
 import { SearchBar } from "../Helpers/SearchBar.jsx";
@@ -24,6 +25,7 @@ import {
   GridToolbarDensitySelector
 } from "@material-ui/data-grid";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import Download from "@material-ui/icons/GetApp";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,6 +56,15 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
     fontWeight: 500,
     fontSize: "14px"
+  },
+  downloadBar: {
+    color: theme.palette.text.primary,
+    fontWeight: 500,
+    fontSize: "14px"
+  },
+  downloadIcon: {
+    marginRight: 3,
+    marginLeft: -5
   },
   searchBarContainer: {
     position: "relative",
@@ -172,6 +183,10 @@ export const SchemasTable = () => {
           <GridToolbarColumnsButton className={classes.toolbar} />
           <GridToolbarFilterButton className={classes.toolbar} />
           <GridToolbarDensitySelector className={classes.toolbar} />
+          <Button size="small" onClick={() => jsonDownload(schemas)} className={classes.downloadBar} color="primary">
+            <Download fontSize="small" className={classes.downloadIcon} />
+            {width > addButtonBreak ? "Export JSON" : "JSON"}
+          </Button>
         </GridToolbarContainer>
       </div>
     );

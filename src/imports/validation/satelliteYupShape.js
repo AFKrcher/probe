@@ -37,7 +37,8 @@ const initialYupShapeGenerator = (initValues) => {
     _id: Yup.string().test(
       "uniqueID",
       (obj) => `The _id, "${obj?.value}", already exists in our database`,
-      (value) => (SatelliteCollection.findOne({ _id: value })?._id !== initValues._id && value ? SatelliteCollection.find({ _id: value }).count() === 0 : true)
+      (value) =>
+        SatelliteCollection.findOne({ _id: value })?._id !== initValues._id && value ? SatelliteCollection.find({ _id: value }).count() === 0 : true
     ),
     noradID: Yup.string()
       .required(`Required`)
@@ -45,7 +46,10 @@ const initialYupShapeGenerator = (initValues) => {
       .test(
         "uniqueNORADID",
         (obj) => `The NORAD ID, "${obj?.value}", already exists in our database`,
-        (value) => (SatelliteCollection.findOne({ noradID: value })?.noradID !== initValues.noradID && value ? SatelliteCollection.find({ noradID: value }).count() === 0 : true)
+        (value) =>
+          SatelliteCollection.findOne({ noradID: value })?.noradID !== initValues.noradID && value
+            ? SatelliteCollection.find({ noradID: value }).count() === 0
+            : true
       ),
     adminCheck: Yup.boolean().nullable(),
     machineCheck: Yup.boolean().nullable(),
@@ -63,7 +67,6 @@ export const satelliteValidatorShaper = (values, initValues) => {
 
   Yup.addMethod(Yup.mixed, "checkEachEntry", function (message) {
     let errObj = {}; // workaround object to push errors into Formik
-    // test each entry in the array: Yup.object().shape({field.name: Yup.(field.type)[0].toUpperCase() + (field.type).substr(1).required(field.required).min(field.min).max(field.max).oneOf((field.allowedValues))})
     return this.test("checkEachEntry", message, function (value) {
       const { path, createError } = this; // path is the schema's name, and createError generates errors to be handled by Formik
       let entryCount = 0; // "entryCount" and "fieldCount" are used to provide the location of the error to the SatelliteModal for rendering underneath the correct entry in SatelliteSchemaEntry
@@ -84,7 +87,9 @@ export const satelliteValidatorShaper = (values, initValues) => {
               baseFieldSchema = Yup.string().trim();
               break;
             case "url":
-              baseFieldSchema = Yup.string().url(`${path}-${entryCount}-${fieldCount}_Must be a valid URL (e.g. https://en.wikipedia.org/wiki/Main_Page)`);
+              baseFieldSchema = Yup.string().url(
+                `${path}-${entryCount}-${fieldCount}_Must be a valid URL (e.g. https://en.wikipedia.org/wiki/Main_Page)`
+              );
               break;
             case "validated":
               baseFieldSchema = Yup.array()
@@ -147,17 +152,27 @@ export const satelliteValidatorShaper = (values, initValues) => {
           const baseFieldType = baseFieldSchema; // initialize vairable to store sub-schema type
           const fieldSchemaMatrix = {
             // stores the yup fragments needed for each constraint
-            min: field.type === "number" && field.min ? baseFieldType.min(field.min, `${path}-${entryCount}-${fieldCount}_Must be no less than ${field.min}`) : false,
-            max: field.type === "number" && field.max ? baseFieldType.max(field.max, `${path}-${entryCount}-${fieldCount}_Must be no greater than ${field.max}`) : false,
+            min:
+              field.type === "number" && field.min
+                ? baseFieldType.min(field.min, `${path}-${entryCount}-${fieldCount}_Must be no less than ${field.min}`)
+                : false,
+            max:
+              field.type === "number" && field.max
+                ? baseFieldType.max(field.max, `${path}-${entryCount}-${fieldCount}_Must be no greater than ${field.max}`)
+                : false,
             allowedValues:
-              field.allowedValues?.length > 0 ? baseFieldType.oneOf([...field.allowedValues], `${path}-${entryCount}-${fieldCount}_Please select an option from the list`) : false,
+              field.allowedValues?.length > 0
+                ? baseFieldType.oneOf([...field.allowedValues], `${path}-${entryCount}-${fieldCount}_Please select an option from the list`)
+                : false,
             stringMax:
               field.type === "string" && field.stringMax
                 ? baseFieldType.max(field.stringMax, `${path}-${entryCount}-${fieldCount}_Must not exceed ${field.stringMax} characters`)
                 : false,
             required: field.required
               ? baseFieldType.required(
-                  `${path}-${entryCount}-${fieldCount}_${field.type === "url" ? "URL" : field.type[0].toUpperCase() + field.type.substr(1) + " Input"} Required`
+                  `${path}-${entryCount}-${fieldCount}_${
+                    field.type === "url" ? "URL" : field.type[0].toUpperCase() + field.type.substr(1) + " Input"
+                  } Required`
                 )
               : false,
             isUnique:
@@ -209,7 +224,11 @@ export const satelliteValidatorShaper = (values, initValues) => {
               let object = value[i];
               for (let key in object) {
                 // transforms to ensure  "result" object will be matched with the original tested "value", to avoid stale errors
-                if ((result[key] && Yup.date().isValidSync(result[key]) && typeof result[key] !== "number") || key === "verified" || key === "validated") {
+                if (
+                  (result[key] && Yup.date().isValidSync(result[key]) && typeof result[key] !== "number") ||
+                  key === "verified" ||
+                  key === "validated"
+                ) {
                   // Yup transforms date strings into date objects; solution is to transform result values back to original values
                   result[key] = object[key];
                 } else if (parseInt(object[key]) && object[key]) {
