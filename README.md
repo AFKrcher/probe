@@ -12,6 +12,7 @@ This open source project seeks to design a system that allows a community to mai
     - [Application](#Application)
     - [API Documentation](#API-Documentation)
 3.  [How To Contribute](#How-To-Contribute)
+    - [MMB](<#Mission-Management-Board-(MMB)>)
     - [Git](#Git)
     - [Coding Standards](#Coding-Standards)
     - [Installation](#Installation)
