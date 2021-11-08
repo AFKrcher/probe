@@ -490,6 +490,10 @@ RESPONSE:
 
 ## How To Contribute
 
+### Mission Management Board (MMB)
+
+If you want to contribute, consider signing-up for an account on Saber Astronautics' [MMB web application](https://mmb.saberastro.com). Once you havesigned-up, open an issue on Github asking for access to the PROBE board. There, you can view the running backlog of user stories as well as documentation on completed efforts.
+
 ### Git Processes
 
 1. Fork and clone the repository based on the [Installation](#Installation) instructions
@@ -665,4 +669,4 @@ This software is licensed under the [ISC](./LICENSE) license. For more terms, pr
 
 ## Credits
 
-Upon running the app on your local mahine or opening it at https://probe.saberastro.com, you will find the founders and contributors on the "About" page. Only founders and major contributors are listed on the "About" page.
+Upon running the app on your local machine or opening it at https://probe.saberastro.com/about, you will find the pictures, roles, and contact information of the founders and contributors of PROBE. Only founders and major contributors are listed on the PROBE about page.
