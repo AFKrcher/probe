@@ -108,7 +108,7 @@ export const ResetPassword = () => {
       <SnackBar bodySnack={snack} />
       <Paper className={classes.formContainer}>
         <Typography variant="h4" className={classes.header}>
-          <strong>Reset Password</strong>
+          <b>Reset Password</b>
         </Typography>
         <form onSubmit={handleReset}>
           <TextField

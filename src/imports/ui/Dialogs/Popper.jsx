@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     width: "80vw",
     backgroundColor: theme.palette.popper.background,
     color: theme.palette.popper.text,
-    border: `1px solid ${theme.palette.text.disabled}`,
+    border: `1px solid ${theme.palette.tertiary.shadow}`,
     padding: 10
   }
 }));

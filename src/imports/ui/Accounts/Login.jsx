@@ -175,7 +175,7 @@ export const Login = () => {
       ) : (
         <Paper className={classes.formContainer} elevation={3}>
           <Typography variant="h4" className={classes.header}>
-            <strong>Login</strong>
+            <b>Login</b>
           </Typography>
           <form onSubmit={loginUser}>
             <TextField

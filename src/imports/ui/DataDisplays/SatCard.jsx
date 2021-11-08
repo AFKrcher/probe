@@ -121,7 +121,7 @@ export const SatCard = ({ width, height, satellite }) => {
         </CardMedia>
         <CardContent className={classes.cardDesc}>
           <Typography variant={width > body1Break ? "h5" : width > titleh6Break ? "h6" : "body1"} className={classes.satName}>
-            <strong>{getSatName(satellite)}</strong>
+            <b>{getSatName(satellite)}</b>
           </Typography>
           <Typography gutterBottom variant={width > body1Break ? "body1" : width > body2Break ? "body2" : "caption"}>
             COSPAR ID: {satellite.cosparID ? satellite.cosparID[0].cosparID : "N/A"}
@@ -151,7 +151,7 @@ export const SatCard = ({ width, height, satellite }) => {
           {width < actionsBreak ? (
             <React.Fragment>
               <Button variant="outlined" size="small" onClick={handleClick} className={classes.cardButton}>
-                <strong className={classes.optionButton}>Options</strong>
+                <b className={classes.optionButton}>Options</b>
               </Button>
               <Menu keepMounted anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
                 <MenuItem

@@ -20,7 +20,14 @@ import { Key } from "../Helpers/Key.jsx";
 
 // @material-ui
 import { Button, Grid, makeStyles, Typography, Tooltip, IconButton } from "@material-ui/core";
-import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, getGridStringOperators, GridToolbarDensitySelector } from "@material-ui/data-grid";
+import {
+  DataGrid,
+  GridToolbarContainer,
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+  getGridStringOperators,
+  GridToolbarDensitySelector
+} from "@material-ui/data-grid";
 import StarIcon from "@material-ui/icons/Star";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import VisibilityIcon from "@material-ui/icons/Visibility";
@@ -96,19 +103,23 @@ const useStyles = makeStyles((theme) => ({
   },
   actionIconButton: {
     padding: 7,
-    marginLeft: 15
+    marginLeft: 15,
+    filter: `drop-shadow(1px 2px 1px ${theme.palette.tertiary.shadow})`
   },
   starIconButton: {
     marginLeft: 15,
+    filter: `drop-shadow(1px 2px 1px ${theme.palette.tertiary.shadow})`
   },
   starButtonFilled: {
     cursor: "pointer",
     fill: "#ffc708",
+    filter: `drop-shadow(1px 2px 1px ${theme.palette.tertiary.shadow})`
   },
   starButtonHeader: {
     cursor: "pointer",
     fill: "#ffc708",
-    marginBottom: -5
+    filter: `drop-shadow(1px 2px 1px ${theme.palette.tertiary.shadow})`,
+    marginBottom: -6
   },
   modalButton: {
     marginTop: -2.5
@@ -310,7 +321,7 @@ export const SatellitesTable = () => {
     setOpenSnack(false);
     setSnack(
       <span>
-        <strong>{name}</strong> {!notFavorite ? "added to favorites" : "removed from favorites"}
+        <b>{name}</b> {!notFavorite ? "added to favorites" : "removed from favorites"}
       </span>
     );
     setTimeout(() => setOpenSnack(true), 500);
@@ -340,7 +351,10 @@ export const SatellitesTable = () => {
         }`}
         arrow
         placement="top">
-        <IconButton size="small" className={classes.starIconButton} onClick={(e) => handleFavorite(e, params.id, favoritesNameShortener(), checkIfFavorite())}>
+        <IconButton
+          size="small"
+          className={classes.starIconButton}
+          onClick={(e) => handleFavorite(e, params.id, favoritesNameShortener(), checkIfFavorite())}>
           {checkIfFavorite() ? <StarIcon className={classes.starButtonFilled} /> : <StarBorderIcon className={classes.starButtonEmpty} />}
         </IconButton>
       </Tooltip>
@@ -563,13 +577,14 @@ export const SatellitesTable = () => {
           </div>
         ) : null}
         <Typography gutterBottom variant="body1" className={classes.description}>
-          Each <strong>satellite</strong> in the catalogue contains a number of fields based on schemas defined on the{" "}
+          Each <b>satellite</b> in the catalogue contains a number of fields based on schemas defined on the{" "}
           <Tooltip placement="top" arrow title="Bring me to the satellites page">
             <Link to="/schemas" className={classes.link}>
               schemas page
             </Link>
           </Tooltip>
-          . Filtering on satellites using tags in the search bar will allow you to view the results in the table and export the results to a CSV or JSON format.
+          . Filtering on satellites using tags in the search bar will allow you to view the results in the table and export the results to a CSV or
+          JSON format.
         </Typography>
         <Key page="SatellitesTable" />
         <div className={classes.searchBarContainer}>
