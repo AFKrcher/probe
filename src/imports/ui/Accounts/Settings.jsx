@@ -286,7 +286,7 @@ export const Settings = () => {
         <Grid container justifyContent="center" alignItems="center" className={classes.root}>
           <Paper className={classes.formContainer} elevation={3}>
             <Typography variant="h4" className={classes.header}>
-              <strong>Profile Settings</strong>
+              <b>Profile Settings</b>
             </Typography>
             <form id="settings" onSubmit={updateAccount} className={classes.flexContainer}>
               <TextField

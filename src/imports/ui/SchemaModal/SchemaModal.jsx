@@ -92,7 +92,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, admin })
             setOpenSnack(false);
             setSnack(
               <span>
-                New <strong>{values.name}</strong> schema saved!
+                New <b>{values.name}</b> schema saved!
               </span>
             );
             setOpenSnack(true);
@@ -107,7 +107,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, admin })
             setOpenSnack(false);
             setSnack(
               <span>
-                Changes on <strong>{values.name}</strong> schema saved!
+                Changes on <b>{values.name}</b> schema saved!
               </span>
             );
             setOpenSnack(true);
@@ -132,7 +132,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, admin })
           setOpenSnack(false);
           setSnack(
             <span>
-              Deleted <strong>{initValues.name}</strong> schema!
+              Deleted <b>{initValues.name}</b> schema!
             </span>
           );
           handleClose();
@@ -149,7 +149,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, admin })
           setOpenSnack(false);
           setSnack(
             <span>
-              Deleted <strong>{initValues.name}</strong> schema forever!
+              Deleted <b>{initValues.name}</b> schema forever!
             </span>
           );
           handleClose();
@@ -164,20 +164,20 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, admin })
     setAlert({
       title: admin ? (
         <span>
-          Delete <strong>{initValues.name}</strong> Schema Forever?
+          Delete <b>{initValues.name}</b> Schema Forever?
         </span>
       ) : (
         <span>
-          Delete <strong>{initValues.name}</strong> Schema?
+          Delete <b>{initValues.name}</b> Schema?
         </span>
       ),
       text: admin ? (
         <span>
-          Are you sure you want to delete the <strong>{initValues.name}</strong> schema forever?
+          Are you sure you want to delete the <b>{initValues.name}</b> schema forever?
         </span>
       ) : (
         <span>
-          Are you sure you want to delete the <strong>{initValues.name}</strong> schema and all of its fields?
+          Are you sure you want to delete the <b>{initValues.name}</b> schema and all of its fields?
         </span>
       ),
       actions: (
@@ -202,12 +202,12 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, admin })
       setAlert({
         title: (
           <span>
-            Delete changes on <strong>{values.name || "new schema"}</strong>?
+            Delete changes on <b>{values.name || "new schema"}</b>?
           </span>
         ),
         text: (
           <span>
-            Are you sure you want to cancel all changes made to <strong>{values.name}</strong> schema and its fields?
+            Are you sure you want to cancel all changes made to <b>{values.name}</b> schema and its fields?
           </span>
         ),
         actions: (
@@ -240,7 +240,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, admin })
           setOpenSnack(false);
           setSnack(
             <span>
-              Approved <strong>{initValues.name}</strong> schema changes!
+              Approved <b>{initValues.name}</b> schema changes!
             </span>
           );
           handleClose();
@@ -259,7 +259,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, admin })
         setOpenSnack(false);
         setSnack(
           <span>
-            Restored <strong>{initValues.name}</strong> schema!
+            Restored <b>{initValues.name}</b> schema!
           </span>
         );
         handleClose();
@@ -286,7 +286,7 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, admin })
               "Create New Schema"
             ) : (
               <React.Fragment>
-                Editing <strong>{initValues.name || "N/A"}</strong>
+                Editing <b>{initValues.name || "N/A"}</b>
               </React.Fragment>
             )}
           </Typography>
@@ -301,10 +301,18 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, admin })
               ) : (
                 <DialogContent className={classes.content} style={decideHeight()}>
                   <Typography className={classes.description}>
-                    Last change made by <strong>{`${values.modifiedBy || username || "N/A"}`}</strong> on{" "}
-                    <strong>{values.modifiedOn ? `${values.modifiedOn}` : `${new Date()}`}</strong>
+                    Last change made by <b>{`${values.modifiedBy || username || "N/A"}`}</b> on{" "}
+                    <b>{values.modifiedOn ? `${values.modifiedOn}` : `${new Date()}`}</b>
                   </Typography>
-                  <SchemaForm touched={touched} errors={errors} formValues={values} setValues={setValues} setFieldValue={setFieldValue} editing={editing} initValues={initValues} />
+                  <SchemaForm
+                    touched={touched}
+                    errors={errors}
+                    formValues={values}
+                    setValues={setValues}
+                    setFieldValue={setFieldValue}
+                    editing={editing}
+                    initValues={initValues}
+                  />
                 </DialogContent>
               )}
               <DialogActions className={classes.actions}>
@@ -368,7 +376,11 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, admin })
                   </Button>
                 )}
                 {!editing && (
-                  <Button size={width < actionsBreak ? "small" : "medium"} variant="contained" onClick={handleClose} startIcon={width < actionsBreak ? null : <CloseIcon />}>
+                  <Button
+                    size={width < actionsBreak ? "small" : "medium"}
+                    variant="contained"
+                    onClick={handleClose}
+                    startIcon={width < actionsBreak ? null : <CloseIcon />}>
                     Close
                   </Button>
                 )}
@@ -380,7 +392,13 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, admin })
                     color="primary"
                     startIcon={width < actionsBreak ? null : <SaveIcon />}
                     disabled={!_.isEmpty(errors) || !dirty || isValidating ? true : false}>
-                    {isSubmitting || isValidating ? <CircularProgress size={24} className={classes.loadingSave} /> : newSchema ? "Save" : "Save Changes"}
+                    {isSubmitting || isValidating ? (
+                      <CircularProgress size={24} className={classes.loadingSave} />
+                    ) : newSchema ? (
+                      "Save"
+                    ) : (
+                      "Save Changes"
+                    )}
                   </Button>
                 )}
               </DialogActions>

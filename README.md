@@ -55,9 +55,7 @@ The public API allows all users to obtain information on satellites and schemas 
 
 GET: `/api/`
 
-RESPONSE:
-
-`"Welcome to the PROBE public API. For documentation, please visit this GitHub page: https://github.com/afkrcher/probe#api-documentation."`
+RESPONSE: An HTML landing page directing the user to see this README for more instructions on how to use the API.
 
 ---
 
@@ -560,7 +558,7 @@ For _PRODUCTION_ testing:
 
 \*Only required for a build that reaches out to a hosted MongoDB instance
 
-\*\*Only required for build that has a local, connected instance of MongoDB running
+\*\*Only required for build that has is networked to a MongoDB instance
 
 ### Access MongoDB
 
@@ -604,7 +602,7 @@ chmod +x scripts/build-dev.sh && scripts/build-dev.sh
 
 The Docker production build is dependent on the `.env` file to describe the configuration of your meteor application. A `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README.
 
-The `.env.prod` and `docker-compose.yml` must be configured properly in order to run on your deployment platform of choice. If your deployment does not use docker-compose or Docker at all, please be sure to reference the Docker file steps and environmental variables.
+The `.env.prod` and `docker-compose.yml` must be configured properly in order to run on your deployment platform of choice. If your deployment does not use docker-compose or Docker at all, please be sure to reference the Dockerfiles, bash scripts, and environmental variables.
 
 Paste and run the following command at the root of the project to build and run a docker production image of PROBE using docker-compose. DO NOT use the `scripts/build-prod.sh`, as this script is for the Docker container to run later in the build process.
 
@@ -664,3 +662,7 @@ The following is a list of notable packages and technologies used to build this 
 ## License
 
 This software is licensed under the [ISC](./LICENSE) license. For more terms, privacy policy, or questions, please contact the contributors directly.
+
+## Credits
+
+Upon running the app on your local mahine or opening it at https://probe.saberastro.com, you will find the founders and contributors on the "About" page. Only founders and major contributors are listed on the "About" page.

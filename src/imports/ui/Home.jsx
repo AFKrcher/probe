@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 15,
     marginBottom: 20
   },
+  saberAstroColor: { color: theme.palette.tertiary.main },
   showcase: {
     marginTop: 20
   },
@@ -75,14 +76,14 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary
   },
   scrollUp: {
-    color: theme.palette.tertiary.main,
+    color: theme.palette.primary.main,
     position: "fixed",
     bottom: 10,
     right: 10,
     zIndex: 20
   },
   toggleInfinite: {
-    color: theme.palette.tertiary.main,
+    color: theme.palette.primary.main,
     position: "fixed",
     bottom: 60,
     right: 10
@@ -226,10 +227,12 @@ export const Home = () => {
           </React.Fragment>
         )}
         <Typography variant="h3">
-          Welcome to <strong className={classes.probe}>PROBE</strong>!
+          Welcome to <b className={classes.probe}>PROBE</b>!
         </Typography>
         <Typography variant="body1" className={classes.description}>
-          <strong>P</strong>ublicly <strong>R</strong>esearched <strong>O</strong>bservatory (PROBE) is seeking to become the world's most complete and easy to use resource for
+          <b className={classes.saberAstroColor}>P</b>ublicly <b className={classes.saberAstroColor}>R</b>esearched{" "}
+          <b className={classes.saberAstroColor}>O</b>
+          bservatory (<b className={classes.saberAstroColor}>PROBE</b>) is seeking to become the world's most complete and easy to use resource for
           satellite data and information. 100% Open Source, 100% Machine Readable.
         </Typography>
         <Key page="Home" mini={mini} />
@@ -259,7 +262,7 @@ export const Home = () => {
                     <Typography variant="h4">
                       {favorites?.length > 0 ? (
                         <React.Fragment>
-                          <strong>{user}</strong>'s Favorite Satellites
+                          <b>{user}</b>'s Favorite Satellites
                         </React.Fragment>
                       ) : (
                         <div style={{ marginBottom: -40 }}></div>
