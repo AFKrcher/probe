@@ -3,13 +3,25 @@ import { Meteor } from "meteor/meteor";
 // Imports
 import { useTracker } from "meteor/react-meteor-data";
 import { SatelliteCollection } from "../../api/satellites";
-import useWindowSize from "../Hooks/useWindowSize.jsx";
+import useWindowSize from "../hooks/useWindowSize.jsx";
 
 // Components
 import { SatelliteModal } from "../SatelliteModal/SatelliteModal.jsx";
 
 // @material-ui
-import { makeStyles, Typography, Table, TableContainer, Paper, TableHead, TableBody, TableRow, TableCell, CircularProgress, IconButton } from "@material-ui/core";
+import {
+  makeStyles,
+  Typography,
+  Table,
+  TableContainer,
+  Paper,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  CircularProgress,
+  IconButton
+} from "@material-ui/core";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import ErrorOutlinedIcon from "@material-ui/icons/ErrorOutlined";
@@ -205,7 +217,14 @@ export const ApproveSatellites = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <SatelliteModal show={showModal} initValues={initialSatValues} handleClose={() => setShowModal(false)} width={width} height={height} admin={true} />
+      <SatelliteModal
+        show={showModal}
+        initValues={initialSatValues}
+        handleClose={() => setShowModal(false)}
+        width={width}
+        height={height}
+        admin={true}
+      />
     </div>
   );
 };

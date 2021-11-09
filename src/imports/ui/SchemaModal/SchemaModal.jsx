@@ -6,7 +6,7 @@ import { useTracker } from "meteor/react-meteor-data";
 import { Formik, Form } from "formik";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import { schemaValidatorShaper } from "/imports/validation/schemaYupShape";
-import useWindowSize from "../Hooks/useWindowSize.jsx";
+import useWindowSize from "../hooks/useWindowSize.jsx";
 import ProtectedFunctionality from "../Helpers/ProtectedFunctionality.jsx";
 import { _ } from "meteor/underscore";
 

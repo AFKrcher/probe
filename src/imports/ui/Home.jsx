@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Meteor } from "meteor/meteor";
 // Imports
-import useWindowSize from "./Hooks/useWindowSize.jsx";
+import useWindowSize from "./hooks/useWindowSize.jsx";
 import { useTracker } from "meteor/react-meteor-data";
 
 // Components

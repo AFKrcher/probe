@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 // Components
@@ -25,14 +25,14 @@ export const SatelliteSchemaEntry = ({
   schema,
   setFieldValue,
   editing,
-  editingSchema,
   errors,
   entry,
   handleDeleteEntry,
   setTouched,
   disabled,
   setDisabled,
-  width
+  width,
+  setValidating
 }) => {
   const classes = useStyles();
 
@@ -40,7 +40,7 @@ export const SatelliteSchemaEntry = ({
     <Grid item xs={12}>
       <Paper className={classes.entryPaper}>
         <Grid container spacing={0}>
-          <Grid item xs={editingSchema ? 11 : 12} className={classes.allFields}>
+          <Grid item xs={editing ? 11 : 12} className={classes.allFields} justifyContent="center">
             {schema.fields.map((field, fieldIndex) => {
               return (
                 (!field.hidden || field.name === "reference") && (
@@ -51,22 +51,27 @@ export const SatelliteSchemaEntry = ({
                     fieldIndex={fieldIndex}
                     setFieldValue={setFieldValue}
                     editing={editing}
-                    editingSchema={editingSchema}
                     entry={entry}
                     entryIndex={entryIndex}
                     errors={errors}
                     setTouched={setTouched}
                     setDisabled={setDisabled}
                     width={width}
+                    setValidating={setValidating}
                   />
                 )
               );
             })}
             <div className={classes.lastBuffer} />
           </Grid>
-          {(editing || editingSchema) && (
-            <Grid container item xs={editingSchema ? 1 : 0} alignContent="center">
-              <IconButton aria-label="delete field" color="default" disabled={disabled} onClick={() => handleDeleteEntry(schema, entryIndex)}>
+          {editing && (
+            <Grid container item xs={1} justifyContent="center">
+              <IconButton
+                tabIndex={1000}
+                aria-label="delete field"
+                color="default"
+                disabled={disabled}
+                onClick={() => handleDeleteEntry(schema, entryIndex)}>
                 <DeleteIcon />
               </IconButton>
             </Grid>
@@ -91,5 +96,6 @@ SatelliteSchemaEntry.propTypes = {
   disabled: PropTypes.bool,
   setDisabled: PropTypes.func,
   handleDeleteEntry: PropTypes.func,
-  width: PropTypes.number
+  width: PropTypes.number,
+  setValidating: PropTypes.func
 };
