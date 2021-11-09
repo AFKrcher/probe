@@ -89,7 +89,9 @@ export const satelliteMethods = (Meteor, Roles, SatelliteCollection, PROBE_API_K
     },
     checkSatelliteData: (values, task, method) => {
       if (
-        (Roles.userIsInRole(Meteor.userId(), "admin") || Roles.userIsInRole(Meteor.userId(), "moderator") || Roles.userIsInRole(Meteor.userId(), "machine")) &&
+        (Roles.userIsInRole(Meteor.userId(), "admin") ||
+          Roles.userIsInRole(Meteor.userId(), "moderator") ||
+          Roles.userIsInRole(Meteor.userId(), "machine")) &&
         Meteor.user()?.emails[0]?.verified
       ) {
         let tempValues = values;

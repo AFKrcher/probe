@@ -57,13 +57,13 @@ export const SatelliteEntryField = ({
   fieldIndex,
   setFieldValue,
   editing,
-  editingSchema,
   entry,
   entryIndex,
   errors,
   setTouched,
   setDisabled,
-  width
+  width,
+  setValidating
 }) => {
   const classes = useStyles();
 
@@ -79,6 +79,7 @@ export const SatelliteEntryField = ({
     setDisabled(true);
 
     const name = event.target.name;
+    setValidating(true);
     debouncedSet(name, validatedField, verifiedField);
     debouncedValidate(name);
   };
@@ -106,11 +107,12 @@ export const SatelliteEntryField = ({
     obj[name] = true;
     setTouched(obj);
     setDisabled(false);
-  }, 1000);
+  }, 500);
 
   const debouncedValidate = useDebouncedCallback((name) => {
-    setFieldValue(name, tempValue);
-  }, 1100);
+    setFieldValue(name, typeof tempValue === "string" ? tempValue.trim() : tempValue);
+    setValidating(false);
+  }, 600);
 
   const handleClick = (url) => {
     window.open(url, "_blank").focus();
@@ -175,13 +177,12 @@ export const SatelliteEntryField = ({
       multiline: field.stringMax && !field.isUnique && field.name !== "name" && entry[field.name]?.length > 100,
       minRows: Math.ceil(entry[field.name]?.length / 120) || 3,
       maxRows: 10,
-      component:
-        editing || editingSchema
-          ? TextField
-          : (props) => linkAdornment(width, classes, handleClick, adornmentBreak, props, entry[`${field.name}`], field.type, validated, verified),
+      component: editing
+        ? TextField
+        : (props) => linkAdornment(width, classes, handleClick, adornmentBreak, props, entry[`${field.name}`], field.type, validated, verified),
 
       type: field.type === "date" ? "datetime-local" : field.type,
-      disabled: !editingSchema,
+      disabled: !editing,
       autoComplete: "off"
     };
   };
@@ -193,13 +194,12 @@ export const SatelliteEntryField = ({
       ) : (
         <FormControl
           className={classes.field}
-          disabled={!editingSchema}
           variant="outlined"
           margin="dense"
           required
           fullWidth
           error={filteredHelper(schema.name, entryIndex, fieldIndex) ? true : false}>
-          <Field {...fieldProps(classes, field, fieldIndex, entry["validated"], entry["verified"])} select={editing || editingSchema ? true : false}>
+          <Field {...fieldProps(classes, field, fieldIndex, entry["validated"], entry["verified"])} select={editing}>
             <MenuItem value={undefined}>N/A</MenuItem>
             {field.allowedValues.map((value, valueIndex) => {
               return (
@@ -215,7 +215,7 @@ export const SatelliteEntryField = ({
         <Typography variant="caption" className={classes.helpersError}>
           {filteredHelper(schema.name, entryIndex, fieldIndex)}
         </Typography>
-      ) : editingSchema ? (
+      ) : editing ? (
         <Typography variant="caption" className={classes.helpers}>
           {helper(field, fieldIndex)}
         </Typography>
@@ -233,11 +233,11 @@ SatelliteEntryField.propTypes = {
   fieldIndex: PropTypes.number,
   setFieldValue: PropTypes.func,
   editing: PropTypes.bool,
-  editingSchema: PropTypes.bool,
   filteredHelper: PropTypes.func,
   setSatSchema: PropTypes.func,
   errors: PropTypes.object,
   setTouched: PropTypes.func,
   setDisabled: PropTypes.func,
-  width: PropTypes.number
+  width: PropTypes.number,
+  setValidating: PropTypes.func
 };

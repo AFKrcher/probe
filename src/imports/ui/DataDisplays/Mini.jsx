@@ -7,7 +7,7 @@ import { useTracker } from "meteor/react-meteor-data";
 import { SatCard } from "./SatCard.jsx";
 import { SatelliteCollection } from "../../api/satellites";
 import { SchemaCollection } from "../../api/schemas";
-import useWindowSize from "../Hooks/useWindowSize.jsx";
+import useWindowSize from "../hooks/useWindowSize.jsx";
 
 //@material-ui
 import { Dialog, Grid, makeStyles, Tooltip, Typography, Paper } from "@material-ui/core";

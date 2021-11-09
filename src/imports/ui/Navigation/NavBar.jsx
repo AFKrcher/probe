@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 // Imports
-import useWindowSize from "../Hooks/useWindowSize.jsx";
+import useWindowSize from "../hooks/useWindowSize.jsx";
 import { Link } from "react-router-dom";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import { DropDown } from "../Navigation/DropDown";

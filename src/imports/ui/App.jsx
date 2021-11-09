@@ -60,7 +60,7 @@ const getCachedTheme = () => {
 };
 
 export const App = () => {
-  const [theme, setTheme] = useState(getCachedTheme);
+  const [theme] = useState(getCachedTheme);
 
   const [openAlert, setOpenAlert] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
