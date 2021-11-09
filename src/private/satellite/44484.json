@@ -25,12 +25,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Aerocube 10B"
@@ -51,12 +45,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "DougSat"
@@ -79,12 +67,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "cosparID": "2019-022C"
@@ -107,12 +89,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Wollops Island (WLPIS)",
@@ -138,12 +114,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "descriptionShort": "Aerocube 10 (AC10) are a pair of 1.5U Cubesats developed by the Aerospace Corporation of El Segundo to demonstrate several technologies."
@@ -166,12 +136,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "descriptionLong": "Aerocube 10 (AC10) are a pair of 1.5U Cubesats developed by the Aerospace Corporation of El Segundo to demonstrate several technologies.\n\nThe purpose of the mission is to demonstrate precision satellite-to-satellite pointing; deployment of atmospheric probes for in-situ measurement of air density; small-spacecraft proximity operations using propulsion from a steam thruster (no docking is planned); and solar cell performance degradation experiment that will correlate data from radiation sensors tuned to the energy levels suspected of causing damage to a drop in solar cell power output.\n\nThe AeroCube-10B spacecraft replaces the payload volume area used for the dispenser on the 10A satellite with three different payloads. One is a steam propulsion unit identical to the one in AeroCubes-7b and 7c. It will dispense water vapor to create a 4 mN thrust to change the range between the two satellites. It holds up to 30 grams of water and can affect, best case a 10 meter per second delta velocity. Water is non-toxic and the pressure inside the steam propulsion unit is at atmospheric pressure, so it is not a pressure vessel. The other is an electron and proton spectrometer called the micro-Charged Particle Telescope (µCPT). It will measure radiation flux impinging on the satellite, in specific energy levels that are suspected to cause solar cell degradation. The third payload is a sensor that will confirm when the optical beacon is impinging on the satellite. It is a light sensor, tuned to the optical beacon and amplified because the intensity is predicted to be faint."
@@ -194,12 +158,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Antares",
@@ -223,12 +181,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "description": "CAD Model of satellite",
@@ -251,12 +203,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "description": "Picture of a DOUGSAT (right), and JIMSAT (left)",
@@ -281,12 +227,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "1.5U CubeSat",
@@ -310,12 +250,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "organization": "Aerospace Corporation",
@@ -339,12 +273,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "type": "company",
@@ -369,12 +297,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "description": "Steam propulsion unit identical to the one in AeroCubes-7b and 7c. It will dispense water vapor to create a 4 mN thrust to change the range between the two satellites. It holds up to 30 grams of water.",
@@ -410,12 +332,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "type": "research",
@@ -437,12 +353,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "type": "miniaturized",
@@ -464,12 +374,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "type": "imaging",
@@ -493,12 +397,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "description": "Water vapor propulsion testing, micro-Charged Particle Telescope testing, and a test sensor that will confirm when the optical beacon is impinging on the satellite"

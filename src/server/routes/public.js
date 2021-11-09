@@ -1,3 +1,5 @@
+import { Meteor } from "meteor/meteor";
+
 export const publicRoutes = (app, getSats, getSchemas, publicAPILimiter) => {
   return [
     // Public satellite routes
@@ -8,6 +10,11 @@ export const publicRoutes = (app, getSats, getSchemas, publicAPILimiter) => {
     // Public schema route
     app.get("/api/schemas", publicAPILimiter, (req, res) => {
       getSchemas(req, res);
+    }),
+
+    // Public test route
+    app.get("/api/test", publicAPILimiter, (req, res) => {
+      res.status(200).json(`Test successful! This is the endpoint you just hit: ${Meteor.absoluteUrl() + "api/test"}.`);
     }),
 
     // Public API landing page
