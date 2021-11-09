@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Meteor } from "meteor/meteor";
 // Imports
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 import { SatelliteCollection } from "../../api/satellites";
+import { SatelliteModal } from "../SatelliteModal/SatelliteModal";
+import useWindowSize from "../hooks/useWindowSize.jsx";
 
-//Components
+// Components
 import { Gallery } from "./Gallery.jsx";
 
 // @material-ui
@@ -38,7 +40,11 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export const Dashboard = () => {
   const classes = useStyles();
+
   const location = useLocation();
+  const history = useHistory();
+
+  const [width, height] = useWindowSize();
 
   const [path, setPath] = useState(25544);
 
@@ -77,7 +83,23 @@ export const Dashboard = () => {
 
   return (
     <Container className={classes.root}>
-      {!isLoading && !sat?.isDeleted && sat ? (
+      {isLoading ? (
+        <div className={classes.spinnerContainer}>
+          <CircularProgress className={classes.spinner} size={100} thickness={3} />
+        </div>
+      ) : (
+        <SatelliteModal
+          show={true}
+          newSat={false}
+          initValues={sat}
+          handleClose={() => {
+            history.push("/");
+          }}
+          width={width}
+          height={height}
+        />
+      )}
+      {/* {!isLoading && !sat?.isDeleted && sat ? (
         <React.Fragment>
           <Grid container spacing={10} justifyContent="space-around">
             <Grid item xs={6}>
@@ -118,7 +140,7 @@ export const Dashboard = () => {
         <div className={classes.spinnerContainer}>
           <CircularProgress className={classes.spinner} size={100} thickness={3} />
         </div>
-      )}
+      )} */}
     </Container>
   );
 };
