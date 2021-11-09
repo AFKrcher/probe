@@ -1,12 +1,11 @@
 import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 // Imports
-import HelpersContext from "../Dialogs/HelpersContext.jsx";
 import { Field } from "formik";
 import { _ } from "meteor/underscore";
+import HelpersContext from "../Dialogs/HelpersContext.jsx";
 
 // Components
-import AlertDialog from "../Dialogs/AlertDialog.jsx";
 import { SatelliteSchemaAccordion } from "./SatelliteSchemaAccordion";
 
 // @material-ui
@@ -56,17 +55,17 @@ export const SatelliteForm = ({
   satelliteValidatorShaper,
   touched,
   setTouched,
-  editingOne,
-  setEditingOne,
-  setOpenSnack,
-  setSnack
+  dirty,
+  setValidating
 }) => {
-  const { setOpenAlert, alert, setAlert } = useContext(HelpersContext);
+  const classes = useStyles();
+
+  const { setOpenAlert, setAlert } = useContext(HelpersContext);
+
   const [schemaAddition, setSchemaAddition] = useState(false);
   const [addSchema, setAddSchema] = useState("");
-  const [accordionBeingEdited, setAccordionBeingEdited] = useState(-1);
   const [flag, setFlag] = useState(true);
-  const classes = useStyles();
+  const [disabled, setDisabled] = useState(false);
 
   const handleChange = (event) => {
     // set object to touched explicitly
@@ -131,7 +130,6 @@ export const SatelliteForm = ({
 
   return (
     <Grid container spacing={1}>
-      <AlertDialog bodyAlert={alert} />
       <Grid container item>
         <Grid item xs={12}>
           <Paper className={classes.noradID}>
@@ -159,11 +157,7 @@ export const SatelliteForm = ({
             initValues[schema.name] && (
               <span key={schemaIndex} className={classes.accordion}>
                 <SatelliteSchemaAccordion
-                  accordionBeingEdited={accordionBeingEdited}
-                  setAccordionBeingEdited={setAccordionBeingEdited}
                   schemaIndex={schemaIndex}
-                  editingOne={editingOne}
-                  setEditingOne={setEditingOne}
                   errors={errors}
                   setErrors={setErrors}
                   schema={schema}
@@ -174,15 +168,22 @@ export const SatelliteForm = ({
                   setSatSchema={setSatSchema}
                   values={values}
                   satelliteValidatorShaper={satelliteValidatorShaper}
+                  touched={touched}
                   setTouched={setTouched}
                   initValues={initValues}
-                  setOpenSnack={setOpenSnack}
-                  setSnack={setSnack}
-                  touched={touched}
+                  disabled={disabled}
+                  setDisabled={setDisabled}
+                  dirty={dirty}
+                  setValidating={setValidating}
                 />
                 {editing && (
                   <Tooltip title={`Delete ${schema.name}`}>
-                    <IconButton color="default" className={classes.deleteIcon} onClick={() => handleDeleteDialog(schema.name)}>
+                    <IconButton
+                      tabIndex={1000}
+                      color="default"
+                      className={classes.deleteIcon}
+                      onClick={() => handleDeleteDialog(schema.name)}
+                      disabled={disabled}>
                       <DeleteIcon />
                     </IconButton>
                   </Tooltip>
@@ -213,7 +214,14 @@ export const SatelliteForm = ({
             />
           </Grid>
           <Grid item xs className={classes.addFieldContainer}>
-            <Button id="add-schema" variant="contained" color="primary" onClick={handleNewSchema} className={classes.addField} fullWidth disabled={!addSchema}>
+            <Button
+              id="add-schema"
+              variant="contained"
+              color="primary"
+              onClick={handleNewSchema}
+              className={classes.addField}
+              fullWidth
+              disabled={!addSchema}>
               + Add
             </Button>
           </Grid>
@@ -251,6 +259,10 @@ SatelliteForm.propTypes = {
   setTouched: PropTypes.func,
   editingOne: PropTypes.bool,
   setEditingOne: PropTypes.func,
+  dirty: PropTypes.bool,
+  setSnack: PropTypes.func,
   setOpenSnack: PropTypes.func,
-  setSnack: PropTypes.func
+  setAlert: PropTypes.func,
+  setOpenAlert: PropTypes.func,
+  setValidating: PropTypes.func
 };

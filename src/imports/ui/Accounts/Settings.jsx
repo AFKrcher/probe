@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.grid.background
   },
   header: {
-    marginBottom: 20
+    marginBottom: 30
   },
   textField: {
     marginBottom: 20
@@ -346,7 +346,7 @@ export const Settings = () => {
               />
               <TextField
                 id="confirm"
-                label="Confirm New Password"
+                label="Confirm Password"
                 type="password"
                 fullWidth
                 className={classes.textField}

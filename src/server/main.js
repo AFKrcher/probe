@@ -130,7 +130,7 @@ Meteor.startup(() => {
     timeRange: 60000
   });
 
-  // Reseeding functions
+  // Reseeding and initial config functions
   startup(
     Meteor,
     Roles,
