@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { useTracker } from "meteor/react-meteor-data";
 import { SchemaCollection } from "../../api/schemas";
 import ProtectedFunctionality from "../Helpers/ProtectedFunctionality.jsx";
-import useWindowSize from "../Hooks/useWindowSize.jsx";
+import useWindowSize from "../hooks/useWindowSize.jsx";
 import useDebouncedCallback from "use-debounce/lib/useDebouncedCallback";
 import { jsonDownload } from "../utils/commonDataFuncs";
 

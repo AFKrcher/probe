@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.grid.background
   },
   header: {
-    marginBottom: 20
+    marginBottom: 30
   },
   textField: {
     marginBottom: 20

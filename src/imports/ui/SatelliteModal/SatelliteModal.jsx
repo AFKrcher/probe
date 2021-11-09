@@ -27,7 +27,7 @@ import VerifiedIcon from "@material-ui/icons/CheckBoxOutlined";
 import ValidatedIcon from "@material-ui/icons/LibraryAddCheckOutlined";
 import RestorePageIcon from "@material-ui/icons/RestorePage";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   modal: {
     width: "auto",
     height: "auto"
@@ -51,22 +51,24 @@ const useStyles = makeStyles(() => ({
     marginBottom: 15,
     margin: 5
   },
-  loadingDialog: {
-    textAlign: "center",
-    margin: 50,
-    overflow: "hidden"
-  },
   actions: {
     display: "flex",
     justifyContent: "space-between",
     margin: "5px 10px 5px 10px"
   },
-  loadingSave: {
-    textAlign: "center",
-    overflow: "hidden"
-  },
   closeIcon: {
     padding: "0px 7px 0px 7px"
+  },
+  isValidatingButton: {
+    textAlign: "center",
+    overflow: "hidden",
+    color: theme.palette.text.primary
+  },
+  loadingDialog: {
+    textAlign: "center",
+    margin: 50,
+    overflow: "hidden",
+    color: theme.palette.text.primary
   }
 }));
 
@@ -81,6 +83,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
   const [editing, setEditing] = useState(false);
   const [editingOne, setEditingOne] = useState(false);
   const [satSchema, setSatSchema] = useState(null);
+  const [validating, setValidating] = useState(false);
 
   const [username, schemas, isLoadingSch, isLoadingSat] = useTracker(() => {
     const subSch = Meteor.subscribe("schemas");
@@ -198,10 +201,13 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
     setOpenAlert(true);
   };
 
-  const handleToggleEdit = async (setValues, values, setErrors) => {
+  const handleToggleEdit = async (setValues, values, setErrors, dirty) => {
     await emptyDataRemover(values);
-    if (editing && newSat) handleClose();
-    if (editing && !newSat) await setValues(initValues);
+    if ((editing && dirty) || newSat) {
+      handleClose();
+    } else {
+      await setValues(initValues);
+    }
     setEditing(!editing);
     if (setErrors) setErrors({});
   };
@@ -227,7 +233,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
             disableElevation
             onClick={() => {
               setOpenAlert(false);
-              handleToggleEdit(setValues, values, setErrors);
+              handleToggleEdit(setValues, values, setErrors, dirty);
             }}>
             Confirm
           </Button>
@@ -236,7 +242,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
       });
       setOpenAlert(true);
     } else {
-      handleToggleEdit(setValues, values, setErrors);
+      handleToggleEdit(setValues, values, setErrors, dirty);
     }
   };
 
@@ -338,7 +344,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
             </Typography>
           </DialogTitle>
           <Formik initialValues={initValues} onSubmit={handleSubmit} validationSchema={satSchema}>
-            {({ errors, setErrors, isSubmitting, isValid, isValidating, values, setValues, setFieldValue, dirty, touched, setTouched }) => (
+            {({ errors, setErrors, isSubmitting, isValid, values, setValues, setFieldValue, dirty, touched, setTouched }) => (
               <Form>
                 {isLoadingSch || isLoadingSat ? (
                   <DialogContent className={classes.loadingDialog}>
@@ -354,10 +360,6 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
                       <b>{values.modifiedOn ? `${values.modifiedOn}` : `${new Date()}`}</b>
                     </Typography>
                     <SatelliteForm
-                      setOpenSnack={setOpenSnack}
-                      setSnack={setSnack}
-                      editingOne={editingOne}
-                      setEditingOne={setEditingOne}
                       errors={errors}
                       setErrors={setErrors}
                       values={values}
@@ -368,8 +370,10 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
                       initValues={initValues}
                       setSatSchema={setSatSchema}
                       satelliteValidatorShaper={satelliteValidatorShaper}
-                      setTouched={setTouched}
                       touched={touched}
+                      setTouched={setTouched}
+                      dirty={dirty}
+                      setValidating={setValidating}
                     />
                   </DialogContent>
                 )}
@@ -383,6 +387,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
                               size={width && width < actionsBreak ? "small" : "medium"}
                               variant="contained"
                               color="secondary"
+                              tabIndex={1000}
                               startIcon={width && width < actionsBreak ? null : <DeleteIcon />}
                               onClick={() => handleDeleteDialog(values)}>
                               {admin && width > deleteButtonTextBreak ? "Delete Forever" : "Delete"}
@@ -414,6 +419,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
                             onClick={() => {
                               handleEdit(setValues, dirty, touched, values, setErrors);
                             }}
+                            tabIndex={1000}
                             startIcon={
                               width && width < actionsBreak ? null : editing ? dirty && !_.isEmpty(touched) ? <DeleteIcon /> : null : <EditIcon />
                             }>
@@ -464,9 +470,9 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
                       variant="contained"
                       color="primary"
                       startIcon={width && width < actionsBreak ? null : <SaveIcon />}
-                      disabled={isValidating || isSubmitting || !isValid || _.isEmpty(touched) ? true : false}>
-                      {isSubmitting || isValidating ? (
-                        <CircularProgress size={25} className={classes.loadingSave} />
+                      disabled={isSubmitting || validating || !isValid || _.isEmpty(touched) ? true : false}>
+                      {isSubmitting || validating ? (
+                        <CircularProgress size={25} className={classes.isValidatingButton} />
                       ) : newSat ? (
                         "Save"
                       ) : (
