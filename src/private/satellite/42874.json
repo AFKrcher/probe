@@ -17,12 +17,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -49,12 +43,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -83,12 +71,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -120,12 +102,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -154,12 +130,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -188,12 +158,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -220,12 +184,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -254,12 +212,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [

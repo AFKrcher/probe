@@ -98,7 +98,7 @@ RESPONSE:
           },
           {
             "method": "machine",
-            "name": "Layer8",
+            "name": "",
             "verified": false,
             "verifiedOn": ""
           }
