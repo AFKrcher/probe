@@ -10,7 +10,9 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
     // In the future, there may be partner-specific API keys, where as PROBE_API_KEY is for owners only
     // Below is a check for standard PROBE partners
     // ownersOnly is mainly reserved for Account actions
-    return partnerAPIKeys && !ownersOnly ? partnerAPIKeys.includes(key.toString()) || key.toString() === PROBE_API_KEY : key.toString() === PROBE_API_KEY;
+    return partnerAPIKeys && !ownersOnly
+      ? partnerAPIKeys.includes(key.toString()) || key.toString() === PROBE_API_KEY
+      : key.toString() === PROBE_API_KEY;
   };
 
   const getRequests = [
@@ -40,7 +42,7 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
       res.end(JSON.stringify(response));
     }),
     // Satellites
-    app.use(baseURL + "/satellites", async (req, res) => {
+    app.get(baseURL + "/satellites", async (req, res) => {
       let response = "Unauthorized [401]";
       let status = 401;
       if (keyCheck(req.params.key)) {
@@ -53,7 +55,7 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
     }),
 
     // Public schema routes
-    app.use(baseURL + "/schemas", (req, res) => {
+    app.get(baseURL + "/schemas", (req, res) => {
       let response = "Unauthorized [401]";
       let status = 401;
       if (keyCheck(req.params.key)) {
@@ -154,7 +156,9 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
   return [
     // GET
     app.get(baseURL, (req, res) => {
-      const response = keyCheck(req.params.key) ? `Welcome PROBE partner! There are (${getRequests.length}) GET endpoints on this route.` : "Unauthorized [401]";
+      const response = keyCheck(req.params.key)
+        ? `Welcome PROBE partner! There are (${getRequests.length}) GET endpoints on this route.`
+        : "Unauthorized [401]";
       const status = req.params.key === PROBE_API_KEY ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
       res.writeHead(status);
@@ -163,7 +167,9 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
     ...getRequests,
     // POST
     app.post(baseURL, (req, res) => {
-      const response = keyCheck(req.params.key) ? `Welcome PROBE partner! There are (${postRequests.length}) POST endpoints on this route.` : "Unauthorized [401]";
+      const response = keyCheck(req.params.key)
+        ? `Welcome PROBE partner! There are (${postRequests.length}) POST endpoints on this route.`
+        : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
       res.writeHead(status);
@@ -172,7 +178,9 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
     ...postRequests,
     // PATCH
     app.patch(baseURL, (req, res) => {
-      const response = keyCheck(req.params.key) ? `Welcome PROBE partner! There are (${patchRequests.length}) PATCH endpoints on this route.` : "Unauthorized [401]";
+      const response = keyCheck(req.params.key)
+        ? `Welcome PROBE partner! There are (${patchRequests.length}) PATCH endpoints on this route.`
+        : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
       res.writeHead(status);
@@ -181,7 +189,9 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
     ...patchRequests,
     // PUT
     app.put(baseURL, (req, res) => {
-      const response = keyCheck(req.params.key) ? `Welcome PROBE partner! There are (${putRequests.length}) PUT endpoints on this route.` : "Unauthorized [401]";
+      const response = keyCheck(req.params.key)
+        ? `Welcome PROBE partner! There are (${putRequests.length}) PUT endpoints on this route.`
+        : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
       res.writeHead(status);
@@ -190,7 +200,9 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
     ...putRequests,
     // DELETE
     app.delete(baseURL, (req, res) => {
-      const response = keyCheck(req.params.key) ? `Welcome PROBE partner! There are (${deleteRequests.length}) DELETE endpoints on this route.` : "Unauthorized [401]";
+      const response = keyCheck(req.params.key)
+        ? `Welcome PROBE partner! There are (${deleteRequests.length}) DELETE endpoints on this route.`
+        : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
       res.writeHead(status);
