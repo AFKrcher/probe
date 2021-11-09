@@ -109,12 +109,6 @@ RESPONSE:
             "name": "admin",
             "validated": true,
             "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-          },
-          {
-            "method": "machine",
-            "name": "Layer8",
-            "validated": false,
-            "validatedOn": ""
           }
         ],
         "name": "International Space Station"
@@ -129,12 +123,6 @@ RESPONSE:
             "name": "admin",
             "verified": true,
             "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-          },
-          {
-            "method": "machine",
-            "name": "Layer8",
-            "verified": false,
-            "verifiedOn": ""
           }
         ],
         "validated": [
@@ -143,12 +131,6 @@ RESPONSE:
             "name": "admin",
             "validated": true,
             "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-          },
-          {
-            "method": "machine",
-            "name": "Layer8",
-            "validated": false,
-            "validatedOn": ""
           }
         ],
         "descriptionShort": "The International Space Station is a modular space station in low Earth orbit. It is a multinational collaborative project involving five participating space agencies: NASA, Roscosmos, JAXA, ESA, and CSA."
@@ -300,10 +282,10 @@ BODY:
 ```json
 {
   "user": {
-    "username": "user",
-    "_id": "bwAqW5YGPSLGuqY87"
+    "username": "user", //required
+    "_id": "bwAqW5YGPSLGuqY87" // required
   },
-  "role": "admin"
+  "role": "admin" // required, must be one of the following: dummies, moderator, machine, admin
 }
 ```
 
@@ -324,6 +306,8 @@ GET (full or partial NORAD ID): `/api/satellites?name=25544`
 GET (full or partial orbit): `/api/satellites?name=LEO`
 
 GET (full or partial type): `/api/satellites?name=research`
+
+GET (full date _DDMMYYYY_): `/api/satellites?modifiedAfter=18102021`
 
 RESPONSE:
 
@@ -348,12 +332,6 @@ RESPONSE:
             "name": "admin",
             "verified": true,
             "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-          },
-          {
-            "method": "machine",
-            "name": "Layer8",
-            "verified": false,
-            "verifiedOn": ""
           }
         ],
         "validated": [
@@ -362,12 +340,6 @@ RESPONSE:
             "name": "admin",
             "validated": true,
             "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-          },
-          {
-            "method": "machine",
-            "name": "Layer8",
-            "validated": false,
-            "validatedOn": ""
           }
         ],
         "name": "International Space Station"
@@ -382,12 +354,6 @@ RESPONSE:
             "name": "admin",
             "verified": true,
             "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-          },
-          {
-            "method": "machine",
-            "name": "Layer8",
-            "verified": false,
-            "verifiedOn": ""
           }
         ],
         "validated": [
@@ -396,12 +362,6 @@ RESPONSE:
             "name": "admin",
             "validated": true,
             "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-          },
-          {
-            "method": "machine",
-            "name": "Layer8",
-            "validated": false,
-            "validatedOn": ""
           }
         ],
         "descriptionShort": "The International Space Station is a modular space station in low Earth orbit. It is a multinational collaborative project involving five participating space agencies: NASA, Roscosmos, JAXA, ESA, and CSA."
@@ -421,8 +381,9 @@ BODY:
 
 ```json
 {
-  "noradID": "99999",
+  "noradID": "99999", // required
   "names": [
+    // required
     {
       "reference": "https://www.test.com",
       "name": "Test"
@@ -433,9 +394,26 @@ BODY:
 
 RESPONSE:
 
-`Satellite of NORAD ID 99999 being processed by PROBE - you should see your satellite on the website soon!`
+`Satellite of NORAD ID 99999 is being processed by PROBE. Visit probe.saberastro.com/dashboard/99999 to see the new satellite once processing is complete.`
 
 ---
+
+PATCH: `/api/partner/:key/satellites/machineCheck`
+
+BODY:
+
+```json
+{
+  "noradID": "99999", // required
+  "schema": "names", // required
+  "entry": "3", // required
+  "type": "verification" // required, must be one of the following: verification, verify, validation, validate
+}
+```
+
+RESPONSE:
+
+`You've successfully provided the right information for this satellite $verification request! Unfortunately, this route is currently under construction.`
 
 #### Schemas
 
@@ -579,9 +557,13 @@ db.<collection name>.find()
 
 ### Testing
 
+#### API Testing
+
+A basic HEALTHCHECK route is provided by the API. Visiting `baseUrl + "/api/test"` or `baseUrl + /api/partner/:key/test` should return an HTTP status of 200 and a "Test Successful..." message. Live API testing using an HTTP request-capable client must be done after route or server configuration modifications.
+
 #### Unit Testing
 
-Unit testing uses React's testing-library. Please refer to the [testing-library](https://testing-library.com/docs/react-testing-library/intro/) documentation for more information on usage and behaviour.
+Unit testing uses React's testing-library, mocha, and chai. Please refer to the [testing-library](https://testing-library.com/docs/react-testing-library/intro/), [Meteor Mocha](https://guide.meteor.com/testing.html#mocha), and [Chai](https://www.chaijs.com/) documentation for more information on usage and behaviour.
 
 #### Cypress Testing
 
