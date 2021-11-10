@@ -17,12 +17,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -31,12 +25,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Plesetsk, Russia",
@@ -54,12 +42,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -68,12 +50,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "descriptionShort": "Cosmos 2551 is a classified Russian military satellite, possibly designed with a new miniature reconnaissance camera."
@@ -88,12 +64,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -102,12 +72,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "cosparID": "2021-081A"
@@ -122,12 +86,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -136,12 +94,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Cosmos 2551"
@@ -154,12 +106,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -168,12 +114,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Razbeg"
@@ -186,12 +126,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -200,12 +134,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Kosmos 2551"
@@ -220,12 +148,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -234,12 +156,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Soyuz-2.1b",
@@ -255,12 +171,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -269,12 +179,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "type": "recon"
@@ -287,12 +191,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -301,12 +199,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "type": "imaging"
@@ -319,12 +211,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -333,12 +219,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "type": "military"
@@ -353,12 +233,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -367,12 +241,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "description": "A similar Strela-2M communication satellite",

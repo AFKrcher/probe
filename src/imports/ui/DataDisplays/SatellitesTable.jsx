@@ -224,8 +224,8 @@ export const SatellitesTable = () => {
     debounced(false);
   };
 
-  const handleRowDoubleClick = (schemaObject) => {
-    setInitialSatValues(schemaObject);
+  const handleRowDoubleClick = (sat) => {
+    setInitialSatValues(sat);
     setNewSat(false);
     setShowModal(true);
     debounced(false);

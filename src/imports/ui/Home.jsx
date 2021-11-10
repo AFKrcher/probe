@@ -22,9 +22,7 @@ import ZoomIn from "@material-ui/icons/ZoomIn";
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
-    width: "100%",
-    marginLeft: -25,
-    marginRight: -25
+    width: "100%"
   },
   probe: {
     color: theme.palette.tertiary.main,

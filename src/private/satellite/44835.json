@@ -17,12 +17,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -31,12 +25,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Cosmos 2543"
@@ -49,12 +37,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -63,12 +45,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Kosmos 2543"
@@ -83,12 +59,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -97,12 +67,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "cosparID": "2019-079D"
@@ -117,12 +81,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -131,12 +89,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "type": "country",
@@ -153,12 +105,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -167,12 +113,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "PLESETSK MISSILE AND SPACE COMPLEX (PKMTR)",
@@ -190,12 +130,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -204,12 +138,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "descriptionShort": "Potential Russian ASAT sub-satellite that was launched from Cosmos 2542."
@@ -224,12 +152,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -238,12 +160,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "type": "ASAT",
@@ -259,12 +175,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -273,12 +183,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "description": "Cosmos 2542 and 2543 working in tandem as an intel and ASAT satellite combo",
