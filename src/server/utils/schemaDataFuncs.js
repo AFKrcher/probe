@@ -1,20 +1,22 @@
 import { SchemaCollection } from "/imports/api/schemas";
+import { findAndFetch, defaultError } from "./commonDataFuncs";
 
-export function getSchemas(req, res) {
-  let error;
+const collection = "schemas";
+const api = SchemaCollection;
+
+export async function getSchemas(req, res) {
+  const q = req.query;
   res.setHeader("Content-Type", "application/json");
-  try {
-    let schemaName = req.query.name;
-    if (schemaName && schemaName !== "") {
+  if (q.name?.length > 0) {
+    findAndFetch(res, api, collection, q.name, "name", "name", "i");
+  } else {
+    try {
+      const result = await api.find().fetch();
       res.writeHead(200);
-      res.end(JSON.stringify(SchemaCollection.find({ name: `${req.query.name}` }).fetch()));
-    } else {
-      res.writeHead(200);
-      res.end(JSON.stringify(SchemaCollection.find().fetch()));
+      res.end(JSON.stringify(result));
+    } catch (err) {
+      res.writeHead(500);
+      res.end(JSON.stringify(defaultError(collection)));
     }
-  } catch (err) {
-    error = { error: "Could not fetch schemas" };
-    res.writeHead(500);
-    res.end(JSON.stringify(error));
   }
 }

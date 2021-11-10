@@ -214,7 +214,7 @@ export const satelliteValidatorShaper = (values, initValues) => {
 
         // Yup.addMethod's test must return a boolean, and/or generate errors as necessary, in order to complete the validation
         fieldValidator
-          .validate(entry, { abortEarly: true })
+          .validate(entry)
           .then((result) => {
             // result values spit out by Yup after successful validation
             let resolved = `${path}-`; // provides an identifier to delete the correct error upon successful validation
