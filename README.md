@@ -62,7 +62,9 @@ RESPONSE: An HTML landing page directing the user to see this README for more in
 
 #### Satellites
 
-GET: `/api/satellites`
+GET (limit = 20, page = 1): `/api/satellites`
+
+GET (must define both limit & page): `/api/satellites?limit=20&page=1`
 
 GET (full or partial name): `/api/satellites?name=International`
 
@@ -71,6 +73,8 @@ GET (full or partial NORAD ID): `/api/satellites?name=25544`
 GET (full or partial orbit): `/api/satellites?name=LEO`
 
 GET (full or partial type): `/api/satellites?name=research`
+
+GET (full date _DDMMYYYY_): `/api/satellites?modifiedAfter=18102021`
 
 RESPONSE:
 
@@ -297,17 +301,19 @@ RESPONSE:
 
 #### Satellites
 
-GET: `/api/partner/:key/satellites`
+GET (limit = 20, page = 1): `/api/partner/:key/satellites`
 
-GET (full or partial name): `/api/satellites?name=International`
+GET (must define both limit & page): `/api/partner/:key/satellites?limit=20&page=1`
 
-GET (full or partial NORAD ID): `/api/satellites?name=25544`
+GET (full or partial name): `/api/partner/:keysatellites?name=International`
 
-GET (full or partial orbit): `/api/satellites?name=LEO`
+GET (full or partial NORAD ID): `/api/partner/:keysatellites?name=25544`
 
-GET (full or partial type): `/api/satellites?name=research`
+GET (full or partial orbit): `/api/partner/:keysatellites?name=LEO`
 
-GET (full date _DDMMYYYY_): `/api/satellites?modifiedAfter=18102021`
+GET (full or partial type): `/api/partner/:keysatellites?name=research`
+
+GET (full date _DDMMYYYY_): `/api/partner/:keysatellites?modifiedAfter=18102021`
 
 RESPONSE:
 

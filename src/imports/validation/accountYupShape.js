@@ -1,5 +1,7 @@
 import * as Yup from "yup";
 
+export const allowedRoles = ["dummies", "moderator", "machine", "admin"];
+
 export const isValidEmail = (oldEmail, newEmail) => {
   const schema = Yup.string().email().max(128).notOneOf([oldEmail]).required();
   return schema.isValidSync(newEmail);

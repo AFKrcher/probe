@@ -35,9 +35,6 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.info.main
     }
   },
-  linkElementsContainer: {
-    display: "flex"
-  },
   gitHub: {
     marginTop: 10,
     marginLeft: 2,
@@ -72,36 +69,15 @@ export const Footer = () => {
       </Link>
       <Divider orientation="vertical" variant="middle" className={classes.divider} flexItem />
       <Link to="/terms" className={classes.link}>
-        {width > footerIconsBreakPoint ? (
-          <div className={classes.linkElementsContainer}>
-            <TermsIcon fontSize="small" className={classes.footerIcon} />
-            Terms
-          </div>
-        ) : (
-          <TermsIcon fontSize="small" className={classes.footerIcon} />
-        )}
+        {width > footerIconsBreakPoint ? "Terms" : <TermsIcon fontSize="small" className={classes.footerIcon} />}
       </Link>
       <Divider orientation="vertical" variant="middle" className={classes.divider} flexItem />
       <Link to="/privacypolicy" className={classes.link}>
-        {width > footerIconsBreakPoint ? (
-          <div className={classes.linkElementsContainer}>
-            <PolicyIcon fontSize="small" className={classes.footerIcon} />
-            Privacy Policy
-          </div>
-        ) : (
-          <PolicyIcon fontSize="small" className={classes.footerIcon} />
-        )}
+        {width > footerIconsBreakPoint ? "Privacy Policy" : <PolicyIcon fontSize="small" className={classes.footerIcon} />}
       </Link>
       <Divider orientation="vertical" variant="middle" className={classes.divider} flexItem />
       <a target="_blank" rel="noopener noreferrer" href="mailto:justinthelaw@gmail.com" className={classes.link}>
-        {width > footerIconsBreakPoint ? (
-          <div className={classes.linkElementsContainer}>
-            <ContactIcon fontSize="small" className={classes.footerIcon} />
-            Contact Us
-          </div>
-        ) : (
-          <ContactIcon fontSize="small" className={classes.footerIcon} />
-        )}
+        {width > footerIconsBreakPoint ? "Contact Us" : <ContactIcon fontSize="small" className={classes.footerIcon} />}
       </a>
       <Divider orientation="vertical" variant="middle" className={classes.divider} flexItem />
       <a target="_blank" rel="noreferrer" href="https://github.com/afkrcher/probe">

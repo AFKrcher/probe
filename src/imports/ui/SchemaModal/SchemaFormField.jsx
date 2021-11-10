@@ -132,6 +132,7 @@ export const SchemaFormField = ({ errors, index, field, setFieldValue, editing }
       label: "Minimum Value",
       margin: "dense",
       defaultValue: field.min,
+      error: errorDetermination(errors, index, "max") && touched ? true : false,
       fullWidth: true,
       type: "number",
       step: "any",
@@ -146,7 +147,7 @@ export const SchemaFormField = ({ errors, index, field, setFieldValue, editing }
       },
       onChange: handleChange,
       defaultValue: field.max,
-      error: errorDetermination(errors, index, "max"),
+      error: errorDetermination(errors, index, "max") && touched ? true : false,
       label: "Maximum Value",
       margin: "dense",
       fullWidth: true,
@@ -171,7 +172,14 @@ export const SchemaFormField = ({ errors, index, field, setFieldValue, editing }
 
   const stringFields = () => {
     const MultiSelect = (
-      <MultiSelectTextInput index={index} allowedValues={field.allowedValues} setFieldValue={setFieldValue} editing={editing} currentStringMax={currentStringMax} errors={errors} />
+      <MultiSelectTextInput
+        index={index}
+        allowedValues={field.allowedValues}
+        setFieldValue={setFieldValue}
+        editing={editing}
+        currentStringMax={currentStringMax}
+        errors={errors}
+      />
     );
     const uuidLabel = <InputLabel htmlFor={`schema-field-${index}-isUnique-label`}>Unique Identifier (UUID)?</InputLabel>;
     const stringMaxProps = {
@@ -213,7 +221,9 @@ export const SchemaFormField = ({ errors, index, field, setFieldValue, editing }
           </Grid>
           <Grid item xs>
             <Field {...stringMaxProps} />
-            {!editing && <FormHelperText className={classes.helpers}>OPTIONAL: Provide a maximum character count, cannot exceed 20,000</FormHelperText>}
+            {!editing && (
+              <FormHelperText className={classes.helpers}>OPTIONAL: Provide a maximum character count, cannot exceed 20,000</FormHelperText>
+            )}
           </Grid>
         </Grid>
         <div className={classes.field}>

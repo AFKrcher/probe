@@ -12,7 +12,7 @@ import { SchemaCollection } from "/imports/api/schemas";
 import { SatelliteCollection } from "/imports/api/satellites";
 import { UsersCollection } from "/imports/api/users";
 import { ErrorsCollection } from "/imports/api/errors";
-import { allowedRoles } from "./utils/accountDataFuncs";
+import { allowedRoles } from "/imports/validation/accountYupShape";
 
 // Routes
 import "./routes/routes";
