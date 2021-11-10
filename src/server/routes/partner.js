@@ -10,7 +10,9 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
     // In the future, there may be partner-specific API keys, where as PROBE_API_KEY is for owners only
     // Below is a check for standard PROBE partners
     // ownersOnly is mainly reserved for Account actions
-    return partnerAPIKeys && !ownersOnly ? partnerAPIKeys.includes(key.toString()) || key.toString() === PROBE_API_KEY : key.toString() === PROBE_API_KEY;
+    return partnerAPIKeys && !ownersOnly
+      ? partnerAPIKeys.includes(key.toString()) || key.toString() === PROBE_API_KEY
+      : key.toString() === PROBE_API_KEY;
   };
 
   const getRequests = [
@@ -40,7 +42,7 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
       res.end(JSON.stringify(response));
     }),
     // Satellites
-    app.use(baseURL + "/satellites", async (req, res) => {
+    app.get(baseURL + "/satellites", async (req, res) => {
       let response = "Unauthorized [401]";
       let status = 401;
       if (keyCheck(req.params.key)) {
@@ -53,7 +55,7 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
     }),
 
     // Public schema routes
-    app.use(baseURL + "/schemas", (req, res) => {
+    app.get(baseURL + "/schemas", (req, res) => {
       let response = "Unauthorized [401]";
       let status = 401;
       if (keyCheck(req.params.key)) {
@@ -70,13 +72,14 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
     // No need to POST Accounts, must be done via client
 
     // Satellites
-    // TODO
     app.post(baseURL + "/satellites", async (req, res) => {
       let sat = req.body;
-      let response = `Satellite of NORAD ID ${sat?.noradID} is being processed by PROBE`;
+      let response = `Satellite of NORAD ID ${sat?.noradID} is being processed by PROBE. Visit ${
+        Meteor.absoluteUrl() + "dashboard/" + sat.noradID
+      } to see the new satellite once processing is complete.`;
       let status = 200;
       if (keyCheck(req.params.key)) {
-        if (sat?.noradID && sat?.names?.length > 0) {
+        if (typeof sat?.noradID === "string" && sat?.names?.length > 0) {
           for (let key in sat) {
             if (sat[key].length && typeof sat[key] !== "string" && !parseInt(sat[key])) {
               sat[key].forEach((obj) => {
@@ -121,7 +124,7 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
   const patchRequests = [
     // No need to PATCH Errors, as Errors are meant only to be logged by the client
     // Accounts - OWNERS ONLY
-    app.patch(baseURL + "/users", (req, res) => {
+    app.patch(baseURL + "/users", async (req, res) => {
       let user = req.body.user;
       let role = req.body.role;
       let response = `${user?._id} added to role: ${role}`;
@@ -140,6 +143,36 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
       res.setHeader("Content-Type", "application/json");
       res.writeHead(status);
       res.end(JSON.stringify(response));
+    }),
+    // Satellites
+    // TODO: Add an individual schema-specific verification/validation helper function in utils
+    app.patch(baseURL + "/satellites/machineCheck", async (req, res) => {
+      const allowedTypes = ["verification", "verify", "validation", "validate"];
+      let sat = req.body;
+      let response = `Satellite of NORAD ID ${sat?.noradID} is being processed by PROBE. Visit ${
+        Meteor.absoluteUrl() + "dashboard/" + sat.noradID
+      } to see the changes made to the satellite once processing is complete.`;
+      let status = 200;
+      if (keyCheck(req.params.key)) {
+        if (
+          typeof sat?.noradID === "string" &&
+          typeof sat?.schema === "string" &&
+          typeof sat?.entry === "number" &&
+          allowedTypes.includes(sat?.type)
+        ) {
+          response = `You've successfully provided the right information for this satellite ${sat?.type} request! Unfortunately, this route is currently under construction.`;
+        } else {
+          status = 406;
+          response = "You must provide a request body IAW the PROBE API documentation.";
+        }
+      } else {
+        response = "Unauthorized [401]";
+        status = 401;
+      }
+
+      res.setHeader("Content-Type", "application/json");
+      res.writeHead(status);
+      res.end(JSON.stringify(response));
     })
   ];
 
@@ -154,7 +187,18 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
   return [
     // GET
     app.get(baseURL, (req, res) => {
-      const response = keyCheck(req.params.key) ? `Welcome PROBE partner! There are (${getRequests.length}) GET endpoints on this route.` : "Unauthorized [401]";
+      const response = keyCheck(req.params.key)
+        ? `Welcome PROBE partner! There are (${getRequests.length}) GET endpoints on this route.`
+        : "Unauthorized [401]";
+      const status = req.params.key === PROBE_API_KEY ? 200 : 401;
+      res.setHeader("Content-Type", "application/json");
+      res.writeHead(status);
+      res.end(JSON.stringify(response));
+    }),
+    app.get(baseURL + "/test", (req, res) => {
+      const response = keyCheck(req.params.key)
+        ? `Test successful! This is the endpoint you just hit: ${Meteor.absoluteUrl() + "api/partner/:key/test"}.`
+        : "Unauthorized [401]";
       const status = req.params.key === PROBE_API_KEY ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
       res.writeHead(status);
@@ -163,7 +207,9 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
     ...getRequests,
     // POST
     app.post(baseURL, (req, res) => {
-      const response = keyCheck(req.params.key) ? `Welcome PROBE partner! There are (${postRequests.length}) POST endpoints on this route.` : "Unauthorized [401]";
+      const response = keyCheck(req.params.key)
+        ? `Welcome PROBE partner! There are (${postRequests.length}) POST endpoints on this route.`
+        : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
       res.writeHead(status);
@@ -172,7 +218,9 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
     ...postRequests,
     // PATCH
     app.patch(baseURL, (req, res) => {
-      const response = keyCheck(req.params.key) ? `Welcome PROBE partner! There are (${patchRequests.length}) PATCH endpoints on this route.` : "Unauthorized [401]";
+      const response = keyCheck(req.params.key)
+        ? `Welcome PROBE partner! There are (${patchRequests.length}) PATCH endpoints on this route.`
+        : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
       res.writeHead(status);
@@ -181,7 +229,9 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
     ...patchRequests,
     // PUT
     app.put(baseURL, (req, res) => {
-      const response = keyCheck(req.params.key) ? `Welcome PROBE partner! There are (${putRequests.length}) PUT endpoints on this route.` : "Unauthorized [401]";
+      const response = keyCheck(req.params.key)
+        ? `Welcome PROBE partner! There are (${putRequests.length}) PUT endpoints on this route.`
+        : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
       res.writeHead(status);
@@ -190,7 +240,9 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
     ...putRequests,
     // DELETE
     app.delete(baseURL, (req, res) => {
-      const response = keyCheck(req.params.key) ? `Welcome PROBE partner! There are (${deleteRequests.length}) DELETE endpoints on this route.` : "Unauthorized [401]";
+      const response = keyCheck(req.params.key)
+        ? `Welcome PROBE partner! There are (${deleteRequests.length}) DELETE endpoints on this route.`
+        : "Unauthorized [401]";
       const status = keyCheck(req.params.key) ? 200 : 401;
       res.setHeader("Content-Type", "application/json");
       res.writeHead(status);

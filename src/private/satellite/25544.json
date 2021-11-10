@@ -17,12 +17,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -31,12 +25,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "International Space Station"
@@ -51,12 +39,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -65,12 +47,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "descriptionShort": "The International Space Station is a modular space station in low Earth orbit. It is a multinational collaborative project involving five participating space agencies: NASA, Roscosmos, JAXA, ESA, and CSA."
@@ -85,12 +61,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -99,12 +69,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "description": "The International Space Station is featured in this image including the six iROSA solar arrays in the planned configuration that will augment the power drawn from the existing arrays on the Station.",
@@ -119,12 +83,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -133,12 +91,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "description": "Picture of the ISS from a more distant angle, with the Earth almost parallel to the space station.",
@@ -155,12 +107,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -169,12 +115,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "description": "The International Space Station is featured in this image including the six iROSA solar arrays in the planned configuration that will augment the power drawn from the existing arrays on the Station. the first of the six iROSA was attached to the station around 9 am UTC on 20 June 2021 which were brought to ISS by Cargo Dragon C209 in its unpressurized trunk during its SpaceX CRS-22 mission, with the others arriving in mid and last quarter of 2021.",
@@ -192,12 +132,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -206,12 +140,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "type": "chemical",
@@ -230,12 +158,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -244,12 +166,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "orbit": "LEO"
@@ -264,12 +180,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -278,12 +188,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Baikonur Cosmodrome",
@@ -300,12 +204,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -314,12 +212,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "type": "space station"
@@ -332,12 +224,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -346,12 +232,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "type": "research"
@@ -366,12 +246,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -380,12 +254,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "description": "To enable long-term exploration of space and provide benefits to people on Earth. "
@@ -400,12 +268,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -414,12 +276,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "country": "United States",
@@ -438,12 +294,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -452,12 +302,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "JAXA",
@@ -471,12 +315,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -485,12 +323,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "ESA",
@@ -504,12 +336,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -518,12 +344,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Roscosmos",
@@ -537,12 +357,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -551,12 +365,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "CSA",
@@ -572,12 +380,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -586,12 +388,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "dimensionDescription": "Overall length and width.",
@@ -609,12 +405,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -623,12 +413,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "status": "operational"
@@ -643,12 +427,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -657,12 +435,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "start": "1998-11-20T09:46",
@@ -679,12 +451,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -693,12 +459,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "organization": "NASA"
@@ -711,12 +471,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -725,12 +479,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "organization": "JAXA",
@@ -744,12 +492,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -758,12 +500,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "organization": "ESA",
@@ -777,12 +513,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -791,12 +521,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "organization": "Roscosmos",
@@ -810,12 +534,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -824,12 +542,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "organization": "CSA",
@@ -845,12 +557,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -859,12 +565,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "cubicMeters": "935"
@@ -879,12 +579,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -893,12 +587,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "source": "solar",
@@ -918,12 +606,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -932,12 +614,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "description": "20 November 1998",
@@ -951,12 +627,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -965,12 +635,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Unity",
@@ -984,12 +648,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -998,12 +656,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Zvezda",
@@ -1017,12 +669,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -1031,12 +677,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Destiny",
@@ -1050,12 +690,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -1064,12 +698,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Harmony",
@@ -1083,12 +711,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -1097,12 +719,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Columbus",
@@ -1116,12 +732,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -1130,12 +740,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Kibo",
@@ -1149,12 +753,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -1163,12 +761,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Truss and Solarpanels",
@@ -1182,12 +774,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -1196,12 +782,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "name": "Nauka",
@@ -1217,12 +797,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -1231,12 +805,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "launchMassKg": "419289"
@@ -1251,12 +819,6 @@
           "name": "admin",
           "verified": true,
           "verifiedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "verified": false,
-          "verifiedOn": null
         }
       ],
       "validated": [
@@ -1265,12 +827,6 @@
           "name": "admin",
           "validated": true,
           "validatedOn": "2021-10-07T00:00:00.000Z"
-        },
-        {
-          "method": "machine",
-          "name": "Layer8",
-          "validated": false,
-          "validatedOn": null
         }
       ],
       "descriptionLong": "The International Space Station is a modular space station in low Earth orbit. It is a multinational collaborative project involving five participating space agencies: NASA, Roscosmos, JAXA, ESA, and CSA."

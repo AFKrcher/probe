@@ -1,141 +1,80 @@
 import { SatelliteCollection } from "/imports/api/satellites";
 
-export async function getSats(req, res) {
-  let error;
-  res.setHeader("Content-Type", "application/json");
-  const sats = await SatelliteCollection.find({});
+const defaultError =
+  "Could not fetch satellites based on query parameters. Please check the request format or visit https://probe.saberastro.com/api for API documentation.";
 
-  if (req.query.limit) {
-    const limiter = parseInt(req.query.limit);
-    const page = parseInt(req.query.page);
-    const skipper = limiter * page;
-    try {
-      const result = await SatelliteCollection.find(
-        {},
-        {
-          limit: limiter,
-          skip: skipper
-        }
-      ).fetch();
-      if (result.length > 0) {
-        res.writeHead(200);
-        res.end(JSON.stringify(result));
-      } else {
-        error = {
-          error: "Could not fetch sat based on noradID - non-existent noradID"
-        };
-        res.writeHead(500);
-        res.end(JSON.stringify(error));
+const specificError = (query, pagination = false) => {
+  return pagination
+    ? "Could not fetch satellites based on provided limit and skip configuration."
+    : `Could not fetch satellites based on provided ${query}. Please see https://probe.saberastro.com/schemas for schemas.`;
+};
+
+const modifiedAfterFilter = (res, parameter, name) => {
+  res.status(200).end(JSON.stringify("modifiedAfter"));
+};
+
+const limitAndSkip = async (res, limit, page) => {
+  const skipper = limit * page;
+  try {
+    const result = await SatelliteCollection.find(
+      {},
+      {
+        limit: limit,
+        skip: skipper
       }
-    } catch (err) {
-      error = { error: "Could not fetch limit" };
+    ).fetch();
+    if (result.length > 0) {
+      res.writeHead(200);
+      res.end(JSON.stringify(result));
+    } else {
       res.writeHead(500);
-      res.end(JSON.stringify(error));
+      res.end(JSON.stringify(specificError(null, true)));
     }
-  } else if (req.query.noradID || req.query.id || req.query.noradid) {
+  } catch (err) {
+    res.writeHead(500);
+    res.end(JSON.stringify(defaultError));
+  }
+};
+
+const findAndFetch = (res, parameter, name, key, options) => {
+  if (name === "modifiedAfter") {
+    modifiedAfterFilter(res, parameter, name);
+  } else {
+    let error = defaultError;
+    let queryObject = {};
+    queryObject[key] = { $regex: parameter, $options: options };
     try {
-      const noradID = req.query.noradID || req.query.id || req.query.noradid;
-      const result = await SatelliteCollection.find({
-        noradID: { $regex: noradID }
-      }).fetch();
-      if (result.length > 0) {
-        res.writeHead(200);
-        res.end(JSON.stringify(result));
-      } else {
-        error = {
-          error: "Could not fetch sat based on noradID - non-existent noradID."
-        };
-        res.writeHead(500);
-        res.end(JSON.stringify(error));
-      }
-    } catch (err) {
-      error = { error: "Could not fetch list of sats" };
-      res.writeHead(500);
-      res.end(JSON.stringify(error));
-    }
-  } else if (req.query.name) {
-    try {
-      const target = req.query.name;
-      const result = SatelliteCollection.find({
-        "names.name": { $regex: `${target}`, $options: "i" }
-      }).fetch();
+      const result = SatelliteCollection.find(queryObject).fetch();
       if (result.length > 0 && result[0] !== undefined) {
         res.writeHead(200);
         res.end(JSON.stringify(result));
       } else {
-        error = {
-          error: "Could not fetch sat based on name - non-existent name. And I should know. I invented satellites."
-        };
+        error = specificError(name);
         res.writeHead(500);
         res.end(JSON.stringify(error));
       }
     } catch (err) {
-      error = { error: "Could not fetch list of sats" };
       res.writeHead(500);
       res.end(JSON.stringify(error));
     }
-  } else if (req.query.type) {
-    let result = null;
-    try {
-      const target = req.query.type;
-      sats.fetch().forEach((sat) => {
-        let bool = sat.types.find((type) => {
-          return type.type || type.type === target ? true : false;
-        });
-        if (bool) {
-          result = sat;
-        }
-      });
-      if (result) {
-        res.writeHead(200);
-        res.end(JSON.stringify(result));
-      } else {
-        error = {
-          error: "Could not fetch sat based on type - non-existent type"
-        };
-        res.writeHead(500);
-        res.end(JSON.stringify(error));
-      }
-    } catch (err) {
-      error = { error: "Could not fetch list of sats" };
-      res.writeHead(500);
-      res.end(JSON.stringify(error));
-    }
-  } else if (req.query.orbit) {
-    let result = null;
-    try {
-      const target = req.query.orbit;
-      sats.fetch().forEach((sat) => {
-        let bool = sat.orbit.find((orbit) => {
-          return orbit.orbit || orbit.orbit === target ? true : false;
-        });
-        if (bool) {
-          result = sat;
-        }
-      });
-      if (result) {
-        res.writeHead(200);
-        res.end(JSON.stringify(result));
-      } else {
-        error = {
-          error: "Could not fetch sat based on orbit - non-existent orbit"
-        };
-        res.writeHead(500);
-        res.end(JSON.stringify(error));
-      }
-    } catch (err) {
-      error = { error: "Could not fetch list of sats" };
-      res.writeHead(500);
-      res.end(JSON.stringify(error));
-    }
+  }
+};
+
+export async function getSats(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  if (req.query.limit && req.query.page) {
+    limitAndSkip(res, parseInt(req.query.limit), parseInt(req.query.page));
+  } else if (req.query.noradID?.length > 0) {
+    findAndFetch(res, req.query.noradID, "NORAD ID", "noradID", "i");
+  } else if (req.query.name?.length > 0) {
+    findAndFetch(res, req.query.name, "name", "names.name", "i");
+  } else if (req.query.type?.length > 0) {
+    findAndFetch(res, req.query.type, "type", "types.type", "i");
+  } else if (req.query.orbit?.length > 0) {
+    findAndFetch(res, req.query.orbit, "orbit", "orbits.orbit", "i");
+  } else if (req.query.modifiedAfter) {
+    findAndFetch(res, req.query.modifiedAfter, "modifiedAfter");
   } else {
-    try {
-      res.writeHead(200);
-      res.end(JSON.stringify(sats.fetch()));
-    } catch (err) {
-      error = { error: "Could not fetch list of sats" };
-      res.writeHead(500);
-      res.end(JSON.stringify(error));
-    }
+    limitAndSkip(res, 20, 0);
   }
 }
