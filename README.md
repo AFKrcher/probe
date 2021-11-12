@@ -166,45 +166,50 @@ GET (full or partial name): `/api/schemas?name=names`
 RESPONSE:
 
 ```json
-[
-  {
-  "_id": "fTTviYiQRoMLdRC26",
-  "name": "names",
-  "description": "Satellite's names or callsigns.",
-  "fields": [
-    {
-      "name": "reference",
-      "hidden": true,
-      "type": "url",
-      "allowedValues": [],
-      "required": true
-    },
-    {
-      "name": "verified",
-      "hidden": true,
-      "type": "verified",
-      "required": true
-    },
-    {
-      "name": "validated",
-      "hidden": true,
-      "type": "validated",
-      "required": true
-    },
-    {
-      "name": "name",
-      "type": "string",
-      "allowedValues": [],
-      "required": true,
-      "isUnique": true,
-      "stringMax": 50
-    },
-    ... // more fields
-  ],
-  ... // more data
+{
+  "total": 20, // total number of results that match your query
+  "returned": 20, // number of results shown on the page
+  "page": "1 / 1", // page number,
+  "results": [
+      {
+      "_id": "fTTviYiQRoMLdRC26",
+      "name": "names",
+      "description": "Satellite's names or callsigns.",
+      "fields": [
+        {
+          "name": "reference",
+          "hidden": true,
+          "type": "url",
+          "allowedValues": [],
+          "required": true
+        },
+        {
+          "name": "verified",
+          "hidden": true,
+          "type": "verified",
+          "required": true
+        },
+        {
+          "name": "validated",
+          "hidden": true,
+          "type": "validated",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "allowedValues": [],
+          "required": true,
+          "isUnique": true,
+          "stringMax": 50
+        },
+        ... // more fields
+      ],
+      ... // more data
+    }
+      ... // more related schemas
+  ]
 }
-  ... // more related schemas
-]
 ```
 
 </details>
@@ -447,47 +452,52 @@ GET: `/api/partner/:key/schemas`
 GET (full or partial name): `/api/schemas?name=names`
 
 RESPONSE:
-
+    
 ```json
-[
-  {
-  "_id": "fTTviYiQRoMLdRC26",
-  "name": "names",
-  "description": "Satellite's names or callsigns.",
-  "fields": [
-    {
-      "name": "reference",
-      "hidden": true,
-      "type": "url",
-      "allowedValues": [],
-      "required": true
-    },
-    {
-      "name": "verified",
-      "hidden": true,
-      "type": "verified",
-      "required": true
-    },
-    {
-      "name": "validated",
-      "hidden": true,
-      "type": "validated",
-      "required": true
-    },
-    {
-      "name": "name",
-      "type": "string",
-      "allowedValues": [],
-      "required": true,
-      "isUnique": true,
-      "stringMax": 50
-    },
-    ... // more fields
-  ],
-  ... // more data
+{
+  "total": 20, // total number of results that match your query
+  "returned": 20, // number of results shown on the page
+  "page": "1 / 1", // page number,
+  "results": [
+      {
+      "_id": "fTTviYiQRoMLdRC26",
+      "name": "names",
+      "description": "Satellite's names or callsigns.",
+      "fields": [
+        {
+          "name": "reference",
+          "hidden": true,
+          "type": "url",
+          "allowedValues": [],
+          "required": true
+        },
+        {
+          "name": "verified",
+          "hidden": true,
+          "type": "verified",
+          "required": true
+        },
+        {
+          "name": "validated",
+          "hidden": true,
+          "type": "validated",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "allowedValues": [],
+          "required": true,
+          "isUnique": true,
+          "stringMax": 50
+        },
+        ... // more fields
+      ],
+      ... // more data
+    }
+      ... // more related schemas
+  ]
 }
-  ... // more related schemas
-]
 ```
 
 </details>
