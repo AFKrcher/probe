@@ -62,93 +62,102 @@ RESPONSE: An HTML landing page directing the user to see this README for more in
 
 #### Satellites
 
-GET (limit = 20, page = 1): `/api/satellites`
+All public API requests are limited to 100 results per query. If your query returns more than 100 results, you must either redefine your query to be more specific or request another page of results in a follow-up query.
 
-GET (must define both limit & page): `/api/satellites?limit=20&page=1`
+GET (default limit = 20, default page = 1): `/api/satellites`
 
-GET (full or partial name): `/api/satellites?name=International`
+GET (default limit = 20, default page = 1): `/api/satellites?limit=20&page=1`
 
-GET (full or partial NORAD ID): `/api/satellites?name=25544`
+GET (default limit = 20, default page = 1, full or partial name): `/api/satellites?name=International`
 
-GET (full or partial orbit): `/api/satellites?name=LEO`
+GET (default limit = 20, default page = 1, full or partial NORAD ID): `/api/satellites?name=25544`
 
-GET (full or partial type): `/api/satellites?name=research`
+GET (default limit = 20, default page = 1, full or partial orbit): `/api/satellites?name=LEO`
 
-GET (full date _DDMMYYYY_): `/api/satellites?modifiedAfter=18102021`
+GET (default limit = 20, default page = 1, full or partial type): `/api/satellites?name=research`
+
+GET (default limit = 20, default page = 1, full date _DDMMYYYY_): `/api/satellites?modifiedAfter=18102021`
 
 RESPONSE:
 
 ```json
-[
-  {
-    "_id": "fTTviYiQRoMLdR3RC",
-    "isDeleted": false,
-    "noradID": "25544",
-    "createdOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)",
-    "createdBy": "admin",
-    "modifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)",
-    "modifiedBy": "admin",
-    "adminCheck": true,
-    "machineCheck": false,
-    "names": [
-      {
-        "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
-        "verified": [
-          {
-            "method": "user",
-            "name": "admin",
-            "verified": true,
-            "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-          },
-          {
-            "method": "machine",
-            "name": "",
-            "verified": false,
-            "verifiedOn": ""
-          }
-        ],
-        "validated": [
-          {
-            "method": "user",
-            "name": "admin",
-            "validated": true,
-            "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-          }
-        ],
-        "name": "International Space Station"
-      }
-    ],
-    "descriptionShort": [
-      {
-        "reference": "https://en.wikipedia.org/wiki/International_Space_Station",
-        "verified": [
-          {
-            "method": "user",
-            "name": "admin",
-            "verified": true,
-            "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-          }
-        ],
-        "validated": [
-          {
-            "method": "user",
-            "name": "admin",
-            "validated": true,
-            "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-          }
-        ],
-        "descriptionShort": "The International Space Station is a modular space station in low Earth orbit. It is a multinational collaborative project involving five participating space agencies: NASA, Roscosmos, JAXA, ESA, and CSA."
-      }
-    ],
-    ... // more data
-  },
-  ... // more related satellites
-]
+{
+  "total": 50, // total number of results that match your query
+  "returned": 20, // number of results shown on the page
+  "page": "1 / 3", // page number
+  "result": [
+    {
+      "_id": "fTTviYiQRoMLdR3RC",
+      "isDeleted": false,
+      "noradID": "25544",
+      "createdOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)",
+      "createdBy": "admin",
+      "modifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)",
+      "modifiedBy": "admin",
+      "adminCheck": true,
+      "machineCheck": false,
+      "names": [
+        {
+          "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
+          "verified": [
+            {
+              "method": "user",
+              "name": "admin",
+              "verified": true,
+              "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+            },
+            {
+              "method": "machine",
+              "name": "",
+              "verified": false,
+              "verifiedOn": ""
+            }
+          ],
+          "validated": [
+            {
+              "method": "user",
+              "name": "admin",
+              "validated": true,
+              "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+            }
+          ],
+          "name": "International Space Station"
+        }
+      ],
+      "descriptionShort": [
+        {
+          "reference": "https://en.wikipedia.org/wiki/International_Space_Station",
+          "verified": [
+            {
+              "method": "user",
+              "name": "admin",
+              "verified": true,
+              "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+            }
+          ],
+          "validated": [
+            {
+              "method": "user",
+              "name": "admin",
+              "validated": true,
+              "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+            }
+          ],
+          "descriptionShort": "The International Space Station is a modular space station in low Earth orbit. It is a multinational collaborative project involving five participating space agencies: NASA, Roscosmos, JAXA, ESA, and CSA."
+        }
+      ],
+      ... // more data
+    },
+    ... // 20 more related satellites
+  ]
+}
 ```
 
 ---
 
 #### Schemas
+
+There are no limits on the amount of schemas that can be returned from a query.
 
 GET: `/api/schemas`
 
@@ -202,8 +211,7 @@ RESPONSE:
 
 ### Partner API
 
-The partner API allows registered partners with PROBE API keys to go beyond the public API GET requests. The partner API is used mainly for PATCH, POST, and DELETE requests,
-as well as GET requests of more detailed information.
+The partner API allows registered partners with PROBE API keys to go beyond the public API GET requests. The partner API is used mainly for PATCH, POST, DELETE, and special GET requests. GET requests using the partner API have no limits on results per page.
 
 All POST, PATCH, DELETE, or PUT requests are processed by the server and reflected in the web application asynchronously. You will need to perform a GET request or visit the web application to confirm the success of your requests.
 
@@ -301,82 +309,93 @@ RESPONSE:
 
 #### Satellites
 
-GET (limit = 20, page = 1): `/api/partner/:key/satellites`
+GET (no default limit, default page = 1): `/api/partner/:key/satellites`
 
-GET (must define both limit & page): `/api/partner/:key/satellites?limit=20&page=1`
+GET (no default limit, default page = 1): `/api/partner/:key/satellites?limit=500&page=1`
 
-GET (full or partial name): `/api/partner/:keysatellites?name=International`
+GET (no default limit, default page = 1, full or partial name): `/api/partner/:key/satellites?name=International`
 
-GET (full or partial NORAD ID): `/api/partner/:keysatellites?name=25544`
+GET (no default limit, default page = 1, full or partial NORAD ID): `/api/partner/:key/satellites?name=25544`
 
-GET (full or partial orbit): `/api/partner/:keysatellites?name=LEO`
+GET (no default limit, default page = 1, full or partial orbit): `/api/partner/:key/satellites?name=LEO`
 
-GET (full or partial type): `/api/partner/:keysatellites?name=research`
+GET (no default limit, default page = 1, full or partial type): `/api/partner/:key/satellites?name=research`
 
-GET (full date _DDMMYYYY_): `/api/partner/:keysatellites?modifiedAfter=18102021`
+GET (no default limit, default page = 1, full date _DDMMYYYY_): `/api/partner/:key/satellites?modifiedAfter=18102021`
 
 RESPONSE:
 
 ```json
-[
-  {
-    "_id": "fTTviYiQRoMLdR3RC",
-    "isDeleted": false,
-    "noradID": "25544",
-    "createdOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)",
-    "createdBy": "admin",
-    "modifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)",
-    "modifiedBy": "admin",
-    "adminCheck": true,
-    "machineCheck": false,
-    "names": [
-      {
-        "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
-        "verified": [
-          {
-            "method": "user",
-            "name": "admin",
-            "verified": true,
-            "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-          }
-        ],
-        "validated": [
-          {
-            "method": "user",
-            "name": "admin",
-            "validated": true,
-            "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-          }
-        ],
-        "name": "International Space Station"
-      }
-    ],
-    "descriptionShort": [
-      {
-        "reference": "https://en.wikipedia.org/wiki/International_Space_Station",
-        "verified": [
-          {
-            "method": "user",
-            "name": "admin",
-            "verified": true,
-            "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-          }
-        ],
-        "validated": [
-          {
-            "method": "user",
-            "name": "admin",
-            "validated": true,
-            "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
-          }
-        ],
-        "descriptionShort": "The International Space Station is a modular space station in low Earth orbit. It is a multinational collaborative project involving five participating space agencies: NASA, Roscosmos, JAXA, ESA, and CSA."
-      }
-    ],
-    ... // more data
-  },
-  ... // more related satellites
-]
+{
+  "total": 500, // total number of results that match your query
+  "returned": 500, // number of results shown on the page
+  "page": "1 / 1", // page number
+  "result": [
+    {
+      "_id": "fTTviYiQRoMLdR3RC",
+      "isDeleted": false,
+      "noradID": "25544",
+      "createdOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)",
+      "createdBy": "admin",
+      "modifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)",
+      "modifiedBy": "admin",
+      "adminCheck": true,
+      "machineCheck": false,
+      "names": [
+        {
+          "reference": "https://www.nasa.gov/mission_pages/station/main/index.html",
+          "verified": [
+            {
+              "method": "user",
+              "name": "admin",
+              "verified": true,
+              "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+            },
+            {
+              "method": "machine",
+              "name": "",
+              "verified": false,
+              "verifiedOn": ""
+            }
+          ],
+          "validated": [
+            {
+              "method": "user",
+              "name": "admin",
+              "validated": true,
+              "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+            }
+          ],
+          "name": "International Space Station"
+        }
+      ],
+      "descriptionShort": [
+        {
+          "reference": "https://en.wikipedia.org/wiki/International_Space_Station",
+          "verified": [
+            {
+              "method": "user",
+              "name": "admin",
+              "verified": true,
+              "verifiedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+            }
+          ],
+          "validated": [
+            {
+              "method": "user",
+              "name": "admin",
+              "validated": true,
+              "validatedOn": "Mon Oct 18 2021 07:25:26 GMT-0700 (Pacific Daylight Time)"
+            }
+          ],
+          "descriptionShort": "The International Space Station is a modular space station in low Earth orbit. It is a multinational collaborative project involving five participating space agencies: NASA, Roscosmos, JAXA, ESA, and CSA."
+        }
+      ],
+      ... // more data
+    },
+    ... // more related satellites
+  ]
+}
 ```
 
 ---
