@@ -33,12 +33,14 @@ export const schemaValidatorShaper = (initialName) => {
                     (/[a-z]/.test(value) && value.substr(0, 1) !== value.substr(0, 1).toUpperCase())
                 : /[a-z]/.test(value);
             }),
-          type: Yup.mixed().oneOf(["string", "number", "date", "url", "changelog", "verified", "validated"], "Invalid input provided").required("Required"),
+          type: Yup.mixed()
+            .oneOf(["string", "number", "date", "url", "changelog", "verified", "validated"], "Invalid input provided")
+            .required("Required"),
           min: Yup.number().nullable(),
           max: Yup.number()
             .nullable()
             .when(["min"], (min, schema) => {
-              return schema.min(min);
+              return min ? schema.min(min) : schema;
             }),
           required: Yup.boolean().nullable(),
           isUnique: Yup.boolean().nullable(),

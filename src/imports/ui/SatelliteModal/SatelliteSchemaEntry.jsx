@@ -40,7 +40,7 @@ export const SatelliteSchemaEntry = ({
     <Grid item xs={12}>
       <Paper className={classes.entryPaper}>
         <Grid container spacing={0}>
-          <Grid item xs={editing ? 11 : 12} className={classes.allFields} justifyContent="center">
+          <Grid item xs={editing ? 11 : 12} className={classes.allFields}>
             {schema.fields.map((field, fieldIndex) => {
               return (
                 (!field.hidden || field.name === "reference") && (
@@ -65,13 +65,8 @@ export const SatelliteSchemaEntry = ({
             <div className={classes.lastBuffer} />
           </Grid>
           {editing && (
-            <Grid container item xs={1} justifyContent="center">
-              <IconButton
-                tabIndex={1000}
-                aria-label="delete field"
-                color="default"
-                disabled={disabled}
-                onClick={() => handleDeleteEntry(schema, entryIndex)}>
+            <Grid container item xs={1} justifyContent="center" alignContent="center">
+              <IconButton tabIndex={1000} color="default" disabled={disabled} onClick={() => handleDeleteEntry(schema, entryIndex)}>
                 <DeleteIcon />
               </IconButton>
             </Grid>
