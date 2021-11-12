@@ -105,8 +105,8 @@ const dividerBreak = 800;
 const dividerTextBreak = 1000;
 const cardFlexBreak = 1000;
 const cardSpaceBreakLarge = 1000;
+const cardSpaceBreakMedium = 800;
 const cardSpaceBreakSmall = 600;
-const cardSpaceBreakMedium = 750;
 const cardSpaceBreakTiny = 400;
 
 export const Home = () => {
@@ -141,9 +141,9 @@ export const Home = () => {
 
   const cardSpace = () => {
     if (width > cardSpaceBreakLarge) return 4;
-    if (width < cardSpaceBreakLarge && width > cardSpaceBreakMedium) return 5;
-    if (width < cardSpaceBreakMedium && width > cardSpaceBreakSmall) return 6;
-    if (width < cardSpaceBreakSmall && width > cardSpaceBreakTiny) return 8;
+    if (width < cardSpaceBreakLarge && width > cardSpaceBreakMedium) return 6;
+    if (width < cardSpaceBreakMedium && width > cardSpaceBreakSmall) return 8;
+    if (width < cardSpaceBreakSmall && width > cardSpaceBreakTiny) return 9;
     if (width < cardSpaceBreakTiny) return 10;
   };
 

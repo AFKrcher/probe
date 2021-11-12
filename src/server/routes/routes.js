@@ -10,7 +10,7 @@ import { publicRoutes } from "./public";
 import { partnerRoutes } from "./partner";
 import { getSchemas } from "../utils/schemaDataFuncs";
 import { getSats } from "../utils/satelliteDataFuncs";
-import { allowedRoles } from "../utils/accountDataFuncs";
+import { allowedRoles } from "/imports/validation/accountYupShape";
 
 // Security
 import { helmetOptions } from "../security/helmet";

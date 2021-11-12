@@ -74,14 +74,23 @@ export const MultiSelectTextInput = ({ editing, index, allowedValues, setFieldVa
         disableClearable
         options={[]}
         freeSolo
-        renderTags={(options, getTagProps) => options.map((option, index) => <Chip key={index} deleteIcon={<Close />} size="small" label={option} {...getTagProps({ index })} />)}
+        renderTags={(options, getTagProps) =>
+          options.map((option, index) => <Chip key={index} deleteIcon={<Close />} size="small" label={option} {...getTagProps({ index })} />)
+        }
         value={allowedValues}
         inputValue={inputText}
         onChange={handleChange}
         onInputChange={handleInputChange}
         disabled={!editing}
         renderInput={(params) => (
-          <TextField {...params} label="Allowed Strings" error={allowedValuesErrorDetermination(index) ? true : false} variant="outlined" fullWidth margin="dense" />
+          <TextField
+            {...params}
+            label="Allowed Strings"
+            error={allowedValuesErrorDetermination(index) ? true : false}
+            variant="outlined"
+            fullWidth
+            margin="dense"
+          />
         )}
         component={Autocomplete}
       />
@@ -100,6 +109,6 @@ MultiSelectTextInput.propTypes = {
   index: PropTypes.number,
   allowedValues: PropTypes.array,
   setFieldValue: PropTypes.func,
-  currentStringMax: PropTypes.number,
+  currentStringMax: PropTypes.string,
   errors: PropTypes.object
 };

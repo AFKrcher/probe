@@ -3,6 +3,7 @@ import { UsersCollection } from "/imports/api/users";
 import { ErrorsCollection } from "/imports/api/errors";
 
 const baseURL = "/api/partner/:key";
+const defaultError = "You must provide a request body IAW the PROBE API documentation.";
 
 export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_KEY, partnerAPIKeys = false) => {
   // No Schema modification routes are provided - schemas must be generated or deleted via the client and approved by an Admin/Moderator before implementation
@@ -105,7 +106,7 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
           await Meteor.call("addNewSatellite", { noradID: "" }, sat, req.params.key);
         } else {
           status = 406;
-          response = "You must provide a request body IAW the PROBE API documentation.";
+          response = defaultError;
         }
       } else {
         response = "Unauthorized [401]";
@@ -134,7 +135,7 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
           Meteor.call("addUserToRole", user, role, req.params.key);
         } else {
           status = 406;
-          response = "You must provide a request body IAW the PROBE API documentation.";
+          response = defaultError;
         }
       } else {
         response = "Unauthorized [401]";
@@ -163,7 +164,7 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
           response = `You've successfully provided the right information for this satellite ${sat?.type} request! Unfortunately, this route is currently under construction.`;
         } else {
           status = 406;
-          response = "You must provide a request body IAW the PROBE API documentation.";
+          response = defaultError;
         }
       } else {
         response = "Unauthorized [401]";
