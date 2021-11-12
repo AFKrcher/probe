@@ -9,7 +9,7 @@ import helmet from "helmet";
 import { publicRoutes } from "./public";
 import { partnerRoutes } from "./partner";
 import { getSchemas } from "../utils/schemaDataFuncs";
-import { getSats } from "../utils/satelliteDataFuncs";
+import { getSats, getSatsPartner } from "../utils/satelliteDataFuncs";
 import { allowedRoles } from "/imports/validation/accountYupShape";
 
 // Security
@@ -40,4 +40,4 @@ publicRoutes(app, getSats, getSchemas, publicAPILimiter);
 
 // Express API for PROBE partners
 // "null" argument is reserved for handling unique keys from different partners in the future
-partnerRoutes(app, getSats, getSchemas, allowedRoles, PROBE_API_KEY, null);
+partnerRoutes(app, getSatsPartner, getSchemas, allowedRoles, PROBE_API_KEY, null);
