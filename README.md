@@ -452,7 +452,7 @@ GET: `/api/partner/:key/schemas`
 GET (full or partial name): `/api/schemas?name=names`
 
 RESPONSE:
-    
+
 ```json
 {
   "total": 20, // total number of results that match your query
