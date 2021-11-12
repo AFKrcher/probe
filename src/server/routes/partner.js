@@ -5,7 +5,7 @@ import { ErrorsCollection } from "/imports/api/errors";
 const baseURL = "/api/partner/:key";
 const defaultError = "You must provide a request body IAW the PROBE API documentation.";
 
-export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_KEY, partnerAPIKeys = false) => {
+export const partnerRoutes = (app, getSatsPartner, getSchemas, allowedRoles, PROBE_API_KEY, partnerAPIKeys = false) => {
   // No Schema modification routes are provided - schemas must be generated or deleted via the client and approved by an Admin/Moderator before implementation
   const keyCheck = (key, ownersOnly = false) => {
     // In the future, there may be partner-specific API keys, where as PROBE_API_KEY is for owners only
@@ -47,7 +47,7 @@ export const partnerRoutes = (app, getSats, getSchemas, allowedRoles, PROBE_API_
       let response = "Unauthorized [401]";
       let status = 401;
       if (keyCheck(req.params.key)) {
-        getSats(req, res);
+        getSatsPartner(req, res);
       } else {
         res.setHeader("Content-Type", "application/json");
         res.writeHead(status);
