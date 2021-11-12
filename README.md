@@ -33,7 +33,7 @@ The main focus of this application is data entry experience, data validation, an
 - Client: ReactJS
 - Server: Meteor/WebApp
 - Repository: [GitHub](https://github.com/AFKrcher/PSRA)
-- Deployment: [PROBE](probe.saberastro.com)
+- Live Deployment: [PROBE](https://probe.saberastro.com)
 
 ## Usage
 
