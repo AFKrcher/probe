@@ -148,6 +148,8 @@ Meteor.startup(() => {
   );
 
   console.log(
-    `=> PROBE server is running! Listening at ${ROOT_URL}${NODE_ENV === "production" && (PM2 || ROOT_URL.includes("localhost")) ? ":" + PORT : ""}`
+    `=> PROBE server is running! Listening at ${ROOT_URL}${
+      NODE_ENV === "production" && (PM2 || ROOT_URL.includes("localhost")) ? ":" + PORT : ""
+    }`
   );
 });

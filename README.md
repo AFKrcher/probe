@@ -76,7 +76,7 @@ GET (default limit = 20, default page = 1, full or partial orbit): `/api/satelli
 
 GET (default limit = 20, default page = 1, full or partial type): `/api/satellites?name=research`
 
-GET (default limit = 20, default page = 1, full date _DDMMYYYY_): `/api/satellites?modifiedAfter=18102021`
+GET (default limit = 20, default page = 1, full date with 3-letter month abbreviation _DD-MMM-YYYY_): `/api/partner/:key/satellites?modifiedAfter=18-Oct-2021`
 
 RESPONSE:
 
@@ -326,7 +326,7 @@ GET (no default limit, default page = 1, full or partial orbit): `/api/partner/:
 
 GET (no default limit, default page = 1, full or partial type): `/api/partner/:key/satellites?name=research`
 
-GET (no default limit, default page = 1, full date _DDMMYYYY_): `/api/partner/:key/satellites?modifiedAfter=18102021`
+GET (no default limit, default page = 1, full date with 3-letter month abbreviation _DD-MMM-YYYY_): `/api/partner/:key/satellites?modifiedAfter=18-Oct-2021`
 
 RESPONSE:
 

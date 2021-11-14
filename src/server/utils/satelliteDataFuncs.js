@@ -1,11 +1,39 @@
 import { SatelliteCollection } from "/imports/api/satellites";
-import { findAndFetch } from "./commonDataFuncs";
+import { findAndFetch, specificError, defaultError } from "./commonDataFuncs";
 
 const collection = "satellites";
 const api = SatelliteCollection;
+const defaultResponseLimit = 20;
+const publicResponseLimit = 100;
+const defaultPage = 0;
 
-const modifiedAfterFilter = (res, parameter, limit, page, queryName) => {
-  res.status(200).end(JSON.stringify(parameter + queryName));
+const modifiedAfterFilter = async (res, parameter, queryName, limit, page) => {
+  let queryObject = {};
+  queryObject["modifiedOn"] = { $gte: new Date(parameter) };
+  let paginationObject;
+  if (limit) {
+    const skipper = limit * page;
+    paginationObject = { limit: limit, skip: skipper };
+  }
+  try {
+    const result = paginationObject
+      ? await api.find(queryObject, paginationObject).fetch()
+      : await api.find(queryObject).fetch();
+    const returned = result.length;
+    if (returned > 0) {
+      const total = api.find(queryObject).count();
+      const currentPage = `${page ? page + 1 : 1} / ${Math.ceil(total / returned)}`;
+      const finalResponse = { total: total, returned: returned, page: currentPage, result: result };
+      res.writeHead(200);
+      res.end(JSON.stringify(finalResponse));
+    } else {
+      res.writeHead(404);
+      res.end(JSON.stringify(specificError(collection, queryName, true)));
+    }
+  } catch (err) {
+    res.writeHead(404);
+    res.end(JSON.stringify(defaultError(collection)));
+  }
 };
 
 export async function getSats(req, res) {
@@ -16,14 +44,14 @@ export async function getSats(req, res) {
   if (parseInt(page)) {
     page = parseInt(q.page) > 0 ? parseInt(q.page) - 1 : parseInt(q.page);
   } else {
-    page = 0;
+    page = defaultPage;
   }
   // restrict users from querying too many satellites per request: 20 default, 100 max per page
   let limit = q.limit;
   if (parseInt(limit)) {
-    limit = parseInt(q.limit) > 100 ? 100 : parseInt(q.limit);
+    limit = parseInt(q.limit) > publicResponseLimit ? publicResponseLimit : parseInt(q.limit);
   } else {
-    limit = 20;
+    limit = defaultResponseLimit;
   }
   if (q.noradID?.length > 0) {
     findAndFetch(res, api, collection, q.noradID, "NORAD ID", "noradID", "i", limit, page);
