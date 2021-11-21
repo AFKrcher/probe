@@ -37,10 +37,14 @@ export const startup = (
 
   // Email verification and password reset emails
   Accounts.urls.resetPassword = (token) => {
-    return ROOT_URL.includes("localhost") && PM2 ? `${ROOT_URL}:${PORT}/reset?token=${token}` : Meteor.absoluteUrl(`/reset?token=${token}`);
+    return ROOT_URL.includes("localhost") && PM2
+      ? `${ROOT_URL}:${PORT}/reset?token=${token}`
+      : Meteor.absoluteUrl(`/reset?token=${token}`);
   };
   Accounts.urls.verifyEmail = (token) => {
-    return ROOT_URL.includes("localhost") && PM2 ? `${ROOT_URL}:${PORT}/verify?token=${token}` : Meteor.absoluteUrl(`/verify?token=${token}`);
+    return ROOT_URL.includes("localhost") && PM2
+      ? `${ROOT_URL}:${PORT}/verify?token=${token}`
+      : Meteor.absoluteUrl(`/verify?token=${token}`);
   };
 
   // Email template settings

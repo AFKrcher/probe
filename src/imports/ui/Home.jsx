@@ -84,7 +84,8 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
     position: "fixed",
     bottom: 60,
-    right: 10
+    right: 10,
+    transform: "rotate(270deg)"
   },
   loadMoreContainer: {
     marginTop: 40,
@@ -101,8 +102,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // breakpoints based on device width / height
-const dividerBreak = 800;
 const dividerTextBreak = 1000;
+const smallTextBreak = 500;
 const cardFlexBreak = 1000;
 const cardSpaceBreakLarge = 1000;
 const cardSpaceBreakMedium = 800;
@@ -134,7 +135,17 @@ export const Home = () => {
         startIcon={miniButtonBreak ? mini ? <ZoomIn /> : <ZoomOut /> : null}
         onClick={minimize}
         style={{ width: miniButtonBreak ? 206 : 0, height: 35 }}>
-        {mini ? miniButtonBreak ? "Satellite Cards View" : <ZoomOut /> : miniButtonBreak ? "Minimized Grid View" : <ZoomIn />}
+        {mini ? (
+          miniButtonBreak ? (
+            "Satellite Cards View"
+          ) : (
+            <ZoomOut />
+          )
+        ) : miniButtonBreak ? (
+          "Minimized Grid View"
+        ) : (
+          <ZoomIn />
+        )}
       </Button>
     );
   };
@@ -216,7 +227,10 @@ export const Home = () => {
               </IconButton>
             </Tooltip>
             {!mini && (
-              <Tooltip title={infiniteMode ? "Turn off infinite scroll" : "Turn on infinite scroll"} placement="left" arrow>
+              <Tooltip
+                title={infiniteMode ? "Turn off infinite scroll" : "Turn on infinite scroll"}
+                placement="left"
+                arrow>
                 <IconButton className={classes.toggleInfinite} onClick={() => setInfiniteMode(!infiniteMode)}>
                   {infiniteMode ? <InfiniteScrollIcon /> : <InfiniteScrollOutlinedIcon />}
                 </IconButton>
@@ -230,8 +244,8 @@ export const Home = () => {
         <Typography variant="body1" className={classes.description}>
           <b className={classes.saberAstroColor}>P</b>ublicly <b className={classes.saberAstroColor}>R</b>esearched{" "}
           <b className={classes.saberAstroColor}>O</b>
-          bservatory (<b className={classes.saberAstroColor}>PROBE</b>) is seeking to become the world's most complete and easy to use resource for
-          satellite data and information. 100% Open Source, 100% Machine Readable.
+          bservatory (<b className={classes.saberAstroColor}>PROBE</b>) is seeking to become the world's most complete
+          and easy to use resource for satellite data and information. 100% Open Source, 100% Machine Readable.
         </Typography>
         <Key page="Home" mini={mini} />
       </Container>
@@ -269,7 +283,11 @@ export const Home = () => {
                     {miniButton()}
                   </div>
                 </span>
-                <Grid container justifyContent={width > cardFlexBreak ? "flex-start" : "center"} spacing={cardSpace()} className={classes.card}>
+                <Grid
+                  container
+                  justifyContent={width > cardFlexBreak ? "flex-start" : "center"}
+                  spacing={cardSpace()}
+                  className={classes.card}>
                   {!isLoading
                     ? sats.map((sat, index) => (
                         <Grid item xs={cardSpace()} key={index}>
@@ -309,7 +327,11 @@ export const Home = () => {
                   </div>
                 </span>
               )}
-              <Grid container justifyContent={width > cardFlexBreak ? "flex-start" : "center"} spacing={cardSpace()} className={classes.card}>
+              <Grid
+                container
+                justifyContent={width > cardFlexBreak ? "flex-start" : "center"}
+                spacing={cardSpace()}
+                className={classes.card}>
                 {!isLoading
                   ? otherSats.map((sat, index) => (
                       <Grid item xs={cardSpace()} key={index}>
@@ -328,20 +350,20 @@ export const Home = () => {
 
               {/* Load More Button */}
               <Grid container alignItems="center" className={classes.loadMoreContainer}>
-                <Grid item xs={width > dividerBreak ? 5 : 3}>
+                <Grid item xs={width > dividerTextBreak ? 4 : 3}>
                   <Divider />
                 </Grid>
-                <Grid item xs={width > dividerBreak ? 2 : 6} container justifyContent="center">
+                <Grid item xs={width > dividerTextBreak ? 4 : 6} container justifyContent="center">
                   <Typography
-                    variant={width > dividerTextBreak ? "body1" : "caption"}
+                    variant={"body1"}
                     className={classes.loadMore}
                     onClick={() => {
                       if (showLoadMore()) setPage(page + 1);
                     }}>
-                    {width > 300 ? `${showLoadMore() ? "Load" : "No"} More Satellites` : `${showLoadMore() ? "Load" : "No"} More`}
+                    {`${showLoadMore() ? "Load" : "No"} More ${width > smallTextBreak ? "Satellites" : ""}`}
                   </Typography>
                 </Grid>
-                <Grid item xs={width > dividerBreak ? 5 : 4}>
+                <Grid item xs={width > dividerTextBreak ? 4 : 3}>
                   <Divider />
                 </Grid>
               </Grid>

@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
   urlAdornment: {
     cursor: "pointer",
     color: theme.palette.text.primary,
-    filter: `drop-shadow(1px 1px 1px ${theme.palette.tertiary.shadow})`,
     "&:hover": {
       color: theme.palette.info.main
     }
@@ -35,16 +34,13 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.disabled
   },
   validatedAdornment: {
-    color: theme.palette.success.light,
-    filter: `drop-shadow(1px 1px 1px ${theme.palette.tertiary.shadow})`
+    color: theme.palette.success.main
   },
   partiallyValidatedAdornment: {
-    color: theme.palette.warning.light,
-    filter: `drop-shadow(1px 1px 1px ${theme.palette.tertiary.shadow})`
+    color: theme.palette.warning.main
   },
   notValidatedAdornment: {
-    color: theme.palette.error.light,
-    filter: `drop-shadow(1px 1px 1px ${theme.palette.tertiary.shadow})`
+    color: theme.palette.error.main
   }
 }));
 
@@ -167,7 +163,8 @@ export const SatelliteEntryField = ({
         shrink: true
       },
       value: tempValue,
-      onChange: (event) => handleChange(event, `${schema.name}.${entryIndex}.validated`, `${schema.name}.${entryIndex}.verified`),
+      onChange: (event) =>
+        handleChange(event, `${schema.name}.${entryIndex}.validated`, `${schema.name}.${entryIndex}.verified`),
       error: filteredHelper(schema.name, entryIndex, fieldIndex) ? true : false,
       label: field.name,
       margin: "dense",
@@ -179,7 +176,18 @@ export const SatelliteEntryField = ({
       maxRows: 10,
       component: editing
         ? TextField
-        : (props) => linkAdornment(width, classes, handleClick, adornmentBreak, props, entry[`${field.name}`], field.type, validated, verified),
+        : (props) =>
+            linkAdornment(
+              width,
+              classes,
+              handleClick,
+              adornmentBreak,
+              props,
+              entry[`${field.name}`],
+              field.type,
+              validated,
+              verified
+            ),
 
       type: field.type === "date" ? "datetime-local" : field.type,
       disabled: !editing,

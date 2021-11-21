@@ -5,7 +5,20 @@ import { useTracker } from "meteor/react-meteor-data";
 import { ErrorsCollection } from "../../api/errors";
 
 // @material-ui
-import { makeStyles, Typography, Table, TableContainer, Paper, TableHead, TableBody, TableRow, TableCell, CircularProgress, IconButton, Button } from "@material-ui/core";
+import {
+  makeStyles,
+  Typography,
+  Table,
+  TableContainer,
+  Paper,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  CircularProgress,
+  IconButton,
+  Button
+} from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
@@ -84,7 +97,6 @@ export const ErrorLog = () => {
         <DeleteIcon className={classes.deleteAll} />
         Delete All
       </Button>
-      <Typography variant="caption">Error Log only shows the last 50 errors encountered by PROBE users</Typography>
       <TableContainer component={Paper} className={classes.table} elevation={5}>
         <Table size="small" aria-label="Schema table">
           <TableHead>
@@ -120,7 +132,10 @@ export const ErrorLog = () => {
                     <TableCell key={`error-time-${i}`}>{`${error.time}`}</TableCell>
                     <TableCell key={`error-user-${i}`}>{error.user}</TableCell>
                     <TableCell key={`error-actions-${i}`} style={{ textAlign: "center" }}>
-                      <IconButton color="secondary" className={classes.deleteButton} onClick={() => deleteError(error._id)}>
+                      <IconButton
+                        color="secondary"
+                        className={classes.deleteButton}
+                        onClick={() => deleteError(error._id)}>
                         <DeleteIcon fontSize="medium" />
                       </IconButton>
                     </TableCell>

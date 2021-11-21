@@ -5,7 +5,17 @@ import { SatelliteSchemaEntry } from "./SatelliteSchemaEntry";
 import useWindowSize from "../hooks/useWindowSize.jsx";
 
 // @material-ui
-import { Typography, Accordion, AccordionSummary, AccordionDetails, Chip, Grid, Button, makeStyles, Tooltip } from "@material-ui/core";
+import {
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Chip,
+  Grid,
+  Button,
+  makeStyles,
+  Tooltip
+} from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import HelpIcon from "@material-ui/icons/Help";
 
@@ -19,12 +29,13 @@ const useStyles = makeStyles((theme) => ({
     display: "flex"
   },
   accordionTitle: {
-    marginRight: "5px",
-    marginLeft: "10px"
+    marginRight: "4px",
+    marginLeft: "12px"
   },
   helpIcon: {
     color: theme.palette.text.disabled,
-    fontSize: "medium"
+    fontSize: "small",
+    cursor: "help"
   },
   iconButtons: {
     display: "flex",
@@ -141,7 +152,12 @@ export const SatelliteSchemaAccordion = ({
             ))}
             <Grid item xs={12} className={classes.buttonContainer}>
               {editing ? (
-                <Button variant="contained" size="medium" color="default" onClick={onAddField} className={classes.button}>
+                <Button
+                  variant="contained"
+                  size="medium"
+                  color="default"
+                  onClick={onAddField}
+                  className={classes.button}>
                   + Add Entry
                 </Button>
               ) : null}
@@ -168,7 +184,6 @@ SatelliteSchemaAccordion.propTypes = {
   editingOne: PropTypes.bool,
   setEditingOne: PropTypes.func,
   setSatSchema: PropTypes.func,
-  schemaIndex: PropTypes.number,
   accordionBeingEdited: PropTypes.number,
   setAccordionBeingEdited: PropTypes.func,
   disabled: PropTypes.bool,

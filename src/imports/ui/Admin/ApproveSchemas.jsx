@@ -8,8 +8,19 @@ import { SchemaCollection } from "../../api/schemas";
 import { SchemaModal } from "../SchemaModal/SchemaModal.jsx";
 
 // @material-ui
-import { makeStyles, Typography, Table, TableContainer, Paper, TableHead, TableBody, TableRow, TableCell, CircularProgress } from "@material-ui/core";
-import ErrorOutlinedIcon from "@material-ui/icons/ErrorOutlined";
+import {
+  makeStyles,
+  Typography,
+  Table,
+  TableContainer,
+  Paper,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  CircularProgress
+} from "@material-ui/core";
+import AttentionNeededIcon from "@material-ui/icons/ErrorOutlined";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,13 +66,11 @@ const useStyles = makeStyles((theme) => ({
       cursor: "pointer"
     }
   },
-  warningIcon: {
-    fill: theme.palette.warning.light,
-    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`
+  attentionIcon: {
+    fill: theme.palette.warning.light
   },
   errorIcon: {
-    fill: theme.palette.error.light,
-    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`
+    fill: theme.palette.error.light
   },
   spinner: {
     color: theme.palette.text.primary
@@ -113,10 +122,10 @@ export const ApproveSchemas = () => {
           {schema.name}
         </TableCell>
         <TableCell key={`schema-approve-${i}`} align="center">
-          {!schema.adminCheck ? <ErrorOutlinedIcon className={classes.warningIcon} /> : null}
+          {!schema.adminCheck ? <AttentionNeededIcon className={classes.attentionIcon} /> : null}
         </TableCell>
         <TableCell key={`schema-delete-${i}`} align="center">
-          {schema.isDeleted ? <ErrorOutlinedIcon className={classes.errorIcon} /> : null}
+          {schema.isDeleted ? <AttentionNeededIcon className={classes.errorIcon} /> : null}
         </TableCell>
         <TableCell key={`schema-modOn-${i}`}>{`${schema.modifiedOn || schema.createdOn}`}</TableCell>
         <TableCell key={`schema-modBy-${i}`}>{`${schema.modifiedBy || schema.createdBy}`}</TableCell>
@@ -166,7 +175,12 @@ export const ApproveSchemas = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <SchemaModal show={showModal} initValues={initialSchemaValues} handleClose={() => setShowModal(false)} admin={true} />
+      <SchemaModal
+        show={showModal}
+        initValues={initialSchemaValues}
+        handleClose={() => setShowModal(false)}
+        admin={true}
+      />
     </div>
   );
 };

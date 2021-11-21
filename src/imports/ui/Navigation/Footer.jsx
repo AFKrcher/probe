@@ -5,7 +5,6 @@ import useWindowSize from "../hooks/useWindowSize.jsx";
 
 // @material-ui
 import { makeStyles, Paper, Divider } from "@material-ui/core";
-import GitHubIcon from "@material-ui/icons/GitHub";
 import ContactIcon from "@material-ui/icons/Email";
 import PolicyIcon from "@material-ui/icons/Policy";
 import TermsIcon from "@material-ui/icons/FindInPage";
@@ -23,27 +22,11 @@ const useStyles = makeStyles((theme) => ({
     alignContent: "center",
     borderRadius: 0
   },
-  probe: {
-    color: theme.palette.tertiary.main,
-    marginRight: 2
-  },
   link: {
     color: theme.palette.text.primary,
-    filter: `drop-shadow(1px 1px 1px ${theme.palette.tertiary.shadow})`,
     textDecoration: "none",
     "&:hover": {
       color: theme.palette.info.main
-    }
-  },
-  gitHub: {
-    marginTop: 10,
-    marginLeft: 2,
-    color: theme.palette.text.primary,
-    filter: `drop-shadow(3px 2px 2px ${theme.palette.tertiary.shadow})`,
-    "&:hover": {
-      color: theme.palette.info.main,
-      filter: "none",
-      cursor: "pointer"
     }
   },
   footerIcon: {
@@ -64,24 +47,24 @@ export const Footer = () => {
 
   return (
     <Paper className={classes.root} elevation={5}>
-      <Link to="/" className={classes.link}>
-        <b className={classes.probe}>PROBE</b>
-      </Link>
-      <Divider orientation="vertical" variant="middle" className={classes.divider} flexItem />
       <Link to="/terms" className={classes.link}>
         {width > footerIconsBreakPoint ? "Terms" : <TermsIcon fontSize="small" className={classes.footerIcon} />}
       </Link>
       <Divider orientation="vertical" variant="middle" className={classes.divider} flexItem />
       <Link to="/privacypolicy" className={classes.link}>
-        {width > footerIconsBreakPoint ? "Privacy Policy" : <PolicyIcon fontSize="small" className={classes.footerIcon} />}
+        {width > footerIconsBreakPoint ? (
+          "Privacy Policy"
+        ) : (
+          <PolicyIcon fontSize="small" className={classes.footerIcon} />
+        )}
       </Link>
       <Divider orientation="vertical" variant="middle" className={classes.divider} flexItem />
       <a target="_blank" rel="noopener noreferrer" href="mailto:justinthelaw@gmail.com" className={classes.link}>
         {width > footerIconsBreakPoint ? "Contact Us" : <ContactIcon fontSize="small" className={classes.footerIcon} />}
       </a>
       <Divider orientation="vertical" variant="middle" className={classes.divider} flexItem />
-      <a target="_blank" rel="noreferrer" href="https://github.com/afkrcher/probe">
-        <GitHubIcon fontSize="small" className={classes.gitHub} />
+      <a target="_blank" rel="noreferrer" href="https://github.com/afkrcher/probe/releases" className={classes.link}>
+        <div>PROBE v1.0.1</div>
       </a>
     </Paper>
   );

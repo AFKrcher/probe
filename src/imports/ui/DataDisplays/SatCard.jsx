@@ -11,8 +11,19 @@ import { getSatID, getSatName, getSatDesc } from "../utils/satelliteDataFuncs";
 import { Gallery } from "./Gallery";
 
 // @material-ui
-import { makeStyles, Card, CardActions, CardContent, CardMedia, Button, Typography, Menu, MenuItem, Tooltip } from "@material-ui/core";
-import VisibilityIcon from "@material-ui/icons/Visibility";
+import {
+  makeStyles,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Button,
+  Typography,
+  Menu,
+  MenuItem,
+  Tooltip
+} from "@material-ui/core";
+import StorageIcon from "@material-ui/icons/Storage";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 15
   },
   cardButton: {
-    border: "1px solid",
     filter: `drop-shadow(2px 2px 5px ${theme.palette.button.shadow})`
   },
   modalButton: {
@@ -120,7 +130,9 @@ export const SatCard = ({ width, height, satellite }) => {
           <Gallery initValues={satellite} autoplay={false} width={width} />
         </CardMedia>
         <CardContent className={classes.cardDesc}>
-          <Typography variant={width > body1Break ? "h5" : width > titleh6Break ? "h6" : "body1"} className={classes.satName}>
+          <Typography
+            variant={width > body1Break ? "h5" : width > titleh6Break ? "h6" : "body1"}
+            className={classes.satName}>
             <b>{getSatName(satellite)}</b>
           </Typography>
           <Typography gutterBottom variant={width > body1Break ? "body1" : width > body2Break ? "body2" : "caption"}>
@@ -133,7 +145,9 @@ export const SatCard = ({ width, height, satellite }) => {
           {width < body2Break && <br />}
           <Typography variant={width > body1Break ? "body1" : width > body2Break ? "body2" : "caption"}>
             {width > descriptionShowBreak ? (
-              <React.Fragment>{width > descriptionCutoffBreak ? getSatDesc(satellite) : getSatDesc(satellite).substr(0, 100) + "..."}</React.Fragment>
+              <React.Fragment>
+                {width > descriptionCutoffBreak ? getSatDesc(satellite) : getSatDesc(satellite).substr(0, 100) + "..."}
+              </React.Fragment>
             ) : null}
           </Typography>
         </CardContent>
@@ -150,7 +164,12 @@ export const SatCard = ({ width, height, satellite }) => {
           }>
           {width < actionsBreak ? (
             <React.Fragment>
-              <Button variant="outlined" size="small" onClick={handleClick} className={classes.cardButton}>
+              <Button
+                variant="contained"
+                disableElevation
+                size="large"
+                onClick={handleClick}
+                className={classes.cardButton}>
                 <b className={classes.optionButton}>Options</b>
               </Button>
               <Menu keepMounted anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
@@ -160,7 +179,7 @@ export const SatCard = ({ width, height, satellite }) => {
                     handleModify(e, satellite);
                     handleClose(e);
                   }}>
-                  <VisibilityIcon className={classes.iconButton} />
+                  <StorageIcon className={classes.iconButton} />
                 </MenuItem>
                 <MenuItem
                   dense
@@ -178,17 +197,32 @@ export const SatCard = ({ width, height, satellite }) => {
           ) : (
             <React.Fragment>
               <Tooltip title="Satellite Data View" arrow placement="top">
-                <Button size="medium" variant="outlined" className={classes.cardButton} onClick={(e) => handleModify(e, satellite)}>
-                  <VisibilityIcon className={classes.iconButton} />
+                <Button
+                  size="large"
+                  disableElevation
+                  variant="contained"
+                  className={classes.cardButton}
+                  onClick={(e) => handleModify(e, satellite)}>
+                  <StorageIcon className={classes.iconButton} />
                 </Button>
               </Tooltip>
               <Tooltip title="Satellite Dashboard View" arrow placement="top">
-                <Button size="medium" variant="outlined" className={classes.cardButton} onClick={handleDashboard}>
+                <Button
+                  size="large"
+                  variant="contained"
+                  disableElevation
+                  className={classes.cardButton}
+                  onClick={handleDashboard}>
                   <DashboardIcon className={classes.iconButton} />
                 </Button>
               </Tooltip>
               <Tooltip title="Visualize satellite in Space Cockpit" arrow placement="top">
-                <Button size="medium" variant="outlined" className={classes.cardButton} onClick={handleVisualize}>
+                <Button
+                  size="large"
+                  variant="contained"
+                  disableElevation
+                  className={classes.cardButton}
+                  onClick={handleVisualize}>
                   <img src="/assets/saberastro.png" width="27.5px" />
                 </Button>
               </Tooltip>

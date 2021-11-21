@@ -17,6 +17,10 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import HelpIcon from "@material-ui/icons/Help";
 
 const useStyles = makeStyles((theme) => ({
+  noradID: {
+    margin: "0px 0px 15px 0px",
+    padding: "0px 1px 0px 1px"
+  },
   accordion: {
     display: "flex"
   },
@@ -29,15 +33,11 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     marginTop: 10
   },
-  noradID: {
-    padding: theme.spacing(1),
-    backgroundColor: theme.palette.action.hover
-  },
   helpIcon: {
     color: theme.palette.text.disabled,
+    cursor: "help",
     fontSize: "small",
-    marginLeft: 5,
-    marginTop: -10
+    margin: "0px 0px 5px 3px"
   },
   deleteIcon: { alignSelf: "flex-start" }
 }));
@@ -129,69 +129,63 @@ export const SatelliteForm = ({
   };
 
   return (
-    <Grid container spacing={1}>
-      <Grid container item>
-        <Grid item xs={12}>
-          <Paper className={classes.noradID}>
-            <Field
-              value={values.noradID || ""}
-              name="noradID"
-              label="NORAD ID"
-              margin="dense"
-              required
-              fullWidth
-              variant="outlined"
-              component={TextField}
-              disabled={!editing}
-              autoComplete="off"
-              onChange={handleChange}
-              error={errors["noradID"] && !_.isEmpty(touched) ? true : false}
-              helperText={errors["noradID"] && !_.isEmpty(touched) ? errors["noradID"] : ""}
-            />
-          </Paper>
-        </Grid>
-      </Grid>
+    <Grid container spacing={0}>
       <Grid item xs={12}>
-        {schemas.map(
-          (schema, schemaIndex) =>
-            initValues[schema.name] && (
-              <span key={schemaIndex} className={classes.accordion}>
-                <SatelliteSchemaAccordion
-                  schemaIndex={schemaIndex}
-                  errors={errors}
-                  setErrors={setErrors}
-                  schema={schema}
-                  entries={values[`${schema.name}`]}
-                  setFieldValue={setFieldValue}
-                  editing={editing}
-                  setValues={setValues}
-                  setSatSchema={setSatSchema}
-                  values={values}
-                  satelliteValidatorShaper={satelliteValidatorShaper}
-                  touched={touched}
-                  setTouched={setTouched}
-                  initValues={initValues}
-                  disabled={disabled}
-                  setDisabled={setDisabled}
-                  dirty={dirty}
-                  setValidating={setValidating}
-                />
-                {editing && (
-                  <Tooltip title={`Delete ${schema.name}`}>
-                    <IconButton
-                      tabIndex={1000}
-                      color="default"
-                      className={classes.deleteIcon}
-                      onClick={() => handleDeleteDialog(schema.name)}
-                      disabled={disabled}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </Tooltip>
-                )}
-              </span>
-            )
-        )}
+        <Field
+          className={classes.noradID}
+          value={values.noradID || ""}
+          name="noradID"
+          label="NORAD ID"
+          margin="dense"
+          required
+          fullWidth
+          variant="outlined"
+          component={TextField}
+          disabled={!editing}
+          autoComplete="off"
+          onChange={handleChange}
+          error={errors["noradID"] && !_.isEmpty(touched) ? true : false}
+          helperText={errors["noradID"] && !_.isEmpty(touched) ? errors["noradID"] : ""}
+        />
       </Grid>
+      {schemas.map(
+        (schema, schemaIndex) =>
+          initValues[schema.name] && (
+            <Grid item xs={12} key={schemaIndex} className={classes.accordion}>
+              <SatelliteSchemaAccordion
+                errors={errors}
+                setErrors={setErrors}
+                schema={schema}
+                entries={values[`${schema.name}`]}
+                setFieldValue={setFieldValue}
+                editing={editing}
+                setValues={setValues}
+                setSatSchema={setSatSchema}
+                values={values}
+                satelliteValidatorShaper={satelliteValidatorShaper}
+                touched={touched}
+                setTouched={setTouched}
+                initValues={initValues}
+                disabled={disabled}
+                setDisabled={setDisabled}
+                dirty={dirty}
+                setValidating={setValidating}
+              />
+              {editing && (
+                <Tooltip title={`Delete ${schema.name}`}>
+                  <IconButton
+                    tabIndex={1000}
+                    color="default"
+                    className={classes.deleteIcon}
+                    onClick={() => handleDeleteDialog(schema.name)}
+                    disabled={disabled}>
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </Grid>
+          )
+      )}
       {editing && schemaAddition && (
         <Grid item container xs={12} className={classes.addItem}>
           <Grid item xs={10}>
@@ -210,7 +204,9 @@ export const SatelliteForm = ({
               autoComplete
               autoHighlight
               autoSelect
-              renderInput={(params) => <MuiTextField {...params} label="Available Schemas" variant="outlined" size="small" />}
+              renderInput={(params) => (
+                <MuiTextField {...params} label="Available Schemas" variant="outlined" size="small" />
+              )}
             />
           </Grid>
           <Grid item xs className={classes.addFieldContainer}>
