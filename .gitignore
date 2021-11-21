@@ -5,8 +5,10 @@
 *node_modules
 
 # Secrets
-*.env.dev
-*.env.prod
+*.env.dev*
+*.env.stag*
+*.env.prod*
+
 
 # Build
 *src.tar.gz
