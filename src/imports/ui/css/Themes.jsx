@@ -18,7 +18,7 @@ const darkTheme = createTheme({
   palette: {
     type: "dark",
     primary: {
-      main: blue[400]
+      main: blue[300]
     },
     secondary: {
       main: red[600]
@@ -61,11 +61,11 @@ const lightTheme = createTheme({
   palette: {
     type: "light",
     primary: {
-      main: blue[700]
+      main: blue[600]
     },
     tertiary: {
       main: "rgb(39, 51, 115)",
-      shadow: grey[500]
+      shadow: grey[400]
     },
     grid: {
       text: "black",

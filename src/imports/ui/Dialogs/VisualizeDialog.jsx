@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-export default function PromptDialog({ body }) {
+export default function VisualizeDialog({ body }) {
   const classes = useStyles();
 
   const { openVisualize, setOpenVisualize } = useContext(HelpersContext);
@@ -28,14 +28,22 @@ export default function PromptDialog({ body }) {
     await setOpenVisualize(false);
   };
 
+  const decideSatName = () => {
+    if (body?.satellite) {
+      if (typeof body.satellite === "string") return body?.satellite;
+      if (body.satellite.names) return body.satellite.names[0].name;
+    } else {
+      return "New Satellite";
+    }
+  };
+
   return (
     <Dialog open={openVisualize} onClose={handleCancelVisualize} fullScreen={true}>
       <DialogTitle>
         <div className={classes.modalHeader}>
           <Tooltip title="Click to open Space Cockpit in a new tab" placement="right" arrow>
             <Typography onClick={() => window.open(body?.url, "_blank").focus()} style={{ cursor: "pointer" }}>
-              Visualizing <b>{typeof body?.satellite === "string" ? body?.satellite : body?.satellite.names[0].name}</b> in Space Cockpit by Saber
-              Astronautics
+              Visualizing <b>{decideSatName()}</b> in Space Cockpit by Saber Astronautics
             </Typography>
           </Tooltip>
           <IconButton size="small" className={classes.modalButton} id="exitVisualize" onClick={handleCancelVisualize}>
@@ -51,6 +59,6 @@ export default function PromptDialog({ body }) {
 }
 
 // Prop checking
-PromptDialog.propTypes = {
+VisualizeDialog.propTypes = {
   body: PropTypes.object
 };

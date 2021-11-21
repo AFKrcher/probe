@@ -66,7 +66,11 @@ export const SatelliteSchemaEntry = ({
           </Grid>
           {editing && (
             <Grid container item xs={1} justifyContent="center" alignContent="center">
-              <IconButton tabIndex={1000} color="default" disabled={disabled} onClick={() => handleDeleteEntry(schema, entryIndex)}>
+              <IconButton
+                tabIndex={1000}
+                color="default"
+                disabled={disabled}
+                onClick={() => handleDeleteEntry(schema, entryIndex)}>
                 <DeleteIcon />
               </IconButton>
             </Grid>

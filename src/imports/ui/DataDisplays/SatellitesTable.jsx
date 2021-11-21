@@ -32,29 +32,22 @@ import {
 } from "@material-ui/data-grid";
 import StarIcon from "@material-ui/icons/Star";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
-import VisibilityIcon from "@material-ui/icons/Visibility";
+import StorageIcon from "@material-ui/icons/Storage";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import Download from "@material-ui/icons/GetApp";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100%",
-    width: "100%"
+    height: "100%"
   },
   description: {
     marginTop: 15,
     marginBottom: 20
   },
-  gridContainer: {
-    display: "flex",
-    height: "100%",
-    width: "100%",
-    marginTop: 5,
-    resize: "horizontal"
-  },
   dataGrid: {
     padding: "5px 5px 0px 5px",
     backgroundColor: theme.palette.grid.background,
+    marginTop: 5,
     "& .MuiDataGrid-cell": {
       textOverflow: "ellipse"
     },
@@ -105,22 +98,18 @@ const useStyles = makeStyles((theme) => ({
   },
   actionIconButton: {
     padding: 7,
-    marginLeft: 15,
-    filter: `drop-shadow(1px 2px 1px ${theme.palette.tertiary.shadow})`
+    marginLeft: 15
   },
   starIconButton: {
-    marginLeft: 15,
-    filter: `drop-shadow(1px 2px 1px ${theme.palette.tertiary.shadow})`
+    marginLeft: 15
   },
   starButtonFilled: {
     cursor: "pointer",
-    fill: "#ffc708",
-    filter: `drop-shadow(1px 2px 1px ${theme.palette.tertiary.shadow})`
+    fill: "#ffc708"
   },
   starButtonHeader: {
     cursor: "pointer",
     fill: "#ffc708",
-    filter: `drop-shadow(1px 2px 1px ${theme.palette.tertiary.shadow})`,
     marginBottom: -6
   },
   modalButton: {
@@ -357,7 +346,11 @@ export const SatellitesTable = () => {
           size="small"
           className={classes.starIconButton}
           onClick={(e) => handleFavorite(e, params.id, favoritesNameShortener(), checkIfFavorite())}>
-          {checkIfFavorite() ? <StarIcon className={classes.starButtonFilled} /> : <StarBorderIcon className={classes.starButtonEmpty} />}
+          {checkIfFavorite() ? (
+            <StarIcon className={classes.starButtonFilled} />
+          ) : (
+            <StarBorderIcon className={classes.starButtonEmpty} />
+          )}
         </IconButton>
       </Tooltip>
     );
@@ -399,7 +392,7 @@ export const SatellitesTable = () => {
                       }).fetch()[0]
                     )
                   }>
-                  <VisibilityIcon fontSize="small" />
+                  <StorageIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Satellite Dashboard View" arrow placement="top">
@@ -415,7 +408,10 @@ export const SatellitesTable = () => {
                 <IconButton
                   className={classes.actionIconButton}
                   onClick={() => {
-                    handleVisualize(satellite.row.names, `https://spacecockpit.saberastro.com/?SID=${satellite.id}&FS=${satellite.id}`);
+                    handleVisualize(
+                      satellite?.row?.names,
+                      `https://spacecockpit.saberastro.com/?SID=${satellite.id}&FS=${satellite.id}`
+                    );
                   }}>
                   <img src="/assets/saberastro.png" width="22px" height="22px" />
                 </IconButton>
@@ -428,14 +424,14 @@ export const SatellitesTable = () => {
         headerAlign: "left",
         field: "id",
         headerName: "NORAD ID",
-        minWidth: 150,
+        width: 150,
         filterOperators: getGridStringOperators().filter((operator) => operator.value === "contains")
       },
       {
         headerAlign: "left",
         field: "orbits",
         headerName: "ORBIT(S)",
-        minWidth: 140,
+        width: 140,
         editable: false,
         filterable: false
       },
@@ -443,7 +439,7 @@ export const SatellitesTable = () => {
         headerAlign: "left",
         field: "types",
         headerName: "TYPE(S)",
-        minWidth: 200,
+        width: 200,
         editable: false,
         filterable: false,
         hide: true
@@ -452,7 +448,7 @@ export const SatellitesTable = () => {
         headerAlign: "left",
         field: "names",
         headerName: "NAME(S)",
-        minWidth: 250,
+        width: 250,
         flex: 1,
         editable: false,
         filterOperators: getGridStringOperators().filter((operator) => operator.value === "contains")
@@ -470,7 +466,7 @@ export const SatellitesTable = () => {
         ),
         filterable: false,
         sortable: false,
-        minWidth: 50,
+        width: 50,
         headerAlign: "center",
         renderCell: function favoritesRow(params) {
           return renderFavoriteButton(params);
@@ -540,46 +536,44 @@ export const SatellitesTable = () => {
               schemas page
             </Link>
           </Tooltip>
-          . Filtering on satellites using tags in the search bar will allow you to view the results in the table and export the results to a CSV or
-          JSON format.
+          . Filtering on satellites using tags in the search bar will allow you to view the results in the table and
+          export the results to a CSV or JSON format.
         </Typography>
         <Key page="SatellitesTable" />
         <div className={classes.searchBarContainer}>
           <SearchBar filter={filter} setFilter={setFilter} selector={selector} setSelector={setSelector} />
         </div>
-        <div className={classes.gridContainer}>
-          <DataGrid
-            className={classes.dataGrid}
-            components={{
-              Toolbar: CustomToolbar
-            }}
-            rowsPerPageOptions={[20, 40, 60, 120]}
-            columns={columns}
-            rows={rows}
-            rowCount={count}
-            pageSize={limiter}
-            loading={isLoadingSats && isLoadingSchemas}
-            autoHeight={true}
-            pagination
-            paginationMode="server"
-            filterMode="server"
-            onFilterModelChange={(e) => {
-              handleFilter(e);
-            }}
-            onPageSizeChange={(newLimit) => setLimiter(newLimit)}
-            onPageChange={(newPage) => setPage(newPage)}
-            disableSelectionOnClick
-            onRowDoubleClick={(satellite) => {
-              handleRowDoubleClick(SatelliteCollection.find({ noradID: satellite.id }).fetch()[0]);
-            }}
-            onSortModelChange={handleSort}
-            onRowOver={debounced}
-            onRowOut={() => {
-              debounced(false);
-              setShowPopper(false);
-            }}
-          />
-        </div>
+        <DataGrid
+          className={classes.dataGrid}
+          components={{
+            Toolbar: CustomToolbar
+          }}
+          rowsPerPageOptions={[20, 40, 60, 120]}
+          columns={columns}
+          rows={rows}
+          rowCount={count}
+          pageSize={limiter}
+          loading={isLoadingSats && isLoadingSchemas}
+          autoHeight={true}
+          pagination
+          paginationMode="server"
+          filterMode="server"
+          onFilterModelChange={(e) => {
+            handleFilter(e);
+          }}
+          onPageSizeChange={(newLimit) => setLimiter(newLimit)}
+          onPageChange={(newPage) => setPage(newPage)}
+          disableSelectionOnClick
+          onRowDoubleClick={(satellite) => {
+            handleRowDoubleClick(SatelliteCollection.find({ noradID: satellite.id }).fetch()[0]);
+          }}
+          onSortModelChange={handleSort}
+          onRowOver={debounced}
+          onRowOut={() => {
+            debounced(false);
+            setShowPopper(false);
+          }}
+        />
         <Popper open={showPopper} value={popperBody} />
         <SatelliteModal
           show={showModal}

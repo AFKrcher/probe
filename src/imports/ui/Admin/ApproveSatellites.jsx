@@ -24,7 +24,8 @@ import {
 } from "@material-ui/core";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
-import ErrorOutlinedIcon from "@material-ui/icons/ErrorOutlined";
+import AttentionNeededIcon from "@material-ui/icons/Error";
+import NoAttentionNeededIcon from "@material-ui/icons/CheckBox";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,13 +85,14 @@ const useStyles = makeStyles((theme) => ({
       cursor: "pointer"
     }
   },
-  warningIcon: {
-    fill: theme.palette.warning.light,
-    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`
+  attentionIcon: {
+    fill: theme.palette.warning.light
+  },
+  noAttentionIcon: {
+    fill: theme.palette.success.light
   },
   errorIcon: {
-    fill: theme.palette.error.light,
-    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`
+    fill: theme.palette.error.light
   },
   filterButton: {
     marginLeft: 5
@@ -144,13 +146,21 @@ export const ApproveSatellites = () => {
         <TableCell key={`sat-id-${i}`}>{sat.noradID}</TableCell>
         <TableCell key={`sat-name-${i}`}>{sat.names ? sat.names[0].name : "New Satellite"}</TableCell>
         <TableCell key={`sat-adminCheck-${i}`} align="center">
-          {!sat.adminCheck ? <ErrorOutlinedIcon className={classes.warningIcon} /> : null}
+          {!sat.adminCheck ? (
+            <AttentionNeededIcon className={classes.attentionIcon} />
+          ) : (
+            <NoAttentionNeededIcon className={classes.noAttentionIcon} />
+          )}
         </TableCell>
         <TableCell key={`sat-machineCheck-${i}`} align="center">
-          {!sat.machineCheck ? <ErrorOutlinedIcon className={classes.warningIcon} /> : null}
+          {!sat.machineCheck ? (
+            <AttentionNeededIcon className={classes.attentionIcon} />
+          ) : (
+            <NoAttentionNeededIcon className={classes.noAttentionIcon} />
+          )}
         </TableCell>
         <TableCell key={`sat-delete-${i}`} align="center">
-          {sat.isDeleted ? <ErrorOutlinedIcon className={classes.errorIcon} /> : null}
+          {sat.isDeleted ? <AttentionNeededIcon className={classes.errorIcon} /> : null}
         </TableCell>
         <TableCell key={`sat-modOn-${i}`}>{`${sat.modifiedOn || sat.createdOn}`}</TableCell>
         <TableCell key={`sat-modBy-${i}`}>{`${sat.modifiedBy || sat.createdBy}`}</TableCell>
@@ -181,7 +191,10 @@ export const ApproveSatellites = () => {
               <TableCell className={classes.machineReview} align="center">
                 <span className={classes.filterableHeader}>
                   <Typography variant="body2">MACHINE REVIEW</Typography>
-                  <IconButton className={classes.filterButton} size="small" onClick={() => setViewMachineCheck(!viewMachineCheck)}>
+                  <IconButton
+                    className={classes.filterButton}
+                    size="small"
+                    onClick={() => setViewMachineCheck(!viewMachineCheck)}>
                     {viewMachineCheck ? <VisibilityIcon fontSize="small" /> : <VisibilityOffIcon fontSize="small" />}
                   </IconButton>
                 </span>
@@ -189,7 +202,10 @@ export const ApproveSatellites = () => {
               <TableCell className={classes.deletion} align="center">
                 <span className={classes.filterableHeader}>
                   <Typography variant="body2">DELETION</Typography>
-                  <IconButton className={classes.filterButton} size="small" onClick={() => setViewDeleteCheck(!viewDeleteCheck)}>
+                  <IconButton
+                    className={classes.filterButton}
+                    size="small"
+                    onClick={() => setViewDeleteCheck(!viewDeleteCheck)}>
                     {viewDeleteCheck ? <VisibilityIcon fontSize="small" /> : <VisibilityOffIcon fontSize="small" />}
                   </IconButton>
                 </span>
@@ -212,8 +228,12 @@ export const ApproveSatellites = () => {
             )}
             {!isLoading && satsDeleted.map((sat, i) => (viewDeleteCheck ? cells(sat, i) : null))}
             {!isLoading && satsAdminCheck.map((sat, i) => (!sat.isDeleted && viewAdminCheck ? cells(sat, i) : null))}
-            {!isLoading && satsBothCheck.map((sat, i) => (!sat.isDeleted && (viewMachineCheck || viewAdminCheck) ? cells(sat, i) : null))}
-            {!isLoading && satsMachineCheck.map((sat, i) => (!sat.isDeleted && viewMachineCheck ? cells(sat, i) : null))}
+            {!isLoading &&
+              satsBothCheck.map((sat, i) =>
+                !sat.isDeleted && (viewMachineCheck || viewAdminCheck) ? cells(sat, i) : null
+              )}
+            {!isLoading &&
+              satsMachineCheck.map((sat, i) => (!sat.isDeleted && viewMachineCheck ? cells(sat, i) : null))}
           </TableBody>
         </Table>
       </TableContainer>

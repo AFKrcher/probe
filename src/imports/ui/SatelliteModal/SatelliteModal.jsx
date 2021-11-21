@@ -18,7 +18,17 @@ import SnackBar from "../Dialogs/SnackBar.jsx";
 import { Gallery } from "../DataDisplays/Gallery.jsx";
 
 // @material-ui
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, CircularProgress, makeStyles, Typography, IconButton } from "@material-ui/core";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  CircularProgress,
+  makeStyles,
+  Typography,
+  IconButton
+} from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import SaveIcon from "@material-ui/icons/Save";
@@ -32,24 +42,28 @@ const useStyles = makeStyles((theme) => ({
     width: "auto",
     height: "auto"
   },
+  header: {
+    marginBottom: -5
+  },
+  title: {
+    fontSize: "25px",
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: -10
+  },
+  modifiedOn: {
+    color: theme.palette.text.disabled
+  },
+  content: {
+    overflowY: "auto"
+  },
   gallery: {
     display: "flex",
     justifyContent: "center",
-    marginTop: -10
+    marginTop: 0
   },
-  titleText: {
-    fontSize: "25px",
-    display: "flex",
-    justifyContent: "space-between"
-  },
-  content: {
-    marginTop: 0,
-    overflowY: "auto"
-  },
-  description: {
-    marginTop: 25,
-    marginBottom: 15,
-    margin: 5
+  body: {
+    marginTop: 30
   },
   actions: {
     display: "flex",
@@ -188,11 +202,17 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
       ),
       text: (
         <span>
-          Are you sure you want to delete <b>{values.names ? values.names[0].name : "New Satellite"}</b> and all of its data?
+          Are you sure you want to delete <b>{values.names ? values.names[0].name : "New Satellite"}</b> and all of its
+          data?
         </span>
       ),
       actions: (
-        <Button size="small" variant="contained" color="secondary" disableElevation onClick={() => handleDelete(values)}>
+        <Button
+          size="small"
+          variant="contained"
+          color="secondary"
+          disableElevation
+          onClick={() => handleDelete(values)}>
           Confirm
         </Button>
       ),
@@ -222,7 +242,8 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
         ),
         text: (
           <span>
-            Are you sure you want to delete the changes you have made to <b>{values.names ? values.names[0].name : "New Satellite"}</b>?
+            Are you sure you want to delete the changes you have made to{" "}
+            <b>{values.names ? values.names[0].name : "New Satellite"}</b>?
           </span>
         ),
         actions: (
@@ -319,33 +340,49 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
       <SnackBar bodySnackBar={snack} />
       <Dialog open={show} maxWidth="lg" fullWidth scroll="body">
         <div className={classes.modal}>
-          <DialogTitle>
-            <Typography className={classes.titleText}>
-              <span>
-                {newSat ? (
-                  <React.Fragment>
-                    Creating <b>New Satellite</b>
-                  </React.Fragment>
-                ) : (
-                  <React.Fragment>
-                    Editing <b>{initValues.names && initValues.names[0] ? initValues.names[0].name : "New Satellite"}</b>
-                  </React.Fragment>
-                )}
-              </span>
-              <IconButton
-                size="small"
-                onClick={() => {
-                  handleClose();
-                  setTimeout(() => setEditingOne(false), 500);
-                }}
-                className={classes.closeIcon}>
-                <CloseIcon />
-              </IconButton>
-            </Typography>
-          </DialogTitle>
           <Formik initialValues={initValues} onSubmit={handleSubmit} validationSchema={satSchema}>
-            {({ errors, setErrors, isSubmitting, isValid, values, setValues, setFieldValue, dirty, touched, setTouched }) => (
+            {({
+              errors,
+              setErrors,
+              isSubmitting,
+              isValid,
+              values,
+              setValues,
+              setFieldValue,
+              dirty,
+              touched,
+              setTouched
+            }) => (
               <Form>
+                <DialogTitle className={classes.header}>
+                  <Typography className={classes.title}>
+                    <span>
+                      {newSat ? (
+                        <React.Fragment>
+                          Creating <b>New Satellite</b>
+                        </React.Fragment>
+                      ) : (
+                        <React.Fragment>
+                          Editing{" "}
+                          <b>{initValues.names && initValues.names[0] ? initValues.names[0].name : "New Satellite"}</b>
+                        </React.Fragment>
+                      )}
+                    </span>
+                    <IconButton
+                      size="small"
+                      onClick={() => {
+                        handleClose();
+                        setTimeout(() => setEditingOne(false), 500);
+                      }}
+                      className={classes.closeIcon}>
+                      <CloseIcon />
+                    </IconButton>
+                  </Typography>
+                  <Typography variant="caption" className={classes.modifiedOn}>
+                    Last change made by <b>{`${values.modifiedBy || username}`}</b> on{" "}
+                    <b>{values.modifiedOn ? `${values.modifiedOn}` : `${new Date()}`}</b>
+                  </Typography>
+                </DialogTitle>
                 {isLoadingSch || isLoadingSat ? (
                   <DialogContent className={classes.loadingDialog}>
                     <CircularProgress size={75} />
@@ -355,26 +392,24 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
                     <div className={classes.gallery}>
                       <Gallery initValues={initValues} width={width} modal={true} />
                     </div>
-                    <Typography className={classes.description}>
-                      Last change made by <b>{`${values.modifiedBy || username}`}</b> on{" "}
-                      <b>{values.modifiedOn ? `${values.modifiedOn}` : `${new Date()}`}</b>
-                    </Typography>
-                    <SatelliteForm
-                      errors={errors}
-                      setErrors={setErrors}
-                      values={values}
-                      schemas={schemas}
-                      setValues={setValues}
-                      setFieldValue={setFieldValue}
-                      editing={editing}
-                      initValues={initValues}
-                      setSatSchema={setSatSchema}
-                      satelliteValidatorShaper={satelliteValidatorShaper}
-                      touched={touched}
-                      setTouched={setTouched}
-                      dirty={dirty}
-                      setValidating={setValidating}
-                    />
+                    <div className={classes.body}>
+                      <SatelliteForm
+                        errors={errors}
+                        setErrors={setErrors}
+                        values={values}
+                        schemas={schemas}
+                        setValues={setValues}
+                        setFieldValue={setFieldValue}
+                        editing={editing}
+                        initValues={initValues}
+                        setSatSchema={setSatSchema}
+                        satelliteValidatorShaper={satelliteValidatorShaper}
+                        touched={touched}
+                        setTouched={setTouched}
+                        dirty={dirty}
+                        setValidating={setValidating}
+                      />
+                    </div>
                   </DialogContent>
                 )}
                 <DialogActions className={classes.actions}>
@@ -421,7 +456,13 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
                             }}
                             tabIndex={1000}
                             startIcon={
-                              width && width < actionsBreak ? null : editing ? dirty && !_.isEmpty(touched) ? <DeleteIcon /> : null : <EditIcon />
+                              width && width < actionsBreak ? null : editing ? (
+                                dirty && !_.isEmpty(touched) ? (
+                                  <DeleteIcon />
+                                ) : null
+                              ) : (
+                                <EditIcon />
+                              )
                             }>
                             {editing ? "Cancel" : "Edit"}
                           </Button>

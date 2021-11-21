@@ -24,7 +24,7 @@ import {
   GridToolbarFilterButton,
   GridToolbarDensitySelector
 } from "@material-ui/data-grid";
-import VisibilityIcon from "@material-ui/icons/Visibility";
+import StorageIcon from "@material-ui/icons/Storage";
 import Download from "@material-ui/icons/GetApp";
 
 const useStyles = makeStyles((theme) => ({
@@ -78,8 +78,7 @@ const useStyles = makeStyles((theme) => ({
   },
   actionIconButton: {
     padding: 7,
-    marginLeft: 37,
-    filter: `drop-shadow(1px 2px 1px ${theme.palette.tertiary.shadow})`
+    marginLeft: 37
   },
   spinner: {
     color: theme.palette.text.primary
@@ -237,7 +236,7 @@ export const SchemasTable = () => {
                     }).fetch()[0]
                   )
                 }>
-                <VisibilityIcon fontSize="small" />
+                <StorageIcon fontSize="small" />
               </IconButton>
             </Tooltip>
           </span>
@@ -256,7 +255,7 @@ export const SchemasTable = () => {
       field: "description",
       headerName: "SCHEMA DESCRIPTION",
       flex: 1,
-      minWidth: 200,
+      width: 200,
       editable: false
     }
   ];
@@ -271,18 +270,21 @@ export const SchemasTable = () => {
           {width > addButtonBreak ? <ProtectedFunctionality component={AddSchemaButton} loginRequired={true} /> : null}
         </Grid>
         {width < addButtonBreak ? (
-          <div style={{ margin: "10px 0px 10px 0px" }}>{<ProtectedFunctionality component={AddSchemaButton} loginRequired={true} />}</div>
+          <div style={{ margin: "10px 0px 10px 0px" }}>
+            {<ProtectedFunctionality component={AddSchemaButton} loginRequired={true} />}
+          </div>
         ) : null}
       </Grid>
       <Typography gutterBottom variant="body1" className={classes.description}>
-        Each <b>schema</b> is built to store sets of data that characterize a satellite. Please see the satellites on the{" "}
+        Each <b>schema</b> is built to store sets of data that characterize a satellite. Please see the satellites on
+        the{" "}
         <Tooltip placement="top" arrow title="Bring me to the schemas page">
           <Link to="/satellites" className={classes.link}>
             satellites page
           </Link>
         </Tooltip>{" "}
-        for usage examples. Each <b>schema</b> has a reference for where the data was found, a description describing what the data is, and a number
-        of data fields that contain the information.
+        for usage examples. Each <b>schema</b> has a reference for where the data was found, a description describing
+        what the data is, and a number of data fields that contain the information.
       </Typography>
       <Key page="SchemasTable" />
       <div className={classes.searchBarContainer}>
@@ -308,7 +310,12 @@ export const SchemasTable = () => {
         onRowOut={() => debounced(false)}
       />
       <Popper open={showPopper} value={popperBody} />
-      <SchemaModal show={showModal} newSchema={newSchema} initValues={initialSchemaValues} handleClose={() => setShowModal(false)} />
+      <SchemaModal
+        show={showModal}
+        newSchema={newSchema}
+        initValues={initialSchemaValues}
+        handleClose={() => setShowModal(false)}
+      />
     </div>
   );
 };

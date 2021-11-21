@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 // @material-ui
 import { makeStyles, Typography, Tooltip } from "@material-ui/core";
 import StarIcon from "@material-ui/icons/Star";
-import VisibilityIcon from "@material-ui/icons/Visibility";
+import StorageIcon from "@material-ui/icons/Storage";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import MouseIcon from "@material-ui/icons/Mouse";
 import VerifiedIcon from "@material-ui/icons/CheckBoxOutlined";
@@ -75,10 +75,10 @@ export const Key = ({ page, mini }) => {
             </Typography>
           )}
           <Typography gutterBottom variant="body2" className={classes.key}>
-            <VisibilityIcon fontSize="small" className={classes.keyItems} />
+            <StorageIcon fontSize="small" className={classes.keyItems} />
             {page !== "SchemasTable" ? (
               <React.Fragment>
-                <span className={classes.keyItems}>–</span> Open a satellite to view and/or modify its schemas or entries
+                <span className={classes.keyItems}>–</span> Open a satellite to view and/or modify its data
               </React.Fragment>
             ) : (
               <React.Fragment>
@@ -95,7 +95,8 @@ export const Key = ({ page, mini }) => {
               </Typography>
               <Typography gutterBottom variant="body2" className={classes.key}>
                 <img src="/assets/saberastro.png" width="21px" height="21px" className={classes.keyItems} />
-                <span className={classes.keyItems}>–</span> Open a satellite in Space Cockpit for visualization and analysis
+                <span className={classes.keyItems}>–</span> Open a satellite in Space Cockpit for visualization and
+                analysis
               </Typography>
             </React.Fragment>
           )}
@@ -104,18 +105,20 @@ export const Key = ({ page, mini }) => {
               <MouseIcon fontSize="small" className={classes.keyItems} />
               {page === "SatellitesTable" && (
                 <React.Fragment>
-                  <span className={classes.keyItems}>–</span> Hover over or click to view satellite description, Double-click to view and/or modify a satellite's schemas or entries
+                  <span className={classes.keyItems}>–</span> Hover over or click to view satellite description,
+                  Double-click to view and/or modify a satellite's schemas or entries
                 </React.Fragment>
               )}
               {page === "SchemasTable" && (
                 <React.Fragment>
-                  <span className={classes.keyItems}>–</span> Hover over or click a schema description to view, Double-click to view and/or modify a schema's fields
+                  <span className={classes.keyItems}>–</span> Hover over or click a schema description to view,
+                  Double-click to view and/or modify a schema's fields
                 </React.Fragment>
               )}
               {mini && (
                 <React.Fragment>
-                  <span className={classes.keyItems}>–</span> Hover over a NORAD ID to view the satellite name, COSPAR ID, and short description, click to view the satellite data
-                  card
+                  <span className={classes.keyItems}>–</span> Hover over a NORAD ID to view the satellite name, COSPAR
+                  ID, and short description, click to view the satellite data card
                 </React.Fragment>
               )}
             </Typography>
@@ -123,14 +126,20 @@ export const Key = ({ page, mini }) => {
           {page === "SatellitesTable" && (
             <React.Fragment>
               <Typography gutterBottom variant="body2" className={classes.key}>
-                <Tooltip title="Verified by <method>: <name> on <date>, and <method>: <method>: <name> on <date>" placement="top" arrow>
+                <Tooltip
+                  title="Verified by <method>: <name> on <date>, and <method>: <method>: <name> on <date>"
+                  placement="top"
+                  arrow>
                   <VerifiedIcon fontSize="small" className={classes.keyItemsValid} />
                 </Tooltip>
-                <Tooltip title="Validated across multiple sources by <method>: <name> on <date>, and <method>: <method>: <name> on <date>" placement="top" arrow>
+                <Tooltip
+                  title="Validated across multiple sources by <method>: <name> on <date>, and <method>: <method>: <name> on <date>"
+                  placement="top"
+                  arrow>
                   <ValidatedIcon fontSize="small" className={classes.keyItemsValid} />
                 </Tooltip>
-                <span className={classes.keyItems}>–</span> Information has been FULLY verified to be in the reference or validated across multiple sources by user(s) and
-                web-crawling algorithm(s)
+                <span className={classes.keyItems}>–</span> Information has been FULLY verified to be in the reference
+                or validated across multiple sources by user(s) and web-crawling algorithm(s)
               </Typography>
               <Typography gutterBottom variant="body2" className={classes.key}>
                 <Tooltip title="Verified by <method>: <name> on <date>" placement="top" arrow>
@@ -139,8 +148,8 @@ export const Key = ({ page, mini }) => {
                 <Tooltip title="Validated across multiple sources by <method>: <name> on <date>" placement="top" arrow>
                   <IndeterminateIcon fontSize="small" className={classes.keyItemsPartial} />
                 </Tooltip>
-                <span className={classes.keyItems}>–</span> Information has PARTIALLY been verified to be in the reference or validated across multiple sources by user(s) or
-                web-crawling algorithm(s)
+                <span className={classes.keyItems}>–</span> Information has PARTIALLY been verified to be in the
+                reference or validated across multiple sources by user(s) or web-crawling algorithm(s)
               </Typography>
               <Typography gutterBottom variant="body2" className={classes.key}>
                 <Tooltip title="Not verified by user nor machine" placement="top" arrow>
@@ -149,8 +158,8 @@ export const Key = ({ page, mini }) => {
                 <Tooltip title="Not validated by user nor machine" placement="top" arrow>
                   <NotReviewedIcon fontSize="small" className={classes.keyItemsInvalid} />
                 </Tooltip>
-                <span className={classes.keyItems}>–</span> Information has NOT been verified to be in the reference or validated across multiple sources by user(s) or web-crawling
-                algorithm(s)
+                <span className={classes.keyItems}>–</span> Information has NOT been verified to be in the reference or
+                validated across multiple sources by user(s) or web-crawling algorithm(s)
               </Typography>
             </React.Fragment>
           )}
