@@ -646,13 +646,16 @@ Paste and run the following command at the root of the project to build and run 
 docker-compose --env-file src/private/.env.prod up --build
 ```
 
-#### Docker Errors
+#### Build Errors
 
 If you run into any build errors, please ensure you try all of the following before submitting an issue:
 
 - Ensure that you run the commands noted above at the root of the project
-- Ensure you have followed all installation instructions
+- Ensure you have followed all installation and build instructions
 - Modify the commands in the scripts and this README based on your OS and terminal
+
+Docker-specific errors may be resolved by checking the following:
+
 - `docker system prune -f -a` to remove all old images and volumes
 - `docker container prune -f` / `docker volume prune -f` / `docker builder prune -f -a` / `docker image prune -f -a`
 - `docker rmi $(docker images --filter “dangling=true” -q --no-trunc)` to remove any dangling images that you don't need
