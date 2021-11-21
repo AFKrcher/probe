@@ -636,6 +636,7 @@ docker-compose --env-file src/private/.env.prod up --build
 
 If you run into any build errors, please ensure you try all of the following before submitting an issue:
 
+- Ensure you have followed all installation instructions
 - Ensure that you run the commands noted above at the root of the project
 - Modify the commands in the scripts and this README based on your OS and terminal
 - `docker system prune -f -a` to remove all old images and volumes
