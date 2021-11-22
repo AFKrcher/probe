@@ -19,7 +19,7 @@ This open source project seeks to design a system that allows a community to mai
     - [Access MongoDB](#Access-MongoDB)
     - [Environment Variables](#Environment-Variables)
     - [Testing](#Testing)
-    - [Docker Builds](#Docker-Builds)
+    - [Builds](#Builds)
 4.  [Libraries](#Libraries)
     - [NPM](#NPM)
     - [Meteor](#Meteor)
@@ -566,17 +566,19 @@ For _PRODUCTION_ testing:
 | :----------------------------- | :---------------------------------------- | :----------------------------------- |
 | ADMIN_PASSWORD                 | Password for admin account in development | password                             |
 | PROBE_API_KEY                  | PROBE API access key                      | password                             |
-| INLINE_RUNTIME_CHUNK\*         | Disables unsafe-inline script source      | false                                |
 | PORT                           | Exposed port (may not be required)        | 3000                                 |
 | ROOT_URL                       | Base URL for application                  | http://localhost                     |
 | MAIL_URL                       | Hosted SMTPS                              | smtps://user:password@mailhost:port/ |
 | MONGO_URL\*                    | Hosted MongoDB instance                   | mongodb://mongo:27017/database       |
 | MONGO_INITDB_ROOT_USERNAME\*\* | MongoDB initial user                      | probe                                |
 | MONGO_INITDB_ROOT_PASSWORD\*\* | MongoDB initial user password             | password                             |
+| METEOR_APP_DIR\*\*\*           | Staging environment buildpack variable    | src/                                 |
 
 \*Only required for a build that reaches out to a hosted MongoDB instance
 
 \*\*Only required for build that has is networked to a MongoDB instance
+
+\*\*\*Only required for staging build using Heroku buildpack
 
 ### Access MongoDB
 
@@ -604,40 +606,56 @@ Unit testing uses React's testing-library, mocha, and chai. Please refer to the 
 
 Cypress testing is used for integration and UI/UX testing of PROBE. Please refer to the [Cypress](https://www.cypress.io/) documentation for more information on usage and behaviour.
 
-### Docker Builds
+### Builds
 
 **NOTE:** Please ensure that you have read and completed the steps in the [Environment Variables](#Environment-Variables) section prior to attempting a Docker build or Docker run.
 
 #### Docker Development
 
-The purpose of the Docker development build is to locally test a meteor-built instance of the application, with conenctions to hosted services suchs as MongoDB and SMTPS. PM2 and alpine-node are used for load-balancing, app-management, and CSP/HTTP testing. PM2 configuration settings can be modified in the `pm2.json` file.
+The purpose of the Docker development build is to locally test a meteor-built instance of the application, with connections to hosted services such as MongoDB and SMTPS. PM2 and alpine-node are used for load-balancing, app-management, and CSP/HTTP testing. PM2 configuration settings can be modified in the `pm2.json` file.
 
 This Docker build is dependent on the `pm2.json` and `.env` files to describe the configuration of your meteor application. A pm2.example.json is provided for filling-in and a `.env.example` is provided in `~/src/private` for environmental variable configuration as described in the [Environment Variables](#Environment-Variables) section of this README.
 
-Paste and run the following command at the root of the project to build and run a docker image of PROBE on http://localhost:3000. Please note that `chmod +x` may not be necessary after your first run of the bash script.
+Paste and run the following command at the root of the project to build and run a docker image of PROBE on http://localhost:3000. Please note that `chmod +x` may not be necessary to run the bash script.
 
 ```
 chmod +x scripts/build-dev.sh && scripts/build-dev.sh
 ```
 
+#### Heroku Staging
+
+The purpose of the Heroku staging build is to test a hosted instance of the application, with connections to hosted services such as MongoDB and SMTPS. Heroku is used to test the application's security and speed while hosted on a cloud-based DevOps solution.
+
+This Heroku staging build is dependent on the `.env.staging`. A `.env.example` is provided in `~/src/private` for environmental variable configuration as described in the [Environment Variables](#Environment-Variables) section of this README. If you are not a core contributor with access to the Heroku instance, you will need to sign-up for Heroku and make a new Heroku app to remote deploy to your own staging environment. If you generate your own Heroku app, please ensure that you change the `~/scripts/build-staging.sh` file to fit the git remote command.
+
+After git commiting your changes you can paste and run the following command at the root of the project to build and run a hosted instance of PROBE on https://probe-staging.herokuapp.com. Please note that `chmod +x` may not be necessary to run the bash script.
+
+```
+chmod +x scripts/build-staging.sh && scripts/build-staging.sh
+```
+
 #### Docker Production
 
-The Docker production build is dependent on the `.env` file to describe the configuration of your meteor application. A `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README.
+The purpose of the Docker production build is to generate production ready containers with images of PROBE and MongoDB. The `docker-compose.yaml` can be run in a hosted instance or as a reference to configure the PROBE stack for other production deployment methods.
 
-The `.env.prod` and `docker-compose.yml` must be configured properly in order to run on your deployment platform of choice. If your deployment does not use docker-compose or Docker at all, please be sure to reference the Dockerfiles, bash scripts, and environmental variables.
+The Docker production build is dependent on the `.env` file to describe the configuration of your meteor application. A `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README. The `.env.prod` and `docker-compose.yml` must be configured properly in order to run on your deployment platform of choice. If your deployment does not use docker-compose or Docker at all, please be sure to reference the Dockerfiles, bash scripts, and environmental variables.
 
-Paste and run the following command at the root of the project to build and run a docker production image of PROBE using docker-compose. DO NOT use the `scripts/build-prod.sh`, as this script is for the Docker container to run later in the build process.
+Paste and run the following command at the root of the project to build and run a docker production image of PROBE using docker-compose. DO NOT use the `scripts/build-prod.sh`, as this script is for the Docker container's entrypoint.
 
 ```
 docker-compose --env-file src/private/.env.prod up --build
 ```
 
-#### Docker Errors
+#### Build Errors
 
 If you run into any build errors, please ensure you try all of the following before submitting an issue:
 
 - Ensure that you run the commands noted above at the root of the project
+- Ensure you have followed all installation and build instructions
 - Modify the commands in the scripts and this README based on your OS and terminal
+
+Docker-specific errors may be resolved by checking the following:
+
 - `docker system prune -f -a` to remove all old images and volumes
 - `docker container prune -f` / `docker volume prune -f` / `docker builder prune -f -a` / `docker image prune -f -a`
 - `docker rmi $(docker images --filter “dangling=true” -q --no-trunc)` to remove any dangling images that you don't need
@@ -674,6 +692,7 @@ The following is a list of notable packages and technologies used to build this 
 
 | Module/Library    | Environment | Description                   |
 | :---------------- | :---------- | :---------------------------- |
+| mocha             | Development | Testing library               |
 | mongo             | Runtime     | NoSQL database                |
 | accounts-base     | Runtime     | Account management            |
 | accounts-password | Runtime     | Password management           |

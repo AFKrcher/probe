@@ -29,7 +29,9 @@ import { errorMethods } from "./methods/error";
 import { startup } from "./methods/startup";
 
 dotenv.config({
-  path: Assets.absoluteFilePath(process.env.NODE_ENV === "development" ? ".env.dev" : ".env.prod") // .env.* files in the ~/src/private folder
+  path: Assets.absoluteFilePath(
+    process.env.NODE_ENV === "development" ? ".env.dev" : process.env.NODE_ENV === "production" ? ".env.prod" : ""
+  ) // .env.* files in the ~/src/private folder
 });
 
 const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT, NODE_ENV, PM2 } = process.env;
