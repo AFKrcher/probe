@@ -28,24 +28,11 @@ import { schemaMethods } from "./methods/schema";
 import { errorMethods } from "./methods/error";
 import { startup } from "./methods/startup";
 
-let useDotenv = true;
-
-const decideEnv = () => {
-  switch (process.env.NODE_ENV) {
-    case "development":
-      return ".env.dev";
-    case "production":
-      return ".env.prod";
-    default:
-      useDotenv = false;
-      break;
-  }
-};
-
-if (useDotenv)
-  dotenv.config({
-    path: Assets.absoluteFilePath(decideEnv) // .env.* files in the ~/src/private folder
-  });
+dotenv.config({
+  path: Assets.absoluteFilePath(
+    process.env.NODE_ENV === "development" ? ".env.dev" : process.env.NODE_ENV === "production" ? ".env.prod" : ""
+  ) // .env.* files in the ~/src/private folder
+});
 
 const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT, NODE_ENV, PM2 } = process.env;
 

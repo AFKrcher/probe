@@ -9,8 +9,6 @@
 *.env.stag*
 *.env.prod*
 
-
 # Build
 *src.tar.gz
 *bundle
-

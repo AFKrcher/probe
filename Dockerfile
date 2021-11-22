@@ -1,11 +1,9 @@
-FROM ubuntu:20.04 AS BUILD_STAGE
-
-RUN apt-get update -q && apt-get clean
-RUN apt-get install curl -y && (curl https://install.meteor.com/ | sh)
+# First build stage will need use hardened artifacts if it is to be Iron Bank-compliant
+FROM registry.access.redhat.com/ubi8/ubi:8.4 AS BUILD_STAGE
+LABEL org.opencontainers.image.authors="justinthelaw@gmail.com"
 
 WORKDIR /app
 COPY . .
-
 RUN ./scripts/build-prod.sh
 
 # If you don't have access to Iron Bank, just use the node:14.16.1 image from Docker
@@ -15,9 +13,6 @@ USER root
 
 WORKDIR /app
 COPY --from=BUILD_STAGE /app/build/bundle .
-RUN cd /app/programs/server && npm install --production && npm cache clean --force
 
 EXPOSE 3000
-
-# Run the database migration script before starting the program.
 ENTRYPOINT ["node", "/app/main.js", "--v"]

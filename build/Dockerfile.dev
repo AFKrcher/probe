@@ -1,5 +1,6 @@
 # Pull base image.
 FROM mhart/alpine-node:14
+LABEL org.opencontainers.image.authors="justinthelaw@gmail.com"
 
 # Install build tools to compile native npm modules
 RUN apk update \

@@ -15,4 +15,4 @@ heroku config:set $(grep -v '^#' ./src/private/.env.staging | xargs)
 heroku config:set NODE_ENV=staging
 # Deploy Heroku and display deployment logs
 echo "=> Deploying to Heroku..."
-cd ./src && git push heroku main && echo "=> Successfully deployed to Heroku!"
+cd ./src && git push heroku main && echo "=> Comleted Heroku deployment attempt!"
