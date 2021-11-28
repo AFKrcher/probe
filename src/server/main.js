@@ -28,21 +28,17 @@ import { schemaMethods } from "./methods/schema";
 import { errorMethods } from "./methods/error";
 import { startup } from "./methods/startup";
 
-try {
-  dotenv.config({
-    path: Assets.absoluteFilePath(
-      process.env.NODE_ENV === "development"
-        ? ".env.dev"
-        : process.env.NODE_ENV === "production"
-        ? ".env.prod"
-        : ".env.example" // staging environment does not need to import the .env.staging; however, .env.staging is used in the staging build script
-    ) // .env.* files in the ~/src/private folder
-  });
-} catch {
-  return true;
-}
+dotenv.config({
+  path: Assets.absoluteFilePath(
+    process.env.NODE_ENV === "development"
+      ? ".env.dev"
+      : process.env.NODE_ENV === "staging"
+      ? ".env.staging"
+      : ".env.prod" // staging environment does not need to import the .env.staging; however, .env.staging is used in the staging build script
+  ) // .env.* files in the ~/src/private folder
+});
 
-const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT, NODE_ENV, PM2 } = process.env;
+const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT, NODE_ENV } = process.env;
 
 Meteor.startup(() => {
   console.log("=> PROBE server is starting-up...");
@@ -153,13 +149,12 @@ Meteor.startup(() => {
     ADMIN_PASSWORD,
     ROOT_URL,
     PORT,
-    PM2, // checks to see if this is a Docker development test-build
     false // WARNING: setting this to true will force a database re-seed
   );
 
   console.log(
     `=> PROBE server is running! Listening at ${ROOT_URL}${
-      NODE_ENV === "production" && (PM2 || ROOT_URL.includes("localhost")) ? ":" + PORT : ""
+      NODE_ENV === "production" && ROOT_URL.includes("localhost") ? ":" + PORT : ""
     }`
   );
 });
