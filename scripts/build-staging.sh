@@ -13,7 +13,6 @@ heroku buildpacks:set https://github.com/AdmitHub/meteor-buildpack-horse.git
 echo "=> Setting environment variables from ~/src/private/.env.staging...."
 heroku config:set $(grep -v '^#' ./src/private/.env.staging | xargs)
 # Set Heroku and NODE_ENV to staging
-heroku config:set NODE_ENV_SETTING=staging
 git config heroku.remote staging
 # Deploy Heroku and display deployment logs
 echo "=> Deploying to Heroku..."

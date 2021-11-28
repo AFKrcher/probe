@@ -14,6 +14,7 @@ export const startup = (
   ADMIN_PASSWORD,
   ROOT_URL,
   PORT,
+  PM2,
   reseed = false
 ) => {
   if (reseed && count === 0) {
@@ -36,12 +37,12 @@ export const startup = (
 
   // Email verification and password reset emails
   Accounts.urls.resetPassword = (token) => {
-    return ROOT_URL.includes("localhost")
+    return ROOT_URL.includes("localhost") && PM2
       ? `${ROOT_URL}:${PORT}/reset?token=${token}`
       : Meteor.absoluteUrl(`/reset?token=${token}`);
   };
   Accounts.urls.verifyEmail = (token) => {
-    return ROOT_URL.includes("localhost")
+    return ROOT_URL.includes("localhost") && PM2
       ? `${ROOT_URL}:${PORT}/verify?token=${token}`
       : Meteor.absoluteUrl(`/verify?token=${token}`);
   };

@@ -41,7 +41,7 @@ switch (process.env.NODE_ENV) {
     });
     break;
   case "production":
-    if (process.env.NODE_ENV_SETTING !== "staging")
+    if (!METEOR_APP_DIR)
       dotenv.config({
         path: Assets.absoluteFilePath(".env.staging")
       });
@@ -53,14 +53,14 @@ switch (process.env.NODE_ENV) {
     break;
 }
 
-const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT, NODE_ENV } = process.env;
+const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT, NODE_ENV, PM2 } = process.env;
 
 Meteor.startup(() => {
   console.log("=> PROBE server is starting-up...");
   console.log("=> Checking environment variables...");
   console.log(
     ADMIN_PASSWORD && PROBE_API_KEY && ROOT_URL && PORT && NODE_ENV
-      ? `=> Environment variables for ${NODE_ENV} were loaded!`
+      ? `=> Environment variables for ${PM2 ? "docker development" : NODE_ENV} build were loaded!`
       : `=> Error loading environment variables for ${NODE_ENV}. Please check the .env files in ~/private and restart the server.`
   );
 
@@ -164,6 +164,7 @@ Meteor.startup(() => {
     ADMIN_PASSWORD,
     ROOT_URL,
     PORT,
+    PM2,
     false // WARNING: setting this to true will force a database re-seed
   );
 
