@@ -24,6 +24,7 @@ This open source project seeks to design a system that allows a community to mai
     - [NPM](#NPM)
     - [Meteor](#Meteor)
 5.  [License](#License)
+6.  [Credits](#Credits)
 
 ## Overview
 
@@ -56,7 +57,15 @@ The public API allows all users to obtain information on satellites and schemas 
 
 GET: `/api/`
 
-RESPONSE: An HTML landing page directing the user to see this README for more instructions on how to use the API.
+RESPONSE: `"Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/afkrcher/probe#api-documentation."`
+
+---
+
+#### Health Check
+
+GET: `/api/test`
+
+RESPONSE: `Test successful! This is the endpoint URL: http://localhost:3000/api/test.`
 
 ---
 
@@ -229,9 +238,7 @@ All POST, PATCH, DELETE, or PUT requests made with improper format will respond 
 
 GET (POST, DELETE, PUT, PATCH): `/api/partner/:key`
 
-RESPONSE:
-
-`"Welcome PROBE partner! There are <# OF ENDPOINTS> <REQUEST TYPE> endpoints on this route. For documentation, please visit the README at https://github.com/afkrcher/probe#api-documentation."`
+RESPONSE: `"Welcome PROBE partner! There are <# OF ENDPOINTS> <REQUEST TYPE> endpoints on this route. For documentation, please visit the README at https://github.com/afkrcher/probe#api-documentation."`
 
 ---
 
@@ -540,8 +547,8 @@ Instructions for system dependencies and running the application in a non-Docker
 3. Clone the repo `git clone https://github.com/afkrcher/probe#api-documentation.git`
 4. Inside the `/src` run `meteor npm install`
 5. Read and complete the steps in the [Environment Variables](#Environment-Variables) section
-6. Run `meteor run --port 8080`
-7. Go to `http://localhost:8080` and you should see the test app running
+6. Run `meteor run`
+7. Go to `http://localhost:3000` and you should see the test app running
 
 ### Environment Variables
 
@@ -556,9 +563,13 @@ application code via `process.env.<variable-name>`. Prior to development or depl
 
 For _DEVELOPMENT_ testing:
 
-- A `.env.dev` must be created from the `.env.example` prior to a `meteor run --port 8080` or a Docker development build with `scripts/build-dev.sh`
+- A `.env.dev` must be created from the `.env.example` prior to a `meteor run` or a Docker development build with `scripts/build-dev.sh`
 
-For _PRODUCTION_ testing:
+For _STAGING_ builds:
+
+- A `.env.staging` must be created from the `.env.example` prior to a Heroku staging build build with `scripts/build-staging.sh`
+
+For _PRODUCTION_ deployments:
 
 - A `.env.prod` must be created from the `.env.example` prior to a Docker production build with `scripts/build-prod.sh`
 
@@ -574,11 +585,11 @@ For _PRODUCTION_ testing:
 | MONGO_INITDB_ROOT_PASSWORD\*\* | MongoDB initial user password             | password                             |
 | METEOR_APP_DIR\*\*\*           | Staging environment buildpack variable    | src/                                 |
 
-\*Only required for a build that reaches out to a hosted MongoDB instance
+\*Only required for builds that reach out to a hosted MongoDB instance
 
-\*\*Only required for build that has is networked to a MongoDB instance
+\*\*Only required for builds that have the application connect to a containerized MongoDB instance
 
-\*\*\*Only required for staging build using Heroku buildpack
+\*\*\*Only required for staging builds using Heroku's Meteor buildpack
 
 ### Access MongoDB
 
@@ -612,9 +623,9 @@ Cypress testing is used for integration and UI/UX testing of PROBE. Please refer
 
 #### Docker Development
 
-The purpose of the Docker development build is to locally test a meteor-built instance of the application, with connections to hosted services such as MongoDB and SMTPS. PM2 and alpine-node are used for load-balancing, app-management, and CSP/HTTP testing. PM2 configuration settings can be modified in the `pm2.json` file.
+The purpose of the Docker development build is to locally test a meteor-built instance of the application, with connections to hosted services such as MongoDB and SMTPS. PM2 and alpine-node are used for optional load-balancing, app-management, and CSP/HTTP testing. PM2 configuration settings can be modified in the `pm2.json` file.
 
-This Docker build is dependent on the `pm2.json` and `.env` files to describe the configuration of your meteor application. A pm2.example.json is provided for filling-in and a `.env.example` is provided in `~/src/private` for environmental variable configuration as described in the [Environment Variables](#Environment-Variables) section of this README.
+This Docker build is dependent on the `pm2.json` and `.env` files to describe the configuration of your meteor application. A pm2.json is provided for optional configuration and a `.env.example` is provided in `~/src/private` for environmental variable configuration as described in the [Environment Variables](#Environment-Variables) section of this README.
 
 Paste and run the following command at the root of the project to build and run a docker image of PROBE on http://localhost:3000. Please note that `chmod +x` may not be necessary to run the bash script.
 
@@ -624,7 +635,7 @@ chmod +x scripts/build-dev.sh && scripts/build-dev.sh
 
 #### Heroku Staging
 
-The purpose of the Heroku staging build is to test a hosted instance of the application, with connections to hosted services such as MongoDB and SMTPS. Heroku is used to test the application's security and speed while hosted on a cloud-based DevOps solution.
+The purpose of the Heroku staging build is to test a hosted instance of the application, with connections to hosted services such as MongoDB and SMTPS. Heroku, which is a PaaS that runs on AWS under the hood, is used to test the application's security and speed while hosted on a cloud-based DevOps solution.
 
 This Heroku staging build is dependent on the `.env.staging`. A `.env.example` is provided in `~/src/private` for environmental variable configuration as described in the [Environment Variables](#Environment-Variables) section of this README. If you are not a core contributor with access to the Heroku instance, you will need to sign-up for Heroku and make a new Heroku app to remote deploy to your own staging environment. If you generate your own Heroku app, please ensure that you change the `~/scripts/build-staging.sh` file to fit the git remote command.
 
@@ -648,20 +659,20 @@ docker-compose --env-file src/private/.env.prod up --build
 
 #### Build Errors
 
-If you run into any build errors, please ensure you try all of the following before submitting an issue:
+General build errors may be resolved by checking the following:
 
 - Ensure that you run the commands noted above at the root of the project
 - Ensure you have followed all installation and build instructions
 - Modify the commands in the scripts and this README based on your OS and terminal
 
-Docker-specific errors may be resolved by checking the following:
+Docker-specific build errors may be resolved by checking the following:
 
 - `docker system prune -f -a` to remove all old images and volumes
 - `docker container prune -f` / `docker volume prune -f` / `docker builder prune -f -a` / `docker image prune -f -a`
 - `docker rmi $(docker images --filter “dangling=true” -q --no-trunc)` to remove any dangling images that you don't need
 - Restart Docker and/or restart your computer
-- Logout and login to Docker
-- Ensure you have access to Iron Bank, else see the Dockerfile comments
+- Logout and log back into your Docker account
+- Ensure you have access to Iron Bank; if not, see the Dockerfile comments
 - Reset your Docker client to factory default settings
 - Go to `~/.docker/config.json` and ensure that `credStore: <storage environment>` is properly written into the file
 - Check the Dockerfile and script to ensure relative paths lead to the correct files/folders
@@ -706,4 +717,4 @@ This software is licensed under the [ISC](./LICENSE) license. For more terms, pr
 
 ## Credits
 
-Upon running the app on your local machine or opening it at https://probe.saberastro.com/about, you will find the pictures, roles, and contact information of the founders and contributors of PROBE. Only founders and major contributors are listed on the PROBE about page.
+Upon running the app on your local machine or opening it at https://probe.saberastro.com/about, you will find the pictures, roles, and contact information of the founders and core contributors of PROBE. Only founders and core contributors are listed on the PROBE about page.

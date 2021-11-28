@@ -43,13 +43,13 @@ const useStyles = makeStyles((theme) => ({
     height: "auto"
   },
   header: {
-    marginBottom: -5
+    marginBottom: 5
   },
   title: {
     fontSize: "25px",
     display: "flex",
     justifyContent: "space-between",
-    marginBottom: -10
+    marginBottom: -5
   },
   modifiedOn: {
     color: theme.palette.text.disabled
@@ -368,13 +368,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
                         </React.Fragment>
                       )}
                     </span>
-                    <IconButton
-                      size="small"
-                      onClick={() => {
-                        handleClose();
-                        setTimeout(() => setEditingOne(false), 500);
-                      }}
-                      className={classes.closeIcon}>
+                    <IconButton size="small" onClick={handleClose} className={classes.closeIcon}>
                       <CloseIcon />
                     </IconButton>
                   </Typography>

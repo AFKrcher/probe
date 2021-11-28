@@ -48,12 +48,12 @@ const useStyles = makeStyles((theme) => ({
   names: {
     paddingTop: 12.5,
     paddingBottom: 12.5,
-    width: 200
+    width: 180
   },
   adminReview: {
     paddingTop: 12.5,
     paddingBottom: 12.5,
-    width: 100
+    width: 130
   },
   machineReview: {
     paddingTop: 12.5,
@@ -68,12 +68,12 @@ const useStyles = makeStyles((theme) => ({
   modifiedOn: {
     paddingTop: 12.5,
     paddingBottom: 12.5,
-    width: 280
+    width: 260
   },
   modifiedBy: {
     paddingTop: 12.5,
     paddingBottom: 12.5,
-    width: 110
+    width: 130
   },
   filterableHeader: {
     display: "flex",

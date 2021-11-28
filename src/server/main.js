@@ -30,7 +30,11 @@ import { startup } from "./methods/startup";
 
 dotenv.config({
   path: Assets.absoluteFilePath(
-    process.env.NODE_ENV === "development" ? ".env.dev" : process.env.NODE_ENV === "production" ? ".env.prod" : ""
+    process.env.NODE_ENV === "development"
+      ? ".env.dev"
+      : process.env.NODE_ENV === "production"
+      ? ".env.prod"
+      : ".env.example" // staging environment does not need to import the .env.staging; however, .env.staging is used in the staging build script
   ) // .env.* files in the ~/src/private folder
 });
 
