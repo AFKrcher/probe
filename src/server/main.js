@@ -36,9 +36,6 @@ switch (process.env.NODE_ENV) {
     });
     break;
   case "staging":
-    dotenv.config({
-      path: Assets.absoluteFilePath(".env.staging")
-    });
     break;
   case "production":
     dotenv.config({
