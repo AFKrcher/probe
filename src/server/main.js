@@ -41,10 +41,9 @@ switch (process.env.NODE_ENV) {
     });
     break;
   case "production":
-    if (!METEOR_APP_DIR)
-      dotenv.config({
-        path: Assets.absoluteFilePath(".env.staging")
-      });
+    dotenv.config({
+      path: Assets.absoluteFilePath(".env.prod")
+    });
     break;
   default:
     dotenv.config({

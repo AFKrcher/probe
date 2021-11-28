@@ -16,10 +16,30 @@ import { allowedRoles } from "/imports/validation/accountYupShape";
 import { helmetOptions } from "../security/helmet";
 import { publicAPILimiter } from "../security/apiLimit";
 
-// Partner routes on ExpressJS
-dotenv.config({
-  path: Assets.absoluteFilePath(process.env.NODE_ENV === "development" ? ".env.dev" : ".env.prod") // .env file in the private folder
-});
+// .env.* files in the ~/src/private folder
+switch (process.env.NODE_ENV) {
+  case "development":
+    dotenv.config({
+      path: Assets.absoluteFilePath(".env.dev")
+    });
+    break;
+  case "staging":
+    dotenv.config({
+      path: Assets.absoluteFilePath(".env.staging")
+    });
+    break;
+  case "production":
+    dotenv.config({
+      path: Assets.absoluteFilePath(".env.prod")
+    });
+    break;
+  default:
+    dotenv.config({
+      path: Assets.absoluteFilePath(".env.example")
+    });
+    break;
+}
+
 const { PROBE_API_KEY } = process.env;
 
 const app = express();
