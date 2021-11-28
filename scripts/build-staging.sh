@@ -17,4 +17,4 @@ heroku config:set NODE_ENV=staging
 git config heroku.remote staging
 # Deploy Heroku and display deployment logs
 echo "=> Deploying to Heroku..."
-cd ./src && git push heroku main && echo "=> Comleted Heroku deployment attempt!"
+cd ./src && git push heroku main && echo "=> Completed Heroku deployment attempt!";

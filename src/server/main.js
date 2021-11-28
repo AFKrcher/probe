@@ -28,15 +28,19 @@ import { schemaMethods } from "./methods/schema";
 import { errorMethods } from "./methods/error";
 import { startup } from "./methods/startup";
 
-dotenv.config({
-  path: Assets.absoluteFilePath(
-    process.env.NODE_ENV === "development"
-      ? ".env.dev"
-      : process.env.NODE_ENV === "production"
-      ? ".env.prod"
-      : ".env.example" // staging environment does not need to import the .env.staging; however, .env.staging is used in the staging build script
-  ) // .env.* files in the ~/src/private folder
-});
+try {
+  dotenv.config({
+    path: Assets.absoluteFilePath(
+      process.env.NODE_ENV === "development"
+        ? ".env.dev"
+        : process.env.NODE_ENV === "production"
+        ? ".env.prod"
+        : ".env.example" // staging environment does not need to import the .env.staging; however, .env.staging is used in the staging build script
+    ) // .env.* files in the ~/src/private folder
+  });
+} catch {
+  return true;
+}
 
 const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT, NODE_ENV, PM2 } = process.env;
 
