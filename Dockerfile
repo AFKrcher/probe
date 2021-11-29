@@ -1,8 +1,9 @@
 # First build stage will need to use hardened artifacts if it is to be Iron Bank-compliant
-FROM registry1.dso.mil/ironbank/redhat/ubi/ubi8@sha256:4a2cdd6fe88ad3d405d3b39ba529e419a57e90fc839d4cf42c15272e92a20521 AS BUILD_STAGE
+FROM registry1.dso.mil/ironbank/opensource/nodejs/nodejs14@sha256:1aa1227b8c3b3adf19280ce88a67ecf696d598ae94c8dbd3253415aa5efb8983 AS BUILD_STAGE
 LABEL org.opencontainers.image.authors="justinthelaw@gmail.com"
 
 USER root
+RUN dnf install -y python2 gcc-c++ make 
 
 WORKDIR /app
 COPY . .
