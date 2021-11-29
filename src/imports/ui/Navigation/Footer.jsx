@@ -62,7 +62,7 @@ export const Footer = () => {
       </a>
       <Divider orientation="vertical" variant="middle" className={classes.divider} flexItem />
       <a target="_blank" rel="noreferrer" href="https://github.com/afkrcher/probe/releases" className={classes.link}>
-        <div>PROBE v1.0.1</div>
+        <div>PROBE v1.0.2</div>
       </a>
     </Paper>
   );
