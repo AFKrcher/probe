@@ -17,5 +17,5 @@ echo "=> Extracting build bundle from src.tar.gz..."
 cd ../build && tar xzf src.tar.gz
 # Install npm modules inside the bundle
 echo "=> Installing node_modules inside build bundle..."
-# cd bundle/programs/server && meteor npm install --production --allow-superuser
+cd bundle/programs/server && meteor npm install --production --allow-superuser
 # We now have a fully ready to deploy program with all npm dependencies installed
