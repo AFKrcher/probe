@@ -1,6 +1,8 @@
-# First build stage will need use hardened artifacts if it is to be Iron Bank-compliant
-FROM registry.access.redhat.com/ubi8/ubi:8.4 AS BUILD_STAGE
+# First build stage will need to use hardened artifacts if it is to be Iron Bank-compliant
+FROM registry1.dso.mil/ironbank/redhat/ubi/ubi8@sha256:4a2cdd6fe88ad3d405d3b39ba529e419a57e90fc839d4cf42c15272e92a20521 AS BUILD_STAGE
 LABEL org.opencontainers.image.authors="justinthelaw@gmail.com"
+
+USER root
 
 WORKDIR /app
 COPY . .
@@ -15,4 +17,5 @@ WORKDIR /app
 COPY --from=BUILD_STAGE /app/build/bundle .
 
 EXPOSE 3000
+HEALTHCHECK NONE
 ENTRYPOINT ["node", "/app/main.js", "--v"]
