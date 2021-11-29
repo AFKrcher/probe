@@ -22,5 +22,5 @@ export const isValidPassword = (oldPassword, newPassword) => {
 };
 
 export const isConfirmedPassword = (newPassword, confirm) => {
-  return confirm && newPassword ? newPassword === confirm : true;
+  return confirm && newPassword ? newPassword === confirm : false;
 };

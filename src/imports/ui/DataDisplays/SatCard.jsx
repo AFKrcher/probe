@@ -70,8 +70,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // breakpoints based on device width / height
-const body1Break = 1200;
 const titleh6Break = 650;
+const body1Break = 1200;
 const body2Break = 400;
 const actionsBreak = 725;
 const descriptionShowBreak = 240;
@@ -164,12 +164,7 @@ export const SatCard = ({ width, height, satellite }) => {
           }>
           {width < actionsBreak ? (
             <React.Fragment>
-              <Button
-                variant="contained"
-                disableElevation
-                size="large"
-                onClick={handleClick}
-                className={classes.cardButton}>
+              <Button variant="outlined" size="large" onClick={handleClick} className={classes.cardButton}>
                 <b className={classes.optionButton}>Options</b>
               </Button>
               <Menu keepMounted anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
@@ -199,30 +194,19 @@ export const SatCard = ({ width, height, satellite }) => {
               <Tooltip title="Satellite Data View" arrow placement="top">
                 <Button
                   size="large"
-                  disableElevation
-                  variant="contained"
+                  variant="outlined"
                   className={classes.cardButton}
                   onClick={(e) => handleModify(e, satellite)}>
                   <StorageIcon className={classes.iconButton} />
                 </Button>
               </Tooltip>
               <Tooltip title="Satellite Dashboard View" arrow placement="top">
-                <Button
-                  size="large"
-                  variant="contained"
-                  disableElevation
-                  className={classes.cardButton}
-                  onClick={handleDashboard}>
+                <Button size="large" variant="outlined" className={classes.cardButton} onClick={handleDashboard}>
                   <DashboardIcon className={classes.iconButton} />
                 </Button>
               </Tooltip>
               <Tooltip title="Visualize satellite in Space Cockpit" arrow placement="top">
-                <Button
-                  size="large"
-                  variant="contained"
-                  disableElevation
-                  className={classes.cardButton}
-                  onClick={handleVisualize}>
+                <Button size="large" variant="outlined" className={classes.cardButton} onClick={handleVisualize}>
                   <img src="/assets/saberastro.png" width="27.5px" />
                 </Button>
               </Tooltip>

@@ -16,7 +16,16 @@ import AlertDialog from "../Dialogs/AlertDialog.jsx";
 import SnackBar from "../Dialogs/SnackBar.jsx";
 
 // @material-ui
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, CircularProgress, Typography } from "@material-ui/core";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  CircularProgress,
+  Typography,
+  IconButton
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -25,13 +34,18 @@ import SaveIcon from "@material-ui/icons/Save";
 import CheckIcon from "@material-ui/icons/Check";
 import RestorePageIcon from "@material-ui/icons/RestorePage";
 
-const useStyles = makeStyles(() => ({
-  title: {
-    marginBottom: 10,
-    marginTop: 0
+const useStyles = makeStyles((theme) => ({
+  header: {
+    marginBottom: 10
   },
-  titleText: {
-    fontSize: "25px"
+  title: {
+    fontSize: "25px",
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: -5
+  },
+  modifiedOn: {
+    color: theme.palette.text.disabled
   },
   content: {
     marginTop: -15,
@@ -280,30 +294,45 @@ export const SchemaModal = ({ show, newSchema, initValues, handleClose, admin })
       <AlertDialog bodyAlert={alert} />
       <SnackBar bodySnackBar={snack} />
       <Dialog open={show} maxWidth="md" fullWidth scroll="body">
-        <DialogTitle className={classes.title}>
-          <Typography className={classes.titleText}>
-            {newSchema ? (
-              "Create New Schema"
-            ) : (
-              <React.Fragment>
-                Editing <b>{initValues.name || "N/A"}</b>
-              </React.Fragment>
-            )}
-          </Typography>
-        </DialogTitle>
-        <Formik initialValues={initValues} validationSchema={schemaValidatorShaper(initValues.name)} onSubmit={handleSubmit}>
-          {({ errors, setErrors, isSubmitting, isValidating, values, touched, setValues, setFieldValue, initValues, dirty }) => (
+        <Formik
+          initialValues={initValues}
+          validationSchema={schemaValidatorShaper(initValues.name)}
+          onSubmit={handleSubmit}>
+          {({
+            errors,
+            setErrors,
+            isSubmitting,
+            isValidating,
+            values,
+            touched,
+            setValues,
+            setFieldValue,
+            initValues,
+            dirty
+          }) => (
             <Form>
+              <DialogTitle className={classes.header}>
+                <Typography className={classes.title}>
+                  <span>
+                    <React.Fragment>
+                      Editing <b>{values?.name || "New Schema"}</b>
+                    </React.Fragment>
+                  </span>
+                  <IconButton size="small" onClick={handleClose} className={classes.closeIcon}>
+                    <CloseIcon />
+                  </IconButton>
+                </Typography>
+                <Typography variant="caption" className={classes.modifiedOn}>
+                  Last change made by <b>{`${values.modifiedBy || username}`}</b> on{" "}
+                  <b>{values.modifiedOn ? `${values.modifiedOn}` : `${new Date()}`}</b>
+                </Typography>
+              </DialogTitle>
               {isLoading ? (
                 <DialogContent className={classes.loadingDialog}>
                   <CircularProgress size={75} />
                 </DialogContent>
               ) : (
                 <DialogContent className={classes.content} style={decideHeight()}>
-                  <Typography className={classes.description}>
-                    Last change made by <b>{`${values.modifiedBy || username || "N/A"}`}</b> on{" "}
-                    <b>{values.modifiedOn ? `${values.modifiedOn}` : `${new Date()}`}</b>
-                  </Typography>
                   <SchemaForm
                     touched={touched}
                     errors={errors}

@@ -14,22 +14,13 @@ export const publicRoutes = (app, getSats, getSchemas, publicAPILimiter) => {
 
     // Public test route
     app.get("/api/test", publicAPILimiter, (req, res) => {
-      res.status(200).json(`Test successful! This is the endpoint you just hit: ${Meteor.absoluteUrl() + "api/test"}.`);
+      res.status(200).json(`Test successful! This is the endpoint URL: ${Meteor.absoluteUrl() + "api/test"}.`);
     }),
 
     // Public API landing page
     app.get("/api", publicAPILimiter, (_, res) => {
-      res.send(
-        '<html>\
-          <body style="margin: 20;">\
-            <h1>Welcome to the PROBE API</h1>\
-            <p>For documentation, please visit this GitHub page:\
-              <a href="https://github.com/AFKrcher/probe#api-documentation" target="_blank" rel="noreferrer">\
-              https://github.com/AFKrcher/probe#api-documentation\
-              </a>\
-            </p>\
-          </body>\
-        </html>'
+      res.json(
+        "Welcome to the PROBE public API! For documentation, please visit the README at https://github.com/afkrcher/probe#api-documentation."
       );
     })
   ];

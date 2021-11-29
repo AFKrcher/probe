@@ -28,11 +28,26 @@ import { schemaMethods } from "./methods/schema";
 import { errorMethods } from "./methods/error";
 import { startup } from "./methods/startup";
 
-dotenv.config({
-  path: Assets.absoluteFilePath(
-    process.env.NODE_ENV === "development" ? ".env.dev" : process.env.NODE_ENV === "production" ? ".env.prod" : ""
-  ) // .env.* files in the ~/src/private folder
-});
+// .env.* files in the ~/src/private folder
+switch (process.env.NODE_ENV) {
+  case "development":
+    dotenv.config({
+      path: Assets.absoluteFilePath(".env.dev")
+    });
+    break;
+  case "staging":
+    break;
+  case "production":
+    dotenv.config({
+      path: Assets.absoluteFilePath(".env.prod")
+    });
+    break;
+  default:
+    dotenv.config({
+      path: Assets.absoluteFilePath(".env.example")
+    });
+    break;
+}
 
 const { ADMIN_PASSWORD, PROBE_API_KEY, ROOT_URL, PORT, NODE_ENV, PM2 } = process.env;
 
@@ -41,7 +56,7 @@ Meteor.startup(() => {
   console.log("=> Checking environment variables...");
   console.log(
     ADMIN_PASSWORD && PROBE_API_KEY && ROOT_URL && PORT && NODE_ENV
-      ? `=> Environment variables for ${NODE_ENV} were loaded!`
+      ? `=> Environment variables for ${PM2 ? "docker development" : NODE_ENV} build were loaded!`
       : `=> Error loading environment variables for ${NODE_ENV}. Please check the .env files in ~/private and restart the server.`
   );
 
@@ -145,13 +160,13 @@ Meteor.startup(() => {
     ADMIN_PASSWORD,
     ROOT_URL,
     PORT,
-    PM2, // checks to see if this is a Docker development test-build
+    PM2,
     false // WARNING: setting this to true will force a database re-seed
   );
 
   console.log(
     `=> PROBE server is running! Listening at ${ROOT_URL}${
-      NODE_ENV === "production" && (PM2 || ROOT_URL.includes("localhost")) ? ":" + PORT : ""
+      NODE_ENV === "production" && ROOT_URL.includes("localhost") ? ":" + PORT : ""
     }`
   );
 });
