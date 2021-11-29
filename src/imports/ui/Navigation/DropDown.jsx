@@ -3,29 +3,28 @@ import { Meteor } from "meteor/meteor";
 import PropTypes from "prop-types";
 // Imports
 import { useTracker } from "meteor/react-meteor-data";
-import { Link, useLocation, useHistory } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ProtectedFunctionality from "../Helpers/ProtectedFunctionality.jsx";
 
 // @material-ui
-import { withStyles, makeStyles, Menu, MenuItem, Button } from "@material-ui/core";
+import { withStyles, Menu, MenuItem, Button, Divider } from "@material-ui/core";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import SettingsIcon from "@material-ui/icons/Settings";
+import StarIcon from "@material-ui/icons/Star";
 import BrightnessHigh from "@material-ui/icons/BrightnessHigh";
 import Brightness2 from "@material-ui/icons/Brightness2";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
+import MenuIcon from "@material-ui/icons/Menu";
+import HomeIcon from "@material-ui/icons/Home";
+import SatelliteIcon from "@material-ui/icons/Satellite";
+import StorageIcon from "@material-ui/icons/Storage";
+import ImportContacts from "@material-ui/icons/ImportContacts";
+import Code from "@material-ui/icons/Code";
 
 // CSS
 import { themes } from "../css/Themes.jsx";
-
-const useStyles = makeStyles((theme) => ({
-  menuIcon: {
-    color: theme.palette.primary.main,
-    filter: `drop-shadow(1px 2px 2px ${theme.palette.tertiary.shadow})`
-  }
-}));
 
 const StyledMenu = withStyles({
   paper: {
@@ -58,46 +57,67 @@ const StyledMenuItem = withStyles((theme) => ({
   }
 }))(MenuItem);
 
-export const DropDown = ({ theme, toggleTheme }) => {
-  const classes = useStyles();
-
-  const [user] = useTracker(() => {
-    const user = Meteor.user()?.username;
-    return [user];
-  });
-
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const location = useLocation();
-  const history = useHistory();
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleLogout = async (e) => {
-    e.preventDefault();
-    await Meteor.logout();
-    if (location.pathname === "/") {
-      window.location.reload();
-    } else {
-      history.push("/");
-    }
-  };
-
+export const DropDown = ({
+  menuIcon,
+  toggleTheme,
+  theme,
+  handleClick,
+  anchorEl,
+  handleClose,
+  handleLogout,
+  handleAPI,
+  clearPopups,
+  user,
+  smallNav
+}) => {
   return (
     <React.Fragment>
-      <Button onClick={handleClick} id="drop-down" disableElevation className={classes.menuIcon}>
-        <SettingsIcon fontSize="medium" />
+      <Button onClick={handleClick} id="drop-down" disableElevation className={menuIcon}>
+        <MenuIcon fontSize="medium" />
       </Button>
       <StyledMenu id="customized-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+        {smallNav && (
+          <span>
+            <StyledMenuItem id="home" component={Link} to="/">
+              <ListItemIcon>
+                <HomeIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Home" />
+            </StyledMenuItem>
+            <StyledMenuItem id="satellites" component={Link} to="/satellites">
+              <ListItemIcon>
+                <SatelliteIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Satellites" />
+            </StyledMenuItem>
+            <StyledMenuItem id="schemas" component={Link} to="/schemas">
+              <ListItemIcon>
+                <StorageIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Schemas" />
+            </StyledMenuItem>
+            <StyledMenuItem id="about" component={Link} to="/about">
+              <ListItemIcon>
+                <ImportContacts fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="About" />
+            </StyledMenuItem>
+            <StyledMenuItem id="api" component={Link} to="/" onClick={handleAPI}>
+              <ListItemIcon>
+                <Code fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="API" />
+            </StyledMenuItem>
+            <Divider component="li" />
+          </span>
+        )}
         <StyledMenuItem onClick={toggleTheme}>
           <ListItemIcon>
-            {theme === themes.dark ? <Brightness2 aria-label="dark theme" fontSize="small" /> : <BrightnessHigh aria-label="light theme" />}
+            {theme === themes.dark ? (
+              <Brightness2 aria-label="dark theme" fontSize="small" />
+            ) : (
+              <BrightnessHigh aria-label="light theme" />
+            )}
           </ListItemIcon>
           <ListItemText primary="Toggle Theme" fontSize="small" />
         </StyledMenuItem>
@@ -154,6 +174,15 @@ export const DropDown = ({ theme, toggleTheme }) => {
 
 // Prop checking
 DropDown.propTypes = {
+  menuIcon: PropTypes.string,
+  toggleTheme: PropTypes.func,
   theme: PropTypes.object,
-  toggleTheme: PropTypes.func
+  handleClick: PropTypes.func,
+  anchorEl: PropTypes.object,
+  handleClose: PropTypes.func,
+  handleLogout: PropTypes.func,
+  handleAPI: PropTypes.func,
+  clearPopups: PropTypes.func,
+  user: PropTypes.string,
+  smallNav: PropTypes.bool
 };

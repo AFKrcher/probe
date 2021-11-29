@@ -13,10 +13,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.navigation.main,
     width: "100%",
-    height: "90%",
-    position: "relative",
-    bottom: -10,
-    lineHeight: "40px",
+    height: "100%",
+    lineHeight: "35px",
     display: "flex",
     justifyContent: "center",
     alignContent: "center",

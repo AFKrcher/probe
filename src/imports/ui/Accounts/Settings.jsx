@@ -4,7 +4,12 @@ import { Meteor } from "meteor/meteor";
 import { useTracker } from "meteor/react-meteor-data";
 import { Accounts } from "meteor/accounts-base";
 import HelpersContext from "../Dialogs/HelpersContext.jsx";
-import { isValidEmail, isValidUsername, isValidPassword, isConfirmedPassword } from "/imports/validation/accountYupShape";
+import {
+  isValidEmail,
+  isValidUsername,
+  isValidPassword,
+  isConfirmedPassword
+} from "/imports/validation/accountYupShape";
 
 // Components
 import AlertDialog from "../Dialogs/AlertDialog.jsx";
@@ -164,7 +169,9 @@ export const Settings = () => {
   };
 
   const validateEmailOnly = () => {
-    !isValidEmailCheck() && !isValidPasswordCheck() ? setDisabled(true) + setEmailErr("Invalid email address") : setDisabled(false) + setEmailErr();
+    !isValidEmailCheck() && !isValidPasswordCheck()
+      ? setDisabled(true) + setEmailErr("Invalid email address")
+      : setDisabled(false) + setEmailErr();
   };
 
   const validatePasswordOnly = () => {
@@ -178,7 +185,9 @@ export const Settings = () => {
       } else if (newPassword !== confirm) {
         setPassErr();
       } else {
-        setPassErr(newPassword.length > 128 ? "Cannot be longer than 128 characters" : "Must be at least 8 characters long");
+        setPassErr(
+          newPassword.length > 128 ? "Cannot be longer than 128 characters" : "Must be at least 8 characters long"
+        );
         setDisabled(true);
       }
     } else if (!isConfirmedPassword(newPassword, confirm)) {
@@ -270,7 +279,9 @@ export const Settings = () => {
     } else if (nameCheck) {
       setSnack(`Successfully changed username from ${user} to ${newUsername}`);
     } else if (emailCheck) {
-      setSnack(`Successfully changed email from ${email} to ${newEmail}! A verification email was sent to your new email.`);
+      setSnack(
+        `Successfully changed email from ${email} to ${newEmail}! A verification email was sent to your new email.`
+      );
     }
   };
 
@@ -371,7 +382,13 @@ export const Settings = () => {
                   Send verification email
                 </Button>
               ) : null}
-              <Button id="deleteButton" variant="contained" color="secondary" onClick={handleDeleteDialog} fullWidth className={classes.button}>
+              <Button
+                id="deleteButton"
+                variant="contained"
+                color="secondary"
+                onClick={handleDeleteDialog}
+                fullWidth
+                className={classes.button}>
                 Delete your account
               </Button>
             </form>
