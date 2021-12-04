@@ -5,7 +5,7 @@ echo "=> Installing meteor..."
 curl https://install.meteor.com/ | sh
 # Install node_modules required by meteor for building
 echo "=> Installing dependencies required for build..."
-cd ./src && meteor npm install --production --allow-superuser && yum install gcc-c++ -y && yum groupinstall 'Development Tools' -y
+cd ./src && meteor npm install --production --allow-superuser
 # Build the project into a .tar
 echo "=> Running meteor build..."
 meteor build ../build --allow-superuser
