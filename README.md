@@ -34,6 +34,7 @@ The main focus of this application is data entry experience, data validation, an
 - Client: ReactJS
 - Server: Meteor/WebApp
 - Repository: [GitHub](https://github.com/AFKrcher/PSRA)
+- Staging Deployment: [PROBE](https://probe-staging.herokuapp.com)
 - Live Deployment: [PROBE](https://probe.saberastro.com)
 
 ## Usage
@@ -645,11 +646,11 @@ After git commiting your changes you can paste and run the following command at 
 chmod +x scripts/build-staging.sh && scripts/build-staging.sh
 ```
 
-#### Docker Production
+#### Docker Compose
 
-The purpose of the Docker production build is to generate production ready containers with images of PROBE and MongoDB. The `docker-compose.yaml` can be run in a hosted instance or as a reference to configure the PROBE stack for other production deployment methods.
+The purpose of the Docker compose build is to generate production ready containers with images of PROBE and MongoDB. The `docker-compose.yaml` can be run in a hosted instance or as a reference to configure the PROBE stack for other production deployment methods.
 
-The Docker production build is dependent on the `.env` file to describe the configuration of your meteor application. A `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README. The `.env.prod` and `docker-compose.yml` must be configured properly in order to run on your deployment platform of choice. If your deployment does not use docker-compose or Docker at all, please be sure to reference the Dockerfiles, bash scripts, and environmental variables.
+The Docker compose build is dependent on the `.env` file to describe the configuration of your meteor application. A `.env.example` is provided for environmental variable configration as described in the [Environment Variables](#Environment-Variables) section of this README. The `.env.prod` and `docker-compose.yml` must be configured properly in order to run on your deployment platform of choice. If your deployment does not use docker-compose or Docker at all, please be sure to reference the Dockerfiles, bash scripts, and environmental variables.
 
 Paste and run the following command at the root of the project to build and run a docker production image of PROBE using docker-compose. DO NOT use the `scripts/build-prod.sh`, as this script is for the Docker container's entrypoint.
 
