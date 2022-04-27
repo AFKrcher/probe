@@ -505,7 +505,7 @@ export const SatelliteModal = ({ show, newSat, initValues, handleClose, width, h
                       variant="contained"
                       color="primary"
                       startIcon={width && width < actionsBreak ? null : <SaveIcon />}
-                      disabled={isSubmitting || validating || !isValid || _.isEmpty(touched) ? true : false}>
+                      disabled={isSubmitting || validating || _.isEmpty(touched) ? true : false}>
                       {isSubmitting || validating ? (
                         <CircularProgress size={25} className={classes.isValidatingButton} />
                       ) : newSat ? (
