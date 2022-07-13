@@ -295,7 +295,7 @@ export const SchemasTable = () => {
         columns={columns}
         rows={rows}
         pageSize={limiter}
-        rowsPerPageOptions={[20, 40, 60, 120]}
+        rowsPerPageOptions={[20, 40, 60, 100]}
         onPageSizeChange={(newLimit) => setLimiter(newLimit)}
         loading={isLoading}
         autoHeight={true}

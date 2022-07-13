@@ -548,7 +548,7 @@ export const SatellitesTable = () => {
           components={{
             Toolbar: CustomToolbar
           }}
-          rowsPerPageOptions={[20, 40, 60, 120]}
+          rowsPerPageOptions={[20, 40, 60, 100]}
           columns={columns}
           rows={rows}
           rowCount={count}
